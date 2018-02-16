@@ -1,0 +1,25 @@
+/*----------- Main Customization -----------*/
+html, body { background-color: #FFF;height: 100%;margin: 0;padding: 0; }
+.no-selection {
+                -webkit-touch-callout: none; /* iOS Safari */
+                -webkit-user-select: none; /* Safari */
+                -khtml-user-select: none; /* Konqueror HTML */
+                -moz-user-select: none; /* Firefox */
+                -ms-user-select: none; /* Internet Explorer/Edge */
+                user-select: none; /* Non-prefixed version, currently */
+}
+/* Chrome */
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-thumb { background-color: #ccc;border-radius: 10px;box-shadow: inset 0 0 3px rgba(52, 52, 51, .3); }
+::-webkit-scrollbar-track { border-radius: 10px;background-color: transparent; }
+/* Index Page -> checkbox */
+.check-bg { padding: 4px;background-color: #2C3E50;color: #FAFAFA;border-radius: 5px; }
+/* Login-Form */
+.reg-log-form { background-color: #FFF;border: 2px solid #E9E9E9;border-radius: 5px; }
+/* Login-Form > Legend > fildset */
+.reg-log-form > fildset > legend { border-bottom: 1px solid #E9E9E9;padding-bottom: 10px; }
+/* Navbar > icons */
+#navbarColor01 .space-icon { padding-right: 8px;text-align: left;font-size: 20px;}
+#navbarColor01 > ul > li > .dropdown-toggle::after { margin-left: 8px; }
+/* Login-Page > p */
+.content .f-size { font-size: 16px;}
