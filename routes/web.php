@@ -17,7 +17,8 @@
  * Public Pages
  * --------------------------------------------------------------------------
  */
-Route::get('/', 'PagesController@index')->name('index');
+
+Route::get('/', 'PagesController@index')->middleware(['guest', 'revalidate'])->name('index');
 Route::get('about', 'PagesController@about')->name('about');
 Route::get('contact-us', 'PagesController@contact_us')->name('contact_us');
 

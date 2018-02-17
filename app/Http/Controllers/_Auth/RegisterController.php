@@ -22,7 +22,7 @@ class RegisterController extends Controller
 
     public function __construct()
     {
-        $this->middleware('auth');
+        $this->middleware(['auth', 'revalidate']);
     }
 
     /**
@@ -66,6 +66,6 @@ class RegisterController extends Controller
         $this->validation($request);
         $request['password'] = bcrypt($request->password);
         User::create($request->all());
-        return redirect()->back()->with('status', 'User created successfully');
+        return redirect()->back()->with('def-success', 'User created successfully');
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\_Auth;
 
 use Auth;
+use Session;
 use App\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -22,13 +23,13 @@ class LoginController extends Controller
 
     public function __construct()
     {
-        $this->middleware('guest', ['except' => ['logout']]);
+        $this->middleware(['guest'], ['except' => ['logout']]);
     }
 
-    public function showLoginForm()
-    {
-        return view('index');
-    }
+    // public function showLoginForm()
+    // {
+    //     return view('index');
+    // }
 
     /**
      * @param request
@@ -36,17 +37,25 @@ class LoginController extends Controller
      */
     public function login(Request $request)
     {
-        $this->validate($request, [
-            'email' => 'required|email|max:100',            
-            'password' => 'required|max:255',         
-        ]);
-
-        if (Auth::attempt(['email' => $request->email, 'password' => $request->password]))
+        if ($request->email == null || $request->password == null)
         {
-            // return 'Logged in successfully';
-            return redirect()->route('user.dashboard');
+            return redirect()->back()->with(Session::flash('warning', "Email and Password are required"));
         }
-        return 'oops something happen';
+        else
+        {
+            $this->validate($request, [
+                'email' => 'required|email|max:100',            
+                'password' => 'required|max:255',         
+            ]);
+            if (Auth::attempt(['email' => $request->email, 'password' => $request->password]))
+            {
+                return redirect()->route('user.dashboard');
+            }
+            else
+            {
+                return redirect()->back()->with(Session::flash('error', "The email or password you have entered is invalid"));
+            }
+        }
     }
 
     /**

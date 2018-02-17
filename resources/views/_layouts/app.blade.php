@@ -9,9 +9,10 @@
     <title>E-LMS | @yield('title')</title>
 	<!-- Latest compiled and minified CSS -->
 	<!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"> -->
-    <link href="https://use.fontawesome.com/releases/v5.0.6/css/all.css" rel="stylesheet">
+    {{--  <link href="https://use.fontawesome.com/releases/v5.0.6/css/all.css" rel="stylesheet">  --}}
+    <link rel="stylesheet" href="{{ asset('css/toastr.min.css') }}">
     <!-- Font-awesome Latest compiled and minified CSS -->
-    {{--  <link rel="stylesheet" href="{{ asset('css/fontawesome-all.min.css') }}">  --}}
+    <link rel="stylesheet" href="{{ asset('css/fontawesome.min.css') }}">
     <link rel="stylesheet" href="{{ asset('css/_app.css') }}">
     <!-- Custom CSS -->
 	<link rel="stylesheet" href="{{ asset('css/style.css') }}">
@@ -21,10 +22,8 @@
     @include('_inc.navbar')
     <div class="container">
         @section('content')
-        @show
+            @show
     </div>
-    
-
     
     <!-- ===============/ Scripts /=============== -->
     <!-- jQuery library -->
@@ -35,5 +34,19 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
     <!-- Font-awesome -->
     <script src="{{ asset('js/fontawesome-all.min.js') }}"></script>
+    <!-- Toastr -->
+    <script src="{{ asset('js/toastr.min.js') }}"></script>
+    <script src="{{ asset('js/custom.js') }}"></script>
+    <script>
+        @if (Session::has('error'))
+            toastr.error("{{ Session::get('error') }}");
+        @endif
+        @if (Session::has('warning'))
+            toastr.warning("{{ Session::get('warning') }}");
+        @endif
+        @if (Session::has('success'))
+            toastr.success("{{ Session::get('success') }}");
+        @endif
+    </script>
 </body>
 </html>
