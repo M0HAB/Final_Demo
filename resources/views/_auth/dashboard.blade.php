@@ -7,9 +7,9 @@
 	<div class="content mt-5 mb-4">
 		<div class="container">
 			<div class="row">
-				<div class="col-md-8">
+				<div class="col-lg-8 mb-4">
                     <div class="user-dashboard-diss-fourm-prev">
-                        <h1 class="display-4">{{ Auth::user()->fname }}</h1>
+                        <h1 class="display-4">{{ Auth::user()->fname . ' ' . Auth::user()->lname }}</h1>
                         <div class="bbp-breadcrumb pb-4">
                             <p>
                                 <a href="http://demo.vellumwp.com/" class="bbp-breadcrumb-home">Home</a> 
@@ -94,53 +94,53 @@
 					    </form>
 					</div>
 				</div>
-				<div class="col-md-4">
+				<div class="col-lg-4">
 					<h4 class="mb-4 pl-2">Recent Topics</h4>
 					<div class="row mb-2 pl-2">
-						<div class="col-md-1">
-							<i class="fas fa-angle-right"></i>
+						<div class="col-lg-1">
+							<i class="fas fa-angle-right d-none d-lg-block"></i>
 						</div>
-						<div class="col-md-11 mb-2" style="border-bottom: 1px solid #DEE2E6">
+						<div class="col-lg-11 mb-2" style="border-bottom: 1px solid #DEE2E6">
 							<p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Soluta, nam.</p>
 						</div>
 					</div>
 					<div class="row mb-2 pl-2">
-						<div class="col-md-1">
-							<i class="fas fa-angle-right"></i>
+						<div class="col-lg-1">
+							<i class="fas fa-angle-right d-none d-lg-block"></i>
 						</div>
-						<div class="col-md-11 mb-2" style="border-bottom: 1px solid #DEE2E6">
+						<div class="col-lg-11 mb-2" style="border-bottom: 1px solid #DEE2E6">
 							<p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Soluta, nam.</p>
 						</div>
 					</div>
 					<div class="row mb-2 pl-2">
-						<div class="col-md-1">
-							<i class="fas fa-angle-right"></i>
+						<div class="col-lg-1">
+							<i class="fas fa-angle-right d-none d-lg-block"></i>
 						</div>
-						<div class="col-md-11 mb-2" style="border-bottom: 1px solid #DEE2E6">
+						<div class="col-lg-11 mb-2" style="border-bottom: 1px solid #DEE2E6">
 							<p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Soluta, nam.</p>
 						</div>
 					</div>
 					<div class="row mb-2 pl-2">
-						<div class="col-md-1">
-							<i class="fas fa-angle-right"></i>
+						<div class="col-lg-1">
+							<i class="fas fa-angle-right d-none d-lg-block"></i>
 						</div>
-						<div class="col-md-11 mb-2" style="border-bottom: 1px solid #DEE2E6">
+						<div class="col-lg-11 mb-2" style="border-bottom: 1px solid #DEE2E6">
 							<p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Soluta, nam.</p>
 						</div>
 					</div>
 					<div class="row mb-2 pl-2">
-						<div class="col-md-1">
-							<i class="fas fa-angle-right"></i>
+						<div class="col-lg-1">
+							<i class="fas fa-angle-right d-none d-lg-block"></i>
 						</div>
-						<div class="col-md-11 mb-2" style="border-bottom: 1px solid #DEE2E6">
+						<div class="col-lg-11 mb-2" style="border-bottom: 1px solid #DEE2E6">
 							<p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Soluta, nam.</p>
 						</div>
 					</div>
 					<div class="row mb-2 pl-2">
-						<div class="col-md-1">
-							<i class="fas fa-angle-right"></i>
+						<div class="col-lg-1">
+							<i class="fas fa-angle-right d-none d-lg-block"></i>
 						</div>
-						<div class="col-md-11 mb-2" style="border-bottom: 1px solid #DEE2E6">
+						<div class="col-lg-11 mb-2" style="border-bottom: 1px solid #DEE2E6">
 							<p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Soluta, nam.</p>
 						</div>
 					</div>
