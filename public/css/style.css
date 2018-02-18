@@ -27,22 +27,22 @@ html, body { background-color: #FFF;height: 100%;margin: 0;padding: 0; }
 /* def-msgs */
 .def-msg { position: absolute; top: 12%;}
 /* Dashboard */
-div.bbp-breadcrumb, div.bbp-topic-tags { font-size: 14px; }
-div.bbp-breadcrumb { float: left; }
-.bbp-breadcrumb .bbp-breadcrumb-sep { font-size: 1.75em;line-height: 18px;display: inline-block;vertical-align: top;padding: 0 4px;}
+.bbp-breadcrumb-home {font-weight: 600}
+.bbp-breadcrumb-sep { font-size: 20px;}
+.bbp-breadcrumb-current { font-weight: 600;color: #888888 }
 .user-dashboard-diss-fourm-prev { font-family: "Raleway"; }
 .user-dashboard-diss-fourm-prev .forum-nav { font-size: 16px;text-decoration: none !important }
-.user-dashboard-diss-fourm-prev .forum-p { font-size: 13px;color: #878787 !important }
+.user-dashboard-diss-fourm-prev .forum-p { font-size: 12px;color: #878787 !important;font-weight:600 }
 .user-dashboard-diss-fourm-prev .forum-lbl { font-size: 13px;font-weight:600;color: #2C3E50 }
 .user-dashboard-diss-fourm-prev .fam-mod { font-size: 20px;color: #2C3E50 !important }
-.user-dashboard-diss-fourm-prev .forum-recent-time { color: #878787 !important }
+.user-dashboard-diss-fourm-prev .forum-recent-time { color: #878787 !important;font-size: 12px;font-weight: 600}
 .user-dashboard-diss-fourm-prev .table-hover tbody tr:hover  { background-color: #2C3E50 !important;}
 .user-dashboard-diss-fourm-prev .table-hover tbody tr:hover td .forum-nav:hover {color:#1BD6B2 !important;}
 .user-dashboard-diss-fourm-prev .table-hover tbody tr:hover td .fam-mod {color:#18BC9C !important;}
 .user-dashboard-diss-fourm-prev .table-hover tbody tr:hover td .forum-lbl {color:#18BC9C !important;}
-.user-dashboard-diss-fourm-prev .table-hover tbody tr:hover td .forum-lbl {color:#18BC9C !important;}
 .user-dashboard-diss-fourm-prev .table-hover tbody tr:hover td .forum-recent-time { color: #DEE2E6 !important}
 .user-dashboard-diss-fourm-prev .table-hover tbody tr:hover td .forum-p { color: #DEE2E6 !important}
-
-
-
+.list-group-item .txt-lbl { font-weight: 600;color: #7B8A9A }
+.list-group-item .recent-p-mod { font-size: 14px; }
+.list-group-item:hover { background-color: #2C3E50;color: #DEE2E6; }
+.list-group-item:hover .txt-lbl { color:#18BC9C !important; }
