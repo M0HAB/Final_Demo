@@ -42,10 +42,9 @@
 				<div class="col-lg-4 col-sm-12">
 					<div class="reg-log-form p-3 my-3">
 					@include('_inc.errors')
-					
 					<fildset>
 					    <legend>Sign into LMS</legend>
-						<form action="{{ route('user.login') }}" method="POST" role="form" autocomplete="off">
+						<form id = "regForm" action="{{ route('user.login') }}" method="POST" role="form" autocomplete="off">
                             {{ csrf_field() }}
                             <div class="form-group mt-2">
                                 <label class="control-label" for="signupEmail">Email</label>
@@ -53,7 +52,7 @@
                                     <div class="input-group-prepend">
                                         <span class="input-group-text"><i class="fas fa-envelope"></i></span>
                                     </div>
-                                    <input id="signupEmail" type="email" name="email" maxlength="50" class="form-control" placeholder="test@example.com">
+                                    <input id="signupEmail" type="email" name="email" maxlength="50" class="form-control" placeholder="test@example.com" required>
 								</div>
                             </div>
                             <div class="form-group mt-2">
@@ -62,7 +61,7 @@
                                     <div class="input-group-prepend">
                                         <span class="input-group-text"><i class="fas fa-unlock-alt"></i></span>
                                     </div>
-                                    <input id="signupPassword" type="password" name="password" maxlength="25" class="form-control" length="40">
+                                    <input id="signupPassword" type="password" name="password" maxlength="25" class="form-control" length="40" required>
 								</div>
                             </div>
 							<div class="custom-control custom-checkbox">

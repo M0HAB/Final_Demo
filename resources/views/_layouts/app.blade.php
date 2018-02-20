@@ -48,5 +48,10 @@
             toastr.success("{{ Session::get('success') }}");
         @endif
     </script>
+    @if (Request::is('/'))
+        <script src="{{ asset('js/validation.js') }}"></script>
+    @endif
+    
+    
 </body>
 </html>
