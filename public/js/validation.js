@@ -8,10 +8,10 @@ document.getElementById("signupEmail").onkeyup = function() {
     email = myFunction("signupEmail","email");
 };
 $("#signupEmail").bind('paste', function() {
-    password = myFunction("signupEmail","email")
+    email = myFunction("signupEmail","email")
 });
 $("#signupEmail").bind('cut', function() {
-    password = myFunction("signupEmail","email")
+    email = myFunction("signupEmail","email")
 });
 //password
 document.getElementById("signupPassword").onkeyup = function() {
@@ -50,11 +50,7 @@ function isEmail(email) {
     return regex.test(email);
 }
 
-function isEmail(email) {
-    var regex = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
-    return regex.test(email);
-}
-
+//function : regex check for valid pass
 function validPass(pass) {
     var regex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}$/;
     return (regex.test(pass) && pass.length > 7 && pass.length < 26) ;
