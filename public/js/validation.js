@@ -37,7 +37,7 @@ $('#regForm').submit(function(ev) {
         toastr.error("Invalid Email address");
     }
     else if(!password){
-        toastr.error("Invalid Password must be atleast 8 chars and include 1 uppercase 1 lower case and 1 number");
+        toastr.error("Invalid Password");
     }
     else{
         toastr.error("Something gone wrong please try resubmitting");
