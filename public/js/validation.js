@@ -7,23 +7,23 @@ var email =false,password = false;
 document.getElementById("signupEmail").onkeyup = function() {
     email = myFunction("signupEmail","email");
 };
-$("#signupEmail").bind('paste', function() {
-    email = myFunction("signupEmail","email")
-});
-$("#signupEmail").bind('cut', function() {
-    email = myFunction("signupEmail","email")
-});
+document.getElementById("signupEmail").onpaste = function() {
+    email = myFunction("signupEmail","email");
+};
+document.getElementById("signupEmail").oncut = function() {
+    email = myFunction("signupEmail","email");
+};
+
 //password
 document.getElementById("signupPassword").onkeyup = function() {
     password = myFunction("signupPassword","password")
 };
-$("#signupPassword").bind('paste', function() {
-    password = myFunction("signupPassword","password")
-});
-$("#signupPassword").bind('cut', function() {
-    password = myFunction("signupPassword","password")
-});
-
+document.getElementById("signupPassword").onpaste = function() {
+    email = myFunction("signupPassword","password");
+};
+document.getElementById("signupPassword").oncut = function() {
+    email = myFunction("signupPassword","password");
+};
 //form submit prevention to check for validity
 $('#regForm').submit(function(ev) {
     ev.preventDefault(); 
