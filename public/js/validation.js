@@ -24,8 +24,10 @@ document.getElementById("signupPassword").onpaste = function() {
 document.getElementById("signupPassword").oncut = function() {
     email = myFunction("signupPassword","password");
 };
+
+
 //form submit prevention to check for validity
-$('#regForm').submit(function(ev) {
+document.getElementById("regForm").onsubmit = function(ev) {
     ev.preventDefault(); 
     if (email && password){
         this.submit();
@@ -42,7 +44,7 @@ $('#regForm').submit(function(ev) {
     else{
         toastr.error("Something gone wrong please try resubmitting");
     }
-});
+};
 
 //function : regex check for valid email
 function isEmail(email) {
@@ -53,7 +55,7 @@ function isEmail(email) {
 //function : regex check for valid pass
 function validPass(pass) {
     var regex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}$/;
-    return (regex.test(pass) && pass.length > 7 && pass.length < 26) ;
+    return (regex.test(pass) && pass.length < 26) ;
 }
 
 
