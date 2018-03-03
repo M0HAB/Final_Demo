@@ -19,7 +19,7 @@ class CreateUsersTable extends Migration
             $table->string('lname');
             $table->string('email')->unique();
             $table->string('password');
-            $table->string('department');
+            $table->integer('dep_id')->unsigned()->nullable();
             $table->boolean('gender');
             $table->string('role');
             $table->string('location');

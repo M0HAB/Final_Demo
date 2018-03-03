@@ -40,4 +40,8 @@ class User extends Authenticatable
     {
         return ucwords($value);
     }
+
+    public function department(){
+            return $this->belongsTo('App\Department');
+    }
 }
