@@ -36,4 +36,20 @@ Route::get('contact-us', 'PagesController@contact_us')->name('contact_us');
     Route::get('dashboard', 'UserDashboardController@dashboard')->name('user.dashboard');
  });
 
+/**
+ * --------------------------------------------------------------------------
+ * Course Pages View System
+ * --------------------------------------------------------------------------
+ */
+ Route::group(['prefix' => 'user/courses'], function(){
+     Route::middleware('checkRole:instructor')
+         ->get('addNewCourse', '\App\Http\Controllers\Courses\coursePagesController@getNewCourseForm')
+         ->name('course.getNewCourseForm');
+     Route::post('addNewCourse',[
+         'uses' => '\App\Http\Controllers\Courses\Courses_CRUD_Controller@addNewCourse',
+         'as' => 'course.addNewCourse'
+     ]);
+
+ });
+
 

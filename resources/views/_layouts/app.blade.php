@@ -16,6 +16,10 @@
     <link rel="stylesheet" href="{{ asset('css/_app.css') }}">
     <!-- Custom CSS -->
 	<link rel="stylesheet" href="{{ asset('css/style.css') }}">
+
+    <!-- yield additional css styles inside <style> tag(If Required) -->
+    @yield('styles')
+
 </head>
 <body class="no-selection">
     
@@ -48,5 +52,7 @@
             toastr.success("{{ Session::get('success') }}");
         @endif
     </script>
+    <!-- yield additional scripts inside <script> tag(If Required) -->
+    @yield('scripts')
 </body>
 </html>
