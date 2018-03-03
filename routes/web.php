@@ -45,7 +45,7 @@ Route::get('contact-us', 'PagesController@contact_us')->name('contact_us');
      Route::middleware('checkRole:instructor')
          ->get('addNewCourse', '\App\Http\Controllers\Courses\coursePagesController@getNewCourseForm')
          ->name('course.getNewCourseForm');
-     Route::post('addNewCourse',[
+     Route::middleware('checkRole:instructor')->post('addNewCourse',[
          'uses' => '\App\Http\Controllers\Courses\Courses_CRUD_Controller@addNewCourse',
          'as' => 'course.addNewCourse'
      ]);
