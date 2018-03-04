@@ -44,9 +44,14 @@
                 @else
                     <div class="col-md-12 col-sm-12">
                         <br>
-                        <a href="{{ route('department.create') }}" class="btn btn-success">
+                        @if (Auth::user()->role == 'Instructor')
+                            <a href="{{ route('department.create') }}" class="btn btn-success">
                                 No Departments . Create Department Here !
-                        </a>
+                            </a>
+                        @else
+                            No Departments Found
+                        @endif
+                        
                     </div>                    
                 @endif	
                 

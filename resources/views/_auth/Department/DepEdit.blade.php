@@ -7,7 +7,7 @@
 	<div class="content mt-5 mb-4">
 		<div class="container">
             
-				<h1>Edit Department : <strong>{{$department->name}}</strong></h1>
+			<h1>Edit Department : <strong>{{$department->name}}</strong></h1>
 			<div class="row justify-content-center">		
 				<div class="col-lg-10 col-sm-12">					
 					<br>
