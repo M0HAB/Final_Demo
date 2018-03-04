@@ -51,7 +51,11 @@
     @if (Request::is('/'))
         <script src="{{ asset('js/validation.js') }}"></script>
     @endif
-    
+    <script>
+        $(function () {
+            $('[data-toggle="tooltip"]').tooltip()
+        })
+    </script>
     
 </body>
 </html>

@@ -19,7 +19,7 @@ class User extends Authenticatable
         'lname',
         'email',
         'password',
-        'department',
+        'dep_id',
         'gender',
         'role',
         'location',

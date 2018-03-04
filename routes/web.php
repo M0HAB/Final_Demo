@@ -35,5 +35,7 @@ Route::get('contact-us', 'PagesController@contact_us')->name('contact_us');
     Route::post('logout', '_Auth\LoginController@logout')->name('user.logout');
     Route::get('dashboard', 'UserDashboardController@dashboard')->name('user.dashboard');
  });
+ 
+ Route::resource('department', 'DepartmentsController');
 
 
