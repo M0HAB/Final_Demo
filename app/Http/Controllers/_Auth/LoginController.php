@@ -26,11 +26,6 @@ class LoginController extends Controller
         $this->middleware(['guest'], ['except' => ['logout']]);
     }
 
-    // public function showLoginForm()
-    // {
-    //     return view('index');
-    // }
-
     /**
      * @param request
      * @return user dashboard 
@@ -39,21 +34,17 @@ class LoginController extends Controller
     {
         if ($request->email == null || $request->password == null)
         {
-            return redirect()->back()->with(Session::flash('warning', "Email and Password are required"));
+            Session::flash('warning', "Email and Password are required");
+            return redirect()->back();
         }
         else
         {
-            $this->validate($request, [
-                'email' => 'required|email|max:100',            
-                'password' => 'required|max:255',         
-            ]);
             if (Auth::attempt(['email' => $request->email, 'password' => $request->password]))
-            {
                 return redirect()->route('user.dashboard');
-            }
             else
             {
-                return redirect()->back()->with(Session::flash('error', "The email or password you have entered is invalid"));
+                Session::flash('error', "The email or password you have entered is invalid");
+                return redirect()->back();
             }
         }
     }
@@ -61,6 +52,7 @@ class LoginController extends Controller
     /**
      * Log the user out of the application.
      * Guard Default
+     * @return index page
      */
     public function logout()
     {

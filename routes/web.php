@@ -11,7 +11,6 @@
 |
 */
 
-
 /**
  * --------------------------------------------------------------------------
  * Public Pages
@@ -21,21 +20,28 @@
 Route::get('/', 'PagesController@index')->middleware(['guest', 'revalidate'])->name('index');
 Route::get('about', 'PagesController@about')->name('about');
 Route::get('contact-us', 'PagesController@contact_us')->name('contact_us');
+Route::get('mohab', 'TestController@index')->name('test');
 
 /**
  * --------------------------------------------------------------------------
- * User Authentication System
+ * User Authentication System & Related Views <-> Controller
  * --------------------------------------------------------------------------
  */
 
  Route::group(['prefix' => 'user'], function () {
-    Route::get('create', '_Auth\RegisterController@showRegisterForm')->name('user.regform');
-    Route::post('create', '_Auth\RegisterController@register')->name('user.create');
-    Route::post('login', '_Auth\LoginController@login')->name('user.login');
-    Route::post('logout', '_Auth\LoginController@logout')->name('user.logout');
+    //-- Authentications
+    Route::namespace('_Auth')->group(function() {
+        Route::get('create', 'RegisterController@showRegisterForm')->name('user.regform');
+        Route::post('create', 'RegisterController@register')->name('user.create');
+        Route::get('forgot-password', 'ForgotPasswordController@showForgotForm')->name('user.forgot.password');
+        Route::post('forgot-password', 'ForgotPasswordController@checkEmail')->name('user.checkreset.email');
+        Route::PUT('forgot-password/{id}', 'ResetPasswordController@resetPassword')->name('user.reset.password');
+        Route::post('login', 'LoginController@login')->name('user.login');
+        Route::post('logout', 'LoginController@logout')->name('user.logout');
+    });
+    //-- User
     Route::get('dashboard', 'UserDashboardController@dashboard')->name('user.dashboard');
+    Route::get('profile', 'UserDashboardController@profile')->name('user.profile');
  });
- 
- Route::resource('department', 'DepartmentsController');
 
-
+Route::resource('department', 'DepartmentsController');

@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers\_Auth;
 
-use App\User;
+use Validator;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\User;
 
 
 class RegisterController extends Controller
@@ -34,38 +35,63 @@ class RegisterController extends Controller
     }
 
     /**
-     * Get a validator for an incoming registration request.
-     *
-     * @param  array  $request
-     * @return array validated $request
-     */
-    public function validation($request)
-    {
-        return $this->validate($request, [
-            'fname' => 'required|max:100',
-            'lname' => 'required|max:100',
-            'email' => 'required|email|unique:users|max:100',            
-            'password' => 'required|confirmed|max:255',
-            'department' => 'required|max:255',
-            'gender' => 'required|max:1',
-            'role' => 'required|max:255',
-            'location' => 'required|max:255',
-            'level' => 'required|max:255',
-            'gpa' => 'required|max:255',  
-        ]);
-    }
-
-    /**
      * Create a new user instance after a valid registration.
      *
      * @param  array  $request
      * @return \App\User
      */
     public function register(Request $request)
-    {
-        $this->validation($request);
-        $request['password'] = bcrypt($request->password);
-        User::create($request->all());
-        return redirect()->back()->with('def-success', 'User created successfully');
+    {   
+        /** 
+         * Override laravel default validation messages
+         * Not the best way to customize validation rules and messages, not clear and reusable.
+         * Refactoring..Later
+        */
+        $rules =  [
+            'fname' => 'required|min:3|max:100',
+            'lname' => 'required|min:3|max:100',
+            'email' => 'required|email|unique:users|max:100',            
+            'password' => 'required|confirmed|min:6|max:255',
+            'department' => 'required|max:255',
+            'gender' => 'required|max:1',
+            'role' => 'required|string|max:255',
+            'location' => 'required|max:255',
+            'level' => 'required|max:255',
+            'gpa' => 'required|max:255' 
+        ];
+
+        $messages =  [
+            'fname.required' => 'First name is required',
+            'fname.min' => 'First name must be at least 3 characters.',
+            'lname.required' => 'Last name is required',
+            'lname.min' => 'Last name must be at least 3 characters.',
+            'email.required' => 'Email is required',           
+            'password.required' => 'Password is required',
+            'department.required' => 'Department is required',
+            'gender.required' => 'Gender is required', 
+            'role.required' => 'Role is required',
+            'location.required' => 'Location field is required',
+            'level.required' => 'level is required',
+            'gpa.required' => 'GPA field is required' 
+        ];
+
+        $userRoles = ['admin', 'instructor', 'student'];
+        // Apply validation rules on incoming request
+        $validator = Validator::make($request->all(), $rules, $messages);
+
+        // If incoming request is valid
+        if ($validator->passes())
+        {
+            // Generate a unique username
+            $request['username'] = $request->fname . '_' . $request->lname . '_' . time();
+            // Hash requested password
+            $request['password'] = bcrypt($request->password);
+            // Create user instance
+            User::create($request->all());
+            // After creating new user return json response with success. message
+            return response()->json(['success' => 'User Created Successfully']);
+        }
+        // If incoming request not valid then return a json response with error bags
+        return response()->json(['error' => $validator->errors()->all()]);
     }
 }

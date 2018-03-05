@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Auth;
 use Illuminate\Http\Request;
+use App\User;
 
 class PagesController extends Controller
 {
@@ -30,4 +31,5 @@ class PagesController extends Controller
     {
         return view('contact_us');
     }
+
 }

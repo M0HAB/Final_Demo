@@ -4,6 +4,8 @@ namespace App;
 
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use App\User;
+use Auth;
 
 class User extends Authenticatable
 {
@@ -17,9 +19,10 @@ class User extends Authenticatable
     protected $fillable = [
         'fname',
         'lname',
+        'username',
         'email',
         'password',
-        'dep_id',
+        'department',
         'gender',
         'role',
         'location',
@@ -36,12 +39,27 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
-    public function getfnameAttribute($value)
+    public function setFnameAttribute($value)
     {
-        return ucwords($value);
+        return $this->attributes['fname'] = ucfirst($value);
     }
 
-    public function department(){
-            return $this->belongsTo('App\Department');
+    public function setLnameAttribute($value)
+    {
+        return $this->attributes['lname'] = ucfirst($value);
+    }
+
+
+    public function isAdmin()
+    {
+        if (!$this->role == 'admin') 
+        {
+            return false;
+        }
+        return true;
+    }
+	
+	public function department(){
+		return $this->belongsTo('App\Department');
     }
 }

@@ -1,28 +1,13 @@
-<!DOCTYPE html>
-<html lang="{{ app()->getLocale() }}">
-<head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- CSRF Token -->
-    <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>E-LMS | @yield('title')</title>
-	<!-- Latest compiled and minified CSS -->
-	<!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"> -->
-    {{--  <link href="https://use.fontawesome.com/releases/v5.0.6/css/all.css" rel="stylesheet">  --}}
-    <link rel="stylesheet" href="{{ asset('css/toastr.min.css') }}">
-    <!-- Font-awesome Latest compiled and minified CSS -->
-    <link rel="stylesheet" href="{{ asset('css/fontawesome.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/_app.css') }}">
-    <!-- Custom CSS -->
-	<link rel="stylesheet" href="{{ asset('css/style.css') }}">
-</head>
+@include('_partials._head')
+
 <body class="no-selection">
-    
-    @include('_inc.navbar')
-    <div class="container">
-        @section('content')
-            @show
+    {{--  Navbar  --}}
+    @include('_partials._navbar')
+
+    <div class="container my-5"> 
+        <div class="content" id="content">
+            @yield('content')
+        </div> {{--  End: Content  --}}
     </div>
     
     <!-- ===============/ Scripts /=============== -->
@@ -37,25 +22,17 @@
     <!-- Toastr -->
     <script src="{{ asset('js/toastr.min.js') }}"></script>
     <script src="{{ asset('js/custom.js') }}"></script>
+    @yield('scripts')
     <script>
-        @if (Session::has('error'))
-            toastr.error("{{ Session::get('error') }}");
-        @endif
-        @if (Session::has('warning'))
-            toastr.warning("{{ Session::get('warning') }}");
-        @endif
-        @if (Session::has('success'))
-            toastr.success("{{ Session::get('success') }}");
-        @endif
-    </script>
-    @if (Request::is('/'))
-        <script src="{{ asset('js/validation.js') }}"></script>
-    @endif
-    <script>
-        $(function () {
-            $('[data-toggle="tooltip"]').tooltip()
-        })
-    </script>
-    
+		@if (Session::has('error'))
+			toastr.error("{{ Session::get('error') }}");
+		@endif
+		@if (Session::has('warning'))
+			toastr.warning("{{ Session::get('warning') }}");
+		@endif
+		@if (Session::has('success'))
+			toastr.success("{{ Session::get('success') }}");
+		@endif
+	</script>
 </body>
 </html>

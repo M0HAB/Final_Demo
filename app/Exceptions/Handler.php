@@ -41,7 +41,7 @@ class Handler extends ExceptionHandler
     {
         parent::report($exception);
     }
-
+    
     /**
      * Render an exception into an HTTP response.
      *
@@ -51,6 +51,11 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $exception)
     {
+
+        /* if ($exception->getStatusCode() === 404)
+        {
+            return response()->view('mohab', [], 404);
+        } */
         return parent::render($request, $exception);
     }
 
