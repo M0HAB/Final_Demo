@@ -6,6 +6,7 @@ use Validator;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\User;
+use App\Department;
 
 
 class RegisterController extends Controller
@@ -21,17 +22,18 @@ class RegisterController extends Controller
     |
     */
 
-    public function __construct()
-    {
-        $this->middleware(['auth', 'revalidate']);
-    }
+    // public function __construct()
+    // {
+    //     $this->middleware(['auth', 'revalidate']);
+    // }
 
     /**
      * @return Register Page
      */
     public function showRegisterForm()
     {
-        return view('_auth.register');
+        $deps = Department::all();
+        return view('_auth.register')->withDeps($deps);
     }
 
     /**
@@ -52,7 +54,7 @@ class RegisterController extends Controller
             'lname' => 'required|min:3|max:100',
             'email' => 'required|email|unique:users|max:100',            
             'password' => 'required|confirmed|min:6|max:255',
-            'department' => 'required|max:255',
+            'department' => 'required|max:2',
             'gender' => 'required|max:1',
             'role' => 'required|string|max:255',
             'location' => 'required|max:255',
@@ -86,6 +88,7 @@ class RegisterController extends Controller
             $request['username'] = $request->fname . '_' . $request->lname . '_' . time();
             // Hash requested password
             $request['password'] = bcrypt($request->password);
+            $request['dep_id'] = $request->department; 
             // Create user instance
             User::create($request->all());
             // After creating new user return json response with success. message

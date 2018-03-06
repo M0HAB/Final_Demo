@@ -37,8 +37,6 @@ class ForgotPasswordController extends Controller
         {   
             if (count($user) > 0)
             {
-                // or using $user[0]->id, $user->first()
-                // return redirect()->route('user.reset.form', ['id' => $user->first()]);
                 return view('_auth.user.password.reset')->with('user', $user);
             }
         }

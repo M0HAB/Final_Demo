@@ -55,9 +55,9 @@
                                         <label for="">Department</label>
                                         <select class="form-control {{ $errors->has('department') ? ' is_invalid' : '' }}" id="department" name="department" class="list" value="{{ old('department') }}">
                                         <option value="">Select the department</option>
-                                        <option value="student">Student</option>
-                                        <option value="instructor">instructor</option>
-                                        <option value="admin">Admin</option>
+                                        @foreach ($deps as $dep)
+                                            <option value="{{ $dep->id }}">{{ $dep->name }}</option>
+                                        @endforeach
                                         </select>
                                     </div>
                                 </div>
@@ -121,31 +121,31 @@
 
 @section('scripts')
 <script>
-        $(document).ready(function() {    
-            $('#reg-form').submit(function(e) {
-                e.preventDefault();
-                $.ajax({
-                    type : "POST",
-                    url : "{{ route('user.create') }}",
-                    dataType: 'JSON',
-                    data: $('#reg-form').serialize(),
-                    async: true,
-                    success: function(data) {
-                        console.log(data);
-                    }
-                }).done(function(data) {
-                    if ($.isEmptyObject(data.error)) {
-                        toastr.success(data.success);
-                        $('#reg-form')[0].reset();
-                    }
-                    else {
-                        $.each(data.error, function(i, val) 
-                        {
-                            toastr.error(val);
-                        });
-                    }
-                });
+    $(document).ready(function() {    
+        $('#reg-form').submit(function(e) {
+            e.preventDefault();
+            $.ajax({
+                type : "POST",
+                url : "{{ route('user.create') }}",
+                dataType: 'JSON',
+                data: $('#reg-form').serialize(),
+                async: true,
+                success: function(data) {
+                    console.log(data);
+                }
+            }).done(function(data) {
+                if ($.isEmptyObject(data.error)) {
+                    toastr.success(data.success);
+                    $('#reg-form')[0].reset();
+                }
+                else {
+                    $.each(data.error, function(i, val) 
+                    {
+                        toastr.error(val);
+                    });
+                }
             });
         });
-    </script>
+    });
+</script>
 @endsection
