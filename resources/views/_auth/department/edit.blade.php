@@ -11,7 +11,7 @@
 			<div class="row justify-content-center">		
 				<div class="col-lg-10 col-sm-12">					
 					<br>
-					@include('_inc.errors')					
+					@include('_partials.errors')					
                     <form action="{{ route('department.update',$department->id) }}" method="POST" role="form" autocomplete="off">                        
                         {{ csrf_field() }}
                         <input type="hidden" name="_method" value="PUT">

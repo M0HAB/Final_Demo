@@ -26,7 +26,7 @@ class DepartmentsController extends Controller
     {
         // Return the list view with All Departments
         $departments = Department::where('status', '!=',false)->get();
-        return view('_auth.Department.DepShow')->with('departments', $departments);
+        return view('_auth.department.show')->with('departments', $departments);
     }
 
     /**
@@ -40,7 +40,7 @@ class DepartmentsController extends Controller
         if ($authuser->role == 'Instructor'){
             // Return the create view with Users from DB to use in ComboBox
             $users = User::where('role', 'Instructor')->get();
-            return view('_auth.Department.DepCreate')->with('users', $users);
+            return view('_auth.department.create')->with('users', $users);
         }else{
             return redirect()->route('user.dashboard')->with('error', 'Unauthorized Access');
         }
@@ -105,7 +105,7 @@ class DepartmentsController extends Controller
         $department['head_name'] = $user->fname . ' ' . $user->lname;
         
         // Return View with the data
-        return view('_auth.Department.DepViewID')->with('department', $department);
+        return view('_auth.department.view')->with('department', $department);
     }
 
     /**
@@ -124,7 +124,7 @@ class DepartmentsController extends Controller
                 // Get users from DB where role is Instructor
                 $users = User::where('role', 'Instructor')->get();
                 // Return the Edit view with Users from DB to use in ComboBox
-                return view('_auth.Department.DepEdit')->with('users', $users)->with('department', $department);
+                return view('_auth.department.edit')->with('users', $users)->with('department', $department);
             }else{
                 return redirect()->route('department.index')->with('error', 'Deleted Department');
             }
