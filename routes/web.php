@@ -45,3 +45,12 @@ Route::get('mohab', 'TestController@index')->name('test');
  });
 
 Route::resource('department', 'DepartmentsController');
+
+
+Route::resource('assignments', 'AssignmentsController',['names'=>[
+
+    'index'=>'assignments.index',
+    'create'=>'assignments.create',
+    'store'=>'assignments.store',
+    'edit'=>'assignments.edit',
+]]);
