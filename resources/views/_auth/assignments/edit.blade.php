@@ -29,19 +29,14 @@
                                    @if (!empty(old('asstitle')))
                                    value="{{ old('asstitle') }}"
                                    @else
-                                   value="{{ $assignment->title }}"
+                                   value="{{ $assignment->title ? $assignment->title : "NO TITLE"}}"
                                     @endif
                             >
                         </div>
                         <div class="form-group">
                             <label for="assdescription">Description:</label>
-                            <textarea rows="3" style="text-align:left" type="text" class="form-control" id="assdescription" name="assdescription">
-                                @if (!empty(old('assdescription')))
-                                    {{ old('assdescription') }}
-                                @else
-                                    {{ $assignment->description}}
-                                @endif
-                            </textarea>
+                            <textarea rows="3" style="text-align:left" type="text" class="form-control" id="assdescription" name="assdescription">@if (!empty(old('assdescription'))){{ old('assdescription') }}@else{{ $assignment->description}}@endif</textarea>
+
                             <div class="form-group">
                                 <label for="deadline">Deadline:</label>
                                 <input type="date" class="form-control" name="deadline"
