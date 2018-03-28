@@ -8,8 +8,9 @@
             <h1>Assignments
                 @if (Auth::user()->role == 'Instructor')
                     <a href="{{ route('assignments.create') }}" class="btn btn-info" role="button">Create</a>
-            </h1>
+
                 @endif
+            </h1>
             <div class="row justify-content-center">
                 @if (count($assignments)>0)
                     <table class="table table-hover">
@@ -20,9 +21,8 @@
                             <th>Description</th>
                             <th>File</th>
                             <th>Deadline</th>
-                            @if (Auth::user()->role == 'Instructor')
-                                <th>Actions</th>
-                            @endif
+                            <th>Actions</th>
+
                         </tr>
                         </thead>
                         <tbody>
@@ -62,7 +62,6 @@
                                     <td>
 
 
-
                                         <button  class="btn btn-group-sm btn-link"><a href="{{route('assignments.edit', $ass->id)}}"><i class="far fa-edit fa-lg fam-mod"></i> </a> </button>
 
                                         <form action="{{ route('assignments.destroy',$ass->id)}}" method="POST">
@@ -77,24 +76,23 @@
 
 
                                     </td>
+                                    @elseif(Auth::user()->role == 'Student')
+
+                                    <td>
+
+                                            <button  class="btn btn-group btn-link"><a href="{{route('assignment.deliver', $ass->id)}}"><i class="far fa-envelope-open"> </i> Submit</a> </button>
+
+
+
+                                    </td>
                                 @endif
 
                             </tr>
                         @endforeach
                         </tbody>
                     </table>
-                @else
-                    <div class="col-md-12 col-sm-12">
-                        <br>
-                        @if (Auth::user()->role == 'Instructor')
-                            <a href="{{ route('assignments.create') }}" class="btn btn-success">
-                                No Departments . Create Department Here !
-                            </a>
-                        @else
-                            No Departments Found
-                        @endif
 
-                    </div>
+
                 @endif
 
             </div>

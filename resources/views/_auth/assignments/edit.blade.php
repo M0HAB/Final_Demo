@@ -1,5 +1,5 @@
 @extends('_layouts.app')
-@section('title', 'Edit Assigments ')
+@section('title', 'Edit Assignments ')
 
 
 @section('content')

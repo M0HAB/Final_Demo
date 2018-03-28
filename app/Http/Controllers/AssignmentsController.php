@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+use App\assdeliver;
 use Illuminate\Support\Facades\Auth;
 use App\assignment;
 use Input;
@@ -76,7 +77,7 @@ class AssignmentsController extends Controller
 
                 $upfile=$request->file('upload_file');
                 $fileName=time() . $upfile->getClientOriginalName();
-                $destinationPath = 'uploads';
+                $destinationPath = 'uploads/assignments';
                 //dd($upfile);
 
                 $file= $upfile->move($destinationPath, $fileName);
@@ -209,5 +210,84 @@ class AssignmentsController extends Controller
             return redirect()->route('user.dashboard')->with('error', 'Unauthorized Access');
         }
     }
+
+
+    public function deliver($id)
+    {
+
+
+        $authuser = Auth::user();
+        if ($authuser->role == 'Student'){
+
+            $assignment = assignment::find($id);
+            $userid=$authuser->id;
+            $assdelivered= assdeliver::where([
+                'user_id' => $userid,
+                'ass_id' => $assignment->id,
+            ]);
+
+
+          //  dd($assdelivered->exists() );
+
+
+            return view('_auth.assignments.deliver', compact('assignment','assdelivered'));
+
+        }else{
+            return redirect()->route('user.dashboard')->with('error', 'Unauthorized Access');
+        }
+
+    }
+
+    public function deliverstore(Request $request)
+
+    {
+
+       // dd($request);
+        $authuser = Auth::user();
+        if ($authuser->role == 'Student'){
+
+            // Validate Form submitted data
+
+            $this->validate($request, [
+                'assignment_answer' => 'required_without:upload_file',
+                'upload_file' => 'required_without:assignment_answer| max:10000|mimes:doc,pdf,docx,jpeg,png,jpg',
+                'assid' => 'required'
+
+            ]);
+
+            // Create new assignment submit
+            $deliver = new assdeliver;
+            $deliver->answer = $request->input('assignment_answer');
+            $deliver->user_id = $authuser->id;
+            $deliver->ass_id = $request->input('assid');
+
+
+
+            //upload files
+            if ($request->hasFile('upload_file')) {
+
+                $upfile=$request->file('upload_file');
+                $fileName=time() . $upfile->getClientOriginalName();
+                $destinationPath = 'uploads/assignments/delivered';
+                //dd($upfile);
+
+                $file= $upfile->move($destinationPath, $fileName);
+
+                $deliver->file = $fileName;
+            }
+
+
+            // If successfully updated display success else error
+            if ($deliver->save()){
+                return redirect('/assignments')->with('success', 'Assignment Submitted successfully');
+            }else{
+                return redirect()->back()->with('error', 'Some error has occured please try resubmitting');
+            }
+
+        }else{
+            return redirect()->route('user.dashboard')->with('error', 'Unauthorized Access');
+        }
+    }
+
 
 }

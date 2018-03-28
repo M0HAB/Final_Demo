@@ -9,4 +9,11 @@ class assignment extends Model
     protected $fillable = [
         'title', 'description','file','	deadline','	module_id'
     ];
+
+    public function assdeliver(){
+
+        return $this->hasMany('App\assdeliver','ass_id');   //one to many relationship
+
+
+    }
 }
