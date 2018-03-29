@@ -56,4 +56,5 @@ Route::resource('assignments', 'AssignmentsController',['names'=>[
 ]]);
 Route::get('/assignment/{id}', 'AssignmentsController@deliver')->name('assignment.deliver');
 Route::post('/AssignmentDeliver/', 'AssignmentsController@deliverstore')->name('assignment.deliverstore');
+Route::get('/assignmentDelivered/', 'AssignmentsController@delivered')->name('assignment.delivered');
 

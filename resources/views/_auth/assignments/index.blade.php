@@ -8,6 +8,7 @@
             <h1>Assignments
                 @if (Auth::user()->role == 'Instructor')
                     <a href="{{ route('assignments.create') }}" class="btn btn-info" role="button">Create</a>
+                    <a href="{{ route('assignment.delivered') }}" class="btn btn-success" role="button">Delivered </a>
 
                 @endif
             </h1>

@@ -211,6 +211,7 @@ class AssignmentsController extends Controller
         }
     }
 
+            //student deliver assignments
 
     public function deliver($id)
     {
@@ -288,6 +289,23 @@ class AssignmentsController extends Controller
             return redirect()->route('user.dashboard')->with('error', 'Unauthorized Access');
         }
     }
+    //instructor show delivered assignments
+
+    public function delivered()
+    {
+        $authuser = Auth::user();
+        if ($authuser->role == 'Instructor'){
+
+            $assdelivered = assdeliver::all();
+            return view('_auth.assignments.showdelivered')->with('assdelivered', $assdelivered);
+
+        }else{
+            return redirect()->route('user.dashboard')->with('error', 'Unauthorized Access');
+        }
+
+    }
+
+
 
 
 }
