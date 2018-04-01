@@ -33,6 +33,11 @@
 		@if (Session::has('success'))
 			toastr.success("{{ Session::get('success') }}");
 		@endif
-	</script>
+    </script>
+    <script>
+        $(function () {
+            $('[data-toggle="tooltip"]').tooltip()
+        })
+    </script>
 </body>
 </html>

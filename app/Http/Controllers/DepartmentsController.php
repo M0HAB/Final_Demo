@@ -16,7 +16,8 @@ class DepartmentsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    
+    protected $controllerName = "Department";
+
     public function __construct()
     {
         $this->middleware(['auth', 'revalidate']);
@@ -25,8 +26,13 @@ class DepartmentsController extends Controller
     public function index()
     {
         // Return the list view with All Departments
-        $departments = Department::where('status', '!=',false)->get();
-        return view('_auth.department.show')->with('departments', $departments);
+        if (canRead($this->controllerName)){
+            $departments = Department::where('status', '!=',false)->get();
+            return view('_auth.department.show')->with('departments', $departments);
+        }else{
+            return redirect()->route('user.dashboard')->with('error', 'Unauthorized Access');
+        }
+        
     }
 
     /**
@@ -36,8 +42,8 @@ class DepartmentsController extends Controller
      */
     public function create()
     {   
-        $authuser = Auth::user();
-        if ($authuser->role == 'Instructor'){
+       
+        if (canCreate($this->controllerName)){
             // Return the create view with Users from DB to use in ComboBox
             $users = User::where('role', 'Instructor')->get();
             return view('_auth.department.create')->with('users', $users);
@@ -54,8 +60,7 @@ class DepartmentsController extends Controller
      */
     public function store(Request $request)
     {
-        $authuser = Auth::user();
-        if ($authuser->role == 'Instructor'){
+        if (canCreate($this->controllerName)){
             //TODO :: add More Validation Rules
             // Validate Form submitted data
             $this->validate($request, [
@@ -116,8 +121,8 @@ class DepartmentsController extends Controller
      */
     public function edit($id)
     {   
-        $authuser = Auth::user();
-        if ($authuser->role == 'Instructor'){
+        
+        if (canUpdate($this->controllerName)){
             // Get Department BY id
             $department = Department::find($id);
             if ($department->status){
@@ -143,8 +148,7 @@ class DepartmentsController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $authuser = Auth::user();
-        if ($authuser->role == 'Instructor'){
+        if (canUpdate($this->controllerName)){
             //TODO :: add More Validation Rules
             $this->validate($request, [
                 'department' => 'required',
@@ -181,8 +185,8 @@ class DepartmentsController extends Controller
      */
     public function destroy($id)
     {
-        $authuser = Auth::user();
-        if ($authuser->role == 'Instructor'){
+        
+        if (canDelete($this->controllerName)){
             $department = Department::find($id);
             $department->status = false;
             if ($department->save()){

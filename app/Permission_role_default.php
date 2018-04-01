@@ -4,22 +4,17 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Department extends Model
+class Permission_role_default extends Model
 {
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
-    protected $table = 'departments';
-    public $primaryKey = 'id';
+    protected $table = 'permissions_role_default';
     public $timestamps = true;
     protected $fillable = [
-        'name', 'Dep_Head_ID',
+        'role','permission',
     ];
 
-
-    public function user(){
-        return $this->hasMany('App\User');
-    }
 }
