@@ -30,13 +30,14 @@ $('#submit-new-course').submit(function(event){
         },
         success: function(response){
             $('.error-msg').remove(); // To clear the old error messages before submit new course
-            $('#response-message-success').text(response.message).show();
+            $('#response-message-success').show().text(response.message).show();
             $('input').val('');
             $('select').val('');
             $('textarea').val('');
         },
         error: function(response){
             $('.error-msg').remove(); // To clear the old error messages before submit new course
+            $('#response-message-success').hide();
             $.each(response.responseJSON, function(key, val){
                 $('input[name=' + key +']').after('<span  class= "error-msg text-danger">' + val +'</span>');
                 $('select[name=' + key +']').after('<span  class= "error-msg text-danger">' + val +'</span>');

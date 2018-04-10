@@ -11,4 +11,5 @@ class Course extends Model
         'course_specialization',  'commitment', 'course_department',
         'how_to_pass','instructor_id'
     ];
+
 }

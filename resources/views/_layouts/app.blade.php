@@ -24,7 +24,7 @@
 <body class="no-selection">
     
     @include('_inc.navbar')
-    <div class="container">
+    <div class="container ">
         @section('content')
             @show
     </div>
