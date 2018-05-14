@@ -59,7 +59,7 @@
                                     {{{date('d-m-Y', strtotime($ass->deadline))}}}
                                 </td>
 
-                                @if (Auth::user()->role == 'Instructor')
+                                @if (Auth::user()->role == 'instructor')
                                     <td>
 
 

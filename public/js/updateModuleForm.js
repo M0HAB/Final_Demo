@@ -11,7 +11,7 @@ $.ajaxSetup({
 $('#submit-update-module').submit(function(event){
     event.preventDefault();
     $.ajax({
-        url: '/user/courses/' + courseID +'/Modules/' + moduleID +'/update',
+        url: '/Courses/' + courseID +'/Modules/' + moduleID +'/update',
         type: 'POST',
         dataType: 'JSON',
         data: {

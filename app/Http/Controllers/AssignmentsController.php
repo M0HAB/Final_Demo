@@ -5,6 +5,7 @@ use App\assdeliver;
 use Illuminate\Support\Facades\Auth;
 use App\assignment;
 use Input;
+use Illuminate\Support\Facades\DB;
 use App\User;
 use Illuminate\Validation\Rule;
 use Illuminate\Http\Request;
@@ -34,7 +35,7 @@ class AssignmentsController extends Controller
     public function create()
     {
         $authuser = Auth::user();
-        if ($authuser->role == 'Instructor'){
+        if ($authuser->role == 'instructor'){
 
             return view('_auth.assignments.create');
         }else{
@@ -51,7 +52,7 @@ class AssignmentsController extends Controller
     public function store(Request $request)
     {
         $authuser = Auth::user();
-        if ($authuser->role == 'Instructor'){
+        if ($authuser->role == 'instructor'){
 
             // Validate Form submitted data
 
@@ -119,7 +120,7 @@ class AssignmentsController extends Controller
     {
 
         $authuser = Auth::user();
-        if ($authuser->role == 'Instructor'){
+        if ($authuser->role == 'instructor'){
 
             $assignment = assignment::find($id);
 
@@ -140,7 +141,7 @@ class AssignmentsController extends Controller
     public function update(Request $request, $id)
     {
         $authuser = Auth::user();
-        if ($authuser->role == 'Instructor'){
+        if ($authuser->role == 'instructor'){
 
                 // Validate Form submitted data
 
@@ -198,7 +199,7 @@ class AssignmentsController extends Controller
     public function destroy($id)
     {
         $authuser = Auth::user();
-        if ($authuser->role == 'Instructor'){
+        if ($authuser->role == 'instructor'){
             $assignment = assignment::findOrFail($id);
 
             if ($assignment->delete()){
@@ -291,12 +292,16 @@ class AssignmentsController extends Controller
     }
     //instructor show delivered assignments
 
-    public function delivered()
+    public function delivered($course_id, $module_id)
     {
         $authuser = Auth::user();
-        if ($authuser->role == 'Instructor'){
-
-            $assdelivered = assdeliver::all();
+        if ($authuser->role == 'instructor'){
+            $assdelivered = DB::table('assdelivers')
+                ->leftjoin('assignments', 'assignments.id', '=', 'assdelivers.ass_id')
+                ->leftjoin('users', 'users.id', '=', 'assdelivers.user_id')
+                ->select('assdelivers.*', 'assignments.title', 'assignments.module_id', 'assignments.deadline', 'users.fname')
+                ->where('assignments.module_id', '=', $module_id)
+                ->get();
             return view('_auth.assignments.showdelivered')->with('assdelivered', $assdelivered);
 
         }else{

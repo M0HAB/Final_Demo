@@ -6,6 +6,7 @@
     <div class="content mt-5 mb-4">
         <div class="container">
             <h1>Assignments Delivered </h1>
+            <br>
             <div class="row justify-content-center">
                 @if (count($assdelivered)>0)
                     <table class="table table-hover">
@@ -25,13 +26,13 @@
                         @foreach ($assdelivered as $delivered)
                             <tr>
                                 <td>
-                                    {{$delivered->assignment->module_id}} {{--module name--}}
+                                    {{$delivered->module_id}} {{--module name--}}
                                 </td>
                                 <td>
-                                    {{$delivered->assignment->title}}
+                                    {{$delivered->title}}
                                 </td>
                                 <td>
-                                    {{$delivered->student->fname}}
+                                    {{$delivered->fname}}
                                 </td>
                                 <td>
                                     {{$delivered->answer ? $delivered->answer : 'No Answer'}}
@@ -60,7 +61,7 @@
 
                                     <td>
 
-                                        @if($delivered->created_at >= $delivered->assignment->deadline)
+                                        @if($delivered->created_at >= $delivered->deadline)
                                             <p class="text-danger">LATE </p>
 
                                        @else

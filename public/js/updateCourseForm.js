@@ -12,7 +12,7 @@ $('#submit-update-course').submit(function(event){
     event.preventDefault();
     var courseID = $('#course-id').val();
     $.ajax({
-        url: '/user/courses/' + courseID +'/update',
+        url: '/Courses/' + courseID +'/update',
         type: 'POST',
         dataType: 'JSON',
         data: {

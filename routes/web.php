@@ -50,7 +50,7 @@ Route::get('mohab', 'TestController@index')->name('test');
  * Course Pages View System
  * --------------------------------------------------------------------------
  */
- Route::group(['prefix' => 'user/courses'], function(){
+ Route::group(['prefix' => 'Courses'], function(){
 
      Route::get('', '\App\Http\Controllers\Courses\Courses_CRUD_Controller@listUserCourses')
          ->name('course.listUserCourses');
@@ -133,5 +133,5 @@ Route::resource('assignments', 'AssignmentsController',['names'=>[
 ]]);
 Route::get('/assignment/{id}', 'AssignmentsController@deliver')->name('assignment.deliver');
 Route::post('/AssignmentDeliver/', 'AssignmentsController@deliverstore')->name('assignment.deliverstore');
-Route::get('/assignmentDelivered/', 'AssignmentsController@delivered')->name('assignment.delivered');
+Route::get('Courses/{course_id}/Modules/{module_id}/assignmentDelivered/', 'AssignmentsController@delivered')->name('assignment.delivered');
 

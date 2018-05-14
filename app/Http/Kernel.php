@@ -61,5 +61,6 @@ class Kernel extends HttpKernel
         'revalidate' => \App\Http\Middleware\RevalidateBackHistory::class,
         'role' => \App\Http\Middleware\RoleMiddleware::class,
         'icu' => \App\Http\Middleware\ISeeYou::class,
+        'checkRole' => \App\Http\Middleware\checkRole::class,
     ];
 }

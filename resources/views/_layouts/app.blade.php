@@ -1,5 +1,8 @@
 @include('_partials._head')
 
+<!-- yield additional css styles inside <style> tag(If Required) -->
+@yield('styles')
+
 <body class="no-selection">
     {{--  Navbar  --}}
     @include('_partials._navbar')

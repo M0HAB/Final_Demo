@@ -84,7 +84,7 @@
                                 </tr>
                                 <tr>
                                     <td>
-                                        <a href="#" class="ml-1"><i class="fas fa-plus mr-1"></i>Add New Assignment</a>
+                                        <a href="{{ route('assignments.create') }}" class="ml-1"><i class="fas fa-plus mr-1"></i>Add New Assignment</a>
                                     </td>
                                 </tr>
                                 <tr>
@@ -94,7 +94,7 @@
                                 </tr>
                                 <tr>
                                     <td>
-                                        <a href="#" class="ml-1"><i class="fas fa-eye mr-1"></i>Student Assignments</a>
+                                        <a href="{{ route('assignment.delivered', ['course_id' => $course->id, 'module_id' => $module->id]) }}" class="ml-1"><i class="fas fa-eye mr-1"></i>Student Assignments</a>
                                     </td>
                                 </tr>
                                 <tr>
