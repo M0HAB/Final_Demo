@@ -10,7 +10,7 @@
             <div id="response-message-success" class="alert alert-success" style="display: none"></div>
             <fieldset>
                 <div class="reg-log-form p-3 my-3">
-                    <legend><i class="fa fa-plus"></i> Update <span id="form-course-title-parent"><span id="form-course-title-child">{{ $course->title }}</span></span> Course</legend>
+                    <legend><i class="fa fa-edit"></i> Update <span id="form-course-title-parent"><span id="form-course-title-child">{{ $course->title }}</span></span> Course</legend>
                     <hr>
                     <form id="submit-update-course">
                         <div class="row">

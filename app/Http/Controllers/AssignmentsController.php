@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 use App\assdeliver;
+use App\Course;
+use App\Module;
 use Illuminate\Support\Facades\Auth;
 use App\assignment;
 use Input;
@@ -21,10 +23,13 @@ class AssignmentsController extends Controller
     {
         $this->middleware(['auth', 'revalidate']);
     }
-    public function index()
+    public function index($course_id, $module_id)
     {
-        $assignments = assignment::all();
-        return view('_auth.assignments.index')->with('assignments', $assignments);
+        $course = Course::find($course_id);
+        $module = Module::find($module_id);
+        $assignments = Module::where('id', '=', $module_id)->assignments()->get();
+        dd($assignments);
+        return view('_auth.assignments.index', compact('assignments', 'module', 'course'));
     }
 
     /**
@@ -32,12 +37,13 @@ class AssignmentsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create($course_id, $module_id)
     {
+        $course = Course::find($course_id);
+        $module = Module::find($module_id);
         $authuser = Auth::user();
         if ($authuser->role == 'instructor'){
-
-            return view('_auth.assignments.create');
+            return view('_auth.assignments.create', compact('course', 'module'));
         }else{
             return redirect()->route('user.dashboard')->with('error', 'Unauthorized Access');
         }
@@ -49,8 +55,10 @@ class AssignmentsController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request, $course_id, $module_id)
     {
+        $course = Course::find($course_id);
+        $module = Module::find($module_id);
         $authuser = Auth::user();
         if ($authuser->role == 'instructor'){
 
@@ -60,14 +68,13 @@ class AssignmentsController extends Controller
                 'asstitle' => 'required',
                 'assdescription' => 'required',
                 'deadline' => 'required',
-                'module' => 'required',
-                'upload_file' => 'max:10000|mimes:doc,pdf,docx,jpeg,png,jpg'
+                'upload_file' => 'max:10000|mimes:doc,pdf,docx,jpeg,png,jpg,pptx'
 
            ]);
            // dd($request->upload_file);
             // Create new assignment
             $assignment = new assignment;
-            $assignment->module_id = $request->input('module');
+            $assignment->module_id = $module->id;
             $assignment->title = $request->input('asstitle');
             $assignment->description = $request->input('assdescription');
             $assignment->deadline = $request->input('deadline');
@@ -89,7 +96,7 @@ class AssignmentsController extends Controller
 
             // If successfully updated display success else error
             if ($assignment->save()){
-                return redirect('/assignments')->with('success', 'Assignment created successfully');
+                return redirect('Courses/'. $course_id .'/Modules/'. $module_id .'/assignments')->with('success', 'Assignment created successfully');
             }else{
                 return redirect()->back()->with('error', 'Some error has occured please try resubmitting');
             }

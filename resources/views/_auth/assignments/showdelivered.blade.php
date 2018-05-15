@@ -7,8 +7,8 @@
         <div class="container">
             <h1>Assignments Delivered </h1>
             <br>
-            <div class="row justify-content-center">
-                @if (count($assdelivered)>0)
+            @if (count($assdelivered)>0)
+                <div class="row justify-content-center">
                     <table class="table table-hover">
                         <thead>
                         <tr>
@@ -23,40 +23,40 @@
                         </tr>
                         </thead>
                         <tbody>
-                        @foreach ($assdelivered as $delivered)
-                            <tr>
-                                <td>
-                                    {{$delivered->module_id}} {{--module name--}}
-                                </td>
-                                <td>
-                                    {{$delivered->title}}
-                                </td>
-                                <td>
-                                    {{$delivered->fname}}
-                                </td>
-                                <td>
-                                    {{$delivered->answer ? $delivered->answer : 'No Answer'}}
-                                </td>
-                                <td>
+                            @foreach ($assdelivered as $delivered)
+                                <tr>
+                                    <td>
+                                        {{$delivered->module_id}} {{--module name--}}
+                                    </td>
+                                    <td>
+                                        {{$delivered->title}}
+                                    </td>
+                                    <td>
+                                        {{$delivered->fname}}
+                                    </td>
+                                    <td>
+                                        {{$delivered->answer ? $delivered->answer : 'No Answer'}}
+                                    </td>
+                                    <td>
 
-                                    @if(is_null($delivered->file))
+                                        @if(is_null($delivered->file))
 
-                                        No File Attached
+                                            No File Attached
 
-                                    @else
-                                        <a href="uploads\assignments\delivered\{{$delivered->file}}" download="{{$delivered->file}}">
-                                            <button type="button" class="btn btn-primary btn-block">
-                                                <i class="fas fa-cloud-download-alt "></i>
-                                                Download
-                                            </button>
-                                        </a>
+                                        @else
+                                            <a href="uploads\assignments\delivered\{{$delivered->file}}" download="{{$delivered->file}}">
+                                                <button type="button" class="btn btn-primary btn-block">
+                                                    <i class="fas fa-cloud-download-alt "></i>
+                                                    Download
+                                                </button>
+                                            </a>
 
-                                    @endif
-                                </td>
+                                        @endif
+                                    </td>
 
-                                <td>
-                                    {{{date('d-m-Y', strtotime($delivered->created_at))}}}
-                                </td>
+                                    <td>
+                                        {{{date('d-m-Y', strtotime($delivered->created_at))}}}
+                                    </td>
 
 
                                     <td>
@@ -71,17 +71,15 @@
 
                                     </td>
 
-
-
-                            </tr>
-                        @endforeach
+                                </tr>
+                            @endforeach
                         </tbody>
                     </table>
+                <div>
+            @else
+                <p class="text-left"><i class="fa fa-info-circle mr-2"></i>The module has no assignment delivered yet</p>
+            @endif
 
-
-                @endif
-
-            </div>
         </div>
     </div> <!-- End: Content -->
 

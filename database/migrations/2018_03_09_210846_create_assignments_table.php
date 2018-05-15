@@ -21,7 +21,7 @@ class CreateAssignmentsTable extends Migration
             $table->dateTime('deadline');
             $table->timestamps();
             //TODO foreign key to module of the course
-            $table->integer('module_id');
+            $table->integer('module_id')->unsigned();
         });
     }
 

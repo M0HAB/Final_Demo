@@ -8,17 +8,9 @@
             <div class="offset-lg-1 col-lg-10 col-sm-12">
                 @include('_partials.errors')
                 <h1 class="display-4 mb-5 f-rw ">Create New Assignment</h1>
-                <form action="{{ route('assignments.store') }}" method="POST" role="form" enctype="multipart/form-data" autocomplete="off">
+                <form action="{{ route('assignments.store', ['course_id' => $course->id, 'module_id' => $module->id]) }}" method="POST" role="form" enctype="multipart/form-data" autocomplete="off">
                     {{ csrf_field() }}
-                    <div class="form-group">
-                        <label for="module">Choose Module:</label>
-                        <select type="text" class="form-control" id="module"
-                               placeholder="Enter Assignment Title" name="module" >
-                            <option value="1">module-1</option>
-                            <option value="2">module-2</option>
-                            <option value="3">module-3</option>
-                        </select>
-                    </div>
+
                     <div class="form-group">
                         <label for="asstitle">Assignment Title:</label>
                         <input type="text" class="form-control" id="assdescription"

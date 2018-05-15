@@ -7,15 +7,16 @@
 @section('content')
     <div class="content mt-5 mb-5">
         <div class="container">
-            <div class=" mt-5 text-left" style="font-size: large">
+            <div class="reg-log-form p-3 my-3">
                 <a href="#"><i class="fas fa-arrow-alt-circle-left"></i> Back</a>
+                @include('_partials.errors')
+                @include('_partials.messages')
             </div>
-            @include('_inc.messages')
             <fieldset>
                 <div class="reg-log-form p-3 my-3">
                     <legend><i class="fa fa-plus"></i> Add New Video</legend>
                     <hr>
-                    <form action="{{ route('course.uploadVideo', ['course_id' => '1', 'module_id' => '1']) }}" method="post" enctype="multipart/form-data">
+                    <form action="{{ route('course.uploadVideo', ['course_id' => '1', 'module_id' => $module->id]) }}" method="post" enctype="multipart/form-data">
                         {{ csrf_field() }}
                         <div class="row">
                             <div class="col-md-6">
@@ -77,15 +78,12 @@
 
                         <div class="row">
                             <div class="col-md-3">
-                             <input type="submit"  class="btn btn-primary" value="Insert The video" />                            </div>
+                             <input type="submit"  class="btn btn-primary" value="Insert The video" />
+                            </div>
                         </div>
                     </form>
                 </div>
             </fieldset>
         </div>
     </div>
-@endsection
-
-@section('scripts')
-    <script src="{{ asset('js/newModuleForm.js') }}"></script>
 @endsection

@@ -9,6 +9,7 @@ use App\Module;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Validation\Rule;
 
 
@@ -55,8 +56,9 @@ class Lessons_CRUD_Controller extends Controller
 
     public function getNewVideoForm($course_id, $module_id){
         $course = Course::find($course_id);
+        $module = Module::find($module_id);
         if(Auth::User()->checkIfUserEnrolled($course) or Auth::User()->checkIfUserTeachCourse($course)) {
-            return view('Courses.newVideoForm');
+            return view('Courses.newVideoForm', compact('module'));
         }else{
             return redirect()->back();
         }
@@ -102,7 +104,8 @@ class Lessons_CRUD_Controller extends Controller
 
                 if($lesson){
                     unlink($fileName);
-                    return redirect()->back()->with('def-success', 'Video uploaded successfully');
+                    Session::flash('success', "Video uploaded successfully!");
+                    return redirect()->back();
                 }
 
             }

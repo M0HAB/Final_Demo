@@ -124,7 +124,7 @@ Route::get('mohab', 'TestController@index')->name('test');
 Route::resource('department', 'DepartmentsController');
 
 
-Route::resource('assignments', 'AssignmentsController',['names'=>[
+Route::resource('Courses/{course_id}/Modules/{module_id}/assignments', 'AssignmentsController',['names'=>[
 
     'index'=>'assignments.index',
     'create'=>'assignments.create',

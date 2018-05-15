@@ -41,9 +41,7 @@
                                 <td>
                                     {{--{{$ass->file ?  $ass->file :"No file attached"}}--}}
                                     @if(is_null($ass->file))
-
                                         No File Attached
-
                                     @else
                                         <a href="uploads\{{$ass->file}}" download="{{$ass->file}}">
                                             <button type="button" class="btn btn-primary btn-block">
@@ -51,8 +49,6 @@
                                                 Download
                                             </button>
                                         </a>
-
-
                                     @endif
                                 </td>
                                 <td>
@@ -61,9 +57,7 @@
 
                                 @if (Auth::user()->role == 'instructor')
                                     <td>
-
-
-                                        <button  class="btn btn-group-sm btn-link"><a href="{{route('assignments.edit', $ass->id)}}"><i class="far fa-edit fa-lg fam-mod"></i> </a> </button>
+                                        <button  class="btn btn-group-sm btn-link"><a href="{{route('assignments.edit', ['course_id' => $course->id, 'module_id' => $module->id])}}"><i class="far fa-edit fa-lg fam-mod"></i> </a> </button>
 
                                         <form action="{{ route('assignments.destroy',$ass->id)}}" method="POST">
                                             {{ csrf_field() }}
@@ -72,22 +66,14 @@
                                                 <span class="far fa-trash-alt fa-lg fam-mod"></span>
                                             </button>
                                         </form>
-
-
-
-
                                     </td>
                                     @elseif(Auth::user()->role == 'Student')
-
                                     <td>
-
-                                            <button  class="btn btn-group btn-link"><a href="{{route('assignment.deliver', $ass->id)}}"><i class="far fa-envelope-open"> </i> Submit</a> </button>
-
-
-
+                                        <button  class="btn btn-group btn-link">
+                                            <a href="{{route('assignment.deliver', $ass->id)}}"><i class="far fa-envelope-open"> </i> Submit</a>
+                                        </button>
                                     </td>
                                 @endif
-
                             </tr>
                         @endforeach
                         </tbody>
