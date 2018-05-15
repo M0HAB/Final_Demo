@@ -6,7 +6,6 @@ use Illuminate\Database\Migrations\Migration;
 
 class AddForeignKeyToModuleIdOnAssignmentsTable extends Migration
 {
-
     public function up()
     {
         Schema::table('assignments', function (Blueprint $table) {
@@ -20,7 +19,7 @@ class AddForeignKeyToModuleIdOnAssignmentsTable extends Migration
     public function down()
     {
         Schema::table('assignments', function (Blueprint $table) {
-            $table->dropForeign('lessons_module_id_foreign');
+            $table->dropForeign('assignments_module_id_foreign');
         });
     }
 }
