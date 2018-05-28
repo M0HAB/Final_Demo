@@ -24,13 +24,14 @@ class Lessons_CRUD_Controller extends Controller
     public function displayLessonsOfModules($course_id, $module_id){
         $course = Course::find($course_id);
         $module = Module::find($module_id);
+        $assignments = $module->assignments()->get();
         $lessons = DB::table('lessons')
             ->leftjoin('modules', 'modules.id', '=', 'lessons.module_id')
             ->select('lessons.*')
             ->where('lessons.module_id', '=', $module_id)
             ->get();
         if(Auth::User()->checkIfUserEnrolled($course) or Auth::User()->checkIfUserTeachCourse($course)) {
-            return view('Courses.LessonsOfModule', ['course' => $course, 'module' => $module, 'lessons' => $lessons]);
+            return view('Courses.LessonsOfModule', ['course' => $course, 'module' => $module, 'lessons' => $lessons, 'assignments' => $assignments]);
         }else{
             return redirect()->back();
         }

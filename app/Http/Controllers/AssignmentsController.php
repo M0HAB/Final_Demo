@@ -27,8 +27,7 @@ class AssignmentsController extends Controller
     {
         $course = Course::find($course_id);
         $module = Module::find($module_id);
-        $assignments = Module::where('id', '=', $module_id)->assignments()->get();
-        dd($assignments);
+        $assignments = $module->assignments()->get();
         return view('_auth.assignments.index', compact('assignments', 'module', 'course'));
     }
 
@@ -112,7 +111,7 @@ class AssignmentsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($course_id, $module_id, $id)
     {
         //
     }
@@ -123,15 +122,17 @@ class AssignmentsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit($course_id, $module_id, $ass_id)
     {
-
+        $modules = DB::table('modules')->orderByRaw('module_order')->get();
+        $course = Course::find($course_id);
+        $module = Module::find($module_id);
         $authuser = Auth::user();
         if ($authuser->role == 'instructor'){
 
-            $assignment = assignment::find($id);
+            $assignment = assignment::find($ass_id);
 
-                return view('_auth.assignments.edit', compact('assignment'));
+                return view('_auth.assignments.edit', compact('assignment', 'course', 'module', 'modules'));
 
         }else{
             return redirect()->route('user.dashboard')->with('error', 'Unauthorized Access');
@@ -145,24 +146,25 @@ class AssignmentsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request,$course_id, $module_id, $id)
     {
         $authuser = Auth::user();
         if ($authuser->role == 'instructor'){
 
-                // Validate Form submitted data
+                $modules_id_values =  DB::table('modules')->selectRaw('id')->get()->toArray();
 
+                // Validate Form submitted data
                 $this->validate($request, [
                     'asstitle' => 'required',
                     'assdescription' => 'required',
                     'deadline' => 'required',
-                    'module' => 'required',
+                    'module' => ['required', 'integer', Rule::in($modules_id_values)],
 
             ]);
             // Update Assignment
             $assignment = assignment::find($id);
 
-            $assignment->module_id = $request->input('module');
+            $assignment->module_id = $module_id;
             $assignment->title = $request->input('asstitle');
             $assignment->description = $request->input('assdescription');
             $assignment->deadline = $request->input('deadline');
@@ -203,7 +205,7 @@ class AssignmentsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($course_id, $module_id, $id)
     {
         $authuser = Auth::user();
         if ($authuser->role == 'instructor'){
@@ -221,12 +223,13 @@ class AssignmentsController extends Controller
 
             //student deliver assignments
 
-    public function deliver($id)
+    public function deliver($course_id, $module_id, $id)
     {
 
-
+        $course = Course::find($course_id);
+        $module = Module::find($module_id);
         $authuser = Auth::user();
-        if ($authuser->role == 'Student'){
+        if ($authuser->role == 'student'){
 
             $assignment = assignment::find($id);
             $userid=$authuser->id;
@@ -239,7 +242,7 @@ class AssignmentsController extends Controller
           //  dd($assdelivered->exists() );
 
 
-            return view('_auth.assignments.deliver', compact('assignment','assdelivered'));
+            return view('_auth.assignments.deliver', compact('assignment','assdelivered','course','module'));
 
         }else{
             return redirect()->route('user.dashboard')->with('error', 'Unauthorized Access');
@@ -247,13 +250,13 @@ class AssignmentsController extends Controller
 
     }
 
-    public function deliverstore(Request $request)
+    public function deliverstore($course_id, $module_id,  Request $request)
 
     {
 
        // dd($request);
         $authuser = Auth::user();
-        if ($authuser->role == 'Student'){
+        if ($authuser->role == 'student'){
 
             // Validate Form submitted data
 
@@ -288,7 +291,7 @@ class AssignmentsController extends Controller
 
             // If successfully updated display success else error
             if ($deliver->save()){
-                return redirect('/assignments')->with('success', 'Assignment Submitted successfully');
+                return redirect('Courses/' . $course_id .'/Modules/' . $module_id . '/assignments')->with('success', 'Assignment Submitted successfully');
             }else{
                 return redirect()->back()->with('error', 'Some error has occured please try resubmitting');
             }
@@ -311,6 +314,15 @@ class AssignmentsController extends Controller
                 ->get();
             return view('_auth.assignments.showdelivered')->with('assdelivered', $assdelivered);
 
+        }elseif($authuser->role == 'student'){
+            $assdelivered = DB::table('assdelivers')
+                ->leftjoin('assignments', 'assignments.id', '=', 'assdelivers.ass_id')
+                ->leftjoin('users', 'users.id', '=', 'assdelivers.user_id')
+                ->select('assdelivers.*', 'assignments.title', 'assignments.module_id', 'assignments.deadline', 'users.fname')
+                ->where('assignments.module_id', '=', $module_id)
+                ->where('assdelivers.user_id', '=', $authuser->id)
+                ->get();
+            return view('_auth.assignments.showdelivered')->with('assdelivered', $assdelivered);
         }else{
             return redirect()->route('user.dashboard')->with('error', 'Unauthorized Access');
         }

@@ -130,8 +130,10 @@ Route::resource('Courses/{course_id}/Modules/{module_id}/assignments', 'Assignme
     'create'=>'assignments.create',
     'store'=>'assignments.store',
     'edit'=>'assignments.edit',
+    'destroy' => 'assignments.destroy',
+    'update' => 'assignments.update'
 ]]);
-Route::get('/assignment/{id}', 'AssignmentsController@deliver')->name('assignment.deliver');
-Route::post('/AssignmentDeliver/', 'AssignmentsController@deliverstore')->name('assignment.deliverstore');
+Route::get('Courses/{course_id}/Modules/{module_id}/assignment/{id}/deliver', 'AssignmentsController@deliver')->name('assignment.deliver');
+Route::post('Courses/{course_id}/Modules/{module_id}/AssignmentDeliver/', 'AssignmentsController@deliverstore')->name('assignment.deliverstore');
 Route::get('Courses/{course_id}/Modules/{module_id}/assignmentDelivered/', 'AssignmentsController@delivered')->name('assignment.delivered');
 

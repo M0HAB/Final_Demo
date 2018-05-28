@@ -49,14 +49,45 @@
                     </tr>
                     </thead>
                     <tbody>
+                    @forelse($assignments as $assignment)
+                        <tr>
+                            <td>
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        @if(is_null($assignment->file))
+                                            No File Attached
+                                        @else
+                                            <a class="font-weight-bold text-success forum-nav" href="uploads\{{$assignment->file}}" download="{{$assignment->file}}">
+                                                <i class="fa fa-download mr-2"></i>
+                                                {{ $assignment->title }}
+                                            </a>
+                                        @endif
+                                    </div>
+                                    <div class="col-sm-7">
+                                        <p class="ml-4"><span class="text-muted font-weight-bold">Due:</span><span class="text-danger ml-1">{{date('d-m-Y', strtotime($assignment->deadline))}}</span></p>
+                                    </div>
+                                    @if(Auth::User()->role == 'student')
+                                        <div class="col-sm-5">
+                                            @if(!Auth::User()->checkIfStudentDeliveredAss($assignment))
+                                                <a href="{{ route('assignment.deliver', ['course_id' => $course->id, 'module_id' => $module->id, 'id' => $assignment->id]) }}" class="text-info"><i class="far fa-envelope-open mr-1"></i>Deliver</a>
+                                            @else
+                                                <span class="text-success"><i class="fas fa-check mr-1"></i>Delivered</span>
+                                            @endif
+                                        </div>
+                                    @endif
+                                </div>
+                            </td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td>
+                                <span>The module has no assignments</span>
+                            </td>
+                        </tr>
+                    @endforelse
                     <tr>
                         <td>
-                            <a href="#" class="font-weight-bold forum-nav">Assessment 1</a>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <a href="#" class="font-weight-bold forum-nav">Assessment 1</a>
+                            <a href="{{ route('assignments.index', ['course_id' => $course->id, 'module_id' => $module->id]) }}" class="text-primary font-weight-bold">Show More Details & Actions<i class="fa fa-angle-right ml-1"></i></a>
                         </td>
                     </tr>
                     </tbody>
@@ -105,12 +136,7 @@
                             @elseif(Auth::User()->role == 'student')
                                 <tr>
                                     <td>
-                                        <a href="#" class="ml-1"><i class="fas fa-plus mr-1"></i>Deliver Assignment</a>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <a href="#" class="ml-1"><i class="fas fa-folder mr-1"></i>My Assignment Directory</a>
+                                        <a href="{{ route('assignment.delivered', ['course_id' => $course->id, 'module_id' => $module->id]) }}" class="ml-1"><i class="fas fa-folder mr-1"></i>My Assignment Directory</a>
                                     </td>
                                 </tr>
                                 <tr>

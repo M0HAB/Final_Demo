@@ -12,7 +12,7 @@
                 @include('_partials.errors')
                 <h1 class="display-4 mb-5 f-rw ">Submit {{$assignment->title}}: </h1>
 
-                <form action="{{ route('assignment.deliverstore') }}" method="POST" role="form" enctype="multipart/form-data" autocomplete="off">
+                <form action="{{ route('assignment.deliverstore', ['course_id' => $course->id, 'module_id' => $module->id]) }}" method="POST" role="form" enctype="multipart/form-data" autocomplete="off">
                     {{ csrf_field() }}
 
                     <div class="form-group">

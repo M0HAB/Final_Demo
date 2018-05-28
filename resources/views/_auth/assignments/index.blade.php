@@ -6,10 +6,9 @@
     <div class="content mt-5 mb-4">
         <div class="container">
             <h1>Assignments
-                @if (Auth::user()->role == 'Instructor')
-                    <a href="{{ route('assignments.create') }}" class="btn btn-info" role="button">Create</a>
-                    <a href="{{ route('assignment.delivered') }}" class="btn btn-success" role="button">Delivered </a>
-
+                @if (Auth::user()->role == 'instructor')
+                    <a href="{{ route('assignments.create', ['course_id' => $course->id, 'module_id' => $module->id]) }}" class="btn btn-info" role="button">Create</a>
+                    <a href="{{ route('assignment.delivered', ['course_id' => $course->id, 'module_id' => $module->id]) }}" class="btn btn-success" role="button">Delivered </a>
                 @endif
             </h1>
             <div class="row justify-content-center">
@@ -57,9 +56,9 @@
 
                                 @if (Auth::user()->role == 'instructor')
                                     <td>
-                                        <button  class="btn btn-group-sm btn-link"><a href="{{route('assignments.edit', ['course_id' => $course->id, 'module_id' => $module->id])}}"><i class="far fa-edit fa-lg fam-mod"></i> </a> </button>
+                                        <button  class="btn btn-group-sm btn-link"><a href="{{route('assignments.edit', ['course_id' => $course->id, 'module_id' => $module->id, 'ass_id' => $ass->id])}}"><i class="far fa-edit fa-lg fam-mod"></i> </a> </button>
 
-                                        <form action="{{ route('assignments.destroy',$ass->id)}}" method="POST">
+                                        <form action="{{ route('assignments.destroy', ['course_id' => $course->id, 'module_id' => $module->id, 'ass_id' => $ass->id])}}" method="POST">
                                             {{ csrf_field() }}
                                             <input type="hidden" name="_method" value="DELETE">
                                             <button class="btn btn-group-sm btn-link" type="submit" onclick="alert('Confirm Delete')">
@@ -67,18 +66,21 @@
                                             </button>
                                         </form>
                                     </td>
-                                    @elseif(Auth::user()->role == 'Student')
+                                    @elseif(Auth::user()->role == 'student')
                                     <td>
-                                        <button  class="btn btn-group btn-link">
-                                            <a href="{{route('assignment.deliver', $ass->id)}}"><i class="far fa-envelope-open"> </i> Submit</a>
-                                        </button>
+                                        @if(!Auth::User()->checkIfStudentDeliveredAss($ass))
+                                            <button  class="btn btn-group btn-link">
+                                                <a href="{{ route('assignment.deliver', ['course_id' => $course->id, 'module_id' => $module->id, 'id' => $ass->id]) }}" class="text-info"><i class="far fa-envelope-open"> </i> Deliver</a>
+                                            </button>
+                                        @else
+                                            <span class="text-success"><i class="fas fa-check mr-1"></i>Delivered</span>
+                                        @endif
                                     </td>
                                 @endif
                             </tr>
                         @endforeach
                         </tbody>
                     </table>
-
 
                 @endif
 

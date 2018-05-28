@@ -82,4 +82,13 @@ class User extends Authenticatable
             ->count();
     }
 
+    /*Create a function to check if a student delivered an assignment */
+    public function checkIfStudentDeliveredAss(assignment $assignment){
+      return (bool)DB::table('assdelivers')
+          ->where('ass_id', '=', $assignment->id)
+          ->where('user_id', '=', $this->id)
+          ->count();
+    }
+
+
 }
