@@ -55,8 +55,8 @@ p { margin: 0px;padding: 0px; }
 .table-hover thead th { font-family: raleway; }
 .table-hover tbody tr:hover  { background-color: #2C3E50 !important;transition: 0.0s}
 .table-hover tbody tr:hover td .forum-nav:hover {color:#1BD6B2 !important;transition: 0.0s}
-.table-hover tbody tr:hover td .fam-mod {color:#18BC9C !important;}
-.table-hover tbody tr:hover td .forum-lbl {color:#18BC9C !important;}
+.table-hover tbody tr:hover td .fam-mod {color:#DEE2E6 !important}
+.table-hover tbody tr:hover td .forum-lbl {color:#DEE2E6 !important}
 .table-hover tbody tr:hover td .forum-recent-time { color: #DEE2E6 !important}
 .table-hover tbody tr:hover td .forum-p { color: #DEE2E6 !important}
 .list-group-item .txt-lbl { font-weight: 600;color: #7B8A9A }
