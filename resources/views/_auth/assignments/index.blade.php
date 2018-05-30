@@ -1,7 +1,10 @@
 @extends('_layouts.app')
 @section('title', 'Assignments')
 @section('content')
+    <div class="reg-log-form p-3 my-3">
+        <a href="{{ URL::previous() }}"><i class="fas fa-arrow-alt-circle-left"></i> Back</a>
 
+    </div>
     <!-- Start: Content -->
     <div class="content mt-5 mb-4">
         <div class="container">
@@ -42,7 +45,7 @@
                                     @if(is_null($ass->file))
                                         No File Attached
                                     @else
-                                        <a href="uploads\{{$ass->file}}" download="{{$ass->file}}">
+                                        <a href=" {{ asset("uploads\assignments") }}\{{$ass->file}}" download="{{$ass->file}}">
                                             <button type="button" class="btn btn-primary btn-block">
                                                 <i class="fas fa-cloud-download-alt "></i>
                                                 Download

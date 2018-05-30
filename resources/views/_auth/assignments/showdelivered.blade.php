@@ -1,7 +1,10 @@
 @extends('_layouts.app')
 @section('title', 'Assignments Delivered')
 @section('content')
+    <div class="reg-log-form p-3 my-3">
+        <a href="{{ URL::previous() }}"><i class="fas fa-arrow-alt-circle-left"></i> Back</a>
 
+    </div>
     <!-- Start: Content -->
     <div class="content mt-5 mb-4">
         <div class="container">
@@ -19,6 +22,7 @@
                             <th>File</th>
                             <th>Submitted Date</th>
                             <th>Status</th>
+                            <th>Grade</th>
 
                         </tr>
                         </thead>
@@ -44,7 +48,7 @@
                                             No File Attached
 
                                         @else
-                                            <a href="uploads\assignments\delivered\{{$delivered->file}}" download="{{$delivered->file}}">
+                                            <a href="{{asset("uploads\assignments\delivered") }}\{{$delivered->file}}" download="{{$delivered->file}}">
                                                 <button type="button" class="btn btn-primary btn-block">
                                                     <i class="fas fa-cloud-download-alt "></i>
                                                     Download
@@ -68,6 +72,10 @@
                                             <p class="text-success">ON TIME</p>
 
                                         @endif
+
+                                    </td>
+                                    <td>
+
 
                                     </td>
 

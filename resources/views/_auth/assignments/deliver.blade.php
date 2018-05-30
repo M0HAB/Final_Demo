@@ -3,8 +3,10 @@
 
 
 @section('content')
+    <div class="reg-log-form p-3 my-3">
+        <a href="{{ URL::previous() }}"><i class="fas fa-arrow-alt-circle-left"></i> Back</a>
 
-
+    </div>
     <!-- Start: Content -->
     <div class="content mt-5 mb-5">
         <div class="row">
@@ -21,16 +23,17 @@
 
 
                     </div>
-                    <div class="form-group">
-                        <label for="assignment_answer">Your Answer:</label>
-                        <textarea type="text" class="form-control" id="assignment_answer"
-                                  name="assignment_answer" value=""></textarea>
-                    </div>
+
 
                     <div class="form-group">
-                        <label for="upload_file">Upload File (Optional)</label>
+                        <label for="upload_file">Upload File</label>
                         <input class="form-control" type="file" name="upload_file" id="upload_file">
 
+                    </div>
+                    <div class="form-group">
+                        <label for="assignment_answer">Comment:</label>
+                        <textarea type="text" class="form-control" id="assignment_answer"
+                                  name="assignment_answer" value=""></textarea>
                     </div>
 
                     @if ($assdelivered->exists())
@@ -41,6 +44,8 @@
 
                     <button type="submit" name="submit" class="btn btn-primary">Submit</button>
                         @endif
+
+
                 </form>
 
             </div>

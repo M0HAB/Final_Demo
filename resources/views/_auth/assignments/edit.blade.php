@@ -1,8 +1,12 @@
 @extends('_layouts.app')
 @section('title', 'Edit Assignments ')
 
-
 @section('content')
+
+    <div class="reg-log-form p-3 my-3">
+        <a href="{{ URL::previous() }}"><i class="fas fa-arrow-alt-circle-left"></i> Back</a>
+
+    </div>
     <!-- Start: Content -->
     <div class="content mt-5 mb-4" xmlns:text-align="http://www.w3.org/1999/xhtml"
          xmlns:margin-left="http://www.w3.org/1999/xhtml">

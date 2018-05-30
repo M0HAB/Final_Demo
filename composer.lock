@@ -4,20 +4,20 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "f98f5fd6fe0491ead636f28864a42759",
+    "content-hash": "e6ddd2815c4ef651818ef96076c51d05",
     "packages": [
         {
             "name": "dawson/youtube",
-            "version": "4.1.0",
+            "version": "4.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/JoeDawson/youtube.git",
-                "reference": "6fc909847bd5e919125b07d863b2fdfe117dd174"
+                "reference": "cb7398ca6b8cf39fb147938504f18037dd482d35"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/JoeDawson/youtube/zipball/6fc909847bd5e919125b07d863b2fdfe117dd174",
-                "reference": "6fc909847bd5e919125b07d863b2fdfe117dd174",
+                "url": "https://api.github.com/repos/JoeDawson/youtube/zipball/cb7398ca6b8cf39fb147938504f18037dd482d35",
+                "reference": "cb7398ca6b8cf39fb147938504f18037dd482d35",
                 "shasum": ""
             },
             "require": {
@@ -58,7 +58,7 @@
                 }
             ],
             "description": "Upload a video to YouTube with Laravel 5.",
-            "time": "2017-09-25T18:26:26+00:00"
+            "time": "2018-04-20T14:06:11+00:00"
         },
         {
             "name": "dnoegel/php-xdg-base-dir",

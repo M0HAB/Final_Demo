@@ -57,7 +57,7 @@
                                         @if(is_null($assignment->file))
                                             No File Attached
                                         @else
-                                            <a class="font-weight-bold text-success forum-nav" href="uploads\{{$assignment->file}}" download="{{$assignment->file}}">
+                                            <a class="font-weight-bold text-success forum-nav" href="{{ asset("uploads\assignments") }}\{{$assignment->file}}" download="{{$assignment->file}}">
                                                 <i class="fa fa-download mr-2"></i>
                                                 {{ $assignment->title }}
                                             </a>

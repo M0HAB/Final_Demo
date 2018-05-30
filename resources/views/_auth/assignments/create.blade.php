@@ -2,6 +2,10 @@
 @section('title', 'Assignments')
 @section('content')
 
+    <div class="reg-log-form p-3 my-3">
+        <a href="{{ URL::previous() }}"><i class="fas fa-arrow-alt-circle-left"></i> Back</a>
+
+    </div>
     <!-- Start: Content -->
     <div class="content mt-5 mb-5">
         <div class="container">
