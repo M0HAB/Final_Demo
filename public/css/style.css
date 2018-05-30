@@ -1,18 +1,34 @@
+/*----------- Main Fonts -----------*/
+/* START: Raleway */
+@font-face {font-family: 'raleway';src: url(../fonts/Raleway-Thin.ttf);font-weight: 100;}
+@font-face {font-family: 'raleway';src: url(../fonts/Raleway-ThinItalic.ttf);font-weight: 100;font-style: italic;}
+@font-face {font-family: 'raleway';src: url(../fonts/Raleway-ExtraLight.ttf);font-weight: 200;}
+@font-face {font-family: 'raleway';src: url(../fonts/Raleway-ExtraLightItalic.ttf);font-style: italic;font-weight: 200;}
+@font-face {font-family: 'raleway';src: url(../fonts/Raleway-Light.ttf);font-weight: 300;}
+@font-face {font-family: 'raleway';src: url(../fonts/Raleway-LightItalic.ttf);font-style: italic;font-weight: 300;}
+@font-face {font-family: 'raleway';src: url(../fonts/Raleway-Regular.ttf);font-weight: 400;}
+@font-face {font-family: 'raleway';src: url(../fonts/Raleway-Medium.ttf);font-weight: 500;}
+@font-face {font-family: 'raleway';src: url(../fonts/Raleway-MediumItalic.ttf);font-style: italic;font-weight: 500;}
+@font-face {font-family: 'raleway';src: url(../fonts/Raleway-SemiBold.ttf);font-weight: 600;}
+@font-face {font-family: 'raleway';src: url(../fonts/Raleway-SemiBoldItalic.ttf);font-style: italic;font-weight: 600;}
+@font-face {font-family: 'raleway';src: url(../fonts/Raleway-Bold.ttf);font-weight: 700;}
+@font-face {font-family: 'raleway';src: url(../fonts/Raleway-BoldItalic.ttf);font-style: italic;font-weight: 700;}
+@font-face {font-family: 'raleway';src: url(../fonts/Raleway-ExtraBold.ttf);font-weight: 800;}
+@font-face {font-family: 'raleway';src: url(../fonts/Raleway-ExtraBoldItalic.ttf);font-style: italic;font-weight: 800;}
+@font-face {font-family: 'raleway';src: url(../fonts/Raleway-Black.ttf);font-weight: 900;}
+@font-face {font-family: 'raleway';src: url(../fonts/Raleway-BlackItalic.ttf);font-style: italic;font-weight: 900;}
+/* END: Raleway */
 /*----------- Main Customization -----------*/
-@import url(https://fonts.googleapis.com/css?family=Raleway:300,400,600);
 html, body { background-color: #FFF;height: 100%;margin: 0;padding: 0; }
-.no-selection {
-                -webkit-touch-callout: none; /* iOS Safari */
-                -webkit-user-select: none; /* Safari */
-                -khtml-user-select: none; /* Konqueror HTML */
-                -moz-user-select: none; /* Firefox */
-                -ms-user-select: none; /* Internet Explorer/Edge */
-                user-select: none; /* Non-prefixed version, currently */
-}
+p { margin: 0px;padding: 0px; }
+.f-rw {font-family: raleway; font-weight: 400 }
+.no-selection { -webkit-touch-callout: none; /* iOS Safari */-webkit-user-select: none; /* Safari */-khtml-user-select: none; /* Konqueror HTML */-moz-user-select: none; /* Firefox */-ms-user-select: none; /* Internet Explorer/Edge */user-select: none; /* Non-prefixed version, currently */}
+.navbar-dark .navbar-nav .nav-link { font-size: 16px;}
 /* Chrome */
-::-webkit-scrollbar { width: 8px; }
-::-webkit-scrollbar-thumb { background-color: #ccc;border-radius: 10px;box-shadow: inset 0 0 3px rgba(52, 52, 51, .3); }
+::-webkit-scrollbar { width: 7px; }
+::-webkit-scrollbar-thumb { background-color: #cccccc;border-radius: 10px;box-shadow: inset 0 0 3px rgba(52, 52, 51, .3); }
 ::-webkit-scrollbar-track { border-radius: 10px;background-color: transparent; }
+.content .h1-font { font-family: raleway; }
 /* Index Page -> checkbox */
 .check-bg { padding: 4px;background-color: #2C3E50;color: #FAFAFA;border-radius: 5px; }
 /* Login-Form */
@@ -30,19 +46,25 @@ html, body { background-color: #FFF;height: 100%;margin: 0;padding: 0; }
 .bbp-breadcrumb-home {font-weight: 600}
 .bbp-breadcrumb-sep { font-size: 20px;}
 .bbp-breadcrumb-current { font-weight: 600;color: #888888 }
-.user-dashboard-diss-fourm-prev { font-family: "Raleway"; }
-.user-dashboard-diss-fourm-prev .forum-nav { font-size: 16px;text-decoration: none !important }
-.user-dashboard-diss-fourm-prev .forum-p { font-size: 12px;color: #878787 !important;font-weight:600 }
-.user-dashboard-diss-fourm-prev .forum-lbl { font-size: 13px;font-weight:600;color: #2C3E50 }
-.user-dashboard-diss-fourm-prev .fam-mod { font-size: 20px;color: #2C3E50 !important }
-.user-dashboard-diss-fourm-prev .forum-recent-time { color: #878787 !important;font-size: 12px;font-weight: 600}
-.user-dashboard-diss-fourm-prev .table-hover tbody tr:hover  { background-color: #2C3E50 !important;}
-.user-dashboard-diss-fourm-prev .table-hover tbody tr:hover td .forum-nav:hover {color:#1BD6B2 !important;}
-.user-dashboard-diss-fourm-prev .table-hover tbody tr:hover td .fam-mod {color:#18BC9C !important;}
-.user-dashboard-diss-fourm-prev .table-hover tbody tr:hover td .forum-lbl {color:#18BC9C !important;}
-.user-dashboard-diss-fourm-prev .table-hover tbody tr:hover td .forum-recent-time { color: #DEE2E6 !important}
-.user-dashboard-diss-fourm-prev .table-hover tbody tr:hover td .forum-p { color: #DEE2E6 !important}
+.user-dashboard-diss-forum-prev { font-family: "Raleway"; }
+.forum-nav, .profile-a { text-decoration: none !important }
+.forum-p { font-size: 12px;color: #878787 !important;font-weight:600 }
+.forum-lbl { font-size: 14px;font-weight:600;color: #2C3E50 }
+.fam-mod { font-size: 20px;color: #2C3E50 !important }
+.forum-recent-time { color: #878787 !important;font-size: 12px;font-weight: 600}
+.table-hover thead th { font-family: raleway; }
+.table-hover tbody tr:hover  { background-color: #2C3E50 !important;transition: 0.0s}
+.table-hover tbody tr:hover td .forum-nav:hover {color:#1BD6B2 !important;transition: 0.0s}
+.table-hover tbody tr:hover td .fam-mod {color:#18BC9C !important;}
+.table-hover tbody tr:hover td .forum-lbl {color:#18BC9C !important;}
+.table-hover tbody tr:hover td .forum-recent-time { color: #DEE2E6 !important}
+.table-hover tbody tr:hover td .forum-p { color: #DEE2E6 !important}
 .list-group-item .txt-lbl { font-weight: 600;color: #7B8A9A }
 .list-group-item .recent-p-mod { font-size: 14px; }
-.list-group-item:hover { background-color: #2C3E50;color: #DEE2E6; }
+.list-group-item:hover { background-color: #2C3E50;color: #DEE2E6;transition: 0.0s }
 .list-group-item:hover .txt-lbl { color:#18BC9C !important; }
+.nav-tabs {border: none;}
+.nav-tabs .nav-link {font-weight: 600}
+.nav-tabs .nav-link.active, .nav-tabs .nav-link.active:focus { font-weight: 600 }
+.table tbody td {font-weight: 600; color: #888888}
+.dropdown-item { font-weight: 500; }
