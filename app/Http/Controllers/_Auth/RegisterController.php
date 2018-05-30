@@ -22,10 +22,10 @@ class RegisterController extends Controller
     |
     */
 
-    // public function __construct()
-    // {
-    //     $this->middleware(['auth', 'revalidate']);
-    // }
+    public function __construct()
+    {
+        $this->middleware(['auth', 'revalidate']);
+    }
 
     /**
      * @return Register Page
