@@ -24,10 +24,11 @@ class User extends Authenticatable
         'password',
         'dep_id',
         'gender',
-        'role',
+        'role_id',
         'location',
         'level',
         'gpa',
+        'api_token'
     ];
 
     /**

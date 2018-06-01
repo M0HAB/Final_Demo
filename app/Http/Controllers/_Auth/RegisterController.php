@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\User;
 use App\Department;
+use App\Role;
 
 
 class RegisterController extends Controller
@@ -33,7 +34,8 @@ class RegisterController extends Controller
     public function showRegisterForm()
     {
         $deps = Department::all();
-        return view('_auth.register')->withDeps($deps);
+        $roles = Role::all();
+        return view('_auth.register')->withDeps($deps)->withRoles($roles);
     }
 
     /**
@@ -56,7 +58,7 @@ class RegisterController extends Controller
             'password' => 'required|confirmed|min:6|max:255',
             'department' => 'required|max:2',
             'gender' => 'required|max:1',
-            'role' => 'required|string|max:255',
+            'role' => 'required|max:1',
             'location' => 'required|max:255',
             'level' => 'required|max:255',
             'gpa' => 'required|max:255' 
@@ -77,7 +79,6 @@ class RegisterController extends Controller
             'gpa.required' => 'GPA field is required' 
         ];
 
-        $userRoles = ['admin', 'instructor', 'student'];
         // Apply validation rules on incoming request
         $validator = Validator::make($request->all(), $rules, $messages);
 
@@ -88,7 +89,10 @@ class RegisterController extends Controller
             $request['username'] = $request->fname . '_' . $request->lname . '_' . time();
             // Hash requested password
             $request['password'] = bcrypt($request->password);
-            $request['dep_id'] = $request->department; 
+            $request['dep_id'] = $request->department;
+            $request['role_id'] = $request->role;
+            // Generate unique api token 
+            $request['api_token'] = str_random(50) . time();
             // Create user instance
             User::create($request->all());
             // After creating new user return json response with success. message

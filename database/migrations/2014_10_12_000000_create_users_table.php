@@ -19,9 +19,8 @@ class CreateUsersTable extends Migration
             $table->string('lname');
             $table->string('email')->unique();
             $table->string('password');
-			$table->integer('dep_id')->unsigned()->nullable();
+            $table->integer('dep_id')->unsigned()->nullable();
             $table->boolean('gender');
-            $table->string('role');
             $table->string('location');
             $table->integer('level');
             $table->decimal('gpa');

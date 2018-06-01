@@ -54,7 +54,7 @@
                                     <div class="form-group">
                                         <label for="">Department</label>
                                         <select class="form-control {{ $errors->has('department') ? ' is_invalid' : '' }}" id="department" name="department" class="list" value="{{ old('department') }}">
-                                        <option value="">Select the department</option>
+                                        <option value="">Select</option>
                                         @foreach ($deps as $dep)
                                             <option value="{{ $dep->id }}">{{ $dep->name }}</option>
                                         @endforeach
@@ -76,9 +76,12 @@
                                         <label for="sel1">Role</label>
                                         <select class="form-control {{ $errors->has('role') ? ' is_invalid' : '' }}" id="role" name="role" class="list" value="{{ old('role') }}">
                                         <option value="">Select</option>
-                                        <option value="student">Student</option>
+                                        @foreach ($roles as $role)
+                                            <option value="{{ $role->id }}">{{ $role->name }}</option>
+                                        @endforeach
+                                        {{--  <option value="student">Student</option>
                                         <option value="instructor">Instructor</option>
-                                        <option value="admin">Admin</option>
+                                        <option value="admin">Admin</option>  --}}
                                         </select>
                                     </div>
                                 </div>
