@@ -60,7 +60,7 @@ class MessagesController extends Controller
     public function selectMessage($id)
     {
       $friend = User::find($id);
-      if ($friend){
+      if ($friend && $id != Auth::user()->id){
         //get latest Message
         $msg = Message::where([
                                 ['friend_id', '=', Auth::user()->id],
