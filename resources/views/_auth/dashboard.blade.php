@@ -14,7 +14,7 @@
 						<span class="bbp-breadcrumb-current">{{ getEndPoint() }}</span>
 					</p>
 				</div>
-				<table class="table table-hover">
+				<table class="table">
 					<thead>
 						<tr>
 							<th>Discussion Forum</th>
