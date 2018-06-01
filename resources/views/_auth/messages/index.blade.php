@@ -6,11 +6,13 @@
 	<div class="row">
 		<div class="col-lg-12 col-sm-12 mb-4">
 				<h1>Messages
+					@if(count($messages) >0)
 					<a href="{{ route('messages.read')}}">
 						<button class="btn btn-primary" href="{{ route('messages.read')}}" data-toggle="tooltip" data-placement="top" title="Create">
 							<span class="fas fa-check"></span> Mark all as read
 						</button>
 					</a>
+					@endif
 				</h1>
 
 						@if(count($messages) == 0)
