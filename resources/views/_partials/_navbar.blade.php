@@ -22,8 +22,35 @@
                         <li class="nav-item">
                             <a class="nav-link" href="#"><i class="fas fa-bell"></i></a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#"><i class="fas fa-envelope"></i></i></a>
+                        <li class="nav-item dropdown">
+                          <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="fas fa-envelope"></i>
+                          </a>
+                          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            @php
+                              $msgsNav = messageNav();
+                            @endphp
+                            @if(count($msgsNav) == 0 )
+                            <h6 class="dropdown-header">No messages found</h6>
+                            @endif
+                            @foreach ($msgsNav as $msgNav)
+                              @php
+                                if(Auth::user()->id == $msgNav->user_id){
+                                  $msgUser = ('App\User')::find($msgNav->friend_id);
+                                }else{
+                                  $msgUser = ('App\User')::find($msgNav->user_id);
+                                }
+                                $msgUser->name = $msgUser->fname .' '.$msgUser->lname;
+                                if(strlen($msgNav->body)>15){
+                                  $msgNav->body = mb_substr($msgNav->body,0,15,'UTF-8').'...';
+                                }
+                              @endphp
+                              <h6 class="dropdown-header">{{$msgUser->name}}</h6>
+                              <a class="dropdown-item" href="{{route('messages.show', $msgUser->id)}}">{{$msgNav->body}}</a>
+                              <div class="dropdown-divider"></div>
+                            @endforeach
+                            <a class="dropdown-item" href="{{ route('messages.index')}}">See All Messages</a>
+                          </div>
                         </li>
                     @if (Request::url() == Route('user.dashboard'))
                         <li class="nav-item">
