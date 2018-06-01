@@ -11,11 +11,11 @@ class Role extends Model
      *
      * @var array
      */
-    protected $table = 'roles';    
+    protected $table = 'roles';
     public $primaryKey = 'id';
     public $timestamps = true;
     protected $fillable = [
-        'name',
+        'name', 'permission'
     ];
 
     public function getNameAttribute($value) {
@@ -25,5 +25,5 @@ class Role extends Model
     public function user(){
         return $this->hasMany('App\User');
     }
-    
+
 }

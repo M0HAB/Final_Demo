@@ -13,6 +13,8 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
+
+Route::middleware('auth:api')->group(function () {
+  Route::post('/messages/{id}/send', 'MessagesController@send');
+  Route::post('/messages/{id}/read', 'MessagesController@readFromUser');
 });

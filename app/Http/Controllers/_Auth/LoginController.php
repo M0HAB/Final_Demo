@@ -43,8 +43,14 @@ class LoginController extends Controller
                 return redirect()->route('user.dashboard');
             else
             {
-                Session::flash('error', "The email or password you have entered is invalid");
-                return redirect()->back();
+                //if failed login as user try as admin
+                if (Auth::guard('admin')->attempt(['email' => $request->email, 'password' => $request->password]))
+                    return redirect()->route('permission.index');
+                else{
+                    Session::flash('error', "The email or password you have entered is invalid");
+                    return redirect()->back();
+                }
+                
             }
         }
     }
@@ -58,6 +64,10 @@ class LoginController extends Controller
     {
         if (Auth::check())
         {
+             //to logout admin too xD
+            if (Auth::guard('admin')->check()){
+                Auth::guard('admin')->logout();
+            }            
             Auth::logout();
             return redirect()->route('index');
         }

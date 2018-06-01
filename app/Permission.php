@@ -11,10 +11,11 @@ class Permission extends Model
      *
      * @var array
      */
-    protected $table = 'permissions';
+    protected $table = 'permissions';    
+    public $primaryKey = 'index';
     public $timestamps = true;
     protected $fillable = [
-        'index','name'
+        'name'
     ];
 
 

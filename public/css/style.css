@@ -68,3 +68,6 @@ p { margin: 0px;padding: 0px; }
 .nav-tabs .nav-link.active, .nav-tabs .nav-link.active:focus { font-weight: 600 }
 .table tbody td {font-weight: 600; color: #888888}
 .dropdown-item { font-weight: 500; }
+[v-cloak] {
+  display: none;
+}

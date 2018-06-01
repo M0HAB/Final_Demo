@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreatePermissionsRoleDefaultTable extends Migration
+class CreateMessagesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,12 @@ class CreatePermissionsRoleDefaultTable extends Migration
      */
     public function up()
     {
-        Schema::create('permissions_role_default', function (Blueprint $table) {
-            $table->string('role')->unique();
-            $table->integer('permission')->unsigned();
+        Schema::create('messages', function (Blueprint $table) {
+            $table->increments('id');
+            $table->integer('user_id')->unsigned();
+            $table->integer('friend_id')->usnigned();
+            $table->text('body');
+            $table->boolean('read')->default(false);
             $table->timestamps();
         });
     }
@@ -27,6 +30,6 @@ class CreatePermissionsRoleDefaultTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('permissions_role_default');
+        Schema::dropIfExists('messages');
     }
 }

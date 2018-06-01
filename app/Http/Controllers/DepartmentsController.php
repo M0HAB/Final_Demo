@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use App\Department;
 use App\User;
+use App\Role;
 use DB;
 
 class DepartmentsController extends Controller
@@ -45,7 +46,7 @@ class DepartmentsController extends Controller
        
         if (canCreate($this->controllerName)){
             // Return the create view with Users from DB to use in ComboBox
-            $users = User::where('role', 'Instructor')->get();
+            $users = Role::find(Role::where('name', 'Instructor')->first()->id)->user;
             return view('_auth.department.create')->with('users', $users);
         }else{
             return redirect()->route('user.dashboard')->with('error', 'Unauthorized Access');
@@ -99,9 +100,10 @@ class DepartmentsController extends Controller
         // Find Department Head from Users by Dep_Head_ID
         $user =  User::find($department->Dep_Head_ID);
         $authuser = Auth::user();
-        if ($authuser->role == 'Instructor'){
+        if ($authuser->role_id == Role::where('name', 'Instructor')->first()->id){
             // Count number of Students in that Department
-            $students = count(User::where(['dep_id' => $id, 'role' => 'Student'])->get());
+            $student_role_id = Role::where('name', 'Student')->first()->id;
+            $students = count(User::where(['dep_id' => $id, 'role_id' => $student_role_id])->get());
             // Append count of Students to department variable
             $department['student_count'] = $students;
         }
@@ -127,7 +129,7 @@ class DepartmentsController extends Controller
             $department = Department::find($id);
             if ($department->status){
                 // Get users from DB where role is Instructor
-                $users = User::where('role', 'Instructor')->get();
+                $users = Role::find(Role::where('name', 'Instructor')->first()->id)->user;
                 // Return the Edit view with Users from DB to use in ComboBox
                 return view('_auth.department.edit')->with('users', $users)->with('department', $department);
             }else{

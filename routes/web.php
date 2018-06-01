@@ -56,4 +56,28 @@ Route::resource('assignments', 'AssignmentsController',['names'=>[
 Route::get('/assignment/{id}', 'AssignmentsController@deliver')->name('assignment.deliver');
 Route::post('/AssignmentDeliver/', 'AssignmentsController@deliverstore')->name('assignment.deliverstore');
 Route::get('/assignmentDelivered/', 'AssignmentsController@delivered')->name('assignment.delivered');
+Route::resource('/permission', 'PermissionController', [
+    'only' => ['edit', 'update', 'index']
+]);
+Route::resource('/prole', 'PermissionRoleController');
+// Route::get('/test2', 'MessagesController@latestMessages');
+// Route::get('/test/{id}', function($id){
+//   // $message = ('App\Message')::find($id);
+//   // $a = $message->user_id;
+//   // $b = $message->friend_id;
+//   // $channel = array($a,$b);
+//   // sort($channel);
+//   // return $channel[0].$channel[1];
+//   return Auth::user()->latestWithFriend($id);
+// });
+// Route::get('test1', function(){
+//   $message = ('App\Message')::find(9);
+//   broadcast(new MessageEvent($message));
+// });
+Route::group(['prefix' => 'messages'], function () {
 
+  Route::get('/', 'MessagesController@index')->name('messages.index');
+  Route::get('/read', 'MessagesController@allRead')->name('messages.read');
+  Route::get('/{id}', 'MessagesController@selectMessage')->name('messages.show');
+
+});
