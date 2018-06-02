@@ -23,7 +23,7 @@
                             <a class="nav-link" href="#"><i class="fas fa-bell"></i></a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#"><i class="fas fa-envelope"></i></i></a>
+                            <a class="nav-link" href="#"><i class="fas fa-envelope"></i></a>
                         </li>
                     @if (Request::url() == Route('user.dashboard'))
                         <li class="nav-item">
