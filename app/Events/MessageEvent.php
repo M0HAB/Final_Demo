@@ -37,6 +37,6 @@ class MessageEvent implements ShouldBroadcast
         $b = $this->message->friend_id;
         $channel = array($a,$b);
         sort($channel);
-        return new PrivateChannel('msg.'.$channel[0].$channel[1]);
+        return new PrivateChannel('msg.'.$channel[0].'_'.$channel[1]);
     }
 }

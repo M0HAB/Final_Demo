@@ -79,7 +79,7 @@ class MessagesController extends Controller
         $b = $id;
         $channel = array($a,$b);
         sort($channel);
-        $channel = $channel[0].$channel[1];
+        $channel = $channel[0].'_'.$channel[1];
         //returns
         if($messages){
           return view('_auth.messages.show')->with('messages', $messages)->with('friend', $friend)->with('channel', $channel);

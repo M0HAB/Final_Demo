@@ -5,6 +5,7 @@ namespace App;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use App\User;
+use App\Reply;
 use Auth;
 
 class User extends Authenticatable
@@ -112,4 +113,23 @@ class User extends Authenticatable
     //   //Get Received messages of this user & friend ($friend_id)
     //   return $this->hasMany('App\Message' , 'friend_id')->where('user_id', $friend_id)->latest()->first();
     // }
+    public function posts()
+    {
+      return $this->hasMany('App\Post', 'user_id');
+    }
+    public function replies()
+    {
+      return $this->hasMany('App\Reply', 'user_id');
+    }
+    public function votes()
+    {
+      return $this->hasMany('App\Vote', 'user_id');
+    }
+    public function Voted(Reply $reply)
+    {
+      return (bool) $reply->votes
+                          ->where('reply_id', $reply->id)
+                          ->where('user_id', $this->id)
+                          ->count();
+    }
 }

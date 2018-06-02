@@ -16,8 +16,9 @@ Broadcast::channel('App.User.{id}', function ($user, $id) {
 });
 
 Broadcast::channel('msg.{id}', function($user,$id){
-  $user1=  (int) substr($id, 0, 1);
-  $user2=  (int) substr($id, 1, 1);
+  $users = explode("_", $id);
+  $user1=  (int) $users[0];
+  $user2=  (int) $users[1];
   $currentUser = (int) $user->id;
   if ($currentUser === $user1 || $currentUser === $user2){
     return true;

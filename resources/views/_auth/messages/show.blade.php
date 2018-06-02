@@ -3,7 +3,7 @@
 
 @section('content')
 	<!-- Start: Dashboard -->
-  <div class="row" id="#app">
+  <div class="row">
     <div class="col-lg-12 col-sm-12 mb-4">
 
       <div class="card">
@@ -55,7 +55,7 @@
     el: '#content',
     data: {
       message: '',
-      channel: {{$channel}},
+      channel: '{{$channel}}',
       recipent: {{$friend->id}},
       recipentName: '{{$friend->fname}}',
       user: '{{Auth::user()->fname}}',
