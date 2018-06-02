@@ -22,10 +22,8 @@
                         <li class="nav-item">
                             <a class="nav-link" href="#"><i class="fas fa-bell"></i></a>
                         </li>
-<<<<<<< HEAD
                         <li class="nav-item">
                             <a class="nav-link" href="#"><i class="fas fa-envelope"></i></a>
-=======
                         <li class="nav-item dropdown">
                           <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <i class="fas fa-envelope"></i>
@@ -55,7 +53,6 @@
                             @endforeach
                             <a class="dropdown-item" href="{{ route('messages.index')}}">See All Messages</a>
                           </div>
->>>>>>> d88bbd27776167c789e878abb72eb4578ef766be
                         </li>
                     @if (Request::url() == Route('user.dashboard'))
                         <li class="nav-item">
