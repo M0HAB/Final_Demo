@@ -60,7 +60,7 @@ class MessagesController extends Controller
     public function selectMessage($id)
     {
       $friend = User::find($id);
-      if ($friend){
+      if ($friend && $id != Auth::user()->id){
         //get latest Message
         $msg = Message::where([
                                 ['friend_id', '=', Auth::user()->id],
@@ -79,7 +79,7 @@ class MessagesController extends Controller
         $b = $id;
         $channel = array($a,$b);
         sort($channel);
-        $channel = $channel[0].$channel[1];
+        $channel = $channel[0].'_'.$channel[1];
         //returns
         if($messages){
           return view('_auth.messages.show')->with('messages', $messages)->with('friend', $friend)->with('channel', $channel);
