@@ -4,16 +4,16 @@
 @section('content')
 	<!-- Start: Dashboard -->
   <div class="row">
-    <div class="col-lg-12 col-sm-12 mb-4">
+    <div class="offset-lg-2 col-lg-8 col-sm-12 mb-4">
 
       <div class="card">
-        <h5 class="card-header">Messaging : <strong>{{$friend->fname}}</strong></h5>
+        <h5 class="card-header chat-header">{{$friend->fname . ' ' . $friend->lname}}</h5>
         <div class="card-body" style="overflow-y: scroll;height:350px" v-chat-scroll>
             @foreach ($messages as $msg)
 
             <div class="row">
               <div class="container">
-                <div class="alert col-auto {{ ($msg->sender->id != Auth::user()->id)? 'alert-primary text-left float-left':'alert-light text-right float-right' }} " style="max-width:65%" role="alert" title="{{$msg->created_at}}">
+                <div class="alert col-auto {{ ($msg->sender->id != Auth::user()->id)? 'alert-primary text-left rounded-box float-left':'alert-light text-right float-right' }} " style="max-width:65%" role="alert" title="{{$msg->created_at}}">
                   {{$msg->body}}
                 </div>
 

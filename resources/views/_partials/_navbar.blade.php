@@ -22,18 +22,16 @@
                         <li class="nav-item">
                             <a class="nav-link" href="#"><i class="fas fa-bell"></i></a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#"><i class="fas fa-envelope"></i></a>
-                        <li class="nav-item dropdown">
-                          <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <li class="nav-item dropdown ml-1">
+                          <a class="nav-link" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <i class="fas fa-envelope"></i>
                           </a>
-                          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                          <div class="dropdown-menu dropdown-menu-custom" aria-labelledby="navbarDropdown">
                             @php
                               $msgsNav = messageNav();
                             @endphp
                             @if(count($msgsNav) == 0 )
-                            <h6 class="dropdown-header">No messages found</h6>
+                            <p class="text-left pl-4 pb-2" style="font-size: 14px;">No messages found</p>
                             @endif
                             @foreach ($msgsNav as $msgNav)
                               @php
@@ -47,11 +45,22 @@
                                   $msgNav->body = mb_substr($msgNav->body,0,15,'UTF-8').'...';
                                 }
                               @endphp
-                              <h6 class="dropdown-header">{{$msgUser->name}}</h6>
+                            <ul class="list-group">
+                                <a class="rm-deco" href="{{route('messages.show', $msgUser->id)}}">
+                                    <li class="list-group-item list-gitem-custom">
+                                        <span class="username-msg">{{$msgUser->name}}</span>
+                                        <span class="msg-time float-right">{{$msgNav->created_at->diffForHumans()}}</span>
+                                        <span class="lb drop-msg-body"><i class="fas fa-caret-right"></i> {{$msgNav->body}}</span>
+                                    </li>
+                                </a>
+                            </ul>
+                              {{-- <h6 class="dropdown-header">{{$msgUser->name}}</h6>
                               <a class="dropdown-item" href="{{route('messages.show', $msgUser->id)}}">{{$msgNav->body}}</a>
-                              <div class="dropdown-divider"></div>
+                              <div class="dropdown-divider"></div> --}}
                             @endforeach
-                            <a class="dropdown-item" href="{{ route('messages.index')}}">See All Messages</a>
+                            <div>
+                                    <a class="pl-4 py-2 d-block" href="{{ route('messages.index')}}" style="font-size:12px;display:inline-block">See All Messages</a>
+                            </div>
                           </div>
                         </li>
                     @if (Request::url() == Route('user.dashboard'))

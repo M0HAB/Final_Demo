@@ -2,28 +2,26 @@
 @section('title', 'Messages')
 
 @section('content')
-	<!-- Start: Dashboard -->
 	<div class="row">
-		<div class="col-lg-12 col-sm-12 mb-4">
-				<h1>Messages
+		<div class="offset-lg-2 col-lg-8 col-sm-12 mb-4">
 					@if(count($messages) >0)
-					<a href="{{ route('messages.read')}}">
-						<button class="btn btn-primary" href="{{ route('messages.read')}}" data-toggle="tooltip" data-placement="top" title="Create">
-							<span class="fas fa-check"></span> Mark all as read
-						</button>
-					</a>
+					<h1 class="display-5 mb-3 f-rw">Messages
+						<a href="{{ route('messages.read')}}" class="btn btn-primary mb-2">
+							<span class="fas fa-check mr-2"></span> Mark all as read
+						</a>	
+					</h1>			
+							
 					@endif
-				</h1>
 
 						@if(count($messages) == 0)
-
-						<div class="alert alert-secondary text-center" role="alert">
-						  <h4 class="alert-heading">No Messages Found</h4>
-						  <p>Don't Worry about that it's not like you dont have any friends or anything </p>
-							<p>It is just <strong>YOU</strong> are too cool too awesome too unique for them </p>
-							<p>Just kidding you will stay alone forever MWAHAHAHA :"D</p>
-						  <hr>
-						  <p class="mb-0">Forever Alone 2.0</p>
+						<div class="jumbotron text-center" style="background-color:#fff;">
+								<i class="far fa-frown mb-2" style="font-size:80px;color:#24A899"></i>
+								<h3 class="mb-4" style="font-family:raleway;font-weight:500;font-size:30px">No Messages Found</h3>
+								<p class="p-msg-error">Don't Worry about that it's not like you dont have any friends or anything </p>
+								<p class="p-msg-error">It is just <strong>YOU</strong> are too cool too awesome too unique for them </p>
+								<p class="mb-4 p-msg-error">Just kidding you will stay alone forever MWAHAHAHA</p>
+								<hr>
+						  	<p class="mb-0 p-msg-error">Forever Alone 2.0</p>
 						</div>
 
 						@endif
