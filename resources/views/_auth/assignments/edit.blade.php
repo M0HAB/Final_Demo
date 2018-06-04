@@ -58,6 +58,12 @@
 
                         </div>
 
+                        <div class="form-group">
+                            <label for="fullmark">Full Mark:</label>
+                            <input type="number" class="form-control" id="fullmark"
+                                   name="fullmark" value="{{$assignment->full_mark}}">
+                        </div>
+
                         <button type="submit" name="submit" class="btn btn-primary">Update</button>
                     </form>
 

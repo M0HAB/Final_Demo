@@ -77,6 +77,7 @@ class AssignmentsController extends Controller
             $assignment->title = $request->input('asstitle');
             $assignment->description = $request->input('assdescription');
             $assignment->deadline = $request->input('deadline');
+            $assignment->full_mark = $request->input('fullmark');
 
 
             //upload files
@@ -158,7 +159,6 @@ class AssignmentsController extends Controller
                     'asstitle' => 'required',
                     'assdescription' => 'required',
                     'deadline' => 'required',
-                    'module' => ['required', 'integer', Rule::in($modules_id_values)],
 
             ]);
             // Update Assignment
@@ -168,6 +168,8 @@ class AssignmentsController extends Controller
             $assignment->title = $request->input('asstitle');
             $assignment->description = $request->input('assdescription');
             $assignment->deadline = $request->input('deadline');
+            $assignment->full_mark = $request->input('fullmark');
+
 
             //upload files
             if ($request->hasFile('upload_file')) {
@@ -185,7 +187,7 @@ class AssignmentsController extends Controller
 
 
             if ($assignment->save()){
-                    return redirect()->back()->with('success', 'Department updated successfully')->withInput();
+                    return redirect()->back()->with('success', 'Assignment updated successfully')->withInput();
                 }else{
                     return redirect()->back()->with('error', 'Some error has occured please try resubmitting');
                 }
@@ -240,6 +242,7 @@ class AssignmentsController extends Controller
 
 
           //  dd($assdelivered->exists() );
+          
 
 
             return view('_auth.assignments.deliver', compact('assignment','assdelivered','course','module'));
@@ -304,14 +307,18 @@ class AssignmentsController extends Controller
 
     public function delivered($course_id, $module_id)
     {
+
         $authuser = Auth::user();
+        //$assignments = assignment::all();
         if ($authuser->role == 'instructor'){
             $assdelivered = DB::table('assdelivers')
                 ->leftjoin('assignments', 'assignments.id', '=', 'assdelivers.ass_id')
                 ->leftjoin('users', 'users.id', '=', 'assdelivers.user_id')
-                ->select('assdelivers.*', 'assignments.title', 'assignments.module_id', 'assignments.deadline', 'users.fname')
+                ->select('assdelivers.*', 'assignments.id as ass_id','assignments.title', 'assignments.module_id', 'assignments.deadline','assignments.full_mark', 'users.fname')
                 ->where('assignments.module_id', '=', $module_id)
                 ->get();
+
+
             return view('_auth.assignments.showdelivered')->with('assdelivered', $assdelivered);
 
         }elseif($authuser->role == 'student'){
@@ -322,13 +329,39 @@ class AssignmentsController extends Controller
                 ->where('assignments.module_id', '=', $module_id)
                 ->where('assdelivers.user_id', '=', $authuser->id)
                 ->get();
-            return view('_auth.assignments.showdelivered')->with('assdelivered', $assdelivered);
+
+            return view('_auth.assignments.showdelivered')->with('assdelivered',$assignments, $assdelivered);
         }else{
             return redirect()->route('user.dashboard')->with('error', 'Unauthorized Access');
         }
 
     }
+public function deliveredEdit($id){
 
+    $delivered = assdeliver::findOrFail($id);
+
+
+
+    return view('_auth.assignments.editdelivered',compact('delivered'));
+
+
+}
+public function deliveredUpdate(Request $request, $id){
+
+//dd($request);
+    $delivered = assdeliver::findOrFail($id);
+    //dd($delivered);
+    $delivered->comment = $request->input('comment');
+    $delivered->grade   = $request->input('grade');
+    if ($delivered->save()) {
+        return redirect()->back()->with('success', 'Delivered Assignment updated successfully');
+    }
+    else{
+
+        return redirect()->back()->with('error', 'Some error has occured please try resubmitting');
+    }
+
+}
 
 
 

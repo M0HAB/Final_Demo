@@ -24,6 +24,7 @@
                             <th>Description</th>
                             <th>File</th>
                             <th>Deadline</th>
+                            <th>Full Mark</th>
                             <th>Actions</th>
 
                         </tr>
@@ -56,6 +57,9 @@
                                 <td>
                                     {{{date('d-m-Y', strtotime($ass->deadline))}}}
                                 </td>
+                                <td>
+                                    {{$ass->full_mark}}
+                                </td>
 
                                 @if (Auth::user()->role == 'instructor')
                                     <td>
@@ -64,7 +68,7 @@
                                         <form action="{{ route('assignments.destroy', ['course_id' => $course->id, 'module_id' => $module->id, 'ass_id' => $ass->id])}}" method="POST">
                                             {{ csrf_field() }}
                                             <input type="hidden" name="_method" value="DELETE">
-                                            <button class="btn btn-group-sm btn-link" type="submit" onclick="alert('Confirm Delete')">
+                                            <button class="btn btn-group-sm btn-link" type="submit" onclick="return ConfirmDelete()">
                                                 <span class="far fa-trash-alt fa-lg fam-mod"></span>
                                             </button>
                                         </form>
@@ -84,7 +88,13 @@
                         @endforeach
                         </tbody>
                     </table>
+                    <script>
 
+                        function ConfirmDelete(){
+                            return confirm('Are you sure you ? THIS CANNOT BE UNDONE');
+                        }
+
+                    </script>
                 @endif
 
             </div>

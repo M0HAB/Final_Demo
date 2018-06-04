@@ -35,6 +35,11 @@
                                            name="deadline" value="">
                                 </div>
                                 <div class="form-group">
+                                    <label for="fullmark">Full Mark:</label>
+                                    <input type="number" class="form-control" id="fullmark"
+                                           name="fullmark" value="">
+                                </div>
+                                <div class="form-group">
                                     <label for="upload_file">Upload File (Optional)</label>
                                     <input class="form-control" type="file" name="upload_file" id="upload_file">
 

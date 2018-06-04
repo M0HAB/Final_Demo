@@ -8,7 +8,7 @@
     <!-- Start: Content -->
     <div class="content mt-5 mb-4">
         <div class="container">
-            <h1>Assignments Delivered </h1>
+            <h1>Assignments Delivered</h1>
             <br>
             @if (count($assdelivered)>0)
                 <div class="row justify-content-center">
@@ -18,11 +18,14 @@
                             <th>Module</th>
                             <th>Title</th>
                             <th>Student Name</th>
-                            <th>Answer</th>
+                            <th>Student Comment</th>
                             <th>File</th>
                             <th>Submitted Date</th>
                             <th>Status</th>
                             <th>Grade</th>
+                            <th>Dr Comment</th>
+                            <th>Actions</th>
+
 
                         </tr>
                         </thead>
@@ -75,6 +78,17 @@
 
                                     </td>
                                     <td>
+                                        <p> {{$delivered->grade ? $delivered->grade : "Ø"}} / {{$delivered->full_mark}} </p>
+
+                                    </td>
+
+                                    <td>
+                                        <p> {{$delivered->comment ? $delivered->comment : "No Comment "}} </p>
+
+
+                                    </td>
+                                    <td>
+                                        <button  class="btn btn-group-sm btn-link"><a href="{{route('assignmentdelivered.edit', ['assginment_id'=>$delivered->ass_id,'std_id'=>$delivered->user_id,'assdel_id'=>$delivered->id])}}"><i class="far fa-edit fa-lg fam-mod"></i> </a> </button>
 
 
                                     </td>

@@ -137,3 +137,5 @@ Route::get('Courses/{course_id}/Modules/{module_id}/assignment/{id}/deliver', 'A
 Route::post('Courses/{course_id}/Modules/{module_id}/AssignmentDeliver/', 'AssignmentsController@deliverstore')->name('assignment.deliverstore');
 Route::get('Courses/{course_id}/Modules/{module_id}/assignmentDelivered/', 'AssignmentsController@delivered')->name('assignment.delivered');
 
+Route::get('assginment/{assginment_id}/student/{std_id}/delivered/{assdel_id}', 'AssignmentsController@deliveredEdit')->name('assignmentdelivered.edit');
+Route::patch('assignmentDelivered/update/{id}', array( "as" => "assdelivered.update", "uses" => "AssignmentsController@deliveredUpdate"));
