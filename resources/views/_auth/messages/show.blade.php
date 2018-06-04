@@ -5,7 +5,8 @@
 	<!-- Start: Dashboard -->
   <div class="row">
     <div class="offset-lg-2 col-lg-8 col-sm-12 mb-4">
-
+  <div class="row" id="app">
+    <div class="col-lg-12 col-sm-12 mb-4">
       <div class="card">
         <h5 class="card-header chat-header">{{$friend->fname . ' ' . $friend->lname}}</h5>
         <div class="card-body" style="overflow-y: scroll;height:350px" v-chat-scroll>
@@ -52,7 +53,7 @@
   <script src="{{ asset('js/app.js') }}" charset="utf-8"></script>
   <script type="text/javascript">
   var app = new Vue({
-    el: '#content',
+    el: '#app',
     data: {
       message: '',
       channel: '{{$channel}}',
