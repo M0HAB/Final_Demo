@@ -3,7 +3,7 @@
 
 @section('content')
 	<!-- Start: Dashboard -->
-  <div class="row">
+  <div class="row" id="app">
     <div class="col-lg-12 col-sm-12 mb-4">
 
       <div class="card">
@@ -52,7 +52,7 @@
   <script src="{{ asset('js/app.js') }}" charset="utf-8"></script>
   <script type="text/javascript">
   var app = new Vue({
-    el: '#content',
+    el: '#app',
     data: {
       message: '',
       channel: '{{$channel}}',
