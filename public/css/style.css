@@ -70,7 +70,7 @@ p { margin: 0px;padding: 0px; }
 .dropdown-item { font-weight: 500; }
 [v-cloak] {display: none;}
 .jumbotron .p-msg-error {color: #777;}
-.dropdown-menu-custom {min-width: 16rem; max-height: 234px; overflow-y: scroll}
+.dropdown-menu-custom {min-width: 16rem; max-height: 234px; overflow-y: scroll;left: -110px;}
 .dropdown-menu-custom::-webkit-scrollbar {width: 4px;background-color: #fff}
 .dropdown-menu-custom::-webkit-scrollbar-thumb {border-radius: 2px; background-color: #CACAC9; box-shadow: inset 0 0 6px rgba(0, 0, 0, .3)}
 .dropdown-menu-custom::-webkit-scrollbar-track { border-radius: 2px;background-color: #fff}
