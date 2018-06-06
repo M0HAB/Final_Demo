@@ -1,6 +1,8 @@
   <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        
         <div class="container">
+            
             @if (Auth::check())
                 <a class="navbar-brand" href="{{ route('user.dashboard') }}">E-LMS</a>
             @else
@@ -23,10 +25,12 @@
                             <a class="nav-link" href="#"><i class="fas fa-bell"></i></a>
                         </li>
                         <li class="nav-item dropdown ml-1">
-                          <a class="nav-link" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                          <a class="nav-link" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="msg-dropdown" onclick="toggleArrow('arrow-up')">
                             <i class="fas fa-envelope"></i>
-                          </a>
-                          <div class="dropdown-menu dropdown-menu-custom" aria-labelledby="navbarDropdown">
+                          </a>         
+                          <i id="arrow-up" class="fas fa-caret-up" style="font-size:30px;position:absolute;top:24px;left:6px;color:#fff;height: 33px;"></i>
+                                       
+                          <div class="dropdown-menu dropdown-menu-custom" aria-labelledby="navbarDropdown">  
                             @php
                               $msgsNav = messageNav();
                             @endphp
@@ -45,6 +49,7 @@
                                   $msgNav->body = mb_substr($msgNav->body,0,15,'UTF-8').'...';
                                 }
                               @endphp
+                         
                             <ul class="list-group">
                                 <a class="rm-deco" href="{{route('messages.show', $msgUser->id)}}">
                                     <li class="list-group-item list-gitem-custom">
@@ -54,6 +59,7 @@
                                     </li>
                                 </a>
                             </ul>
+                        
                               {{-- <h6 class="dropdown-header">{{$msgUser->name}}</h6>
                               <a class="dropdown-item" href="{{route('messages.show', $msgUser->id)}}">{{$msgNav->body}}</a>
                               <div class="dropdown-divider"></div> --}}

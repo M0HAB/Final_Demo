@@ -16,3 +16,19 @@ toastr.options = {
     "showMethod": "fadeIn",
     "hideMethod": "fadeOut"
 }
+
+
+$(document).ready(function() {
+    $(window).click(function() {
+        $('#arrow-up').css('display', 'none');
+    });
+});
+
+function toggleArrow(id) {
+    var e = document.getElementById(id);    
+    if (e.style.display == "inline") {
+        e.style.display = "none";
+    } else {
+        e.style.display = "inline";
+    }
+}

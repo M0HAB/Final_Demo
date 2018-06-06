@@ -1,6 +1,6 @@
 @include('_partials._head')
 
-<body class="no-selection">
+<body id="my-body" class="no-selection">
     {{--  Navbar  --}}
     @include('_partials._navbar')
 
