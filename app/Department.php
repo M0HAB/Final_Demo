@@ -19,7 +19,12 @@ class Department extends Model
     ];
 
 
-    public function user(){
-        return $this->hasMany('App\User');
+    public function users(){
+        return $this->hasMany('App\User', 'dep_id');
+    }
+    public function getStudents()
+    {
+      $role_id = ('App\Role')::where('name', 'student')->first()->id;
+      return $this->users()->where('role_id', $role_id);
     }
 }

@@ -81,3 +81,61 @@ Route::group(['prefix' => 'messages'], function () {
   Route::get('/{id}', 'MessagesController@selectMessage')->name('messages.show');
 
 });
+
+Route::group(['prefix' => 'discussions'], function () {
+
+  Route::get('/', 'DiscussionController@index')->name('discussion.index');
+  Route::get('/read', 'DiscussionController@allRead')->name('discussion.read');
+  Route::get('/{id}/module/{module_order}', 'DiscussionController@show')->name('discussion.show');
+
+});
+
+
+Route::get('/test/{id1}/module/{id2}', function($id1, $id2){
+  echo $id1."    ,".$id2;
+  // echo ('App\Department')::find(1)->getStudents()->get();
+  // $Instructors = ('App\User')::getInstructors()->get();
+  // foreach ($Instructors as $inst) {
+  //   echo $inst->fname;
+  // }
+
+
+  //
+  // if (('App\User')::find(2)->isInstructor()){
+  //   echo "true";
+  // }else{
+  //   echo "false";
+  // }
+  // $discussion = ('App\Discussion')::find(1);
+  // $course = $discussion->course;
+  // $modules = $course->modules;
+  // $id =  $modules->where('module_order', 1)->first();
+  // $posts = $id->posts->where('id', 1)->first();
+  // echo $posts->replies;
+
+
+  // $module = ('App\Module')::find($id)->posts;
+  // foreach ($module as $post) {
+  //   echo $post->replies;
+  // }
+  // echo $module->posts();
+
+
+  // echo ('App\Role')::where('name', 'instructor')->first()->id;
+  // $votes =  ('App\Reply')::find(1)->whoVerified;
+  // foreach ($votes as $vote) {
+  //   if($vote->user->id == ('App\Role')::where('name', 'instructor')->first()->id)
+  //   echo $vote->user->fname."<br/>";
+  // }
+  // $users =  ('App\Reply')::find(1)->whoApproved();
+  // if($users){
+  //   foreach ($users as $user) {
+  //     echo $user->id;
+  //   }
+  // }else{
+  //   echo "not verified";
+  // }
+
+
+  // echo Auth::user()->role->name == "Instructor";
+});

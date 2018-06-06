@@ -7,11 +7,13 @@
 	<div class="content mt-5 mb-4">
 		<div class="container">
         <h1>Departments
+					@if(canCreate('Department'))
 					<a href="{{ route('department.create')}}">
 						<button class="btn btn-primary" href="{{ route('department.create')}}" title="Create">
 							<span class="fas fa-plus"></span> Create Department
 						</button>
 					</a>
+					@endif
 				</h1>
 			<div class="row justify-content-center">
                 @if (count($departments)>0)

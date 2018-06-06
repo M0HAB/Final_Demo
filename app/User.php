@@ -60,15 +60,29 @@ class User extends Authenticatable
         }
         return true;
     }
+    public function isInstructor()
+    {
+      return ($this->role->name == 'Instructor' || $this->role->name == 'instructor');
+    }
+    public static function getStudents()
+    {
+      $role_id = ('App\Role')::where('name', 'student')->first()->id;
+      return User::where('role_id', $role_id);
+    }
+    public static function getInstructors()
+    {
+      $role_id = ('App\Role')::where('name', 'instructor')->first()->id;
+      return User::where('role_id', $role_id);
+    }
 
   	public function department(){
-  		return $this->belongsTo('App\Department');
+  		return $this->belongsTo('App\Department', 'dep_id');
     }
 
     public function role(){
 	     return $this->belongsTo('App\Role');
     }
-    
+
     //Function to get messages between this user & friend ($friend_id)
     public function messages($friend_id)
     {

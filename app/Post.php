@@ -25,8 +25,8 @@ class Post extends Model
   {
     return $this->belongsTo('App\Module', 'module_id');
   }
-  public function reply()
+  public function replies()
   {
-    return $this->hasMany('App\Reply', 'post_id');
+    return $this->hasMany('App\Reply', 'post_id')->orderBy('approved','desc');
   }
 }

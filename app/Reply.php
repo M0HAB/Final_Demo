@@ -25,20 +25,28 @@ class Reply extends Model
   {
     return $this->hasMany('App\Vote', 'reply_id');
   }
-  public function voteCount()
+
+  public function whoApproved()
   {
-    return $this->hasMany('App\Vote', 'reply_id')->count();
-  }
-  public function whoVerified()
-  {
-    $votes = $this->votes;
-    $verifiers = array();
-    foreach ($votes as $vote) {
-      if($vote->user->role_id == ('App\Role')::where('name', 'instructor')->id){
-        $verifiers.push($vote->user);
+    if($this->approved == true){
+      //get the votes Object
+      $votes = $this->votes;
+      //init an empty array
+      $approvers = array();
+      //loop on votes Object
+      foreach ($votes as $vote ) {
+        //check if the vote user is an instructor if he is add user object into array
+        if($vote->user->isInstructor()){
+            array_push($approvers,$vote->user);
+          }
       }
+      //return array
+      return $approvers;
+      //to call use the whoApproved() because it returns an array not a class;
     }
-    return $verifiers;
+    return [];
+    //return empty array to get to count of 0 on call
+
   }
 
 }
