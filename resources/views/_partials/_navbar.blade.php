@@ -50,7 +50,14 @@
                                 }
                               @endphp
                          
-                            <ul class="list-group">
+                            <ul class="list-group list-group-scroll">
+                                    <a class="rm-deco" href="{{route('messages.show', $msgUser->id)}}">
+                                            <li class="list-group-item list-gitem-custom">
+                                                <span class="username-msg">mohab</span>
+                                                <span class="msg-time float-right">{{$msgNav->created_at->diffForHumans()}}</span>
+                                                <span class="lb drop-msg-body"><i class="fas fa-caret-right"></i> jdasd</span>
+                                            </li>
+                                        </a>
                                 <a class="rm-deco" href="{{route('messages.show', $msgUser->id)}}">
                                     <li class="list-group-item list-gitem-custom">
                                         <span class="username-msg">{{$msgUser->name}}</span>
