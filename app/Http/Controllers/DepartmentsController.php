@@ -33,7 +33,7 @@ class DepartmentsController extends Controller
         }else{
             return redirect()->route('user.dashboard')->with('error', 'Unauthorized Access');
         }
-        
+
     }
 
     /**
@@ -42,8 +42,8 @@ class DepartmentsController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function create()
-    {   
-       
+    {
+
         if (canCreate($this->controllerName)){
             // Return the create view with Users from DB to use in ComboBox
             $users = Role::find(Role::where('name', 'Instructor')->first()->id)->user;
@@ -100,17 +100,16 @@ class DepartmentsController extends Controller
         // Find Department Head from Users by Dep_Head_ID
         $user =  User::find($department->Dep_Head_ID);
         $authuser = Auth::user();
-        if ($authuser->role_id == Role::where('name', 'Instructor')->first()->id){
-            // Count number of Students in that Department
-            $student_role_id = Role::where('name', 'Student')->first()->id;
-            $students = count(User::where(['dep_id' => $id, 'role_id' => $student_role_id])->get());
+        if ($authuser->isInstructor()){
+            // get number of Students in that Department
+            $student_count = count($department->getStudents()->get());
             // Append count of Students to department variable
-            $department['student_count'] = $students;
+            $department['student_count'] = $student_count;
         }
-        
+
         // Append name of Deapartment Head to department variable
         $department['head_name'] = $user->fname . ' ' . $user->lname;
-        
+
         // Return View with the data
         return view('_auth.department.view')->with('department', $department);
     }
@@ -122,14 +121,14 @@ class DepartmentsController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
-    {   
-        
+    {
+
         if (canUpdate($this->controllerName)){
             // Get Department BY id
             $department = Department::find($id);
             if ($department->status){
                 // Get users from DB where role is Instructor
-                $users = Role::find(Role::where('name', 'Instructor')->first()->id)->user;
+                $users = User::getInstructors()->get();
                 // Return the Edit view with Users from DB to use in ComboBox
                 return view('_auth.department.edit')->with('users', $users)->with('department', $department);
             }else{
@@ -138,7 +137,7 @@ class DepartmentsController extends Controller
         }else{
             return redirect()->route('user.dashboard')->with('error', 'Unauthorized Access');
         }
-        
+
     }
 
     /**
@@ -187,7 +186,7 @@ class DepartmentsController extends Controller
      */
     public function destroy($id)
     {
-        
+
         if (canDelete($this->controllerName)){
             $department = Department::find($id);
             $department->status = false;
@@ -199,6 +198,6 @@ class DepartmentsController extends Controller
         }else{
             return redirect()->route('user.dashboard')->with('error', 'Unauthorized Access');
         }
-        
+
     }
 }
