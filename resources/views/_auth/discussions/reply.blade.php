@@ -4,7 +4,7 @@
   @endif
   ">
     <h4 class="card-title">
-      <img src="http://via.placeholder.com/50x50" class="rounded-circle mr-2">
+      <img src="/images/50x50.png" class="rounded-circle mr-2">
       <a href="#"
       @if ($reply->approved)
       class="text-white"
@@ -14,7 +14,7 @@
   </div>
   <div class="card-body">
     <p class="card-text">
-      {{$reply->body}}
+      {!! $reply->body !!}
     </p>
   </div>
   <div class="card-footer">

@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Discussion;
 use App\Vote;
 use App\Reply;
+use App\Post;
 use Auth;
 class DiscussionController extends Controller
 {
@@ -21,48 +22,25 @@ class DiscussionController extends Controller
       // return view('_auth.discussions.index');
       return "yo";
     }
-    public function show($id,$module_order)
+    public function show($id)
     {
+      if(isset($_GET['module_order']))
+      {
+        $module_order = $_GET['module_order'];
+      }else{
+        $module_order = 1;
+      }
       $discussion = Discussion::find($id);
+      if(!$discussion){
+        return "404";
+      }
       $module_data = $discussion->course->modules->where('module_order', $module_order)->first();
-      // return $module->posts;
-      return view('_auth.discussions.show')->with('discussion', $discussion)->with('module_data', $module_data);
-    }
-    public function setVote(Request $request)
-    {
-      $vote = Vote::where([
-        'reply_id' => $request->id,
-        'user_id' => Auth::user()->id
-      ])->first();
-
-      $reply = Reply::find($request->id);
-
-      if (!$vote){
-        $vote = Vote::create([
-          'reply_id' => $request->id,
-          'user_id' => Auth::user()->id
-        ]);
-        if (Auth::user()->isInstructor()){
-          if ( $reply->approved == 0  ){
-            $reply->approved = 1;
-            $reply->save();
-          }
-
-
-        }
-        return view('_auth.discussions.reply')->with('reply', $reply);
+      if ($module_data){
+        return view('_auth.discussions.show')->with('discussion', $discussion)->with('module_data', $module_data);
+      }else{
+        return redirect()->back()->with('error', 'Module Not Found');
       }
-
-      ($vote->delete())? ($set = 1): ($set = 0);
-      if (Auth::user()->isInstructor()){
-        if (count($reply->whoApproved()) == 0){
-          $reply->approved = 0;
-          $reply->save();
-        }
-
-      }
-      return view('_auth.discussions.reply')->with('reply', $reply);
-
-
     }
+
+
 }
