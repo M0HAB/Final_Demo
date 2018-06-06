@@ -22,6 +22,10 @@ $(document).ready(function() {
     $(window).click(function() {
         $('#arrow-up').css('display', 'none');
     });
+    
+    $('.navbar-nav li a:not(#msg-dropdown)').click(function() {
+        $('#arrow-up').css('display', 'none');
+    });
 });
 
 function toggleArrow(id) {
@@ -31,4 +35,6 @@ function toggleArrow(id) {
     } else {
         e.style.display = "inline";
     }
+
+   
 }
