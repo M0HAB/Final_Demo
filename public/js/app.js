@@ -37982,9 +37982,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       return 'alert-' + this.color;
     }
   },
-  mounted: function mounted() {
-    console.log('Component mounted.');
-  }
+  mounted: function mounted() {}
 });
 
 /***/ }),

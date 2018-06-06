@@ -86,13 +86,41 @@ Route::group(['prefix' => 'discussions'], function () {
 
   Route::get('/', 'DiscussionController@index')->name('discussion.index');
   Route::get('/read', 'DiscussionController@allRead')->name('discussion.read');
-  Route::get('/{id}/module/{module_order}', 'DiscussionController@show')->name('discussion.show');
+  Route::get('/{id}', 'DiscussionController@show')->name('discussion.show');
 
 });
+use Illuminate\Http\Request;
+Route::post('/testquil',function (Request $request)
+{
+  $details = $request->body;
+  $doms = new \domdocument();
+  $doms->loadHtml($details, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
+  $images = $doms->getelementsbytagname('img');
+  //to prevent duplicate images from being stored
+  $arr = array();
+  foreach ($images as $k => $img) {
+    $data = $img->getattribute('src');
+    list($type, $data) = explode(';', $data);
+    list(, $data) = explode(',', $data);
 
+    $decode_data = base64_decode($data);
+    // return $decode_data;
+    // return ();
+    $size = (strlen($decode_data)/1024);
+    if($size > 1024 ){
+      return 0;
+    }
+    return $size;
+    $image_name= time().$k.'.png';
+    $path = public_path() . '\images\\' . $image_name;
+    file_put_contents($path, $decode_data);
+    return $image_name;
 
-Route::get('/test/{id1}/module/{id2}', function($id1, $id2){
-  echo $id1."    ,".$id2;
+  }
+});
+Route::get('/test/{id1}', function($id1){
+  echo ('App\Module')::find($_GET['module']);
+  echo $id1."    ,".$_GET['type'];
   // echo ('App\Department')::find(1)->getStudents()->get();
   // $Instructors = ('App\User')::getInstructors()->get();
   // foreach ($Instructors as $inst) {

@@ -38,7 +38,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $hidden = [
-        'password', 'remember_token',
+        'password', 'remember_token', 'updated_at', 'role_id', 'role', 'permission'
     ];
 
     public function setFnameAttribute($value)
