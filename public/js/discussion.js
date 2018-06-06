@@ -22,6 +22,7 @@ var quill = new Quill('#req_body', {
       toolbar: toolbarOptions
     },
     placeholder: "Type here...",
+    theme: 'snow'
 });
 
 //function appliend onClick of Vote button in discussion, make ajax call to save vote and receive new reply data
