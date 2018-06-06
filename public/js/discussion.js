@@ -107,8 +107,8 @@ $('#req').on('show.bs.modal', function (event) {
 
 function view_replies(id) {
   //change to get lama el net yege we shof el auth ezay
-  axios.post('/api/'+id+'/replies',{
-    api_token: api_token,
+  axios.get('/api/'+id+'/replies',{
+    params:{api_token: api_token}
   })
   .then( (response) => {
     $('#replies_'+id).html(response.data);
