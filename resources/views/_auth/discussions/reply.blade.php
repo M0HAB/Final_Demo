@@ -38,16 +38,23 @@
   </div>
   <div class="card-footer">
     <button type="button" id="reply_{{$reply->id}}" class="btn btn-info btn-lg rounded-0 mr-3" title="Upvote" onclick="vote({{$reply->id}})">
+      @if(Auth::user()->voted($reply))
+      <li class="fas fa-arrow-down"></li>
+      @else
       <li class="fas fa-arrow-up"></li>
+      @endif
     </button>
     <button type="button" class="btn btn-success btn-lg rounded-0"  id="approve_{{$reply->id}}" title="Approve"
       @if(!Auth::user()->isInstructor())
-        disabled
+        disabled>
+        <span class="fas fa-check"></span>
       @else
-      onclick="vote({{$reply->id}})"
+      onclick="vote({{$reply->id}})">
+        @if(Auth::user()->voted($reply))
+        <span class="fas fa-times"></span>
+        @else
+        <span class="fas fa-check"></span>
+        @endif
       @endif
-    >
-      <span class="fas fa-check"></span>
-      </span>
     </button>
   </div>
