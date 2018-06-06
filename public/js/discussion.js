@@ -39,6 +39,7 @@ function vote(id){
     console.log(error);
   });
 }
+
 //bind some data to the opened modal from the create post button
 $('#req').on('show.bs.modal', function (event) {
   var button = $(event.relatedTarget);
@@ -50,8 +51,7 @@ $('#req').on('show.bs.modal', function (event) {
   }
   var modal = $(this);
   modal.find('#modal_title').text("Create new "+type);
-  modal.find('#submit_req').on("click", function () {
-
+  modal.find('#submit_req').off('click').on("click", function (event) {
     if(type == "Post"){
       var post_body = quill.container.firstChild.innerHTML;
       var title = $("#req_title").val();

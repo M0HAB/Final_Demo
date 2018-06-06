@@ -2,7 +2,7 @@
 @section('title', 'Discussions - '.$discussion->course->title)
 
 @section('stylesheets')
-<link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+<link href="{{asset('css/quill.snow.css')}}" rel="stylesheet">
 @endsection
 @section('content')
 <!-- Start: Discussions -->
