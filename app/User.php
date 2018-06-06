@@ -99,34 +99,16 @@ class User extends Authenticatable
       }
 
     }
-    // public function latestWithFriend($friend_id){
-    //   if ($friend_id !== $this->id){
-    //     $sent = $this->hasMany('App\Message' , 'user_id')->where('friend_id', $friend_id)->latest();
-    //     $received = $this->hasMany('App\Message' , 'friend_id')->where('user_id', $friend_id)->latest();
-    //     $result = $received->union($sent)->latest()->first();
-    //     return $result;
-    //   }
-    // }
+
     public function msg_list(){
       $sent = $this->hasMany('App\Message', 'user_id')
       ->whereRaw('`messages`.`id` IN (SELECT MAX(`messages`.`id`) FROM `messages` GROUP BY `messages`.`friend_id`)');
       $received = $this->hasMany('App\Message', 'friend_id')
       ->whereRaw('`messages`.`id` IN (SELECT MAX(`messages`.`id`) FROM `messages` GROUP BY `messages`.`user_id`)');
       $result = $received->union($sent)->orderBy('created_at', 'asc')->limit(8);
-      // $test = $this->hasMany('App\Message', 'user_id')->whereRaw('`messages`.`id` IN (SELECT MAX(`messages`.`id`) FROM `messages` GROUP BY `messages`.`friend_id`)');
       return $result;
     }
-    //
-    // public function lastSent($friend_id)
-    // {
-    //   return $this->hasMany('App\Message' , 'user_id')->where('friend_id', $friend_id)->latest()->first();
-    // }
-    //
-    // public function lastReceived($friend_id)
-    // {
-    //   //Get Received messages of this user & friend ($friend_id)
-    //   return $this->hasMany('App\Message' , 'friend_id')->where('user_id', $friend_id)->latest()->first();
-    // }
+
     public function posts()
     {
       return $this->hasMany('App\Post', 'user_id');
