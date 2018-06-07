@@ -36,10 +36,10 @@
                                         {{$delivered->module_id}} {{--module name--}}
                                     </td>
                                     <td>
-                                        {{$delivered->title}}
+                                        {{$delivered->title ? $delivered->title : "No title" }}
                                     </td>
                                     <td>
-                                        {{$delivered->fname}}
+                                        {{$delivered->fname ? $delivered->fname : "No name"}}
                                     </td>
                                     <td>
                                         {{$delivered->answer ? $delivered->answer : 'No Answer'}}

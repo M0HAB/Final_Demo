@@ -119,7 +119,7 @@ Route::get('mohab', 'TestController@index')->name('test');
          'as' => 'course.updateModule'
      ]);
 
-         //grades
+         //grades book
 
      Route::resource('{course_id}/gradesBook', 'GradesBookController',['names'=>[
 
@@ -128,6 +128,17 @@ Route::get('mohab', 'TestController@index')->name('test');
          'store'=>'course.gradeBook.store',
          'edit'=>'course.gradeBook.edit',
          'update'=>'course.gradeBook.update'
+     ]]);
+
+     //student grades
+
+     Route::resource('{course_id}/studentGrades', 'studentGradesController',['names'=>[
+
+         'index'=>'course.studentGrades.index',
+         'create'=>'course.studentGrades.create',
+         'store'=>'course.studentGrades.store',
+         'edit'=>'course.studentGrades.edit',
+         'update'=>'course.studentGrades.update'
      ]]);
 
 

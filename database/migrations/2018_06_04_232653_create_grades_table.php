@@ -18,11 +18,20 @@ class CreateGradesTable extends Migration
             $table->increments('id');
 
             $table->float('finalgrade')->unsigned()->nullable();
+            $table->float('final_fullmark')->unsigned()->nullable();
+
             $table->float('midterm')->unsigned()->nullable();
+            $table->float('midterm_fullmark')->unsigned()->nullable();
+
             $table->float('practical')->unsigned()->nullable();
+            $table->float('practical_fullmark')->unsigned()->nullable();
 
             $table->integer('user_id')->unsigned();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+
+            $table->integer('course_id')->unsigned();
+            $table->foreign('course_id')->references('id')->on('courses')->onDelete('cascade');
+
 
             $table->timestamps();
         });

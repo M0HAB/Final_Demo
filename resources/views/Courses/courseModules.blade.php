@@ -59,11 +59,13 @@
                                 <p>
                                     <a href="{{ route('course.getNewModuleForm', ['id' => $course->id]) }}" class="mt-2 text-capitalize"><i class="fa fa-plus"></i> add new module</a>
                                 </p>
+                                @if (Auth::user()->role == 'instructor')
                                 <p>
-                                    <a href="{{ route('course.gradeBook.index', ['id' => $course->id]) }}" class="ml-1"><i class="fas fa-cogs mr-1"></i>Grades Book Setting</a>
+                                    <a href="{{ route('course.gradeBook.index', ['id' => $course->id]) }}" class="ml-1"><i class="fas fa-cogs mr-1"></i>Grades book setting</a>
                                 </p>
+                                @endif
                                 <p>
-                                    <a href="#" class="ml-1"><i class="fas fa-graduation-cap mr-1"></i>Student Grades</a>
+                                    <a href="{{ route('course.studentGrades.index', ['id' => $course->id]) }}" class="ml-1"><i class="fas fa-graduation-cap mr-1"></i>Student grades</a>
                                 </p>
 
                             </div>

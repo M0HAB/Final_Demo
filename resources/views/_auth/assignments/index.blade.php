@@ -24,7 +24,7 @@
                             <th>Description</th>
                             <th>File</th>
                             <th>Deadline</th>
-                            <th>Full Mark (Total 10)</th>
+                            <th>Full Mark</th>
                             <th>Actions</th>
 
                         </tr>
