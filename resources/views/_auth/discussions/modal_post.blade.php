@@ -1,4 +1,4 @@
-<!-- The Modal -->
+<!-- newRecord Modal -->
 <div class="modal fade" id="req" tabindex="-1" role="dialog" aria-labelledby="post" aria-hidden="true">
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">

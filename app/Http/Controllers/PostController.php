@@ -106,4 +106,15 @@ class PostController extends Controller
             $post = Post::find($newRecord->id);
             return view('_auth.discussions.post')->with('post', $post);
       }
+
+      public function delete(Request $request)
+      {
+        $post = Post::find($request->id);
+        if ($post->user_id == Auth::user()->id){
+          if($post->delete()){
+            return 1;
+          }
+        }
+        return 0;
+      }
 }

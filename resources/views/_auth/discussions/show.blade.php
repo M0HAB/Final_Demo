@@ -70,6 +70,8 @@
 
   </div>
   @include('_auth.discussions.modal_post')
+  @include('_auth.discussions.modal_confirm')
+
 </div> <!-- End: Discussion -->
 @endsection
 @section('scripts')
@@ -81,4 +83,5 @@
       discussion_id = {{$discussion->id}};
 </script>
 <script src="{{asset('js/discussion.js')}}" charset="utf-8"></script>
+<script src="{{asset('js/modal_confirm.js')}}" charset="utf-8"></script>
 @endsection

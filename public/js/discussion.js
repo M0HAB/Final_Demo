@@ -28,13 +28,13 @@ var quill = new Quill('#req_body', {
 
 //function appliend onClick of Vote button in discussion, make ajax call to save vote and receive new reply data
 //id: reply id
-function vote(id){
+function vote(id,post_id){
   axios.post('/api/vote/'+id+'/set',{
     id: id,
     api_token : api_token
   })
   .then( (response) => {
-    $('#reply_body_'+id).html(response.data);
+    $('#post_footer_'+post_id).html(response.data);
   })
   .catch(function (error) {
     console.log(error);
@@ -96,7 +96,7 @@ $('#req').on('show.bs.modal', function (event) {
         }else{
           quill.container.firstChild.innerHTML = "";
           quill.container.lastChild.innerHTML = "";
-          $('#replies_'+id).html(response.data);
+          $('#post_footer_'+id).html(response.data);
           $("#req .close").click();
           toastr.success("Reply Submitted Successfully");
         }
@@ -116,7 +116,7 @@ function view_replies(id) {
     params:{api_token: api_token}
   })
   .then( (response) => {
-    $('#replies_'+id).html(response.data);
+    $('#post_footer_'+id).html(response.data);
     $('#btn_replies_'+id).removeClass("btn-primary");
     $('#btn_replies_'+id).addClass("btn-dark");
     $('#btn_replies_'+id).text("Add Reply");

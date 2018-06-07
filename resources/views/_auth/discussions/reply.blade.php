@@ -1,3 +1,4 @@
+<div id="reply_container_{{$reply->id}}">
   <div class="card-body
   @if ($reply->approved)
   bg-success text-white
@@ -10,6 +11,19 @@
       class="text-white"
       @endif
       >{{$reply->user->fname.' '.$reply->user->lname}}</a>
+      <a href="JavaScript:Void(0);" class="
+      @if($reply->approved)
+      text-white
+      @else
+      text-dark
+      @endif
+      float-right" title="options" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <span class="fas fa-ellipsis-h"></span>
+      </a>
+      <div class="dropdown-menu dropdown-menu-right mt-0" aria-labelledby="optionMenu">
+        <button class="dropdown-item" type="button">Edit</button>
+        <button class="dropdown-item" data-toggle="modal" data-target="#confirm" data-type="reply" data-id="{{$reply->id}}" data-post="{{$reply->post->id}}" type="button">Delete</button>
+      </div>
     </h4>
   </div>
   <div class="card-body">
@@ -37,7 +51,7 @@
     </p>
   </div>
   <div class="card-footer">
-    <button type="button" id="reply_{{$reply->id}}" class="btn btn-info btn-lg rounded-0 mr-3" title="Upvote" onclick="vote({{$reply->id}})">
+    <button type="button" id="reply_{{$reply->id}}" class="btn btn-info btn-lg rounded-0 mr-3" title="Upvote" onclick="vote({{$reply->id}},{{$reply->post->id}})">
       @if(Auth::user()->voted($reply))
       <li class="fas fa-arrow-down"></li>
       @else
@@ -49,7 +63,7 @@
         disabled>
         <span class="fas fa-check"></span>
       @else
-      onclick="vote({{$reply->id}})">
+      onclick="vote({{$reply->id}},{{$reply->post->id}})">
         @if(Auth::user()->voted($reply))
         <span class="fas fa-times"></span>
         @else
@@ -58,3 +72,4 @@
       @endif
     </button>
   </div>
+</div>

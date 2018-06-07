@@ -1,13 +1,22 @@
-<div class="card mb-5" id="post_body_{{$post->id}}">
+<div class="card mb-5" id="post_container_{{$post->id}}">
 <div class="card-body">
   <h4 class="card-title">
     <img src="/images/50x50.png" class="rounded-circle mr-2">
     <a href="#">{{$post->user->fname.' '.$post->user->lname}}</a>
+      @if(Auth::user()->id == $post->user_id )
+      <a href="JavaScript:Void(0);" class="text-dark float-right" title="options" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <span class="fas fa-ellipsis-h"></span>
+      </a>
+      <div class="dropdown-menu dropdown-menu-right mt-0" aria-labelledby="optionMenu">
+        <button class="dropdown-item"  type="button">Edit</button>
+        <button class="dropdown-item" data-toggle="modal" data-target="#confirm" data-id="{{$post->id}}" data-type="post" type="button">Delete</button>
+      </div>
+      @endif
   </h4>
   <h5><a href="#">{{$post->title}}</a></h5>
   <p class="card-text">{!! $post->body !!}</p>
 </div>
-<div class="card-footer">
+<div class="card-footer" id="post_footer_{{$post->id}}">
   <div id="before-1" class="row">
     <div class="col-md-auto">
       <div class="alert alert-secondary text-center" role="alert">
@@ -32,9 +41,6 @@
   </div>
 
 
-  <div id="replies_{{$post->id}}">
-
-  </div>
 
 </div>
 </div>
