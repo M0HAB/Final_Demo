@@ -118,25 +118,7 @@ ul li .rm-deco {text-decoration: none}
 .close-btn:focus {outline: none}
 .text-area-reply {resize: none;font-size: 16px;}
 .modal-footer-custom {border: none}
-.btn-scroll-custom {
-    display: none;
-    position: fixed;
-    top: 710px;
-    right: 50px;
-    width: 40px;
-    height: 40px;
-    border-radius: 20px;
-    line-height: 40px;
-    text-align: center;
-    background-color: #2C3E50;
-    color: #fff;
-    z-index: 1000;
-}
-
-.btn-scroll-custom:hover {
-    background-color: #fff;
-    color: #2C3E50;
-    border: 1px solid #2C3E50;
-}
-
+.btn-scroll-custom {display: none;position: fixed;
+top: 705px;right: 6%;width: 40px;height: 40px;border-radius: 20px;line-height: 40px;text-align: center;background-color: #2C3E50;color: #fff;z-index: 1000;}
+.btn-scroll-custom:hover {background-color: #fff;color: #2C3E50;border: 1px solid #2C3E50;}
 .show {display: inline-block;}
