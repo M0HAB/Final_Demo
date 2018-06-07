@@ -75,7 +75,7 @@ Route::group(['prefix' => 'messages'], function () {
 Route::group(['prefix' => 'discussions'], function () {
 
   Route::get('/', 'DiscussionController@index')->name('discussion.index');
-  Route::get('/read', 'DiscussionController@allRead')->name('discussion.read');
   Route::get('/{id}', 'DiscussionController@show')->name('discussion.show');
+  
 
 });

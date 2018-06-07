@@ -1,3 +1,4 @@
+
 //define toolbarOptions for quill WYSIWYG text editor
 var toolbarOptions = [
   ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
@@ -27,13 +28,13 @@ var quill = new Quill('#req_body', {
 
 //function appliend onClick of Vote button in discussion, make ajax call to save vote and receive new reply data
 //id: reply id
-function vote(id){
+function vote(id,post_id){
   axios.post('/api/vote/'+id+'/set',{
     id: id,
     api_token : api_token
   })
   .then( (response) => {
-    $('#reply_body_'+id).html(response.data);
+    $('#post_footer_'+post_id).html(response.data);
   })
   .catch(function (error) {
     console.log(error);
@@ -51,6 +52,7 @@ $('#req').on('show.bs.modal', function (event) {
   }
   var modal = $(this);
   modal.find('#modal_title').text("Create new "+type);
+  modal.find('#submit_req').text("Send "+type);
   modal.find('#submit_req').off('click').on("click", function (event) {
     if(type == "Post"){
       var post_body = quill.container.firstChild.innerHTML;
@@ -71,6 +73,8 @@ $('#req').on('show.bs.modal', function (event) {
           quill.container.firstChild.innerHTML = "";
           quill.container.lastChild.innerHTML = "";
           $("#posts").append(response.data);
+          $("#req .close").click();
+          toastr.success("Post Submitted Successfully");
         }
 
       })
@@ -92,7 +96,9 @@ $('#req').on('show.bs.modal', function (event) {
         }else{
           quill.container.firstChild.innerHTML = "";
           quill.container.lastChild.innerHTML = "";
-          $('#replies_'+id).html(response.data);
+          $('#post_footer_'+id).html(response.data);
+          $("#req .close").click();
+          toastr.success("Reply Submitted Successfully");
         }
 
       })
@@ -106,12 +112,11 @@ $('#req').on('show.bs.modal', function (event) {
 
 
 function view_replies(id) {
-  //change to get lama el net yege we shof el auth ezay
-  axios.post('/api/'+id+'/replies',{
-    api_token: api_token,
+  axios.get('/api/'+id+'/replies',{
+    params:{api_token: api_token}
   })
   .then( (response) => {
-    $('#replies_'+id).html(response.data);
+    $('#post_footer_'+id).html(response.data);
     $('#btn_replies_'+id).removeClass("btn-primary");
     $('#btn_replies_'+id).addClass("btn-dark");
     $('#btn_replies_'+id).text("Add Reply");
@@ -129,3 +134,45 @@ function view_replies(id) {
     console.log(error);
   });
 }
+
+$(":not('#discussionSearch')").click(function(){
+  $('#data').hide();
+});
+
+$('#discussionSearch').keyup(function (key) {
+  if($(this).val().length > 0 && ( key.keyCode == 32 || key.keyCode == 13 || key.keyCode == 8)){
+
+    $('#data').show();
+    axios.get('/api/'+discussion_id+'/search',
+    {
+      params:{
+        api_token: api_token,
+        query: $(this).val()
+      }
+    })
+    .then( (response) => {
+      var hasdata = false;
+      if(response.data != 0){
+        response.data.forEach(element => {
+          element.body = $(element.body).not('img').text();
+          // console.log(element.body);
+          if(element.body){
+            hasdata = true;
+            $('#data').html(
+              '<a class="dropdown-item" target="_blank" href="/discussions/'+discussion_id+'?post='+element.id+'">'+element.body+'</a>'
+            );
+          }
+        });
+      }
+      if(!hasdata){
+        $('#data').html(
+          '<p class="text-secondary ml-2">No match</p>'
+        );
+      }
+
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+  }
+})

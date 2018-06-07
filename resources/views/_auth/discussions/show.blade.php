@@ -9,13 +9,19 @@
 <div class="row">
 
   <div class="col-lg-4 col-sm-12">
-    <div class="card">
+    <div class="card" id="left_bar">
       <div class="card-header">
         <h5 class="card-title">
           <span class="fas fa-search"></span> Search for a post
         </h5>
         <div class="form-group">
-          <input type="text" class="form-control" id="discussionSearch" placeholder="Search here.." name="discussionSearch">
+          <div class="dropdown" id="search_containers">
+
+            <input type="text" class="form-control" id="discussionSearch" placeholder="Search here.." name="discussionSearch"  aria-expanded="false">
+            <div class="dropdown-menu w-100" id="data" aria-labelledby="discussionSearch">
+
+            </div>
+          </div>
         </div>
       </div>
       <div class="card-body">
@@ -64,6 +70,8 @@
 
   </div>
   @include('_auth.discussions.modal_post')
+  @include('_auth.discussions.modal_confirm')
+
 </div> <!-- End: Discussion -->
 @endsection
 @section('scripts')
@@ -75,4 +83,5 @@
       discussion_id = {{$discussion->id}};
 </script>
 <script src="{{asset('js/discussion.js')}}" charset="utf-8"></script>
+<script src="{{asset('js/modal_confirm.js')}}" charset="utf-8"></script>
 @endsection

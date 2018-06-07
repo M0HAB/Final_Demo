@@ -4,9 +4,6 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Discussion;
-use App\Vote;
-use App\Reply;
-use App\Post;
 use Auth;
 class DiscussionController extends Controller
 {
@@ -24,6 +21,10 @@ class DiscussionController extends Controller
     }
     public function show($id)
     {
+      if(isset($_GET['post'])){
+        $post = Discussion::find($id)->posts()->where('id', $_GET['post'])->first();
+        return view('_auth.discussions.show_post')->with('post', $post);
+      }
       if(isset($_GET['module_order']))
       {
         $module_order = $_GET['module_order'];
@@ -40,6 +41,10 @@ class DiscussionController extends Controller
       }else{
         return redirect()->back()->with('error', 'Module Not Found');
       }
+    }
+    public function searchPosts($id)
+    {
+        return Discussion::find($id)->posts()->whereRaw('body LIKE "%'.$_GET['query'].'%"')->get()->toJson();
     }
 
 

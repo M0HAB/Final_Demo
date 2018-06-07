@@ -19,6 +19,8 @@ Route::middleware('auth:api')->group(function () {
   Route::post('/messages/{id}/read', 'MessagesController@readFromUser');
   Route::post('vote/{id}/set', 'ReplyController@setVote');
   Route::post('/newRecord', 'PostController@store');
-  //change to get lama el net yege we shof el auth ezay
-  Route::post('/{id}/replies', 'PostController@loadReplies');
+  Route::post('/post/delete', 'PostController@delete');
+  Route::post('/reply/delete', 'ReplyController@delete');
+  Route::get('/{id}/replies', 'PostController@loadReplies');
+  Route::get('/{id}/search', 'DiscussionController@searchPosts');
 });
