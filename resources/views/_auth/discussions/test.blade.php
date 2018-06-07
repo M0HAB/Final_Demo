@@ -80,7 +80,7 @@
             </div>
             <div class="row">
                 <div class="col-lg-12 col-sm-12">
-                    <button id="create-post" class="btn btn-success mb-3 float-right"><i class="fas fa-plus mr-2"></i> Create Post</button> 
+                    <button id="create-post" class="btn btn-success mb-3 float-right">Create Post</button> 
                 </div>          
             </div> 
             {{-- Posts --}}
@@ -114,7 +114,7 @@
                                     <span class="badge badge-dark badge-pill reply-lbl-counter">1000</span>
                                 </div>
                                 <div class="col-lg-9">
-                                        <button id="add-reply-btn" class="btn btn-light float-right" data-toggle="modal" data-target="#add-reply-modal"><i class="fas fa-reply mr-2"></i> Add Reply</button>
+                                        <button id="add-reply-btn" class="btn btn-light float-right" data-toggle="modal" data-target="#add-reply-modal"><i class="fas fa-reply mr-2"></i> Reply</button>
                                     </div>
                                     <div class="modal fade modal-custom" id="add-reply-modal">
                                         <div class="modal-dialog" role="document">
