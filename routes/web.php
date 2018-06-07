@@ -119,6 +119,20 @@ Route::get('mohab', 'TestController@index')->name('test');
          'as' => 'course.updateModule'
      ]);
 
+         //grades
+
+     Route::resource('{course_id}/gradesBook', 'GradesBookController',['names'=>[
+
+         'index'=>'course.gradeBook.index',
+         'create'=>'course.gradeBook.create',
+         'store'=>'course.gradeBook.store',
+         'edit'=>'course.gradeBook.edit',
+         'update'=>'course.gradeBook.update'
+     ]]);
+
+
+
+
  });
 
 Route::resource('department', 'DepartmentsController');
@@ -133,9 +147,12 @@ Route::resource('Courses/{course_id}/Modules/{module_id}/assignments', 'Assignme
     'destroy' => 'assignments.destroy',
     'update' => 'assignments.update'
 ]]);
+
 Route::get('Courses/{course_id}/Modules/{module_id}/assignment/{id}/deliver', 'AssignmentsController@deliver')->name('assignment.deliver');
 Route::post('Courses/{course_id}/Modules/{module_id}/AssignmentDeliver/', 'AssignmentsController@deliverstore')->name('assignment.deliverstore');
 Route::get('Courses/{course_id}/Modules/{module_id}/assignmentDelivered/', 'AssignmentsController@delivered')->name('assignment.delivered');
 
 Route::get('assginment/{assginment_id}/student/{std_id}/delivered/{assdel_id}', 'AssignmentsController@deliveredEdit')->name('assignmentdelivered.edit');
 Route::patch('assignmentDelivered/update/{id}', array( "as" => "assdelivered.update", "uses" => "AssignmentsController@deliveredUpdate"));
+
+

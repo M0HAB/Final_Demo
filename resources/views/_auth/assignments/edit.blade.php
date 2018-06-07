@@ -12,7 +12,7 @@
          xmlns:margin-left="http://www.w3.org/1999/xhtml">
         <div class="container">
 
-            <h1>Edit Assignment :</h1>
+            <h1>Edit Assignment: </h1>
             <div class="row justify-content-center">
                 <div class="col-lg-10 col-sm-12">
                     <br>
@@ -20,15 +20,7 @@
                     <form action="{{ route('assignments.update',['course_id' => $course->id, 'module_id' => $module->id, 'ass_id' => $assignment->id]) }}" method="POST" enctype="multipart/form-data" role="form" autocomplete="off">
                         {{ csrf_field() }}
                         <input type="hidden" name="_method" value="PUT">
-                        <div class="form-group">
-                            <label for="module">Module:</label>
-                            <select class="form-control" id="module" name="module">
-                                <option value="">Please Choose an Module</option>
-                                @foreach($modules as $mod)
-                                    <option value="{{ $mod->id }}">{{ $mod->title }}</option>
-                                @endforeach
-                            </select>
-                        </div>
+
                         <div class="form-group">
                             <label for="asstitle">Title:</label>
                             <input type="text" class="form-control" name="asstitle"

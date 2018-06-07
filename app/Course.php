@@ -12,4 +12,6 @@ class Course extends Model
         'how_to_pass','instructor_id'
     ];
 
+
+
 }

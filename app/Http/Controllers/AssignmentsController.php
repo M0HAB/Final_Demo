@@ -72,6 +72,7 @@ class AssignmentsController extends Controller
            ]);
            // dd($request->upload_file);
             // Create new assignment
+            $assall     = assignment::all();
             $assignment = new assignment;
             $assignment->module_id = $module->id;
             $assignment->title = $request->input('asstitle');
@@ -94,7 +95,7 @@ class AssignmentsController extends Controller
             }
 
 
-            // If successfully updated display success else error
+
             if ($assignment->save()){
                 return redirect('Courses/'. $course_id .'/Modules/'. $module_id .'/assignments')->with('success', 'Assignment created successfully');
             }else{
@@ -162,8 +163,9 @@ class AssignmentsController extends Controller
 
             ]);
             // Update Assignment
+            $assall     = assignment::all();
             $assignment = assignment::find($id);
-
+            $assold = $assignment->full_mark;
             $assignment->module_id = $module_id;
             $assignment->title = $request->input('asstitle');
             $assignment->description = $request->input('assdescription');
@@ -186,9 +188,11 @@ class AssignmentsController extends Controller
             }
 
 
+
             if ($assignment->save()){
                     return redirect()->back()->with('success', 'Assignment updated successfully')->withInput();
-                }else{
+                }
+            else{
                     return redirect()->back()->with('error', 'Some error has occured please try resubmitting');
                 }
             }
