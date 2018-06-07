@@ -1,4 +1,3 @@
-$('#results').hide();
 
 //define toolbarOptions for quill WYSIWYG text editor
 var toolbarOptions = [
@@ -53,6 +52,7 @@ $('#req').on('show.bs.modal', function (event) {
   }
   var modal = $(this);
   modal.find('#modal_title').text("Create new "+type);
+  modal.find('#submit_req').text("Send "+type);
   modal.find('#submit_req').off('click').on("click", function (event) {
     if(type == "Post"){
       var post_body = quill.container.firstChild.innerHTML;
@@ -73,6 +73,8 @@ $('#req').on('show.bs.modal', function (event) {
           quill.container.firstChild.innerHTML = "";
           quill.container.lastChild.innerHTML = "";
           $("#posts").append(response.data);
+          $("#req .close").click();
+          toastr.success("Post Submitted Successfully");
         }
 
       })
@@ -95,6 +97,8 @@ $('#req').on('show.bs.modal', function (event) {
           quill.container.firstChild.innerHTML = "";
           quill.container.lastChild.innerHTML = "";
           $('#replies_'+id).html(response.data);
+          $("#req .close").click();
+          toastr.success("Reply Submitted Successfully");
         }
 
       })
@@ -131,7 +135,12 @@ function view_replies(id) {
     console.log(error);
   });
 }
-
+$('#discussionSearch').focusout(function () {
+  $('#data').hide();
+});
+$('#discussionSearch').focus(function () {
+  $('#data').show();
+});
 $('#discussionSearch').keyup(function (key) {
   // console.log($(this).val());
   // console.log(key.keyCode == 32)
@@ -146,16 +155,25 @@ $('#discussionSearch').keyup(function (key) {
       }
     })
     .then( (response) => {
+      var hasdata = false;
       if(response.data != 0){
         response.data.forEach(element => {
-          console.log(element.body);
-          $('#data').html(
-            '<a class="dropdown-item" href="/discussions/'+discussion_id+'?post='+element.id+'">'+element.body+'</a>'
-          );
-
+          element.body = $(element.body).not('img').text();
+          // console.log(element.body);
+          if(element.body){
+            hasdata = true;
+            $('#data').html(
+              '<a class="dropdown-item" href="/discussions/'+discussion_id+'?post='+element.id+'">'+element.body+'</a>'
+            );
+          }
         });
       }
-      else console.log("not found");
+      if(!hasdata){
+        $('#data').html(
+          '<p class="text-secondary ml-2">No match</p>'
+        );
+      }
+
     })
     .catch(function (error) {
       console.log(error);
