@@ -20,4 +20,5 @@ Route::middleware('auth:api')->group(function () {
   Route::post('vote/{id}/set', 'ReplyController@setVote');
   Route::post('/newRecord', 'PostController@store');
   Route::get('/{id}/replies', 'PostController@loadReplies');
+  Route::get('/{id}/search', 'DiscussionController@searchPosts');
 });

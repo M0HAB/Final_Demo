@@ -1,3 +1,5 @@
+$('#results').hide();
+
 //define toolbarOptions for quill WYSIWYG text editor
 var toolbarOptions = [
   ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
@@ -129,3 +131,36 @@ function view_replies(id) {
     console.log(error);
   });
 }
+
+$('#discussionSearch').keyup(function (key) {
+  // console.log($(this).val());
+  // console.log(key.keyCode == 32)
+  if($(this).val().length > 0 && key.keyCode == 32){
+
+    $('#data').show();
+    axios.get('/api/'+discussion_id+'/search',
+    {
+      params:{
+        api_token: api_token,
+        query: $(this).val()
+      }
+    })
+    .then( (response) => {
+      if(response.data != 0){
+        response.data.forEach(element => {
+          console.log(element.body);
+          $('#data').html(
+            '<a class="dropdown-item" href="/discussions/'+discussion_id+'?post='+element.id+'">'+element.body+'</a>'
+          );
+
+        });
+      }
+      else console.log("not found");
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+  }else{
+    $('#data').hide();
+  }
+})
