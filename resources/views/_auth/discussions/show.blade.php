@@ -9,22 +9,19 @@
 <div class="row">
 
   <div class="col-lg-4 col-sm-12">
-    <div class="card">
+    <div class="card" id="left_bar">
       <div class="card-header">
         <h5 class="card-title">
           <span class="fas fa-search"></span> Search for a post
         </h5>
         <div class="form-group">
-          <div class="dropdown">
+          <div class="dropdown" id="search_containers">
 
             <input type="text" class="form-control" id="discussionSearch" placeholder="Search here.." name="discussionSearch"  aria-expanded="false">
             <div class="dropdown-menu w-100" id="data" aria-labelledby="discussionSearch">
-              
+
             </div>
           </div>
-          <!-- <div class="alert alert-light rounded-bottom" id="results" role="alert">
-            search results will appear here
-          </div> -->
         </div>
       </div>
       <div class="card-body">

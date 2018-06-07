@@ -112,7 +112,6 @@ $('#req').on('show.bs.modal', function (event) {
 
 
 function view_replies(id) {
-  //change to get lama el net yege we shof el auth ezay
   axios.get('/api/'+id+'/replies',{
     params:{api_token: api_token}
   })
@@ -135,16 +134,13 @@ function view_replies(id) {
     console.log(error);
   });
 }
-$('#discussionSearch').focusout(function () {
+
+$(":not('#discussionSearch')").click(function(){
   $('#data').hide();
 });
-$('#discussionSearch').focus(function () {
-  $('#data').show();
-});
+
 $('#discussionSearch').keyup(function (key) {
-  // console.log($(this).val());
-  // console.log(key.keyCode == 32)
-  if($(this).val().length > 0 && key.keyCode == 32){
+  if($(this).val().length > 0 && ( key.keyCode == 32 || key.keyCode == 13 || key.keyCode == 8)){
 
     $('#data').show();
     axios.get('/api/'+discussion_id+'/search',
@@ -163,7 +159,7 @@ $('#discussionSearch').keyup(function (key) {
           if(element.body){
             hasdata = true;
             $('#data').html(
-              '<a class="dropdown-item" href="/discussions/'+discussion_id+'?post='+element.id+'">'+element.body+'</a>'
+              '<a class="dropdown-item" target="_blank" href="/discussions/'+discussion_id+'?post='+element.id+'">'+element.body+'</a>'
             );
           }
         });
@@ -178,7 +174,5 @@ $('#discussionSearch').keyup(function (key) {
     .catch(function (error) {
       console.log(error);
     });
-  }else{
-    $('#data').hide();
   }
 })
