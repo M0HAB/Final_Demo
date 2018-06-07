@@ -21,6 +21,7 @@
 /*----------- Main Customization -----------*/
 html, body { background-color: #FFF;height: 100%;margin: 0;padding: 0; }
 p { margin: 0px;padding: 0px; }
+@media all and (max-width: 991px) {#add-reply-btn {width: 100%;margin-top: 10px} .on-small{display: block;width: 100%}}
 .f-rw {font-family: raleway; font-weight: 400 }
 .no-selection { -webkit-touch-callout: none; /* iOS Safari */-webkit-user-select: none; /* Safari */-khtml-user-select: none; /* Konqueror HTML */-moz-user-select: none; /* Firefox */-ms-user-select: none; /* Internet Explorer/Edge */user-select: none; /* Non-prefixed version, currently */}
 .navbar-dark .navbar-nav .nav-link { font-size: 16px;}
@@ -87,3 +88,33 @@ ul li .rm-deco {text-decoration: none}
 .rounded-box {border-radius: 10px;}
 .chat-header {background-color: #fff;font-family: raleway;font-size: 14px;font-weight: 500;text-align: center}
 .fa-caret-up {display: none }
+/* ------------/Discussion form/------------ */
+/* Left-side */
+.left-side-card {width:100%;border: 1px solid rgba(0,0,0,0.125);background-color:#fff !important;}
+.left-side-card-header {background-color: #fff !important;padding:12px 16px}
+.left-side-h-search-icon {color:#6c6c6c;font-size:18px}
+.left-side-search-title {font-size:18px;}
+.left-side-courseinfo-card {padding:12px 16px;border-bottom: 1px solid rgba(0,0,0,0.125);}
+.left-side-b-question-icon {color:#6c6c6c;font-size:20px;}
+.left-side-courseinfo-title {font-size:18px;}
+.left-side-courseinfo-card .list-group .list-group-item:hover {background-color: #fff !important;color: #000}
+.left-side-courseinfo-card .list-group .list-group-item-custom {border: none}
+.badge-custom {font-size:12px;}
+.filter-module-card {padding:12px 16px;border-bottom: 1px solid rgba(0,0,0,0.125);}
+.left-side-filter-icon {color:#6c6c6c;font-size:16px;}
+.left-side-filter-title {font-size:18px;}
+/* Right-side */
+.breadcrumb-custom {width:100%;background-color:#ecf0f1}
+.right-side-posts-header {background-color:#fff;color:#787878 !important}
+.username-post {font-size: 14px;font-weight: 600;color: #727272}
+.browse-btn {width:36px;height:36px;border-radius:18px;border: 1px solid #d3d3d3;background-color: #fff;}
+.browse-icon {font-size:14px;color: #5d5d5d}
+.right-side-post-body {background-color:#fff}
+.right-side-post-btitle {font-size: 22px;}
+.right-side-footer-card {background-color:#fff !important;border: none}
+.modal-footer-custom {display: block}
+.reply-lbl {font-size: 14px;font-weight: 600;color: #727272}
+.reply-lbl-counter {font-size:13px;}
+.close-btn:focus {outline: none}
+.text-area-reply {resize: none;font-size: 16px;}
+.modal-footer-custom {border: none}
