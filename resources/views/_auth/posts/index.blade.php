@@ -106,13 +106,11 @@
             </div>
             {{-- Posts --}}
             <div class="row">
-                @if(count($module_data->posts)>0)
                 <div class="col-lg-12" id="posts">
                     @foreach($module_data->posts as $post)
                     @include('_auth.posts.partial_post_body')
                     @endforeach
                 </div>
-                @endif
                 @include('_auth.discussions.modal_post')
                 @include('_auth.discussions.modal_confirm')
             </div>
