@@ -90,7 +90,10 @@ ul li .rm-deco {text-decoration: none}
 .fa-caret-up {display: none }
 /* ------------/Discussion form/------------ */
 /* Left-side */
-.left-side-card {width:100%;border: 1px solid rgba(0,0,0,0.125);background-color:#fff !important;}
+.left-side-card {width:23%;border: 1px solid rgba(0,0,0,0.125);background-color:#fff !important;position: fixed;}
+/* @media all and (min-width: 995px) {.left-side-card {width: 30%;}} */
+@media all and (max-width: 1096px) {.left-side-card {width: 100%;position: relative;}}
+@media not all and (min-width: 1096px) {.left-side-card {width: 100%;}}
 .left-side-card-header {background-color: #fff !important;padding:12px 16px}
 .left-side-h-search-icon {color:#6c6c6c;font-size:18px}
 .left-side-search-title {font-size:18px;}
