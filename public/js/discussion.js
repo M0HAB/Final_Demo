@@ -85,6 +85,9 @@ $('#req').on('show.bs.modal', function (event) {
   modal.find('#submit_req').off('click').on("click", function (event) {
     body = quill.container.firstChild.innerHTML;
     payload = {
+      headers: {
+        'X-Requested-With': 'XMLHttpRequest'
+      },
       api_token: api_token,
       type: type,
       body: body
@@ -96,8 +99,7 @@ $('#req').on('show.bs.modal', function (event) {
         payload["id"] = id;
       }else{
         payload["discussion_id"] = discussion_id;
-        payload["module_id"] = discussion_id;
-        payload["discussion_id"] = discussion_id;
+        payload["module_id"] = module_id;
       }
 
     }else if (type == "reply") {
@@ -149,6 +151,29 @@ $('#req').on('show.bs.modal', function (event) {
 });
 
 
+$('#search').keyup(function (key) {
+  console.log("yo");
+  if($(this).val().length > 0 && key.keyCode == 13){
+
+    axios.get('/api/'+discussion_id+'/search',
+    {
+      headers: {
+        'X-Requested-With': 'XMLHttpRequest'
+      },
+      params:{
+        api_token: api_token,
+        q: $(this).val(),
+      }
+    })
+    .then( (response) => {
+      $('#search_body').html(response.data);
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+  }
+});
+
 function view_replies(id) {
   axios.get('/api/'+id+'/replies',{
     params:{api_token: api_token}
@@ -161,10 +186,3 @@ function view_replies(id) {
     console.log(error);
   });
 }
-
-$('#search').keyup(function (key) {
-  if($(this).val().length > 0 && key.keyCode == 13){
-
-
-  }
-})

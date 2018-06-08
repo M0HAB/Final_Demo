@@ -44,13 +44,17 @@ class DiscussionController extends Controller
     }
     public function searchPosts(Request $request, $id)
     {
+
         $arabicTest = mb_convert_encoding($request->q, 'HTML-ENTITIES', "UTF-8");
         $results = Discussion::find($id)
         ->posts()
         ->whereRaw('body LIKE "%'.$request->q.'%" or title LIKE "%'.$request->q.'%"')
         ->orWhereRaw('body LIKE "%'.$arabicTest.'%" or title LIKE "%'.$arabicTest.'%"')
         ->latest()->get();
-        return view('_auth.discussions.search')->with('results', $results);
+        if($request->ajax()){
+          return view('_auth.discussions.partial_search_body')->with('results', $results)->with('discussion_id', $id);
+        }
+        return view('_auth.discussions.search')->with('results', $results)->with('discussion_id', $id);
     }
 
 

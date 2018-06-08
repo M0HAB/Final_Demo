@@ -15,43 +15,24 @@
                         <i class="fas fa-search left-side-h-search-icon"></i>
                         <span class="pl-2 left-side-search-title">Search for a post</span>
                     </div>
-                    <input type="text" class="my-2 form-control" name="search" id="search-btn" placeholder="Search for posts here...">
+                    <input type="text" class="my-2 form-control" name="search" id="search" placeholder="Search for posts here...">
                 </div>
             </div>
         </div>
-
         {{--  Result  --}}
-        <div class="col-lg-8">
-            <div class="row">
-                <div class="col-lg-12">
-                    @if(count($results) == 0)
-                    <div class="alert alert-dismissible alert-danger">
-                        <strong>Result Not Found!</strong> Please try again
-                    </div>
-                    @else
-                    <div class="alert alert-dismissible alert-success">
-                        <strong>Result Found: <span class="badge badge-light badge-pill" style="font-size:14px">{{count($results)}}</span></strong>
-                    </div>
-                    @endif
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-lg-12" id="posts">
-                    @foreach($results as $post)
-                    @include('_auth.posts.partial_post_body')
-                    @endforeach
-                </div>
-                @include('_auth.discussions.modal_post')
-                @include('_auth.discussions.modal_confirm')
-            </div>
+        <div class="col-lg-8" id="search_body">
+        @include('_auth.discussions.partial_search_body')
         </div>
     </div>
+    @include('_auth.discussions.modal_post')
+    @include('_auth.discussions.modal_confirm')
 @endsection
 @section('scripts')
 <script src="{{asset('js/quill.min.js')}}"></script>
 <script src="{{asset('js/axios.min.js')}}"></script>
 <script>
-  var api_token     = "{{ Auth::user()->api_token}}";
+  var api_token     = "{{ Auth::user()->api_token}}",
+      discussion_id = "{{$discussion_id}}";
 </script>
 <script src="{{asset('js/discussion.js')}}" charset="utf-8"></script>
 <script src="{{asset('js/modal_confirm.js')}}" charset="utf-8"></script>
