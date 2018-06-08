@@ -2,6 +2,9 @@
 @extends('_layouts.app')
 @section('title', 'discussion form')
 
+@section('stylesheets')
+<link href="{{asset('css/quill.snow.css')}}" rel="stylesheet">
+@endsection
 @section('content')
     <div class="row">
         {{--  left-side  --}}
@@ -43,4 +46,13 @@
             </div>
         </div>
     </div>
+@endsection
+@section('scripts')
+<script src="{{asset('js/quill.min.js')}}"></script>
+<script src="{{asset('js/axios.min.js')}}"></script>
+<script>
+  var api_token     = "{{ Auth::user()->api_token}}";
+</script>
+<script src="{{asset('js/discussion.js')}}" charset="utf-8"></script>
+<script src="{{asset('js/modal_confirm.js')}}" charset="utf-8"></script>
 @endsection
