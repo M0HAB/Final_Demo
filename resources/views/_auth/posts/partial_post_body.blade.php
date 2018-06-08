@@ -1,13 +1,13 @@
 <div class="card bg-light mb-3" id="post_container_{{$post->id}}">
     <div class="card-header right-side-posts-header">
         <span class="username-post">{{ucfirst($post->user->fname)}}</span>
-        @if(Auth::user()->id == $post->user->id)
         <div class="dropdown float-right">
             <button type="button" class="btn btn-light browse-btn" data-toggle="dropdown">
                 <i class="fas fa-ellipsis-v font-weight-bold browse-icon"></i>
             </button>
             <div class="dropdown-menu dropdown-menu-right text-left">
                 <a class="dropdown-item" href="{{route('messages.show', $post->user->id)}}">Send Message</a>
+                @if(Auth::user()->id == $post->user->id)
                 <a class="dropdown-item" href="JavaScript:void(0)"
                 data-toggle="modal" data-target="#req" data-type="post" data-id="{{$post->id}}" data-mode="edit">
                   Edit
@@ -16,9 +16,10 @@
                 data-toggle="modal" data-target="#confirm" data-id="{{$post->id}}" data-type="post">
                   Delete
                 </a>
+                @endif
+
             </div>
         </div>
-        @endif
         <span class="lb"><small>Created at: {{$post->created_at}}</small></span>
     </div>
     <div class="card-body right-side-post-body">
