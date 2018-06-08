@@ -4,7 +4,7 @@
 @section('content')
     <div class="row">
         {{--  left-side  --}}
-        <div class="col-lg-4" style="box-sizing:border-box;">
+        <div class="col-lg-4 mb-4" style="box-sizing:border-box;">
             <div class="card mb-3 left-side-card">
                 <div class="card-header left-side-card-header">
                     <div class="mb-3">
