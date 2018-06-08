@@ -58,7 +58,7 @@
 
     <h4 class="mb-4 pl-2">
       {{$discussion->course->title}} Discussion Forum | Module: {{$module_data->title}} [{{$module_data->module_order}}]
-      <button type="button" class="btn btn-primary btn-lg float-right" onclick="" data-toggle="modal" data-target="#req" data-type="Post">
+      <button type="button" class="btn btn-primary btn-lg float-right" onclick="" data-toggle="modal" data-target="#req" data-type="post">
         Create Post
       </button>
     </h4>

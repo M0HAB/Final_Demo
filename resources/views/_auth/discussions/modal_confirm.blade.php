@@ -1,6 +1,6 @@
 
 <!-- confirm Modal -->
-<div class="modal fade" id="confirm" tabindex="-1" role="dialog" aria-labelledby="post" aria-hidden="true">
+<div class="modal fade modal-custom" id="confirm" tabindex="-1" role="dialog" aria-labelledby="post" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">

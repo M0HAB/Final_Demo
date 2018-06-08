@@ -75,6 +75,6 @@ Route::group(['prefix' => 'discussions'], function () {
 
   Route::get('/', 'DiscussionController@index')->name('discussion.index');
   Route::get('/{id}', 'DiscussionController@show')->name('discussion.show');
-  
+  Route::get('/{id}/search', 'DiscussionController@searchPosts')->name('discussion.search');
 
 });

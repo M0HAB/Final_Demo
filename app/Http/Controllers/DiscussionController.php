@@ -37,14 +37,15 @@ class DiscussionController extends Controller
       }
       $module_data = $discussion->course->modules->where('module_order', $module_order)->first();
       if ($module_data){
-        return view('_auth.discussions.show')->with('discussion', $discussion)->with('module_data', $module_data);
+        return view('_auth.posts.index')->with('discussion', $discussion)->with('module_data', $module_data);
       }else{
         return redirect()->back()->with('error', 'Module Not Found');
       }
     }
-    public function searchPosts($id)
+    public function searchPosts(Request $request, $id)
     {
-        return Discussion::find($id)->posts()->whereRaw('body LIKE "%'.$_GET['query'].'%"')->get()->toJson();
+        $results = Discussion::find($id)->posts()->whereRaw('body LIKE "%'.$request->q.'%"')->latest()->get();
+        return view('_auth.discussions.search')->with('results', $results);
     }
 
 
