@@ -20,9 +20,8 @@
 Route::get('/', 'PagesController@index')->middleware(['guest', 'revalidate'])->name('index');
 Route::get('about', 'PagesController@about')->name('about');
 Route::get('contact-us', 'PagesController@contact_us')->name('contact_us');
-Route::get('test', function() {
-  return view('_auth.discussions.test');
-});
+Route::get('test', function() {return view('design.test');});
+Route::get('test/result', function() {return view('design.result');});
 
 /**
  * --------------------------------------------------------------------------
