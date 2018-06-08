@@ -35,7 +35,7 @@
                               $msgsNav = messageNav();
                             @endphp
                             @if(count($msgsNav) == 0 )
-                            <p class="text-left pl-4 pb-2" style="font-size: 14px;">No messages found</p>
+                            <p class="text-left pl-4 py-2" style="font-size: 14px;">No messages found</p>
                             @endif
                             @foreach ($msgsNav as $msgNav)
                               @php
