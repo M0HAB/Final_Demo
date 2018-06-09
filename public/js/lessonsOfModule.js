@@ -39,6 +39,7 @@ $.ajaxSetup({
 
 
 loadData = function(course_id, module_id){
+
     $.ajax({
         url:  module_id + '/lessons',
         method: 'POST',
@@ -72,7 +73,6 @@ loadData = function(course_id, module_id){
         },
     });
 };
-
 $('body').load(loadData(courseID, moduleID));
 
 

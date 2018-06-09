@@ -28,20 +28,27 @@ class Courses_CRUD_Controller extends Controller{
 
         $user = User::find(Auth::User()->id);
 
-        // Get the courses of the user and the instructor name of each course
-        $courses = DB::table('courses')
-            ->leftjoin('course_user', 'course_user.course_id', '=', 'courses.id')
-            ->leftjoin('users as u1', 'u1.id', '=', 'courses.instructor_id')
-            ->leftjoin('users as u2', 'u2.id', '=','course_user.user_id')
-            ->select('courses.*', 'u1.fname', 'u1.lname')
-            ->where('course_user.user_id', '=', $user->id)
-            ->where('course_user.is_passed', '=', 0)
-            ->get();
+        if($user->role == 'instructor'){
+            // Get the courses of the instructor and the instructor name of each course
+            $courses = DB::table('courses')
+                ->leftjoin('users', 'users.id', '=', 'courses.instructor_id')
+                ->select('courses.*', 'users.fname', 'users.lname')
+                ->where('courses.instructor_id', '=', $user->id)
+                ->get();
+        }elseif($user->role == 'student'){
+            // Get the courses of the user and the instructor name of each course
+            $courses = DB::table('courses')
+                ->leftjoin('course_user', 'course_user.course_id', '=', 'courses.id')
+                ->leftjoin('users as u1', 'u1.id', '=', 'courses.instructor_id')
+                ->leftjoin('users as u2', 'u2.id', '=','course_user.user_id')
+                ->select('courses.*', 'u1.fname', 'u1.lname')
+                ->where('course_user.user_id', '=', $user->id)
+                ->where('course_user.is_passed', '=', 0)
+                ->where('courses.is_active', '=', 1)
+                ->get();
+        }
         return view('Courses.userCourses', compact('courses'));
     }
-
-
-
 
     /**
     | Get new course form:-
@@ -100,9 +107,9 @@ class Courses_CRUD_Controller extends Controller{
                 'instructor_id'      => Auth::User()->id,
             ]);
             if($course){
+
                 return response()->json([
                     'message' => 'The course has been created successfully!',
-                    'data' => $course
                 ]);
             }
         }
@@ -112,12 +119,12 @@ class Courses_CRUD_Controller extends Controller{
     | Get The Update Form Of Existing course :-
     |------------------------------------------
      */
-    public function getUpdateCourseForm($id){
-        $course = Course::find($id);
-        if(Auth::User()->checkIfUserEnrolled($course) or Auth::User()->checkIfUserTeachCourse($course)) {
+    public function getUpdateCourseForm(Course $course){
+
+        if(Auth::User()->checkIfUserTeachCourse($course->id)) {
             return view('courses.updateCourseForm', compact('course'));
         }else{
-            return redirect()->back();
+            return redirect()->route('user.dashboard')->with('error', 'Unauthorized Access');
         }
     }
 
@@ -125,10 +132,9 @@ class Courses_CRUD_Controller extends Controller{
     | Update A Specific Course :-
     |----------------------------
      */
-    public function updateCourse(Request $request, $id){
+    public function updateCourse(Request $request, Course $course){
         if(\Illuminate\Support\Facades\Request::ajax()){
 
-            $course = Course::find($id);
             // Variables to hold the valid selected values in the form
             $departmentValues = ['Computer Department', 'Communication Department', 'Architecture Department', 'Mechanical Department'];
             $courseSpecializationValues = ['Computer Science', 'Data Science', 'Embedded System', 'Communication', 'Electronics', 'Basic Science',];
@@ -153,7 +159,7 @@ class Courses_CRUD_Controller extends Controller{
                 return response($validator->errors(), 401);
             }
 
-            $course = Course::where('id', $id)->update([
+            $myCourse = Course::where('id', '=',$course->id)->update([
                     'title'            => $request->title,
                     'code'             => $request->code,
                     'course_department'=> $request->course_department,
@@ -166,8 +172,7 @@ class Courses_CRUD_Controller extends Controller{
                     'commitment'       => $request->commitment,
                     'instructor_id'      => Auth::User()->id,
             ]);
-            if($course){
-                $course = Course::find($id);
+            if($myCourse){
                 return response()->json([
                     'message' => 'The course has been updated successfully!',
                     'data' => $course
@@ -176,5 +181,28 @@ class Courses_CRUD_Controller extends Controller{
         }
     }
 
+    /**
+    | Update A Course Activation :-
+    |----------------------------
+     */
+    public function updateCourseActivation(Request $request, Course $course){
+        if(\Illuminate\Support\Facades\Request::ajax()){
+
+            $myCourse = Course::where('id', $course->id)->update([
+                'is_active' => $request->is_active,
+            ]);
+
+            if($myCourse){
+                return response()->json([
+                    'message' => $course->is_active?'The course has been activated successfully!':'The course has been deactivated successfully!',
+                    'data' => $course
+                ]);
+            }else{
+                return response()->json([
+                    'message' => 'Something went wrong.Please,Try again!',
+                ]);
+            }
+        }
+    }
 
 }

@@ -21,32 +21,46 @@ class Lessons_CRUD_Controller extends Controller
         $this->middleware(['auth', 'revalidate']);
     }
 
-    public function displayLessonsOfModules($course_id, $module_id){
-        $course = Course::find($course_id);
-        $module = Module::find($module_id);
+    public function displayLessonsOfModules(Course $course, Module $module){
+
         $assignments = $module->assignments()->get();
+
+        if(Auth::User()->role == 'student'){
+            $quizzes = DB::table('quizzes')
+                ->leftjoin('modules', 'modules.id', '=', 'quizzes.module_id')
+                ->select('quizzes.*')
+                ->where('quizzes.module_id', '=', $module->id)
+                ->where('quizzes.is_active', '=', 1)
+                ->get();
+        }elseif(Auth::User()->role == 'instructor'){
+            $quizzes = DB::table('quizzes')
+                ->leftjoin('modules', 'modules.id', '=', 'quizzes.module_id')
+                ->select('quizzes.*')
+                ->where('quizzes.module_id', '=', $module->id)
+                ->get();
+        }
+
+
         $lessons = DB::table('lessons')
             ->leftjoin('modules', 'modules.id', '=', 'lessons.module_id')
             ->select('lessons.*')
-            ->where('lessons.module_id', '=', $module_id)
+            ->where('lessons.module_id', '=', $module->id)
             ->get();
-        if(Auth::User()->checkIfUserEnrolled($course) or Auth::User()->checkIfUserTeachCourse($course)) {
-            return view('Courses.LessonsOfModule', ['course' => $course, 'module' => $module, 'lessons' => $lessons, 'assignments' => $assignments]);
+        if(Auth::User()->checkIfUserEnrolled($course->id) or Auth::User()->checkIfUserTeachCourse($course->id)) {
+            return view('Courses.LessonsOfModule', ['course' => $course, 'module' => $module, 'lessons' => $lessons, 'assignments' => $assignments, 'quizzes' => $quizzes]);
         }else{
-            return redirect()->back();
+            return redirect()->back()->with('error', 'Unauthorized access');
         }
 
     }
 
-    public function loadLessons($course_id, $module_id){
+    public function loadLessons(Course $course,Module $module){
 
-        $course = Course::find($course_id);
-        $module = Module::find($module_id);
 
         $lessons = DB::table('lessons')
             ->leftjoin('modules', 'modules.id', '=', 'lessons.module_id')
             ->select('lessons.*')
-            ->where('lessons.module_id', '=', $module_id)
+            ->where('lessons.module_id', '=', $module->id)
             ->get();
         return response()->json([
             'data' => $lessons,
@@ -55,17 +69,17 @@ class Lessons_CRUD_Controller extends Controller
         ]);
     }
 
-    public function getNewVideoForm($course_id, $module_id){
-        $course = Course::find($course_id);
-        $module = Module::find($module_id);
-        if(Auth::User()->checkIfUserEnrolled($course) or Auth::User()->checkIfUserTeachCourse($course)) {
+    public function getNewVideoForm(Course $course,Module $module){
+
+        if(Auth::User()->checkIfUserEnrolled($course->id) or Auth::User()->checkIfUserTeachCourse($course->id)) {
             return view('Courses.newVideoForm', compact('module'));
         }else{
             return redirect()->back();
         }
+
     }
 
-    public function uploadVideo(Request $request, $course_id, $module_id){
+    public function uploadVideo(Request $request, Course $course, Module $module){
 
         ini_set('memory_limit','256M');
         $privacyValues = ['unlisted', 'public'];
@@ -100,7 +114,7 @@ class Lessons_CRUD_Controller extends Controller
                     'recap'       => $request->recap,
                     'privacy'     => $request->privacy,
                     'url'         => 'https://www.youtube.com/watch?v=' . $video_id,
-                    'module_id'   => $module_id
+                    'module_id'   => $module->id
                 ]);
 
                 if($lesson){

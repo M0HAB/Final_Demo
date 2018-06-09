@@ -10,6 +10,36 @@
             background-color: #fafbfc;
             height: auto;
         }
+        /* Start by setting display:none to make this hidden.
+   Then we position it in relation to the viewport window
+   with position:fixed. Width, height, top and left speak
+   for themselves. Background we set to 80% white with
+   our animation centered, and no-repeating */
+        .modal {
+            display:    none;
+            position:   fixed;
+            z-index:    1000;
+            top:        0;
+            left:       0;
+            height:     100%;
+            width:      100%;
+            background: rgba( 255, 255, 255, .8 )
+            url('{{ asset('course_images/ajax-loader2.gif') }}')
+            50% 50%
+            no-repeat;
+        }
+
+        /* When the body has the loading class, we turn
+           the scrollbar off with overflow:hidden */
+        body.loading .modal {
+            overflow: hidden;
+        }
+
+        /* Anytime the body has the loading class, our
+           modal element will be visible */
+        body.loading .modal {
+            display: block;
+        }
 
     </style>
 @endsection
@@ -95,6 +125,60 @@
             </div>
             <!--------------------------------------------------------------------->
             <div class="col-sm-12">
+                <table class="table table-hover mt-5" style="box-shadow: 5px 5px 10px gray">
+                    <thead class="bg-primary" style="color: #02b3e4">
+                    <tr>
+                        <th>Quizzes</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    @forelse($quizzes as $quiz)
+                        <tr>
+                            <td>
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <span class="font-weight-bold text-success forum-nav">
+                                            <i class="fas fa-question-circle mr-1"></i>
+                                            {{ $quiz->title }}
+                                            @if(Auth::User()->role == 'instructor')
+                                                <span id="quiz-status" class="p-1 rounded text-white  {{ $quiz->is_active ? 'badge badge-success': 'badge badge-danger' }}" >{{ $quiz->is_active ? 'Activated quiz': 'Deactivated quiz' }}</span>
+                                            @endif
+
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="row mt-2">
+                                    <div class="col-sm-7">
+                                        <p class="ml-4"><span class="text-muted font-weight-bold">Due:</span><span class="text-danger ml-1">{{date('d-m-Y', strtotime($quiz->deadline))}}</span></p>
+                                    </div>
+                                    @if(Auth::User()->role == 'student')
+                                        <div class="col-sm-5">
+                                            @if(!Auth::User()->checkIfStudentSubmittedQuiz($quiz))
+                                                <a href="{{ route('quiz.getSubmitQuizForm', ['course_id' => $course->id, 'module_id' => $module->id, 'quiz_id' => $quiz->id]) }}" class="text-info"><i class="far fa-file mr-1"></i>Start quiz</a>
+                                            @else
+                                                <span class="text-success"><i class="fas fa-check mr-1"></i>Submitted</span>
+                                            @endif
+                                        </div>
+                                    @elseif(Auth::User()->role == 'instructor')
+                                        <div class="col-sm-5">
+                                            <a href="#" class="text-info"><i class="fas fa-eye mr-1"></i>preview</a>
+                                        </div>
+                                    @endif
+                                </div>
+                            </td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td>
+                                <span>The module has no Quizzes</span>
+                            </td>
+                        </tr>
+                    @endforelse
+                    </tbody>
+                </table>
+            </div>
+            <!--------------------------------------------------------------------->
+            <div class="col-sm-12">
                 <table class="table table-hover mt-5 " style="box-shadow: 5px 5px 10px gray">
                         <thead class="bg-primary" style="color: #02b3e4">
                             <tr>
@@ -110,7 +194,7 @@
                                 </tr>
                                 <tr>
                                     <td>
-                                        <a href="#" class="ml-1"><i class="fas fa-plus mr-1"></i>Add New Quiz</a>
+                                        <a href="{{ route('quiz.getNewQuizForm', ['course_id' => $course->id, 'module_id' => $module->id]) }}" class="ml-1"><i class="fas fa-plus mr-1"></i>Add New Quiz</a>
                                     </td>
                                 </tr>
                                 <tr>
@@ -149,7 +233,7 @@
                 </table>
             </div>
             <div class="col-sm-12 mt-4 mb-2 text-center">
-                <a href="{{ route('course.viewCourseModules', ['id' => $course->id]) }}" style="width: 100%" class="btn btn-success"><i class="fas fa-angle-left mr-1"></i> Course Modules</a>
+                <a href="{{ route('course.viewCourseModules', ['id' => $course->id]) }}" style="width: 100%" class="btn btn-primary"><i class="fas fa-angle-left mr-1"></i> Course Modules</a>
             </div>
         </div>
 
@@ -164,6 +248,7 @@
                 <p id="lesson-recap"></p>
             </div>
         </div>
+        <div class="modal"><!-- Place at bottom of page --></div>
     </div>
 @endsection
 
@@ -171,6 +256,11 @@
     <script>
         var courseID = {!! json_encode($course->id) !!};
         var moduleID = {!! json_encode($module->id) !!};
+        $body = $("body");
+        $(document).on({
+            ajaxStart: function() { $body.addClass("loading"); },
+            ajaxStop: function() { $body.removeClass("loading"); }
+        });
     </script>
     <Script src="{{ asset('js/lessonsOfModule.js')}}"></Script>
 @endsection

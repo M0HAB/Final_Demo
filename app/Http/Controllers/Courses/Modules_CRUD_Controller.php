@@ -13,8 +13,6 @@ use Illuminate\Validation\Rule;
 
 class Modules_CRUD_Controller extends Controller{
 
-
-
     public function __construct()
     {
         $this->middleware(['auth', 'revalidate']);
@@ -25,25 +23,24 @@ class Modules_CRUD_Controller extends Controller{
     |-------------------------------
      */
 
-    public function viewCourseModules($id){
+    public function viewCourseModules(Course $course){
 
-        $myCourse = Course::find($id);
         $course = DB::table('courses')
             ->leftjoin('users', 'users.id', '=', 'courses.instructor_id')
             ->select('courses.*', 'users.fname', 'users.lname')
-            ->where('courses.id', '=', $id)
+            ->where('courses.id', '=', $course->id)
             ->first();
 
         $modules = DB::table('modules')
             ->leftjoin('courses', 'courses.id', '=', 'modules.course_id')
             ->select('modules.*')
-            ->where('modules.course_id', '=', $id)
+            ->where('modules.course_id', '=', $course->id)
             ->orderBy('module_order')
             ->get();
-        if(Auth::User()->checkIfUserEnrolled($myCourse) or Auth::User()->checkIfUserTeachCourse($myCourse)) {
+        if(Auth::User()->checkIfUserEnrolled($course->id) or Auth::User()->checkIfUserTeachCourse($course->id)) {
             return view('courses.courseModules', compact('course', 'modules'));
         }else{
-            return redirect()->back();
+            return redirect()->back()->with('error', 'Unauthorized access');
         }
     }
 
@@ -53,10 +50,9 @@ class Modules_CRUD_Controller extends Controller{
     |----------------------
      */
 
-    public function getNewModuleForm($id){
-        $course_id = $id;
-        $course = Course::find($course_id);
-        if(Auth::User()->checkIfUserEnrolled($course) or Auth::User()->checkIfUserTeachCourse($course)) {
+    public function getNewModuleForm(Course $course){
+        $course_id = $course->id;
+        if(Auth::User()->checkIfUserEnrolled($course->id) or Auth::User()->checkIfUserTeachCourse($course->id)) {
             return view('courses.newModuleForm', compact('course_id'));
         }else{
             return redirect()->back();
@@ -68,7 +64,7 @@ class Modules_CRUD_Controller extends Controller{
     |------------------
      */
 
-    public function addNewModule(Request $request, $id){
+    public function addNewModule(Request $request, Course $course){
 
         if(\Illuminate\Support\Facades\Request::ajax()){
 
@@ -91,7 +87,7 @@ class Modules_CRUD_Controller extends Controller{
                 'commitment'   => $request->commitment,
                 'module_order' => $request->module_order,
                 'introduction' => $request->introduction,
-                'course_id' => $id
+                'course_id' => $course->id
             ]);
 
             if($module){
@@ -107,24 +103,22 @@ class Modules_CRUD_Controller extends Controller{
     | Get The Update Form Of Existing Module :-
     |------------------------------------------
      */
-    public function getUpdateModuleForm($course_id, $module_id){
-        $course = Course::find($course_id);
-        $module = Module::find($module_id);
-        if(Auth::User()->checkIfUserEnrolled($course) or Auth::User()->checkIfUserTeachCourse($course)) {
+    public function getUpdateModuleForm(Course $course, Module $module){
+
+        if(Auth::User()->checkIfUserEnrolled($course->id) or Auth::User()->checkIfUserTeachCourse($course->id)) {
             return view('courses.updateModuleForm', compact('course', 'module'));
         }else{
             return redirect()->back();
         }
+
     }
 
     /**
     | Update A Specific Module :-
     |----------------------------
      */
-    public function updateModule(Request $request, $course_id, $module_id){
+    public function updateModule(Request $request, Course $course, Module $module){
         if(\Illuminate\Support\Facades\Request::ajax()){
-
-            $module = Module::find($module_id);
 
             // Validate the form fields
             $validator = Validator::make($request->all(), [
@@ -137,16 +131,15 @@ class Modules_CRUD_Controller extends Controller{
                 return response($validator->errors(), 401);
             }
 
-            $module = Module::where('id', $module_id)->update([
+            $myModule = $module->update([
                 'title'        => $request->title,
                 'commitment'   => $request->commitment,
                 'module_order' => $request->module_order,
                 'introduction' => $request->introduction,
-                'course_id'    => $course_id
+                'course_id'    => $course->id
             ]);
 
-            if($module){
-                $module = Module::find($module_id);
+            if($myModule){
                 return response()->json([
                     'message' => 'The module has been updated successfully!',
                     'data' => $module
