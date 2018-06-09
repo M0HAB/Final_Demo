@@ -1,17 +1,15 @@
 @extends('_layouts.app')
-@section('title', 'Roles-Permissions')
-
-
+@section('title', 'Permissions - '.$envelope['name'])
 @section('content')
 <!-- Start: Content -->
 	<div class="content mt-5 mb-4">
 		<div class="container">
-        <h1>Permissions</h1>
+        <h3>Permissions of <strong>{{old('name')}}</strong></h3>
 			<div class="row justify-content-center">
                 <table class="table table-hover">
                     <thead>
                         <tr>
-                            <th>Section Name</th>
+                            <th>Index Name</th>
                             <th>Create</th>
                             <th>Read</th>
                             <th>Update</th>
@@ -19,52 +17,44 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($envelope as $x)
+                        @foreach ($pindexes as $pindex)
                         <tr>
                             <td>
-                                {{$x['name']}}
+                                {{$pindex->name}}
                             </td>
                             <td>
-                                <?php
-                                    if ($x['create']==1){
-                                ?>
-                                    <strong class="f-rw" style="color: #1EBA9C">Yes</strong>
-                                <?php }else{ ?>
-                                    <strong class="f-rw" style="color: #E74C3C">No</strong>
-                                <?php } ?>
+																@if(isset($envelope['create'.$pindex->index]))
+																<p class="f-rw text-success font-weight-bold"><i class="fas fa-check"></i></p>
+																@else
+																<p class="f-rw text-danger font-weight-bold"><i class="fas fa-times"></i></p>
+																@endif
+                            </td>
+														<td>
+																@if(isset($envelope['read'.$pindex->index]))
+																<p class="f-rw text-success font-weight-bold"><i class="fas fa-check"></i></p>
+																@else
+																<p class="f-rw text-danger font-weight-bold"><i class="fas fa-times"></i></p>
+																@endif
                             </td>
                             <td>
-                                <?php
-                                    if ($x['read']==1){
-                                ?>
-                                    <strong class="f-rw" style="color: #1EBA9C">Yes</strong>
-                                <?php }else{ ?>
-                                    <strong class="f-rw" style="color: #E74C3C">No</strong>
-                                <?php } ?>
+																@if(isset($envelope['update'.$pindex->index]))
+																<p class="f-rw text-success font-weight-bold"><i class="fas fa-check"></i></p>
+																@else
+																<p class="f-rw text-danger font-weight-bold"><i class="fas fa-times"></i></p>
+																@endif
                             </td>
                             <td>
-                                <?php
-                                    if ($x['update']==1){
-                                ?>
-                                    <strong class="f-rw" style="color: #1EBA9C">Yes</strong>
-                                <?php }else{ ?>
-                                    <strong class="f-rw" style="color: #E74C3C">No</strong>
-                                <?php } ?>
-                            </td>  
-                            <td>
-                                <?php
-                                    if ($x['delete']==1){
-                                ?>
-                                    <strong class="f-rw" style="color: #1EBA9C">Yes</strong>
-                                <?php }else{ ?>
-                                    <strong class="f-rw" style="color: #E74C3C">No</strong>
-                                <?php } ?>
-                            </td>                         
+																@if(isset($envelope['delete'.$pindex->index]))
+																<p class="f-rw text-success font-weight-bold"><i class="fas fa-check"></i></p>
+																@else
+																<p class="f-rw text-danger font-weight-bold"><i class="fas fa-times"></i></p>
+																@endif
+                            </td>
                         </tr>
                         @endforeach
                     </tbody>
                 </table>
-                
+
 			</div>
 		</div>
 	</div> <!-- End: Content -->

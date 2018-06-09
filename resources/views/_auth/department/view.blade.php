@@ -8,8 +8,8 @@
 		<div class="container">
             <div class="row">
                 <h1>{{$department->name}}</h1>
-                @if (canUpdate('Department') && $department->status)
-                    <a href="{{ route('department.edit',$department->id)}}">
+                @if (canUpdate('Department'))
+                    <a href="{{ route('departments.edit',$department->id)}}">
                         <span class="far fa-edit" data-toggle="tooltip" data-placement="top" title="Edit this Department"></span>
                     </a>
                 @endif
@@ -26,10 +26,6 @@
                             <tr>
                                 <td>Number of Students</td>
                                 <td>{{$department->student_count}}</td>
-                            </tr>
-                            <tr>
-                                <td>Status</td>
-                                <td>{{$department->status ? 'Active' : 'Deleted'}}</td>
                             </tr>
                          @endif
 

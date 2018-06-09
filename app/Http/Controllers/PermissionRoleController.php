@@ -7,13 +7,13 @@ use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use App\Role;
 use Session;
-use App\Permission;
+use App\Pindex;
 
 class PermissionRoleController extends Controller
 {
     public function __construct()
     {
-        $this->middleware(['auth:admin', 'revalidate']);
+        $this->middleware(['auth:admin', 'revalidate'], ['except' => ['destroy']]);
     }
 
     /**
@@ -37,10 +37,50 @@ class PermissionRoleController extends Controller
      */
     public function create()
     {
-        $permissions = Permission::all();
-        return view('_auth.admin.permission_role.create')->with('permissions', $permissions);
+        $pindexes = Pindex::all();
+        return view('_auth.admin.permission_role.create')->with('pindexes', $pindexes);
+    }
+    private function getAndCombinePermissions($pindexes,$role)
+    {
+      $envelope =array();
+      $envelope['name'] = $role->name;
+      $sectionsNumber = count($pindexes);
+      $hex = dechex( (int) $role->permission);
+      while (strlen($hex)<$sectionsNumber){
+          $hex = "0" . $hex;
+      }
+      foreach($pindexes as $pindex){
+          $permissions = str_split(hex2binPer($hex,$pindex->index));
+          $names = ['create', 'read', 'update', 'delete'];
+          foreach ($permissions as $k => $permission) {
+            if($permission) $envelope[$names[$k].$pindex->index] = $permission;
+          }
+      }
+      return $envelope;
     }
 
+    private function decodePermissions(Request $request,$id,$type){
+
+      $name = ucfirst(strtolower($request->input('name')));
+      if($type == "update"){
+        $role = Role::find($id);
+      }else{
+        $role = new Role;
+      }
+      $role->name = $name;
+      $binary="";
+      $moduleCount = Pindex::count();
+      for ($i = 1;$i<=$moduleCount;$i++){
+          $c= ($request->input('create'.$i) == null)? 0:1;
+          $r= ($request->input('read'.$i) == null)? 0:1;
+          $u= ($request->input('update'.$i) == null)? 0:1;
+          $d= ($request->input('delete'.$i) == null)? 0:1;
+          $binary .= $c.$r.$u.$d;
+      }
+      $permission = bindec($binary);
+      $role->permission = $permission;
+      return $role;
+    }
     /**
      * Store a newly created resource in storage.
      *
@@ -50,7 +90,7 @@ class PermissionRoleController extends Controller
     public function store(Request $request)
     {
         $rules =  [
-            'name' => 'required|unique:roles|max:100' 
+            'name' => 'required|unique:roles|max:100'
         ];
         $messages =  [
             'name.required' => 'Role name is required',
@@ -58,27 +98,14 @@ class PermissionRoleController extends Controller
             'name.max' => 'Role name is 100 chars max'
         ];
         $this->validate($request, $rules, $messages);
-        $name = ucfirst(strtolower($request->input('name')));
-        $role = new Role;
-        $role->name = $name;
-        $binary="";
-        $moduleCount = Permission::count();//remember to change generic if works
-        for ($i = 1;$i<=$moduleCount;$i++){
-            $c= ($request->input('create'.$i) == null)? 0:1;
-            $r= ($request->input('read'.$i) == null)? 0:1;
-            $u= ($request->input('update'.$i) == null)? 0:1;
-            $d= ($request->input('delete'.$i) == null)? 0:1;
-            $binary .= $c.$r.$u.$d;
-        }
-        $permission = bindec($binary);
-        $role->permission = $permission;
+        $role = $this->decodePermissions($request,0,0);
         if ($role->save()){
-            return redirect()->back()->with('success', 'Role Created Successfully');                
+            return redirect()->back()->with('success', 'Role Created Successfully');
         }else{
             return redirect()->back()->with('error', 'Some error has occured please try resubmitting');
         }
-        
-        
+
+
 
 
     }
@@ -91,26 +118,10 @@ class PermissionRoleController extends Controller
      */
     public function show($id)
     {
-        $pRole = Role::find($id)->permission;
-        $envelope =array();
-        $permissions = Permission::all();
-        $sectionsNumber = count($permissions);
-        $hex = dechex( (int) $pRole);
-        while (strlen($hex)<$sectionsNumber){
-            $hex = "0" . $hex;
-        }
-        foreach($permissions as $pIndexName){
-            $permission = hex2binPer($hex,$pIndexName->index);
-            $create = substr($permission, 0,1);
-            $read = substr($permission, 1,1);
-            $update = substr($permission, 2,1);
-            $delete = substr($permission, 3,1);
-            $envelope[$pIndexName->index] = [
-                "name" => $pIndexName->name, "create"=>$create,
-                "read" => $read, "update"=>$update, "delete"=>$delete
-            ];
-        }
-        return view('_auth.admin.permission_role.view')->with('envelope', $envelope);
+        $role = Role::find($id);
+        $pindexes = Pindex::all();
+        $envelope = $this->getAndCombinePermissions($pindexes,$role);
+        return view('_auth.admin.permission_role.view')->with('pindexes', $pindexes)->with('envelope', $envelope);
     }
 
     /**
@@ -121,7 +132,12 @@ class PermissionRoleController extends Controller
      */
     public function edit($id)
     {
-        return view('_auth.admin.permission_role.edit');
+      $role = Role::find($id);
+      $pindexes = Pindex::all();
+      $envelope = $this->getAndCombinePermissions($pindexes, $role);
+      Session::flashInput($envelope);
+      // Session::flashInput(['name'=>$role->name]);
+      return view('_auth.admin.permission_role.edit')->with('role', $role)->with('pindexes', $pindexes);
     }
 
     /**
@@ -133,7 +149,24 @@ class PermissionRoleController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+      $rules =  [
+          'name' => 'sometimes|required|max:100|unique:roles,name,'.$id
+      ];
+      $messages =  [
+          'name.required' => 'Role name is required',
+          'name.unique' => 'Role name must be unique.',
+          'name.max' => 'Role name is 100 chars max'
+      ];
+      $this->validate($request, $rules, $messages);
+      $role = $this->decodePermissions($request,$id,"update");
+      if($role->name == Role::find($id)->name && $role->permission == Role::find($id)->permission ){
+        return redirect()->back()->with('warning', 'Same Value Resubmittion');
+      }
+      if ($role->save()){
+          return redirect()->back()->with('success', 'Role Updated Successfully');
+      }else{
+          return redirect()->back()->with('error', 'Some error has occured please try resubmitting');
+      }
     }
 
     /**
@@ -142,8 +175,19 @@ class PermissionRoleController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request,$id)
     {
-        echo "Deleted";
+        $role = Role::find($id);
+        if($request->ajax()){
+          return ($role->delete())? 1:0;
+        }else{
+          if($role->delete()){
+              return redirect()->back()->with('success', 'Role Deleted Successfully');
+          }else{
+              return redirect()->back()->with('error', 'Some error has occured please try resubmitting');
+          }
+        }
+
+
     }
 }

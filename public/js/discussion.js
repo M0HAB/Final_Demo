@@ -33,7 +33,7 @@ function vote(id,post_id){
     $('#post_footer_'+post_id).html(response.data);
   })
   .catch(function (error) {
-    console.log(error);
+    toastr.warning("Something went Wrong");
   });
 }
 
@@ -84,6 +84,10 @@ $('#req').on('show.bs.modal', function (event) {
   //on clicking submit assign values and prepare payload,headers then send ajax request
   modal.find('#submit_req').off('click').on("click", function (event) {
     body = quill.container.firstChild.innerHTML;
+    if(!$(body).text()){
+      toastr.warning("All fields are required");
+      return 0;
+    }
     headers = {
       headers: {
           'X-Requested-With': 'XMLHttpRequest'
@@ -94,8 +98,13 @@ $('#req').on('show.bs.modal', function (event) {
       type: type,
       body: body
     };
+
     if(type == "post"){
       title = $("#req_title").val();
+      if(!title){
+        toastr.warning("All fields are required");
+        return 0;
+      }
       payload["title"] = title;
       if (mode == "edit"){
         payload["id"] = id;
@@ -145,7 +154,7 @@ $('#req').on('show.bs.modal', function (event) {
 
     })
     .catch(function (error) {
-      console.log(error);
+      toastr.warning("Something went Wrong");
     });
   })
 
@@ -169,7 +178,7 @@ $('#search').keyup(function (key) {
       $('#search_body').html(response.data.body);
     })
     .catch(function (error) {
-      console.log(error);
+      toastr.warning("Something went Wrong");
     });
   }
 });
@@ -183,6 +192,6 @@ function view_replies(id) {
 
   })
   .catch(function (error) {
-    console.log(error);
+    toastr.warning("Something went Wrong");
   });
 }

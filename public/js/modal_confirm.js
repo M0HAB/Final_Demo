@@ -11,14 +11,15 @@ $('#confirm').on('show.bs.modal', function (event) {
   modal.find('#delete').off('click').on("click", function (event) {
     payload = {
       api_token: api_token,
-      id: id
+      id: id,
+      _method: "delete"
     };
     headers = {
       headers: {
           'X-Requested-With': 'XMLHttpRequest'
       }
     };
-    axios.post('/api/'+type+'/delete',payload,headers)
+    axios.post('/api/'+type+'/'+id+'/delete',payload,headers)
     .then( (response) => {
         if(response.data){
           if(type == "reply"){
@@ -35,7 +36,7 @@ $('#confirm').on('show.bs.modal', function (event) {
 
     })
     .catch(function (error) {
-      console.log(error);
+      toastr.warning("Something went Wrong");
     });
 
   })

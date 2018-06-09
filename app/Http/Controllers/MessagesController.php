@@ -13,7 +13,7 @@ class MessagesController extends Controller
 
     public function __construct()
     {
-      $this->middleware(['auth', 'revalidate']);
+      $this->middleware(['auth', 'revalidate'], ['except' => ['readFromUser', 'send']]);
     }
     public function filterMessages($messages)
     {

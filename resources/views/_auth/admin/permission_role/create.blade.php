@@ -6,14 +6,15 @@
 <!-- Start: Content -->
 	<div class="content mt-5 mb-5">
 		<div class="row">
-			<div class="offset-lg-1 col-lg-10 col-sm-12">					
+			<div class="offset-lg-1 col-lg-10 col-sm-12">
                 <h1 class="display-4 mb-5 f-rw ">New Role and Permissions</h1>
-                @include('_partials.errors')					
+								
+                @include('_partials.errors')
 				<form action="{{ route('prole.store') }}" method="POST" role="form" autocomplete="off">
 					{{ csrf_field() }}
 					<div class="form-group">
                         <label for="name">Role Name:</label>
-                        <input type="text" class="form-control" id="name" 
+                        <input type="text" class="form-control" id="name"
                             placeholder="Enter Role Name" name="name" value="{{ old('name', '') }}" required>
                     </div>
                     <div class="row">
@@ -29,35 +30,35 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($permissions as $permission)
+                                    @foreach ($pindexes as $pindex)
                                     <tr>
                                         <td>
-                                            {{$permission->index}}
+                                            {{$pindex->index}}
                                         </td>
                                         <td>
-                                            {{$permission->name}}
+                                            {{$pindex->name}}
                                         </td>
                                         <td>
-                                            <input class="form-check-input" type="checkbox" name="create{{$permission->index}}">
+                                            <input class="form-check-input" type="checkbox" name="create{{$pindex->index}}">
                                         </td>
                                         <td>
-                                            <input class="form-check-input" type="checkbox" name="read{{$permission->index}}">
+                                            <input class="form-check-input" type="checkbox" name="read{{$pindex->index}}">
                                         </td>
                                         <td>
-                                            <input class="form-check-input" type="checkbox" name="update{{$permission->index}}">
+                                            <input class="form-check-input" type="checkbox" name="update{{$pindex->index}}">
                                         </td>
                                         <td>
-                                            <input class="form-check-input" type="checkbox" name="delete{{$permission->index}}">
+                                            <input class="form-check-input" type="checkbox" name="delete{{$pindex->index}}">
                                         </td>
-                                        
-                                            
+
+
                                     </tr>
                                     @endforeach
                                 </tbody>
                             </table>
-                            
+
                         </div>
-                
+
 					<button type="submit" name="submit" class="btn btn-primary">Submit</button>
 				</form>
 

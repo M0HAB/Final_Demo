@@ -6,14 +6,14 @@
 <!-- Start: Content -->
 	<div class="content mt-5 mb-5">
 		<div class="row">
-			<div class="offset-lg-1 col-lg-10 col-sm-12">					
+			<div class="offset-lg-1 col-lg-10 col-sm-12">
 				@include('_partials.errors')
-				<h1 class="display-4 mb-5 f-rw ">Create a New Department</h1>					
-				<form action="{{ route('department.store') }}" method="POST" role="form" autocomplete="off">
+				<h1 class="display-4 mb-5 f-rw ">Create a New Department</h1>
+				<form action="{{ route('departments.store') }}" method="POST" role="form" autocomplete="off">
 					{{ csrf_field() }}
 					<div class="form-group">
 					<label for="department">Department Name:</label>
-					<input type="text" class="form-control" id="department" 
+					<input type="text" class="form-control" id="department"
 						placeholder="Enter Department Name" name="department" value="{{ old('department', '') }}">
 					</div>
 					@if (count($users) > 0)

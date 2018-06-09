@@ -5,7 +5,7 @@
  * https://www.myapp.com/test
  * return -> test
  */
-use App\Permission;
+use App\Pindex;
 use App\Role;
 use \App\Http\Controllers\MessagesController;
 //Function to get current location in app Used in breadcrumbs
@@ -31,15 +31,17 @@ function hex2binPer($hex,$perIndex){
 //Function to get permissions of a specific Module for current auth user
 function dechexper($perName,$type){
     //number of Modules in permission table
-    $sectionsNumber = Permission::count();
+    $sectionsNumber = Pindex::count();
     //Get Auth user
     $authuser = Auth::user();
     //Get current Auth user permission
     $number = $authuser->permission;
     //Get requested Module Data from permission table
-    $perIndex = Permission::where('name', $perName)->get();
+    $perIndex = Pindex::where('name', $perName)->first();
+    //if section not found return false for all calls
+    if(!$perIndex)return false;
     //Extract index from received data
-    $perIndex = $perIndex[0]['index'];
+    $perIndex = $perIndex->index;
     //If current Auth user has no special permissions get the default ones
     if (empty($number)){
         $number = Role::find($authuser->role_id)->permission;

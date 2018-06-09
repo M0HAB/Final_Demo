@@ -3,16 +3,18 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Reply extends Model
 {
+  use SoftDeletes;
   protected $table = 'replies';
   public $primaryKey = 'id';
   public $timestamps = true;
   protected $fillable = [
       'post_id', 'user_id', 'approved', 'body'
   ];
-
+  protected $dates = ['deleted_at'];
   public function post()
   {
     return $this->belongsTo('App\Post', 'post_id');

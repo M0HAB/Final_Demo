@@ -145,10 +145,10 @@ class PostController extends Controller
 
 
       }
-      public function delete(Request $request)
+      public function delete(Request $request,$id)
       {
         if($request->ajax()){
-          $post = Post::find($request->id);
+          $post = Post::find($id);
           if ($post->user_id == Auth::user()->id){
             if($post->delete()){
               return 1;
