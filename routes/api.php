@@ -14,6 +14,10 @@ use Illuminate\Http\Request;
 */
 
 
+Route::middleware('auth:admin-api')->group(function () {
+  Route::delete('/prole/{id}/delete', 'PermissionRoleController@destroy');
+});
+
 Route::middleware('auth:api')->group(function () {
   Route::post('/messages/{id}/send', 'MessagesController@send');
   Route::post('/messages/{id}/read', 'MessagesController@readFromUser');
@@ -23,9 +27,9 @@ Route::middleware('auth:api')->group(function () {
   Route::post('/newRecord', 'PostController@store');
   Route::post('/editRecord', 'PostController@edit');
 
-  Route::post('/post/delete', 'PostController@delete');
-  Route::post('/reply/delete', 'ReplyController@delete');
-
+  Route::delete('/post/{id}/delete', 'PostController@delete');
+  Route::delete('/reply/{id}/delete', 'ReplyController@delete');
+  Route::delete('/department/{id}/delete', 'DepartmentsController@destroy');
 
   Route::get('/{id}/replies', 'PostController@loadReplies');
   Route::get('/{id}/search', 'DiscussionController@searchPosts');

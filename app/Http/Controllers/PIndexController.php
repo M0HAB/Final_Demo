@@ -5,9 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
-use App\Permission;
+use App\Pindex;
 
-class PermissionController extends Controller
+class PIndexController extends Controller
 {
     public function __construct()
     {
@@ -21,11 +21,11 @@ class PermissionController extends Controller
      */
 
     //PERMISSION INDEX CONTROLLER
-    
+
     public function index()
     {
-        $pIndex = Permission::all();
-        return view('_auth.admin.permission_index.show')->with('pIndex', $pIndex);
+        $pindex = Pindex::all();
+        return view('_auth.admin.permission_index.show')->with('pindex', $pindex);
     }
 
 
@@ -37,8 +37,8 @@ class PermissionController extends Controller
      */
     public function edit($id)
     {
-        $permission = Permission::find($id);
-        return view('_auth.admin.permission_index.edit')->with('permission', $permission);
+        $pindex = Pindex::find($id);
+        return view('_auth.admin.permission_index.edit')->with('pindex', $pindex);
     }
 
     /**
@@ -52,14 +52,14 @@ class PermissionController extends Controller
     {
         //todo::add more validations
         $this->validate($request, [
-            'permission' => 'required',
+            'pindex' => 'required',
         ]);
-        $permission = Permission::find($id);
-        $newname =  ucfirst($request->input('permission'));
-        if ($permission->name != $newname){
-            $permission->name = $newname;
-            if ($permission->save()){
-                return redirect()->route('permission.index')->with('success', 'Permission updated successfully');
+        $pindex = Pindex::find($id);
+        $newname =  ucfirst($request->input('pindex'));
+        if ($pindex->name != $newname){
+            $pindex->name = $newname;
+            if ($pindex->save()){
+                return redirect()->route('pindex.index')->with('success', 'Permission Index updated successfully');
             }else{
                 return redirect()->back()->with('error', 'Some error has occured please try resubmitting');
             }

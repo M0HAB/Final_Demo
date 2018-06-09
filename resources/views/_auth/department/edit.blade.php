@@ -6,19 +6,19 @@
 <!-- Start: Content -->
 	<div class="content mt-5 mb-4">
 		<div class="container">
-            
+
 			<h1>Edit Department : <strong>{{$department->name}}</strong></h1>
-			<div class="row justify-content-center">		
-				<div class="col-lg-10 col-sm-12">					
+			<div class="row justify-content-center">
+				<div class="col-lg-10 col-sm-12">
 					<br>
-					@include('_partials.errors')					
-                    <form action="{{ route('department.update',$department->id) }}" method="POST" role="form" autocomplete="off">                        
+					@include('_partials.errors')
+                    <form action="{{ route('departments.update',$department->id) }}" method="POST" role="form" autocomplete="off">                        
                         {{ csrf_field() }}
                         <input type="hidden" name="_method" value="PUT">
 						<div class="form-group">
 						  <label for="department">Department Name:</label>
-						  <input type="text" class="form-control" id="department" 
-                              placeholder="Enter Department Name" name="department" 
+						  <input type="text" class="form-control" id="department"
+                              placeholder="Enter Department Name" name="department"
                               @if (!empty(old('department')))
                                 value="{{ old('department') }}"
                               @else
@@ -41,7 +41,7 @@
                                                 {{$user->fname.' '.$user->lname}}
                                             </option>
                                         @endif
-										
+
 									@endforeach
 								</select>
 							</div>

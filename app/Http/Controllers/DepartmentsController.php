@@ -21,14 +21,14 @@ class DepartmentsController extends Controller
 
     public function __construct()
     {
-        $this->middleware(['auth', 'revalidate']);
+        $this->middleware(['auth', 'revalidate'], ['except' => ['destroy']]);
     }
 
     public function index()
     {
         // Return the list view with All Departments
         if (canRead($this->controllerName)){
-            $departments = Department::where('status', '!=',false)->get();
+            $departments = Department::all();
             return view('_auth.department.show')->with('departments', $departments);
         }else{
             return redirect()->route('user.dashboard')->with('error', 'Unauthorized Access');
@@ -46,7 +46,7 @@ class DepartmentsController extends Controller
 
         if (canCreate($this->controllerName)){
             // Return the create view with Users from DB to use in ComboBox
-            $users = Role::find(Role::where('name', 'Instructor')->first()->id)->user;
+            $users = User::getInstructors()->get();
             return view('_auth.department.create')->with('users', $users);
         }else{
             return redirect()->route('user.dashboard')->with('error', 'Unauthorized Access');
@@ -75,7 +75,6 @@ class DepartmentsController extends Controller
             $department = new Department;
             $department->name = $request->input('department');
             $department->Dep_Head_ID = $request->input('instructor');
-            $department->status = true;
             // If succesfully updated display success else error
             if ($department->save()){
                 return redirect()->back()->with('success', 'Department created successfully');
@@ -124,16 +123,14 @@ class DepartmentsController extends Controller
     {
 
         if (canUpdate($this->controllerName)){
+
             // Get Department BY id
             $department = Department::find($id);
-            if ($department->status){
-                // Get users from DB where role is Instructor
-                $users = User::getInstructors()->get();
-                // Return the Edit view with Users from DB to use in ComboBox
-                return view('_auth.department.edit')->with('users', $users)->with('department', $department);
-            }else{
-                return redirect()->route('department.index')->with('error', 'Deleted Department');
-            }
+            // Get users from DB where role is Instructor
+            $users = User::getInstructors()->get();
+            // Return the Edit view with Users from DB to use in ComboBox
+            return view('_auth.department.edit')->with('users', $users)->with('department', $department);
+
         }else{
             return redirect()->route('user.dashboard')->with('error', 'Unauthorized Access');
         }
@@ -184,18 +181,23 @@ class DepartmentsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request,$id)
     {
 
         if (canDelete($this->controllerName)){
-            $department = Department::find($id);
-            $department->status = false;
-            if ($department->save()){
-                return redirect()->back()->with('success', 'Department Deleted successfully');
+
+          $department = Department::find($id);
+          if($request->ajax()){
+            return ($department->delete())? 1:0;
+          }else{
+            if($department->delete()){
+                return redirect()->back()->with('success', 'Department Deleted Successfully');
             }else{
                 return redirect()->back()->with('error', 'Some error has occured please try resubmitting');
             }
+          }
         }else{
+            if($request->ajax())return 0;
             return redirect()->route('user.dashboard')->with('error', 'Unauthorized Access');
         }
 

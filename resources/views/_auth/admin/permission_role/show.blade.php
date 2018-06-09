@@ -11,7 +11,7 @@
                 <span class="fas fa-plus" ></span>
             </button>
         </a> </h1>
-        
+
 			<div class="row justify-content-center">
                 <table class="table table-hover">
                     <thead>
@@ -25,7 +25,7 @@
                     </thead>
                     <tbody>
                         @foreach ($perRole as $x)
-                        <tr>
+                        <tr id="prole_container_{{$x->id}}">
                             <td>
                                 {{$x->id}}
                             </td>
@@ -36,29 +36,34 @@
                                 <a href={{ route('prole.show',$x->id)}}>View Permissions for this role</a>
                             </td>
                             <td>
-                                
+
                                 <a href="{{ route('prole.edit',$x->id)}}">
                                     <button class="btn btn-success" href="{{ route('prole.edit',$x->id)}}">
                                         <span class="far fa-edit"></span>
                                     </button>
-                                </a>                             
+                                </a>
                             </td>
                             <td>
-                                <form action="{{ route('prole.destroy',$x->id)}}" method="POST">
-                                    {{ csrf_field() }}
-                                    <input type="hidden" name="_method" value="DELETE">
-                                    <button class="btn btn-danger" type="submit" onclick="confirm('Are you sure you want to Delete this?')">
-                                        <span class="far fa-trash-alt fa-lg fam-mod"></span>
-                                    </button>
-                                </form>                                
+															<button class="btn btn-danger" type="submit" data-toggle="modal" data-target="#confirm" data-id="{{$x->id}}" data-type="prole">
+																	<span class="far fa-trash-alt fa-lg"></span>
+															</button>
                             </td>
-                                
+
                         </tr>
                         @endforeach
                     </tbody>
                 </table>
-                
+
 			</div>
 		</div>
 	</div> <!-- End: Content -->
+	@include('_partials.modal_confirm')
+
+@endsection
+@section('scripts')
+<script src="{{asset('js/axios.min.js')}}"></script>
+<script>
+  var api_token = "{{ Auth::user()->api_token}}";
+</script>
+<script src="{{asset('js/modal_confirm.js')}}" charset="utf-8"></script>
 @endsection

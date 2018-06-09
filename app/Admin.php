@@ -8,7 +8,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 class Admin extends Authenticatable
 {
     use Notifiable;
-
+    protected $guard = 'admin';
     /**
      * The attributes that are mass assignable.
      *
@@ -24,6 +24,6 @@ class Admin extends Authenticatable
      * @var array
      */
     protected $hidden = [
-        'password', 'remember_token',
+        'password', 'remember_token','api_token'
     ];
 }

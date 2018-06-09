@@ -3,21 +3,18 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Department extends Model
 {
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
-     */
+    use SoftDeletes;
     protected $table = 'departments';
     public $primaryKey = 'id';
     public $timestamps = true;
     protected $fillable = [
         'name', 'Dep_Head_ID',
     ];
-
+    protected $dates = ['deleted_at'];
 
     public function users(){
         return $this->hasMany('App\User', 'dep_id');

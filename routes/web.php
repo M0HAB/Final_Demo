@@ -46,7 +46,7 @@ Route::get('replies', function() {return view('design.discussion_replies');});
     Route::get('profile', 'UserDashboardController@profile')->name('user.profile');
  });
 
-Route::resource('department', 'DepartmentsController');
+Route::resource('departments', 'DepartmentsController');
 
 
 Route::resource('assignments', 'AssignmentsController',['names'=>[
@@ -59,10 +59,12 @@ Route::resource('assignments', 'AssignmentsController',['names'=>[
 Route::get('/assignment/{id}', 'AssignmentsController@deliver')->name('assignment.deliver');
 Route::post('/AssignmentDeliver/', 'AssignmentsController@deliverstore')->name('assignment.deliverstore');
 Route::get('/assignmentDelivered/', 'AssignmentsController@delivered')->name('assignment.delivered');
-Route::resource('/permission', 'PermissionController', [
+Route::resource('/pindex', 'PIndexController', [
     'only' => ['edit', 'update', 'index']
 ]);
-Route::resource('/prole', 'PermissionRoleController');
+Route::resource('/prole', 'PermissionRoleController')->except([
+    'destroy'
+]);
 
 Route::group(['prefix' => 'messages'], function () {
 

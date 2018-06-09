@@ -25,7 +25,7 @@
         </div>
     </div>
     @include('_auth.discussions.modal_post')
-    @include('_auth.discussions.modal_confirm')
+    @include('_partials.modal_confirm')
 @endsection
 @section('scripts')
 <script src="{{asset('js/quill.min.js')}}"></script>

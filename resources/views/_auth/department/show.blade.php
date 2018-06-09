@@ -8,8 +8,8 @@
 		<div class="container">
         <h1>Departments
 					@if(canCreate('Department'))
-					<a href="{{ route('department.create')}}">
-						<button class="btn btn-primary" href="{{ route('department.create')}}" title="Create">
+					<a href="{{ route('departments.create')}}">
+						<button class="btn btn-primary" href="{{ route('departments.create')}}" title="Create">
 							<span class="fas fa-plus"></span> Create Department
 						</button>
 					</a>
@@ -28,20 +28,15 @@
                         </thead>
                         <tbody>
                             @foreach ($departments as $dep)
-                            <tr>
+                            <tr id="department_container_{{$dep->id}}">
                                 <td>
-                                    <a href="{{ route('department.show',$dep->id)}}" class="font-weight-bold forum-nav">{{$dep->name}}</a>
+                                    <a href="{{ route('departments.show',$dep->id)}}" class="font-weight-bold forum-nav">{{$dep->name}}</a>
                                 </td>
                                 @if (canDelete('Department'))
                                     <td>
-                                        <form action="{{ route('department.destroy',$dep->id)}}" method="POST">
-                                            {{ csrf_field() }}
-                                            <input type="hidden" name="_method" value="DELETE">
-                                            <button class="btn btn-danger" type="submit" onclick="confirm('Are you sure you want to Delete this?')">
-                                                <span class="far fa-trash-alt fa-lg "></span>
-                                            </button>
-                                        </form>
-
+																			<button class="btn btn-danger" type="submit" data-toggle="modal" data-target="#confirm" data-id="{{$dep->id}}" data-type="department">
+																					<span class="far fa-trash-alt fa-lg "></span>
+																			</button>
                                     </td>
                                 @endif
 
@@ -53,7 +48,7 @@
                     <div class="col-md-12 col-sm-12">
                         <br>
                         @if (canCreate('Department'))
-                            <a href="{{ route('department.create') }}" class="btn btn-success">
+                            <a href="{{ route('departments.create') }}" class="btn btn-success">
                                 No Departments . Create Department Here !
                             </a>
                         @else
@@ -66,4 +61,13 @@
 			</div>
 		</div>
 	</div> <!-- End: Content -->
+	@include('_partials.modal_confirm')
+
+@endsection
+@section('scripts')
+<script src="{{asset('js/axios.min.js')}}"></script>
+<script>
+  var api_token = "{{ Auth::user()->api_token}}";
+</script>
+<script src="{{asset('js/modal_confirm.js')}}" charset="utf-8"></script>
 @endsection

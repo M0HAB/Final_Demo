@@ -4,14 +4,14 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Permission extends Model
+class Pindex extends Model
 {
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
-    protected $table = 'permissions';    
+    protected $table = 'pindexes';
     public $primaryKey = 'index';
     public $timestamps = true;
     protected $fillable = [
@@ -19,5 +19,5 @@ class Permission extends Model
     ];
 
 
-    
+
 }
