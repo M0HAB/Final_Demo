@@ -12,6 +12,37 @@
             height: auto;
             background-size: 100%;
         }
+        /* Start by setting display:none to make this hidden.
+Then we position it in relation to the viewport window
+with position:fixed. Width, height, top and left speak
+for themselves. Background we set to 80% white with
+our animation centered, and no-repeating */
+        .modal {
+            display:    none;
+            position:   fixed;
+            z-index:    1000;
+            top:        0;
+            left:       0;
+            height:     100%;
+            width:      100%;
+            background: rgba( 255, 255, 255, .8 )
+            url('{{ asset('course_images/ajax-loader2.gif') }}')
+            50% 50%
+            no-repeat;
+        }
+
+        /* When the body has the loading class, we turn
+           the scrollbar off with overflow:hidden */
+        body.loading .modal {
+            overflow: hidden;
+        }
+
+        /* Anytime the body has the loading class, our
+           modal element will be visible */
+        body.loading .modal {
+            display: block;
+        }
+
     </style>
 @endsection
 
@@ -49,24 +80,53 @@
         <div class="col-sm-4 mb-3">
             <div class="list-group">
                 <div class="row">
-                    <div class="col-sm-12">
-                        <h6 class="text-uppercase border-left border-primary"><strong class="ml-2">Course Activities</strong></h6>
-                        <div class="card mt-4" style="box-shadow: 5px 5px 10px gray">
-                            <div class="card-block mt-4 mb-3 p-2">
-                                <p>
-                                    <a href="{{ route('course.getUpdateCourseForm', ['id' => $course->id]) }}" class="mt-2 text-capitalize"><i class="fa fa-edit"></i> update course information</a>
-                                </p>
-                                <p>
-                                    <a href="{{ route('course.getNewModuleForm', ['id' => $course->id]) }}" class="mt-2 text-capitalize"><i class="fa fa-plus"></i> add new module</a>
-                                </p>
+                    @if(Auth::User()->role == 'instructor')
+                        <div class="col-sm-12">
+                            <h6 class="text-uppercase border-left border-primary"><strong class="ml-2">Course Activities</strong></h6>
+                            <div class="card mt-4" style="box-shadow: 5px 5px 10px gray">
+                                <div class="card-block mt-4 mb-3 p-2">
+                                    <p>
+                                        <a href="{{ route('course.getUpdateCourseForm', ['id' => $course->id]) }}" class="mt-2 text-capitalize"><i class="fa fa-edit"></i> update course information</a>
+                                    </p>
+                                    <p>
+                                        <a href="{{ route('course.getNewModuleForm', ['id' => $course->id]) }}" class="mt-2 text-capitalize"><i class="fa fa-plus"></i> add new module</a>
+                                    </p>
+                                    <hr>
+                                    <form id="submit-course-activation">
+                                        @if(!$course->is_active)
+                                            <input type="hidden" name="is_active" value='1'>
+                                            <p id="submit-status ">
+                                                <i id="icon-course-status" class="fas fa-toggle-off "></i><button id="submit-course-status" class="text-success mt-2" style="border: none;background-color: transparent;cursor: pointer">Activate The Course</button>
+                                            </p>
+                                        @else
+                                            <input type="hidden" name="is_active" value='0'>
+                                            <p id="submit-status">
+                                                <i id="icon-course-status" class="fas fa-toggle-on text-success"></i><button id="submit-course-status" class="text-success mt-2" style="border: none;background-color: transparent;cursor: pointer">Deactivate The Course</button>
+                                            </p>
+                                        @endif
+                                    </form>
+                                    <div id="response-message-success" class="alert alert-success mt-2" style="display: none"></div>
+                                    <div id="response-message-danger" class="alert alert-danger mt-2" style="display: none"></div>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="col-sm-12 mt-5 text-center">
-                        <a href="{{ route('course.listUserCourses') }}" style="width: 100%" class="btn btn-success"><i class="fas fa-list"></i> Courses Catalog</a>
+                    @endif
+                    <div class="col-sm-12 mt-4  text-center">
+                        <a href="{{ route('course.listUserCourses') }}" style="width: 100%" class="btn btn-primary"><i class="fas fa-list"></i> Courses Catalog</a>
                     </div>
                 </div>
             </div>
         </div>
+        <div class="modal"><!-- Place at bottom of page --></div>
     </div>
 @endsection
+
+@section('scripts')
+    @if(Auth::User()->role == 'instructor')
+        <script>
+            var courseID = {!! json_encode($course->id) !!};
+        </script>
+    @endif
+    <script src="{{ asset('js/courseModules.js') }}"></script>
+@endsection
+
