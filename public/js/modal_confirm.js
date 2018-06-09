@@ -9,10 +9,16 @@ $('#confirm').on('show.bs.modal', function (event) {
   var id = button.data('id');
   var modal = $(this);
   modal.find('#delete').off('click').on("click", function (event) {
-    axios.post('/api/'+type+'/delete',{
+    payload = {
       api_token: api_token,
       id: id
-    })
+    };
+    headers = {
+      headers: {
+          'X-Requested-With': 'XMLHttpRequest'
+      }
+    };
+    axios.post('/api/'+type+'/delete',payload,headers)
     .then( (response) => {
         if(response.data){
           if(type == "reply"){

@@ -52,7 +52,9 @@ class DiscussionController extends Controller
         ->orWhereRaw('body LIKE "%'.$arabicTest.'%" or title LIKE "%'.$arabicTest.'%"')
         ->latest()->get();
         if($request->ajax()){
-          return view('_auth.discussions.partial_search_body')->with('results', $results)->with('discussion_id', $id);
+          return response()->json([
+              'body' => view('_auth.discussions.partial_search_body')->with('results', $results)->with('discussion_id', $id)->render()
+          ]);
         }
         return view('_auth.discussions.search')->with('results', $results)->with('discussion_id', $id);
     }

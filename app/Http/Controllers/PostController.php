@@ -109,40 +109,53 @@ class PostController extends Controller
       //same store function for Post and Reply
       public function store(Request $request)
       {
-            //filterRecordType takes the request and boolean to indicate if it is edit or new
-            $newRecord = $this->filterRecordType($request,false);
-            if ($newRecord === "404") return "404";
-            $body = $this->formulateBody($request->body);
-            if($body === 0) return $body;
-            $newRecord->body = $body;
-            $newRecord->user_id = Auth::user()->id;
-            if(!$newRecord->save()) return "404";
-            if($request->type == "reply" || $request->type == "Reply"){
-              $post = Post::find($newRecord->post_id);
-              return view('_auth.discussions.load_replies')->with('post', $post);
+            if($request->ajax()){
+              //filterRecordType takes the request and boolean to indicate if it is edit or new
+              $newRecord = $this->filterRecordType($request,false);
+              if ($newRecord === "404") return "404";
+              $body = $this->formulateBody($request->body);
+              if($body === 0) return $body;
+              $newRecord->body = $body;
+              $newRecord->user_id = Auth::user()->id;
+              if(!$newRecord->save()) return "404";
+              if($request->type == "reply" || $request->type == "Reply"){
+                $post = Post::find($newRecord->post_id);
+                return response()->json([
+                    'body' => view('_auth.discussions.load_replies')->with('post', $post)->render()
+                ]);
+              }
+              $post = Post::find($newRecord->id);
+              return response()->json([
+                  'body' => view('_auth.posts.partial_post_body')->with('post', $post)->render()
+              ]);
             }
-            $post = Post::find($newRecord->id);
-            return view('_auth.posts.partial_post_body')->with('post', $post);
+
       }
       public function edit(Request $request)
       {
-        $record = $this->filterRecordType($request,true);
-        if($record === "404") return "404";
-        $body = $this->formulateBody($request->body);
-        if($body === 0) return $body;
-        $record->body = $body;
-        if(!$record->save()) return "404";
-        return $record;
+        if($request->ajax()){
+          $record = $this->filterRecordType($request,true);
+          if($record === "404") return "404";
+          $body = $this->formulateBody($request->body);
+          if($body === 0) return $body;
+          $record->body = $body;
+          if(!$record->save()) return "404";
+          return $record;
+        }
+
 
       }
       public function delete(Request $request)
       {
-        $post = Post::find($request->id);
-        if ($post->user_id == Auth::user()->id){
-          if($post->delete()){
-            return 1;
+        if($request->ajax()){
+          $post = Post::find($request->id);
+          if ($post->user_id == Auth::user()->id){
+            if($post->delete()){
+              return 1;
+            }
           }
+          return 0;
         }
-        return 0;
+
       }
 }

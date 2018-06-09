@@ -81,13 +81,15 @@ $('#req').on('show.bs.modal', function (event) {
     modal.find('#submit_req').text("Submit "+type);
   }
 
-  //on clicking submit assign values and prepare payload then send ajax request
+  //on clicking submit assign values and prepare payload,headers then send ajax request
   modal.find('#submit_req').off('click').on("click", function (event) {
     body = quill.container.firstChild.innerHTML;
-    payload = {
+    headers = {
       headers: {
-        'X-Requested-With': 'XMLHttpRequest'
-      },
+          'X-Requested-With': 'XMLHttpRequest'
+      }
+    };
+    payload = {
       api_token: api_token,
       type: type,
       body: body
@@ -110,7 +112,7 @@ $('#req').on('show.bs.modal', function (event) {
       }
     }
     //send ajax request with url and payload assigned previously
-    axios.post(requestURL,payload)
+    axios.post(requestURL,payload,headers)
     .then( (response) => {
       if(response.data == "0"){
         alert("max image size is 1MB");
@@ -121,19 +123,19 @@ $('#req').on('show.bs.modal', function (event) {
         if (type == "post"){
           $("#req_title").val("");
           if (mode == "edit"){
-            $('#post_container_'+id+' .edit_title').text(title);
-            $('#'+type+'_container_'+id+' .edit_body').html(body);
+            $('#post_container_'+id+' .edit_title').text(response.data.title);
+            $('#'+type+'_container_'+id+' .edit_body').html(response.data.body);
             toastr.success("Post Edited Successfully");
           }else{
-            $("#posts").append(response.data);
+            $("#posts").append(response.data.body);
             toastr.success("Post Submitted Successfully");
           }
         }else if (type == "reply") {
           if (mode == "edit"){
-            $('#'+type+'_container_'+id+' .edit_body').html(body);
+            $('#'+type+'_container_'+id+' .edit_body').html(response.data.body);
             toastr.success("Reply Edited Successfully");
           }else{
-            $('#post_footer_'+id).html(response.data);
+            $('#post_footer_'+id).html(response.data.body);
             toastr.success("Reply Submitted Successfully");
           }
 
@@ -152,9 +154,7 @@ $('#req').on('show.bs.modal', function (event) {
 
 
 $('#search').keyup(function (key) {
-  console.log("yo");
   if($(this).val().length > 0 && key.keyCode == 13){
-
     axios.get('/api/'+discussion_id+'/search',
     {
       headers: {
@@ -166,7 +166,7 @@ $('#search').keyup(function (key) {
       }
     })
     .then( (response) => {
-      $('#search_body').html(response.data);
+      $('#search_body').html(response.data.body);
     })
     .catch(function (error) {
       console.log(error);
