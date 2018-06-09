@@ -125,7 +125,8 @@ top: 705px;right: 6%;width: 40px;height: 40px;border-radius: 20px;line-height: 4
 blockquote {background-color: #f9f9f9;border-left: 10px solid #ccc;margin: 1.5em 10px;padding: 0.5em 10px;quotes: "\201C""\201D""\2018""\2019";}
 .tooltip-inner {white-space: pre-wrap}
 /* Reply-Page */
-.disscusion .go-back-btn {position:relative;top:5px;color:#4D545D}
+.disscusion .go-back-btn {position:relative;top:5px;color:#4D545D;background-color: #fff;border: 1px solid #d3d3d3}
+.disscusion .go-back-btn:hover {background-color: #2C3E50; color: #fff}
 .disscusion .discussion-container .post-title {color:#4D545D}
 .disscusion .discussion-container .user-content {color:#4D545D}
 .disscusion .replies .reply-header {background-color: #fff}

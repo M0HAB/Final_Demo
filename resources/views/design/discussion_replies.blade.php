@@ -6,7 +6,7 @@
         <div class="col-lg-8">
             <div class="row">
                 <div class="col-lg-1 col-sm-12">
-                    <a href="" class="btn btn-light go-back-btn mb-4"><i class="fas fa-arrow-left fa-1x"></i></a>        
+                    <a href="" class="btn go-back-btn mb-4"><i class="fas fa-arrow-left fa-1x"></i></a>        
                 </div>
                 <div class="col-lg-11 mb-3">
                     {{-- Post --}}                    
