@@ -21,6 +21,8 @@ toastr.options = {
 $(document).ready(function() {
     $(window).click(function() {
         $('#arrow-up').css('display', 'none');
+        $('.coll-btn').addClass('collapsed');
+        $('.comments-block').removeClass('show');
     });
     
     $('.navbar-nav li a:not(#msg-dropdown)').click(function() {

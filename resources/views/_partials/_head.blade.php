@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="{{ asset('css/fontawesome.min.css') }}">
     @yield('stylesheets')
     <link rel="stylesheet" href="{{ asset('css/_app.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/lightbox.min.css') }}">
     <!-- Custom CSS -->
 	<link rel="stylesheet" href="{{ asset('css/style.css') }}">
 </head>

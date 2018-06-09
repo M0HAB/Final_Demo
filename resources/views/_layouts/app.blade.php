@@ -23,6 +23,7 @@
     <script src="{{ asset('js/fontawesome-all.min.js') }}"></script>
     <!-- Toastr -->
     <script src="{{ asset('js/toastr.min.js') }}"></script>
+    <script src="{{ asset('js/lightbox.min.js') }}"></script>
     <script src="{{ asset('js/custom.js') }}"></script>
     @yield('scripts')
     <script>

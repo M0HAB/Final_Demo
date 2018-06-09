@@ -123,3 +123,16 @@ top: 705px;right: 6%;width: 40px;height: 40px;border-radius: 20px;line-height: 4
 .btn-scroll-custom:hover {background-color: #fff;color: #2C3E50;border: 1px solid #2C3E50;}
 .show {display: inline-block;}
 blockquote {background-color: #f9f9f9;border-left: 10px solid #ccc;margin: 1.5em 10px;padding: 0.5em 10px;quotes: "\201C""\201D""\2018""\2019";}
+.tooltip-inner {white-space: pre-wrap}
+/* Reply-Page */
+.disscusion .go-back-btn {position:relative;top:5px;color:#4D545D}
+.disscusion .discussion-container .post-title {color:#4D545D}
+.disscusion .discussion-container .user-content {color:#4D545D}
+.disscusion .replies .reply-header {background-color: #fff}
+.disscusion .replies .interactive-likes-comments {position:relative;top:5px;}
+.disscusion .comments-block .comment {border:1px solid #DFDFDF}
+.disscusion .comments-block .comment .comment-header {background-color:#fff;border:none}
+.best-solution {border: 1px solid #18BC9C}
+.best-solution-show-lbl {display: inline-block;font-size:16px}
+.best-solution-hide-lbl {display: none}
+.interactive-likes-comments > .rm-td {text-decoration: none;}

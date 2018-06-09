@@ -98,7 +98,7 @@
                                     <a class="dropdown-item" href="#">Edit</a>
                                     <a class="dropdown-item" href="#">Delete</a>
                                 </div>
-                                </div>
+                            </div>
                             <span class="lb"><small>Created at: 2018-07-06</small></span>
                         </div>
                         <div class="card-body right-side-post-body">
@@ -114,31 +114,30 @@
                                     <span class="badge badge-dark badge-pill reply-lbl-counter">1000</span>
                                 </div>
                                 <div class="col-lg-9">
-                                        <button id="add-reply-btn" class="btn btn-light float-right" data-toggle="modal" data-target="#add-reply-modal"><i class="fas fa-reply mr-2"></i> Reply</button>
-                                    </div>
-                                    <div class="modal fade modal-custom" id="add-reply-modal">
-                                        <div class="modal-dialog" role="document">
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <h5 class="modal-title">
-                                                        <a href="http://">First Post Created</a>
-                                                    </h5>
-                                                    <button type="button" class="close close-btn" data-dismiss="modal" aria-label="Close">
-                                                    <span aria-hidden="true">&times;</span>
-                                                    </button>
+                                    <button id="add-reply-btn" class="btn btn-light float-right" data-toggle="modal" data-target="#add-reply-modal"><i class="fas fa-reply mr-2"></i> Reply</button>
+                                </div>
+                                <div class="modal fade modal-custom" id="add-reply-modal">
+                                    <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title">
+                                                    <a href="http://">First Post Created</a>
+                                                </h5>
+                                                <button type="button" class="close close-btn" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <div class="form-group">
+                                                    <label for="exampleTextarea">Whats on your mind...</label>
+                                                    <textarea class="form-control text-area-reply" id="exampleTextarea" rows="3"></textarea>
                                                 </div>
-                                                <div class="modal-body">
-                                                    <div class="form-group">
-                                                        <label for="exampleTextarea">Whats on your mind...</label>
-                                                        <textarea class="form-control text-area-reply" id="exampleTextarea" rows="3"></textarea>
-                                                    </div>
-                                                </div>
-                                                <div class="modal-footer modal-footer-custom">
-                                                    <div class="modal-left-btns">
-                                                        <button class="btn btn-light on-small mb-2"><i class="fas fa-plus mr-2"></i>Add</button>
-                                                        <button class="btn btn-light on-small mb-2"><i class="fas fa-upload mr-2"></i> Upload</button>
-                                                        <button type="button" class="btn btn-dark float-right on-small mb-2" data-dismiss="modal">Close</button>
-                                                    </div>
+                                            </div>
+                                            <div class="modal-footer modal-footer-custom">
+                                                <div class="modal-left-btns">
+                                                    <button class="btn btn-light on-small mb-2"><i class="fas fa-plus mr-2"></i>Add</button>
+                                                    <button class="btn btn-light on-small mb-2"><i class="fas fa-upload mr-2"></i> Upload</button>
+                                                    <button type="button" class="btn btn-dark float-right on-small mb-2" data-dismiss="modal">Close</button>
                                                 </div>
                                             </div>
                                         </div>
@@ -148,6 +147,7 @@
                         </div>
                     </div>
                 </div>
+            </div>
 
                 {{-- Posts --}}
             <div class="row">
@@ -164,7 +164,7 @@
                                     <a class="dropdown-item" href="#">Edit</a>
                                     <a class="dropdown-item" href="#">Delete</a>
                                 </div>
-                                </div>
+                            </div>
                             <span class="lb"><small>Created at: 2018-07-06</small></span>
                         </div>
                         <div class="card-body right-side-post-body">

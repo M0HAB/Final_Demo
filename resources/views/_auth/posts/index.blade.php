@@ -54,6 +54,12 @@
                               {{$discussion->course->start_date}}
                             </span>
                         </li>
+                        <li class="list-group-item list-group-item-custom d-flex justify-content-between align-items-center">
+                            End Date:
+                            <span class="badge badge-pill badge-custom">
+                              {{$discussion->course->end_date}}
+                            </span>
+                        </li>
                     </ul>
                   </div>
                   <div class="card-body filter-module-card">
