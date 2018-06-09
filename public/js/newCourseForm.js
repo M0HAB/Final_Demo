@@ -11,7 +11,6 @@ $.ajaxSetup({
 
 $('#submit-new-course').submit(function(event){
     event.preventDefault();
-
     $.ajax({
         url: 'addNewCourse',
         type: 'POST',
@@ -45,6 +44,5 @@ $('#submit-new-course').submit(function(event){
             })
         }
     });
-
-
 });
+

@@ -4,6 +4,43 @@
     Update {{ $module->title }}
 @endsection
 
+@section('styles')
+    <style>
+
+        /* Start by setting display:none to make this hidden.
+   Then we position it in relation to the viewport window
+   with position:fixed. Width, height, top and left speak
+   for themselves. Background we set to 80% white with
+   our animation centered, and no-repeating */
+        .modal {
+            display:    none;
+            position:   fixed;
+            z-index:    1000;
+            top:        0;
+            left:       0;
+            height:     100%;
+            width:      100%;
+            background: rgba( 255, 255, 255, .8 )
+            url('{{ asset('course_images/ajax-loader2.gif') }}')
+            50% 50%
+            no-repeat;
+        }
+
+        /* When the body has the loading class, we turn
+           the scrollbar off with overflow:hidden */
+        body.loading .modal {
+            overflow: hidden;
+        }
+
+        /* Anytime the body has the loading class, our
+           modal element will be visible */
+        body.loading .modal {
+            display: block;
+        }
+
+    </style>
+@endsection
+
 @section('content')
     <div class="content mt-5 mb-5">
         <div class="container">
@@ -54,6 +91,7 @@
                 </div>
             </fieldset>
         </div>
+        <div class="modal"><!-- Place at bottom of page --></div>
     </div>
 @endsection
 
@@ -63,4 +101,11 @@
         var moduleID = {!! json_encode($module->id) !!};
     </script>
     <script src="{{ asset('js/updateModuleForm.js') }}"></script>
+    <script>
+        $body = $("body");
+        $(document).on({
+            ajaxStart: function() { $body.addClass("loading"); },
+            ajaxStop: function() { $body.removeClass("loading"); }
+        });
+    </script>
 @endsection

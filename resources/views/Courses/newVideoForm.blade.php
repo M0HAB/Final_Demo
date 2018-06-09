@@ -4,6 +4,8 @@
     Add New Video
 @endsection
 
+
+
 @section('content')
     <div class="content mt-5 mb-5">
         <div class="container">
@@ -78,7 +80,7 @@
 
                         <div class="row">
                             <div class="col-md-3">
-                             <input type="submit"  class="btn btn-primary" value="Insert The video" />
+                             <input type="submit" onclick="loader()"  class="btn btn-primary" value="Insert The video" />
                             </div>
                         </div>
                     </form>

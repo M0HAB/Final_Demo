@@ -43,6 +43,5 @@ $('#submit-update-course').submit(function(event){
             })
         }
     });
-
-
 });
+

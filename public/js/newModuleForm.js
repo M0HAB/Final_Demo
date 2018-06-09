@@ -38,5 +38,4 @@ $('#submit-new-module').submit(function(event){
         }
     });
 
-
 });
