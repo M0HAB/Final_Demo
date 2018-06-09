@@ -63,10 +63,16 @@
                                 <p>
                                     <a href="{{ route('course.gradeBook.index', ['id' => $course->id]) }}" class="ml-1"><i class="fas fa-cogs mr-1"></i>Grades book setting</a>
                                 </p>
-                                @endif
+
                                 <p>
-                                    <a href="{{ route('course.studentGrades.index', ['id' => $course->id]) }}" class="ml-1"><i class="fas fa-graduation-cap mr-1"></i>Student grades</a>
+                                    <a href="{{ route('course.studentGrades.index', ['id' => $course->id]) }}" class="ml-1"><i class="fas fa-graduation-cap mr-1"></i>Students grades</a>
                                 </p>
+
+                                @elseif (Auth::user()->role == 'student')
+                                <p>
+                                    <a href="{{route('course.studentGrades.show', ['student_id' => Auth::user()->id,'course_id' =>$course->id])}}" class="ml-1"><i class="fas fa-graduation-cap mr-1"></i>My grades</a>
+                                </p>
+                                @endif
 
                             </div>
                         </div>

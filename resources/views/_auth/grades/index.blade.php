@@ -4,12 +4,19 @@
 
 @section('content')
 
+    <div class="reg-log-form p-3 my-3">
+        <a href="{{ URL::previous() }}"><i class="fas fa-arrow-alt-circle-left"></i> Back</a>
+
+    </div>
+
 
     <div class="content mt-5 mb-4">
         <div class="container">
             <h1>View All students grades</h1>
+            @if (count($students)>0)
+
             <div class="row justify-content-center">
-                @if (count($students)>0)
+
                     <table class="table table-hover">
                         <thead>
                         <tr>
@@ -32,18 +39,25 @@
 
                             <tr>
                                 <td>
+
                                     {{$student->fname}}  {{$student->lname}}
                                 </td>
                                 <td>
                                     {{$student->email}}
                                 </td>
                                 <td>
+                                    @if($assgrades->where('user_id', $student->std_id)->sum('grade') && $assgrades->where('user_id', $student->std_id)->sum('full_mark'))
+
                                     {{ $assignment= number_format(
                                            ($assgrades->where('user_id', $student->std_id)->sum('grade')
                                           / $assgrades->where('user_id', $student->std_id)->sum('full_mark') )
                                            * $student->assignments_weight *100
                                          , 2)
                                     }}%
+
+                                        @else
+                                        {{$assignment=0}}
+                                        @endif
 
                                 </td>
 
@@ -52,24 +66,34 @@
 
                                 </td>
                                 <td>
-                                    {{$midterm=$student->midterm ? ($student->midterm/$student->midterm_fullmark) * $student->midterm_weight*100 : 0}}%
-
+                                    @if($student->midterm && $student->midterm_fullmark)
+                                    {{number_format($midterm=$student->midterm ? ($student->midterm/$student->midterm_fullmark) * $student->midterm_weight*100 : 0 , 2)}}%
+                                    @else()
+                                    {{$midterm=0}}
+                                    @endif
                                 </td>
 
                                 <td>
-                                    {{$practical=$student->practical ? ($student->practical/$student->practical_fullmark)*$student->practical_weight  *100 :0}}%
+                                    @if($student->practical && $student->practical_fullmark)
+                                    {{number_format($practical=$student->practical ? ($student->practical/$student->practical_fullmark)*$student->practical_weight  *100 :0 , 2)}}%
+                                    @else
 
+                                    {{$practical=0}}
+                                    @endif
                                 </td>
 
 
                                 <td>
-                                    {{$finalexam=$student->finalgrade ? ($student->finalgrade/$student->final_fullmark)*$student->finalexam_weight *100 :0}}%
-
+                                    @if($student->final_fullmark && $student->final_fullmark)
+                                    {{number_format($finalexam=$student->finalgrade ? ($student->finalgrade/$student->final_fullmark)*$student->finalexam_weight *100 :0 , 2)}}%
+                                        @else
+                                    {{$finalexam=0}}
+                                    @endif
                                 </td>
 
                                 <td style="color: green">
 
-                                        {{$avg=$finalexam+$practical+$midterm+$assignment}}%
+                                        {{number_format($avg=$finalexam+$practical+$midterm+$assignment , 2)}}%
 
 
                                 </td>
@@ -96,8 +120,8 @@
                                 </td>
 
                                 <td>
-                                    <button  class="btn btn-group-sm btn-link"><a href="#"><i class="fas fa-eye fa-1x"></i> </a> </button>
-                                    <button  class="btn btn-group-sm btn-link"><a href="#"><i class="far fa-edit fa-1x fam-mod"></i> </a> </button>
+                                    <button  class="btn btn-group-sm btn-link"><a href="{{route('course.studentGrades.show', ['student_id' => $student->std_id,'course_id' => $student->course_id])}}"><i class="fas fa-eye fa-1x"></i> </a> </button>
+                                    <button  class="btn btn-group-sm btn-link"><a href="{{route('course.studentGrades.edit', ['student_id' => $student->std_id,'course_id' => $student->course_id])}}"><i class="far fa-edit fa-1x fam-mod"></i> </a> </button>
 
                                 </td>
 

@@ -135,10 +135,9 @@ Route::get('mohab', 'TestController@index')->name('test');
      Route::resource('{course_id}/studentGrades', 'studentGradesController',['names'=>[
 
          'index'=>'course.studentGrades.index',
-         'create'=>'course.studentGrades.create',
-         'store'=>'course.studentGrades.store',
          'edit'=>'course.studentGrades.edit',
-         'update'=>'course.studentGrades.update'
+         'update'=>'course.studentGrades.update',
+         'show' =>'course.studentGrades.show'
      ]]);
 
 
