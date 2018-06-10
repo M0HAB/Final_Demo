@@ -107,7 +107,7 @@
             <div class="row replies">
                 <div class="offset-lg-1 col-lg-11">
                     {{-- default Reply --}}
-                    <div class="card mb-4">
+                    <div class="card mb-5 reply-wrapper">
                         <div class="card-header reply-header">
                             <span class="username-post">Mohab Hamdy<span></span></span>
                             <div class="dropdown float-right">
@@ -130,12 +130,12 @@
                                 <div class="col-lg-12 mt-2 mb-3">
                                     <p class="best-solution-hide-lbl"><strong><span class="badge badge-success badge-pill"><i class="fas fa-check mr-1"></i>  BEST SOLUTION</span></strong></p>
                                 </div>
-                                <div class="col-lg-12 mb-1 pb-3" >
+                                <div class="col-lg-12 mb-1 pb-3 btn-wrapper" >
                                     <a href="#" class="btn btn-light mr-2"><i class="fas fa-thumbs-up mr-1"></i> Like</a>
                                     <a href="#" class="btn btn-light mr-2"><i class="fas fa-comment-alt mr-1"></i> Comment</a>
                                     <a href="#" class="btn btn-light"><i class="fas fa-check mr-1"></i> Approve</a>
                                     <span class="float-right interactive-likes-comments">
-                                        <a href="" class="btn-link text-primary coll-btn rm-td mr-2"  data-toggle="tooltip" data-placement="top" title="" data-original-title="Mohab Hamdy">
+                                        <a href="" class="btn-link text-primary rm-td mr-2"  data-toggle="tooltip" data-placement="top" title="" data-original-title="Mohab Hamdy">
                                             <span class="badge badge-dark badge-pill mr-1">100</span> Like
                                         </a>
                                         <a class="btn-link text-primary coll-btn rm-td" data-toggle="collapse" href="#reply-1" role="button" aria-expanded="false" aria-controls="reply-1">
@@ -144,7 +144,7 @@
                                     </span>
                                 </div>
                                 {{-- Comments --}}
-                                <div class="col-lg-12">
+                                <div class="col-lg-12 papa">
                                     <div class="collapse comments-block" id="reply-1">
                                         {{-- First comment --}}
                                         <div class="card my-3 comment">
@@ -176,7 +176,7 @@
                     </div>
 
                     {{-- Best solution --}}
-                    <div class="card mb-4 best-solution">
+                    <div class="card mb-5 reply-wrapper best-solution">
                         <div class="card-header reply-header">
                             <span class="username-post">Mohab Hamdy<span></span></span>
                             <div class="dropdown float-right">
@@ -204,7 +204,7 @@
                                     <a href="#" class="btn btn-light mr-2"><i class="fas fa-comment-alt mr-1"></i> Comment</a>
                                     <a href="#" class="btn btn-success active"><i class="fas fa-check mr-1"></i> Approved</a>
                                     <span class="float-right interactive-likes-comments">
-                                        <a href="" class="btn-link text-primary coll-btn rm-td mr-2"  data-toggle="tooltip" data-placement="top" title="" data-original-title="Mohab Hamdy">
+                                        <a href="" class="btn-link text-primary rm-td mr-2"  data-toggle="tooltip" data-placement="top" title="" data-original-title="Mohab Hamdy">
                                             <span class="badge badge-dark badge-pill mr-1">100</span> Like
                                         </a>
                                         <a class="btn-link text-primary coll-btn rm-td" data-toggle="collapse" href="#reply-2" role="button" aria-expanded="false" aria-controls="reply2">
@@ -245,7 +245,7 @@
                     </div>
 
                     {{-- default Reply --}}
-                    <div class="card mb-4">
+                    <div class="card mb-5 reply-wrapper">
                         <div class="card-header reply-header">
                             <span class="username-post">Mohab Hamdy<span></span></span>
                             <div class="dropdown float-right">
@@ -273,7 +273,7 @@
                                     <a href="#" class="btn btn-light mr-2"><i class="fas fa-comment-alt mr-1"></i> Comment</a>
                                     <a href="#" class="btn btn-light"><i class="fas fa-check mr-1"></i> Approve</a>
                                     <span class="float-right interactive-likes-comments">
-                                        <a href="" class="btn-link text-primary coll-btn rm-td mr-2"  data-toggle="tooltip" data-placement="top" title="" data-original-title="Mohab Hamdy">
+                                        <a href="" class="btn-link text-primary rm-td mr-2"  data-toggle="tooltip" data-placement="top" title="" data-original-title="Mohab Hamdy">
                                             <span class="badge badge-dark badge-pill mr-1">100</span> Like
                                         </a>
                                         <a class="btn-link text-primary coll-btn rm-td" data-toggle="collapse" href="#reply-3" role="button" aria-expanded="false" aria-controls="reply-3">

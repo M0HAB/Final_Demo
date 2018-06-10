@@ -8,9 +8,10 @@
     <div class="container my-5"> 
         <div class="content" id="content">
             @yield('content')
-            <a href="#top" id="btn-scroll" class="btn-scroll-custom"><i class="fas fa-arrow-up"></i></a>            
         </div> {{--  End: Content  --}}
     </div>
+    <a href="#top" id="btn-scroll" class="btn-scroll-custom"><i class="fas fa-arrow-up"></i></a>            
+    
     
     <!-- ===============/ Scripts /=============== -->
     <!-- jQuery library -->

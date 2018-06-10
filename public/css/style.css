@@ -19,7 +19,7 @@
 @font-face {font-family: 'raleway';src: url(../fonts/Raleway-BlackItalic.ttf);font-style: italic;font-weight: 900;}
 /* END: Raleway */
 /*----------- Main Customization -----------*/
-html, body { background-color: #FFF;height: 100%;margin: 0;padding: 0; }
+html, body { background-color: #FFF;min-height: 100%;margin: 0;padding: 0}
 p { margin: 0px;padding: 0px; }
 @media all and (max-width: 991px) {#add-reply-btn {width: 100%;margin-top: 10px} .on-small{display: block;width: 100%}}
 .f-rw {font-family: raleway; font-weight: 400 }
@@ -119,7 +119,7 @@ ul li .rm-deco {text-decoration: none}
 .text-area-reply {resize: none;font-size: 16px;}
 .modal-footer-custom {border: none}
 .btn-scroll-custom {display: none;position: fixed;
-top: 705px;right: 6%;width: 40px;height: 40px;border-radius: 20px;line-height: 40px;text-align: center;background-color: #2C3E50;color: #fff;z-index: 1000;}
+bottom: 30px;right: 6%;width: 40px;height: 40px;border-radius: 20px;line-height: 40px;text-align: center;background-color: #2C3E50;color: #fff;z-index: 1000;}
 .btn-scroll-custom:hover {background-color: #fff;color: #2C3E50;border: 1px solid #2C3E50;}
 .show {display: inline-block;}
 blockquote {background-color: #f9f9f9;border-left: 10px solid #ccc;margin: 1.5em 10px;padding: 0.5em 10px;quotes: "\201C""\201D""\2018""\2019";}
@@ -131,7 +131,7 @@ blockquote {background-color: #f9f9f9;border-left: 10px solid #ccc;margin: 1.5em
 .disscusion .discussion-container .user-content {color:#4D545D}
 .disscusion .replies .reply-header {background-color: #fff}
 .disscusion .replies .interactive-likes-comments {position:relative;top:5px;}
-.disscusion .comments-block .comment {border:1px solid #DFDFDF}
+.disscusion .comments-block .comment {border:1px solid rgb(219, 219, 219)}
 .disscusion .comments-block .comment .comment-header {background-color:#fff;border:none}
 .best-solution {border: 1px solid #18BC9C}
 .best-solution-show-lbl {display: inline-block;font-size:16px}
