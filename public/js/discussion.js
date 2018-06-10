@@ -140,7 +140,7 @@ $('#req').on('show.bs.modal', function (event) {
             $('#'+type+'_container_'+id+' .edit_body').html(response.data.body);
             toastr.success("Post Edited Successfully");
           }else{
-            $("#posts").append(response.data.body);
+            $("#posts").prepend(response.data.body);
             toastr.success("Post Submitted Successfully");
           }
         }else if (type == "reply") {
