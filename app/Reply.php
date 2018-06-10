@@ -15,9 +15,9 @@ class Reply extends Model
       'post_id', 'user_id', 'approved', 'body'
   ];
   protected $dates = ['deleted_at'];
-  public function photos()
+  public function files()
   {
-    return $this->hasMany('App\Photo', 'type_id')->where('type', 'reply');
+    return $this->hasMany('App\file', 'relate_id')->where('relate_type', 'reply');
   }
   public function post()
   {

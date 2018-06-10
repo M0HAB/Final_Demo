@@ -6,7 +6,8 @@ use Illuminate\Http\Request;
 use App\Post;
 use App\Reply;
 use Auth;
-
+use URL;
+use App\File;
 class PostController extends Controller
 {
       public function loadReplies($id)
@@ -51,7 +52,9 @@ class PostController extends Controller
         $arr = array();
         foreach ($images as $k => $img) {
           $data = $img->getattribute('src');
-          if(substr($data, 0, 1) == '/'){continue;}
+          if(substr($data, 0, 1) == '/'){
+              $data = 'data:image/png;base64,'.base64_encode(file_get_contents(URL::to('/').$data));
+          }
           if(!$arr){
             $image_name = $this->getImgData($data,$k);
             if($image_name == 0)return 0;
@@ -89,9 +92,20 @@ class PostController extends Controller
           $img->setattribute('href', $image_name);
 
         }
+        $imgs = array();
+        foreach($images as $img) {
+            $imgs[] = $img;
+        }
+        foreach($imgs as $img) {
+            $img->parentNode->removeChild($img);
+        }
         $body = $doms->savehtml();
         $body = html_entity_decode($body);
-        return $body;
+        $returns = [
+          "body" => $body,
+          "arr" => $arr
+        ];
+        return $returns;
       }
       private function filterRecordType(Request $request,$edit)
       {
@@ -126,7 +140,8 @@ class PostController extends Controller
               //if the filtering returned a 404 then return error not found
               if ($newRecord === 0) return redirect()->route('error.api', 'Not Found');
               //formulate the message body
-              $body = $this->formulateBody($request->body);
+              $returns = $this->formulateBody($request->body);
+              $body = $returns['body'];
               if ($body === 0) return redirect()->route('error.api', 'Images too big, maximum 2mb per image');
               //save the received body if not empty to the $newRecord->body
               $newRecord->body = $body;
@@ -134,6 +149,17 @@ class PostController extends Controller
               $newRecord->user_id = Auth::user()->id;
               //if new record failed to save return 404;
               if(!$newRecord->save()) return redirect()->route('error.api', 'Failed to save Try Resubmitting');
+              //get array of sources
+              $arr = $returns['arr'];
+              //loop on each source and store in DB to get later
+              foreach ($arr as $img) {
+                $photo = new File;
+                $photo->relate_type = $request->type;
+                $photo->relate_id = $newRecord->id;
+                $photo->filename = $img['src'];
+                $photo->type = "image";
+                $photo->save();
+              }
               if($request->type == "reply" || $request->type == "Reply"){
                 $reply = Reply::find($newRecord->id);
                 return response()->json([
@@ -151,6 +177,7 @@ class PostController extends Controller
       {
         if($request->ajax()){
           $record = $this->filterRecordType($request,true);
+          $record->photos->delete();
           if($record === 0) return redirect()->route('error.api', 'Not Found');
           $body = $this->formulateBody($request->body);
           //save the received body to the $newRecord->body

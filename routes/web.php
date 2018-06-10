@@ -23,6 +23,9 @@ Route::get('contact-us', 'PagesController@contact_us')->name('contact_us');
 Route::get('test', function() {return view('design.test');});
 Route::get('test/result', function() {return view('design.result');});
 Route::get('replies', function() {return view('design.discussion_replies');});
+Route::get('/test2', function(){
+  echo URL::to('/');
+});
 
 /**
  * --------------------------------------------------------------------------

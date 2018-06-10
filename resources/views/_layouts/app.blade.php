@@ -5,14 +5,14 @@
     {{--  Navbar  --}}
     @include('_partials._navbar')
 
-    <div class="container my-5"> 
+    <div class="container my-5">
         <div class="content" id="content">
             @yield('content')
         </div> {{--  End: Content  --}}
     </div>
-    <a href="#top" id="btn-scroll" class="btn-scroll-custom"><i class="fas fa-arrow-up"></i></a>            
-    
-    
+    <a href="#top" id="btn-scroll" class="btn-scroll-custom"><i class="fas fa-arrow-up"></i></a>
+
+
     <!-- ===============/ Scripts /=============== -->
     <!-- jQuery library -->
     <script src="{{ asset('js/jquery.min.js') }}"></script>

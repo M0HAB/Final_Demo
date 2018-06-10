@@ -27,9 +27,9 @@ class Post extends Model
     });
   }
 
-  public function photos()
+  public function files()
   {
-    return $this->hasMany('App\Photo', 'type_id')->where('type', 'post');
+    return $this->hasMany('App\File', 'relate_id')->where('relate_type', 'post');
   }
   public function discussion()
   {
