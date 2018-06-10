@@ -120,6 +120,7 @@ class studentGradesController extends Controller
      */
     public function edit($course_id,$student_id)
     {
+        $authuser = Auth::user();
 
       $grades=grade::where('user_id', '=' ,$student_id)->first();
       $student=user::where('id', '=', $student_id)->first();

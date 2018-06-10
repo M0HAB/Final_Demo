@@ -80,7 +80,7 @@ our animation centered, and no-repeating */
         <div class="col-sm-4 mb-3">
             <div class="list-group">
                 <div class="row">
-                    @if(Auth::User()->role == 'instructor')
+
                         <div class="col-sm-12">
                             <h6 class="text-uppercase border-left border-primary"><strong class="ml-2">Course Activities</strong></h6>
                             <div class="card mt-4" style="box-shadow: 5px 5px 10px gray">
@@ -91,7 +91,10 @@ our animation centered, and no-repeating */
                                     <p>
                                         <a href="{{ route('course.getNewModuleForm', ['id' => $course->id]) }}" class="mt-2 text-capitalize"><i class="fa fa-plus"></i> add new module</a>
                                     </p>
-                                    <hr>
+
+
+                                @if (Auth::user()->role == 'instructor')
+
                                     <form id="submit-course-activation">
                                         @if(!$course->is_active)
                                             <input type="hidden" name="is_active" value='1'>
@@ -105,20 +108,9 @@ our animation centered, and no-repeating */
                                             </p>
                                         @endif
                                     </form>
-                                    <div id="response-message-success" class="alert alert-success mt-2" style="display: none"></div>
-                                    <div id="response-message-danger" class="alert alert-danger mt-2" style="display: none"></div>
-                                </div>
-                    <div class="col-sm-12">
-                        <h6 class="text-uppercase border-left border-primary"><strong class="ml-2">Course Activities</strong></h6>
-                        <div class="card mt-4" style="box-shadow: 5px 5px 10px gray">
-                            <div class="card-block mt-4 mb-3 p-2">
-                                <p>
-                                    <a href="{{ route('course.getUpdateCourseForm', ['id' => $course->id]) }}" class="mt-2 text-capitalize"><i class="fa fa-edit"></i> update course information</a>
-                                </p>
-                                <p>
-                                    <a href="{{ route('course.getNewModuleForm', ['id' => $course->id]) }}" class="mt-2 text-capitalize"><i class="fa fa-plus"></i> add new module</a>
-                                </p>
-                                @if (Auth::user()->role == 'instructor')
+                                        <div id="response-message-success" class="alert alert-success mt-2" style="display: none"></div>
+                                        <div id="response-message-danger" class="alert alert-danger mt-2" style="display: none"></div>
+                                        <hr>
                                 <p>
                                     <a href="{{ route('course.gradeBook.index', ['id' => $course->id]) }}" class="ml-1"><i class="fas fa-cogs mr-1"></i>Grades book setting</a>
                                 </p>
@@ -135,7 +127,7 @@ our animation centered, and no-repeating */
 
                             </div>
                         </div>
-                    @endif
+
                     <div class="col-sm-12 mt-4  text-center">
                         <a href="{{ route('course.listUserCourses') }}" style="width: 100%" class="btn btn-primary"><i class="fas fa-list"></i> Courses Catalog</a>
                     </div>
