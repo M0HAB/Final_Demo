@@ -51,6 +51,7 @@ class PostController extends Controller
         $arr = array();
         foreach ($images as $k => $img) {
           $data = $img->getattribute('src');
+          if(substr($data, 0, 1) == '/'){continue;}
           if(!$arr){
             $image_name = $this->getImgData($data,$k);
             if($image_name == 0)return 0;
@@ -152,10 +153,7 @@ class PostController extends Controller
           $record = $this->filterRecordType($request,true);
           if($record === 0) return redirect()->route('error.api', 'Not Found');
           $body = $this->formulateBody($request->body);
-          //check if body is empty since body is html we have to strip tags 1st
-          //since the editor inserts paragraph tags on empty text and return 0 if it is empty
-          if(empty(strip_tags(preg_replace('/\s+/', '', $body)))) return redirect()->route('error.api','Message body mustn\'t be empty');
-          //save the received body if not empty to the $newRecord->body
+          //save the received body to the $newRecord->body
           $record->body = $body;
           if(!$record->save()) return redirect()->route('error.api','Failed to save please retry');
           return $record;
