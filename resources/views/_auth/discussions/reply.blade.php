@@ -11,6 +11,7 @@
       class="text-white"
       @endif
       >{{$reply->user->fname.' '.$reply->user->lname}}</a>
+      @if(Auth::user()->id == $reply->user_id )
       <a href="JavaScript:Void(0);" class="
       @if($reply->approved)
       text-white
@@ -21,15 +22,16 @@
         <span class="fas fa-ellipsis-h"></span>
       </a>
       <div class="dropdown-menu dropdown-menu-right mt-0" aria-labelledby="optionMenu">
-        <button class="dropdown-item" type="button">Edit</button>
-        <button class="dropdown-item" data-toggle="modal" data-target="#confirm" data-type="reply" data-id="{{$reply->id}}" data-post="{{$reply->post->id}}" type="button">Delete</button>
+        <button class="dropdown-item"
+          data-toggle="modal" data-target="#req" data-type="reply" data-id="{{$reply->id}}" data-mode="edit"
+         type="button">Edit</button>
+        <a href="JavaScript:Void(0);" class="dropdown-item" data-toggle="modal" data-target="#confirm" data-type="reply" data-id="{{$reply->id}}" data-post="{{$reply->post->id}}">Delete</a>
       </div>
+      @endif
     </h4>
   </div>
   <div class="card-body">
-    <p class="card-text">
-      {!! $reply->body !!}
-    </p>
+    <div class="card-text edit_body">{!! $reply->body !!}</div>
   </div>
   <div class="card-footer">
     <p>

@@ -1,7 +1,6 @@
 <?php
 
 use Illuminate\Http\Request;
-
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -12,7 +11,16 @@ use Illuminate\Http\Request;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-
+//Route to formulate AJAX requests errors
+Route::get('/error/{error}', function($error){
+  $returns['error']=true;
+  if($error){
+    $returns['message'] = $error;
+  }else{
+    $returns['message'] = "Some Error Occured";
+  }
+  return response()->json($returns);
+})->name('error.api');
 
 Route::middleware('auth:admin-api')->group(function () {
   Route::delete('/prole/{id}/delete', 'PermissionRoleController@destroy');
@@ -33,4 +41,5 @@ Route::middleware('auth:api')->group(function () {
 
   Route::get('/{id}/replies', 'PostController@loadReplies');
   Route::get('/{id}/search', 'DiscussionController@searchPosts');
+
 });

@@ -15,6 +15,10 @@ class Reply extends Model
       'post_id', 'user_id', 'approved', 'body'
   ];
   protected $dates = ['deleted_at'];
+  public function photos()
+  {
+    return $this->hasMany('App\Photo', 'type_id')->where('type', 'reply');
+  }
   public function post()
   {
     return $this->belongsTo('App\Post', 'post_id');
@@ -26,6 +30,10 @@ class Reply extends Model
   public function votes()
   {
     return $this->hasMany('App\Vote', 'reply_id');
+  }
+  public function comments()
+  {
+    return $this->hasMany('App\Comment', 'reply_id');
   }
 
   public function whoApproved()

@@ -73,6 +73,7 @@ Route::group(['prefix' => 'messages'], function () {
   Route::get('/{id}', 'MessagesController@selectMessage')->name('messages.show');
 
 });
+Route::get('/error', function(){ return "error"; })->name('error.web');
 
 Route::group(['prefix' => 'discussions'], function () {
 

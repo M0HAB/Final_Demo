@@ -27,6 +27,10 @@ class Post extends Model
     });
   }
 
+  public function photos()
+  {
+    return $this->hasMany('App\Photo', 'type_id')->where('type', 'post');
+  }
   public function discussion()
   {
     return $this->belongsTo('App\Discussion', 'discussion_id');
@@ -41,6 +45,6 @@ class Post extends Model
   }
   public function replies()
   {
-    return $this->hasMany('App\Reply', 'post_id')->orderBy('approved','desc');
+    return $this->hasMany('App\Reply', 'post_id')->orderBy('approved','desc')->latest();
   }
 }

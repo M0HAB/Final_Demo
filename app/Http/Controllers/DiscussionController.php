@@ -23,7 +23,7 @@ class DiscussionController extends Controller
     {
       if(isset($_GET['post'])){
         $post = Discussion::find($id)->posts()->where('id', $_GET['post'])->first();
-        return view('_auth.discussions.show_post')->with('post', $post);
+        return view('_auth.posts.show_post')->with('post', $post);
       }
       if(isset($_GET['module_order']))
       {
@@ -33,7 +33,7 @@ class DiscussionController extends Controller
       }
       $discussion = Discussion::find($id);
       if(!$discussion){
-        return "404";
+        return redirect()->route('error.404');
       }
       $module_data = $discussion->course->modules->where('module_order', $module_order)->first();
       if ($module_data){
@@ -45,11 +45,9 @@ class DiscussionController extends Controller
     public function searchPosts(Request $request, $id)
     {
 
-        $arabicTest = mb_convert_encoding($request->q, 'HTML-ENTITIES', "UTF-8");
         $results = Discussion::find($id)
         ->posts()
-        ->whereRaw('body LIKE "%'.$request->q.'%" or title LIKE "%'.$request->q.'%"')
-        ->orWhereRaw('body LIKE "%'.$arabicTest.'%" or title LIKE "%'.$arabicTest.'%"')
+        ->whereRaw('(body LIKE "%'.$request->q.'%" or title LIKE "%'.$request->q.'%")')
         ->latest()->get();
         if($request->ajax()){
           return response()->json([

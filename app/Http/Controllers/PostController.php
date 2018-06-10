@@ -19,7 +19,7 @@ class PostController extends Controller
         list(, $data) = explode(',', $data);
         $decode_data = base64_decode($data);
         $size = (strlen($decode_data)/1024);
-        if($size > 1024 ){
+        if($size > 2048 ){
           return 0;
         }
         $image_name= time().$k.'.png';
@@ -29,8 +29,17 @@ class PostController extends Controller
       }
       private function formulateBody($body){
         $doms = new \domdocument();
+        $doms->preserveWhiteSpace = false;
         $body = mb_convert_encoding($body, 'HTML-ENTITIES', "UTF-8");
-        $doms->loadHtml($body, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
+        $doms->loadHtml('<div>'.$body.'</div>');
+        $container = $doms->getElementsByTagName('div')->item(0);
+        $container = $container->parentNode->removeChild($container);
+        while ($doms->firstChild) {
+            $doms->removeChild($doms->firstChild);
+        }
+        while ($container->firstChild ) {
+            $doms->appendChild($container->firstChild);
+        }
         //Edit class of <pre> elemtents in sent request
         $pres = $doms->getelementsbytagname('pre');
         foreach ($pres  as $pre) {
@@ -80,6 +89,7 @@ class PostController extends Controller
 
         }
         $body = $doms->savehtml();
+        $body = html_entity_decode($body);
         return $body;
       }
       private function filterRecordType(Request $request,$edit)
@@ -102,7 +112,7 @@ class PostController extends Controller
                 }else{ $record = Reply::find($request->id); }
                 break;
             default:
-                return "404";
+                return 0;
         }
         return $record;
       }
@@ -112,16 +122,21 @@ class PostController extends Controller
             if($request->ajax()){
               //filterRecordType takes the request and boolean to indicate if it is edit or new
               $newRecord = $this->filterRecordType($request,false);
-              if ($newRecord === "404") return "404";
+              //if the filtering returned a 404 then return error not found
+              if ($newRecord === 0) return redirect()->route('error.api', 'Not Found');
+              //formulate the message body
               $body = $this->formulateBody($request->body);
-              if($body === 0) return $body;
+              if ($body === 0) return redirect()->route('error.api', 'Images too big, maximum 2mb per image');
+              //save the received body if not empty to the $newRecord->body
               $newRecord->body = $body;
+              //set the user id of new record to current auth user
               $newRecord->user_id = Auth::user()->id;
-              if(!$newRecord->save()) return "404";
+              //if new record failed to save return 404;
+              if(!$newRecord->save()) return redirect()->route('error.api', 'Failed to save Try Resubmitting');
               if($request->type == "reply" || $request->type == "Reply"){
-                $post = Post::find($newRecord->post_id);
+                $reply = Reply::find($newRecord->id);
                 return response()->json([
-                    'body' => view('_auth.discussions.load_replies')->with('post', $post)->render()
+                    'body' => view('_auth.posts.partial_reply_body')->with('reply', $reply)->render()
                 ]);
               }
               $post = Post::find($newRecord->id);
@@ -135,15 +150,16 @@ class PostController extends Controller
       {
         if($request->ajax()){
           $record = $this->filterRecordType($request,true);
-          if($record === "404") return "404";
+          if($record === 0) return redirect()->route('error.api', 'Not Found');
           $body = $this->formulateBody($request->body);
-          if($body === 0) return $body;
+          //check if body is empty since body is html we have to strip tags 1st
+          //since the editor inserts paragraph tags on empty text and return 0 if it is empty
+          if(empty(strip_tags(preg_replace('/\s+/', '', $body)))) return redirect()->route('error.api','Message body mustn\'t be empty');
+          //save the received body if not empty to the $newRecord->body
           $record->body = $body;
-          if(!$record->save()) return "404";
+          if(!$record->save()) return redirect()->route('error.api','Failed to save please retry');
           return $record;
         }
-
-
       }
       public function delete(Request $request,$id)
       {

@@ -33,8 +33,15 @@ class ReplyController extends Controller
 
 
         }
-        $post = Post::find($reply->post_id);
-        return view('_auth.discussions.load_replies')->with('post', $post);
+        return response()->json([
+          'comments_body' => view('_auth.posts.load_comments')->with('comments', $reply->comments)->render(),
+          'votes' => count($reply->votes),
+          'comments' => count($reply->comments)
+          'reply' => $reply
+          'vote' => true
+          'instructor' => Auth::user()->isInstructor()
+        ]);
+
       }
 
       ($vote->delete())? ($set = 1): ($set = 0);
@@ -45,8 +52,12 @@ class ReplyController extends Controller
         }
 
       }
-      $post = Post::find($reply->post_id);
-      return view('_auth.discussions.load_replies')->with('post', $post);
+      return response()->json([
+        'comments_body' => view('_auth.posts.load_comments')->with('comments', $reply->comments)->render(),
+        'votes' => count($reply->votes),
+        'comments' =>count($reply->comments)
+        'reply' => $reply
+      ]);
     }
 
     public function delete(Request $request)

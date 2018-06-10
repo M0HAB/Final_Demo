@@ -70,7 +70,7 @@
 
   </div>
   @include('_auth.discussions.modal_post')
-  @include('_auth.discussions.modal_confirm')
+  @include('_partials.modal_confirm')
 
 </div> <!-- End: Discussion -->
 @endsection

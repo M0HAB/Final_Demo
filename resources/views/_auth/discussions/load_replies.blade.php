@@ -9,7 +9,7 @@
     <button type="button"
     class="btn btn-dark btn-lg btn-block"
     id="btn_replies_{{$post->id}}"
-    data-toggle="modal" data-target="#req" data-type="Reply" data-id="{{$post->id}}">
+    data-toggle="modal" data-target="#req" data-type="reply" data-id="{{$post->id}}">
       Add Reply
     </button>
 
@@ -19,7 +19,7 @@
 
 
     @foreach($post->replies as $reply)
-      <div class="card mt-2" id="reply_body_{{$reply->id}}">
+      <div class="card mt-2" id="reply_container_{{$reply->id}}">
         @include('_auth.discussions.reply')
       </div>
     @endforeach

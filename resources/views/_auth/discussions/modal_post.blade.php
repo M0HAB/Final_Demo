@@ -9,7 +9,6 @@
         </button>
       </div>
       <div class="modal-body">
-        <form>
           <div class="form-group" id="req_title_area">
             <label for="post_title" class="col-form-label">Title:</label>
             <input type="text" class="form-control" id="req_title">
@@ -18,11 +17,12 @@
             <label class="col-form-label">Body:</label>
             <div id="req_body"></div>
           </div>
-        </form>
       </div>
       <div class="modal-footer">
-        <button type="button" id="submit_req" class="btn btn-primary">Send message</button>
-        <button type="button" id="close" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" id="submit_req" class="btn btn-light on-small mb-2">
+          <i class="fas fa-plus mr-2"></i><span class="btn-text-modal"></span>
+        </button>
+        <button type="button" id="close" class="btn btn-dark on-small mb-2" data-dismiss="modal">Close</button>
       </div>
     </div>
   </div>

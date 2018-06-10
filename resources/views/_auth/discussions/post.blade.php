@@ -8,13 +8,15 @@
         <span class="fas fa-ellipsis-h"></span>
       </a>
       <div class="dropdown-menu dropdown-menu-right mt-0" aria-labelledby="optionMenu">
-        <button class="dropdown-item"  type="button">Edit</button>
+        <button class="dropdown-item"
+        data-toggle="modal" data-target="#req" data-type="post" data-id="{{$post->id}}" data-mode="edit"
+        type="button">Edit</button>
         <button class="dropdown-item" data-toggle="modal" data-target="#confirm" data-id="{{$post->id}}" data-type="post" type="button">Delete</button>
       </div>
       @endif
   </h4>
-  <h5><a href="#">{{$post->title}}</a></h5>
-  <p class="card-text">{!! $post->body !!}</p>
+  <h5><a href="#" class="edit_title">{{$post->title}}</a></h5>
+  <div class="card-text edit_body">{!! $post->body !!}</div>
 </div>
 <div class="card-footer" id="post_footer_{{$post->id}}">
   <div id="before-1" class="row">
@@ -32,7 +34,7 @@
       <button type="button"
       class="btn btn-dark btn-lg btn-block"
       id="btn_replies_{{$post->id}}"
-      data-toggle="modal" data-target="#req" data-type="Reply" data-id="{{$post->id}}">
+      data-toggle="modal" data-target="#req" data-type="reply" data-id="{{$post->id}}">
         Add Reply
       </button>
       @endif

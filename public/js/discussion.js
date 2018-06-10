@@ -23,20 +23,24 @@ var quill = new Quill('#req_body', {
 });
 
 //function applied onClick of Vote button in discussion, make ajax call to save vote and receive new reply data
-//id: reply id, post_id: post id
-function vote(id,post_id){
+//id: reply id
+function vote(id){
   axios.post('/api/vote/'+id+'/set',{
     id: id,
     api_token : api_token
   })
   .then( (response) => {
-    $('#post_footer_'+post_id).html(response.data);
+    $('#reply_body_'+id).html(response.data.body);
   })
   .catch(function (error) {
     toastr.warning("Something went Wrong");
   });
 }
 
+$('#comment').on('show.bs.modal', function (event) {
+
+
+});
 //bind some data to the opened modal from the create post button
 $('#req').on('show.bs.modal', function (event) {
   var button = $(event.relatedTarget),//button that triggered the event
@@ -78,13 +82,13 @@ $('#req').on('show.bs.modal', function (event) {
     }
     requestURL = '/api/newRecord';
     modal.find('#modal_title').text("Create new "+type);
-    modal.find('#submit_req').text("Submit "+type);
+    modal.find('.btn-text-modal').text("Submit "+type);
   }
 
   //on clicking submit assign values and prepare payload,headers then send ajax request
   modal.find('#submit_req').off('click').on("click", function (event) {
     body = quill.container.firstChild.innerHTML;
-    if(!$(body).text()){
+    if(!body.match(/<img/) && !$(body).text()){
       toastr.warning("All fields are required");
       return 0;
     }
@@ -123,8 +127,8 @@ $('#req').on('show.bs.modal', function (event) {
     //send ajax request with url and payload assigned previously
     axios.post(requestURL,payload,headers)
     .then( (response) => {
-      if(response.data == "0"){
-        alert("max image size is 1MB");
+      if(response.data.error){
+        toastr.warning(response.data.message);
       }else{
         quill.container.firstChild.innerHTML = "";
         quill.container.lastChild.innerHTML = "";
@@ -144,7 +148,7 @@ $('#req').on('show.bs.modal', function (event) {
             $('#'+type+'_container_'+id+' .edit_body').html(response.data.body);
             toastr.success("Reply Edited Successfully");
           }else{
-            $('#post_footer_'+id).html(response.data.body);
+            $('#reply_container').append(response.data.body);
             toastr.success("Reply Submitted Successfully");
           }
 
