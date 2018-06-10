@@ -1,7 +1,10 @@
 @extends('_layouts.app')
 @section('title', 'Assignments')
 @section('content')
+    <div class="reg-log-form p-3 my-3">
+        <a href="{{ URL::previous() }}"><i class="fas fa-arrow-alt-circle-left"></i> Back</a>
 
+    </div>
     <!-- Start: Content -->
     <div class="content mt-5 mb-4">
         <div class="container">
@@ -21,6 +24,7 @@
                             <th>Description</th>
                             <th>File</th>
                             <th>Deadline</th>
+                            <th>Full Mark</th>
                             <th>Actions</th>
 
                         </tr>
@@ -42,7 +46,7 @@
                                     @if(is_null($ass->file))
                                         No File Attached
                                     @else
-                                        <a href="uploads\{{$ass->file}}" download="{{$ass->file}}">
+                                        <a href=" {{ asset("uploads\assignments") }}\{{$ass->file}}" download="{{$ass->file}}">
                                             <button type="button" class="btn btn-primary btn-block">
                                                 <i class="fas fa-cloud-download-alt "></i>
                                                 Download
@@ -53,6 +57,9 @@
                                 <td>
                                     {{{date('d-m-Y', strtotime($ass->deadline))}}}
                                 </td>
+                                <td>
+                                    {{$ass->full_mark}}
+                                </td>
 
                                 @if (Auth::user()->role == 'instructor')
                                     <td>
@@ -61,7 +68,7 @@
                                         <form action="{{ route('assignments.destroy', ['course_id' => $course->id, 'module_id' => $module->id, 'ass_id' => $ass->id])}}" method="POST">
                                             {{ csrf_field() }}
                                             <input type="hidden" name="_method" value="DELETE">
-                                            <button class="btn btn-group-sm btn-link" type="submit" onclick="alert('Confirm Delete')">
+                                            <button class="btn btn-group-sm btn-link" type="submit" onclick="return ConfirmDelete()">
                                                 <span class="far fa-trash-alt fa-lg fam-mod"></span>
                                             </button>
                                         </form>
@@ -81,7 +88,13 @@
                         @endforeach
                         </tbody>
                     </table>
+                    <script>
 
+                        function ConfirmDelete(){
+                            return confirm('Are you sure you ? THIS CANNOT BE UNDONE');
+                        }
+
+                    </script>
                 @endif
 
             </div>

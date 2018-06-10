@@ -1,11 +1,14 @@
 @extends('_layouts.app')
 @section('title', 'Assignments Delivered')
 @section('content')
+    <div class="reg-log-form p-3 my-3">
+        <a href="{{ URL::previous() }}"><i class="fas fa-arrow-alt-circle-left"></i> Back</a>
 
+    </div>
     <!-- Start: Content -->
     <div class="content mt-5 mb-4">
         <div class="container">
-            <h1>Assignments Delivered </h1>
+            <h1>Assignments Delivered</h1>
             <br>
             @if (count($assdelivered)>0)
                 <div class="row justify-content-center">
@@ -15,10 +18,14 @@
                             <th>Module</th>
                             <th>Title</th>
                             <th>Student Name</th>
-                            <th>Answer</th>
+                            <th>Student Comment</th>
                             <th>File</th>
                             <th>Submitted Date</th>
                             <th>Status</th>
+                            <th>Grade</th>
+                            <th>Dr Comment</th>
+                            <th>Actions</th>
+
 
                         </tr>
                         </thead>
@@ -29,10 +36,10 @@
                                         {{$delivered->module_id}} {{--module name--}}
                                     </td>
                                     <td>
-                                        {{$delivered->title}}
+                                        {{$delivered->title ? $delivered->title : "No title" }}
                                     </td>
                                     <td>
-                                        {{$delivered->fname}}
+                                        {{$delivered->fname ? $delivered->fname : "No name"}}
                                     </td>
                                     <td>
                                         {{$delivered->answer ? $delivered->answer : 'No Answer'}}
@@ -44,7 +51,7 @@
                                             No File Attached
 
                                         @else
-                                            <a href="uploads\assignments\delivered\{{$delivered->file}}" download="{{$delivered->file}}">
+                                            <a href="{{asset("uploads\assignments\delivered") }}\{{$delivered->file}}" download="{{$delivered->file}}">
                                                 <button type="button" class="btn btn-primary btn-block">
                                                     <i class="fas fa-cloud-download-alt "></i>
                                                     Download
@@ -68,6 +75,21 @@
                                             <p class="text-success">ON TIME</p>
 
                                         @endif
+
+                                    </td>
+                                    <td>
+                                        <p> {{$delivered->grade ? $delivered->grade : "Ø"}} / {{$delivered->full_mark}} </p>
+
+                                    </td>
+
+                                    <td>
+                                        <p> {{$delivered->comment ? $delivered->comment : "No Comment "}} </p>
+
+
+                                    </td>
+                                    <td>
+                                        <button  class="btn btn-group-sm btn-link"><a href="{{route('assignmentdelivered.edit', ['assginment_id'=>$delivered->ass_id,'std_id'=>$delivered->user_id,'assdel_id'=>$delivered->id])}}"><i class="far fa-edit fa-lg fam-mod"></i> </a> </button>
+
 
                                     </td>
 

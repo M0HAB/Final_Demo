@@ -87,7 +87,7 @@
                                         @if(is_null($assignment->file))
                                             No File Attached
                                         @else
-                                            <a class="font-weight-bold text-success forum-nav" href="uploads\{{$assignment->file}}" download="{{$assignment->file}}">
+                                            <a class="font-weight-bold text-success forum-nav" href="{{ asset("uploads\assignments") }}\{{$assignment->file}}" download="{{$assignment->file}}">
                                                 <i class="fa fa-download mr-2"></i>
                                                 {{ $assignment->title }}
                                             </a>
@@ -212,11 +212,7 @@
                                         <a href="{{ route('assignment.delivered', ['course_id' => $course->id, 'module_id' => $module->id]) }}" class="ml-1"><i class="fas fa-eye mr-1"></i>Student Assignments</a>
                                     </td>
                                 </tr>
-                                <tr>
-                                    <td>
-                                        <a href="#" class="ml-1"><i class="fas fa-graduation-cap mr-1"></i>Student Grades</a>
-                                    </td>
-                                </tr>
+
                             @elseif(Auth::User()->role == 'student')
                                 <tr>
                                     <td>

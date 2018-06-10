@@ -108,6 +108,31 @@ our animation centered, and no-repeating */
                                     <div id="response-message-success" class="alert alert-success mt-2" style="display: none"></div>
                                     <div id="response-message-danger" class="alert alert-danger mt-2" style="display: none"></div>
                                 </div>
+                    <div class="col-sm-12">
+                        <h6 class="text-uppercase border-left border-primary"><strong class="ml-2">Course Activities</strong></h6>
+                        <div class="card mt-4" style="box-shadow: 5px 5px 10px gray">
+                            <div class="card-block mt-4 mb-3 p-2">
+                                <p>
+                                    <a href="{{ route('course.getUpdateCourseForm', ['id' => $course->id]) }}" class="mt-2 text-capitalize"><i class="fa fa-edit"></i> update course information</a>
+                                </p>
+                                <p>
+                                    <a href="{{ route('course.getNewModuleForm', ['id' => $course->id]) }}" class="mt-2 text-capitalize"><i class="fa fa-plus"></i> add new module</a>
+                                </p>
+                                @if (Auth::user()->role == 'instructor')
+                                <p>
+                                    <a href="{{ route('course.gradeBook.index', ['id' => $course->id]) }}" class="ml-1"><i class="fas fa-cogs mr-1"></i>Grades book setting</a>
+                                </p>
+
+                                <p>
+                                    <a href="{{ route('course.studentGrades.index', ['id' => $course->id]) }}" class="ml-1"><i class="fas fa-graduation-cap mr-1"></i>Students grades</a>
+                                </p>
+
+                                @elseif (Auth::user()->role == 'student')
+                                <p>
+                                    <a href="{{route('course.studentGrades.show', ['student_id' => Auth::user()->id,'course_id' =>$course->id])}}" class="ml-1"><i class="fas fa-graduation-cap mr-1"></i>My grades</a>
+                                </p>
+                                @endif
+
                             </div>
                         </div>
                     @endif

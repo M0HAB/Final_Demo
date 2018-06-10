@@ -2,6 +2,10 @@
 @section('title', 'Assignments')
 @section('content')
 
+    <div class="reg-log-form p-3 my-3">
+        <a href="{{ URL::previous() }}"><i class="fas fa-arrow-alt-circle-left"></i> Back</a>
+
+    </div>
     <!-- Start: Content -->
     <div class="content mt-5 mb-5">
         <div class="container">
@@ -29,6 +33,11 @@
                                     <label for="deadline">Deadline:</label>
                                     <input type="date" class="form-control" id="deadline"
                                            name="deadline" value="">
+                                </div>
+                                <div class="form-group">
+                                    <label for="fullmark">Full Mark:</label>
+                                    <input type="number" class="form-control" id="fullmark"
+                                           name="fullmark" value="">
                                 </div>
                                 <div class="form-group">
                                     <label for="upload_file">Upload File (Optional)</label>

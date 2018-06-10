@@ -71,11 +71,13 @@ class AssignmentsController extends Controller
            ]);
            // dd($request->upload_file);
             // Create new assignment
+            $assall     = assignment::all();
             $assignment = new assignment;
             $assignment->module_id = $module->id;
             $assignment->title = $request->input('asstitle');
             $assignment->description = $request->input('assdescription');
             $assignment->deadline = $request->input('deadline');
+            $assignment->full_mark = $request->input('fullmark');
 
 
             //upload files
@@ -92,7 +94,7 @@ class AssignmentsController extends Controller
             }
 
 
-            // If successfully updated display success else error
+
             if ($assignment->save()){
                 return redirect('Courses/'. $course->id .'/Modules/'. $module->id .'/assignments')->with('success', 'Assignment created successfully');
             }else{
@@ -156,15 +158,19 @@ class AssignmentsController extends Controller
                     'asstitle' => 'required',
                     'assdescription' => 'required',
                     'deadline' => 'required',
-                    'module' => ['required', 'integer', Rule::in($modules_id_values)],
 
             ]);
             // Update Assignment
 
-            $assignment->module_id = $module->id;
+            $assall     = assignment::all();
+            $assignment = assignment::find($assignment->id);
+            $assold = $assignment->full_mark;
+            $assignment->module_id = $module->id;        
             $assignment->title = $request->input('asstitle');
             $assignment->description = $request->input('assdescription');
             $assignment->deadline = $request->input('deadline');
+            $assignment->full_mark = $request->input('fullmark');
+
 
             //upload files
             if ($request->hasFile('upload_file')) {
@@ -181,9 +187,11 @@ class AssignmentsController extends Controller
             }
 
 
+
             if ($assignment->save()){
-                    return redirect()->back()->with('success', 'Department updated successfully')->withInput();
-                }else{
+                    return redirect()->back()->with('success', 'Assignment updated successfully')->withInput();
+                }
+            else{
                     return redirect()->back()->with('error', 'Some error has occured please try resubmitting');
                 }
             }
@@ -233,6 +241,7 @@ class AssignmentsController extends Controller
 
 
           //  dd($assdelivered->exists() );
+          
 
 
             return view('_auth.assignments.deliver', compact('assignment','assdelivered','course','module'));
@@ -297,14 +306,17 @@ class AssignmentsController extends Controller
 
     public function delivered(Course $course, Module $module)
     {
+
         $authuser = Auth::user();
         if ($authuser->role == 'instructor' and $authuser->checkIfUserTeachCourse($course->id)){
             $assdelivered = DB::table('assdelivers')
                 ->leftjoin('assignments', 'assignments.id', '=', 'assdelivers.ass_id')
                 ->leftjoin('users', 'users.id', '=', 'assdelivers.user_id')
-                ->select('assdelivers.*', 'assignments.title', 'assignments.module_id', 'assignments.deadline', 'users.fname')
+                ->select('assdelivers.*', 'assignments.id as ass_id','assignments.title', 'assignments.module_id', 'assignments.deadline','assignments.full_mark', 'users.fname')
                 ->where('assignments.module_id', '=', $module->id)
                 ->get();
+
+
             return view('_auth.assignments.showdelivered')->with('assdelivered', $assdelivered);
 
         }elseif($authuser->role == 'student' and $authuser->checkIfUserEnrolled($course->id)){
@@ -315,13 +327,35 @@ class AssignmentsController extends Controller
                 ->where('assignments.module_id', '=', $module->id)
                 ->where('assdelivers.user_id', '=', $authuser->id)
                 ->get();
-            return view('_auth.assignments.showdelivered')->with('assdelivered', $assdelivered);
+
+            return view('_auth.assignments.showdelivered')->with('assdelivered',$assignments, $assdelivered);
         }else{
             return redirect()->route('user.dashboard')->with('error', 'Unauthorized Access');
         }
 
     }
+public function deliveredEdit(assdeliver $assdeliver){
 
+    $delivered = assdeliver::findOrFail($assdeliver->id);
+    return view('_auth.assignments.editdelivered',compact('delivered'));
+
+}
+public function deliveredUpdate(Request $request, assdeliver $assdeliver){
+
+//dd($request);
+    $delivered = assdeliver::findOrFail($assdeliver->id);
+    //dd($delivered);
+    $delivered->comment = $request->input('comment');
+    $delivered->grade   = $request->input('grade');
+    if ($delivered->save()) {
+        return redirect()->back()->with('success', 'Delivered Assignment updated successfully');
+    }
+    else{
+
+        return redirect()->back()->with('error', 'Some error has occured please try resubmitting');
+    }
+
+}
 
 
 
