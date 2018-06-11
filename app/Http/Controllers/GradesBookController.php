@@ -138,6 +138,10 @@ class GradesBookController extends Controller
         $gradebook ->quizzes_weight = $request->input('quizw') /100;
         $gradebook ->midterm_weight = $request->input('midw') /100;
         $gradebook ->finalexam_weight = $request->input('finalw') /100;
+        $gradebook ->finalexam_weight = $request->input('finalw') /100;
+        $gradebook ->practical_weight = $request->input('practw') /100;
+
+
 
         if ($gradebook->save()){
             return redirect()->back()->with('success', 'Grade Book updated successfully');

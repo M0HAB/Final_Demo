@@ -19,7 +19,6 @@
                     <table class="table table-hover">
                         <thead>
                         <tr>
-                            <th>Module</th>
                             <th>Title</th>
                             <th>Description</th>
                             <th>File</th>
@@ -32,9 +31,7 @@
                         <tbody>
                         @foreach ($assignments as $ass)
                             <tr>
-                                <td>
-                                    {{$ass->module_id}} {{--module name--}}
-                                </td>
+
                                 <td>
                                     {{$ass->title}}
                                 </td>

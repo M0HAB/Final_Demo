@@ -40,11 +40,19 @@ class studentGradesController extends Controller
             ->select('assdelivers.*' , 'assignments.full_mark')
             ->where('courses.id', '=', $course_id)
             ->get();
+        $quizgrades = DB::table('quiz_user')
+            ->leftjoin('quizzes', 'quiz_user.quiz_id', '=', 'quizzes.id')
+            ->leftjoin('modules', 'quizzes.module_id', '=', 'modules.id')
+            ->leftjoin('courses', 'modules.course_id', '=', 'courses.id')
+            ->select('quiz_user.*' , 'quizzes.total_grade')
+            ->where('courses.id', '=', $course_id)
+            ->get();
+        //dd($quizgrades);
 
 
 
         if ($authuser->role == 'instructor'){
-            return view('_auth.grades.index',compact('students','assgrades','course_id'));
+            return view('_auth.grades.index',compact('students','assgrades','course_id','quizgrades'));
         }else{
             return redirect()->route('user.dashboard')->with('error', 'Unauthorized Access');
         }
@@ -108,8 +116,19 @@ class studentGradesController extends Controller
             ->where('courses.id', '=', $course_id)
             ->get();
 
+        $quizgrades = DB::table('quiz_user')
+            ->leftjoin('quizzes', 'quiz_user.quiz_id', '=', 'quizzes.id')
+            ->leftjoin('modules', 'quizzes.module_id', '=', 'modules.id')
+            ->leftjoin('courses', 'modules.course_id', '=', 'courses.id')
+            ->select('quiz_user.*' , 'quizzes.total_grade','quizzes.title as quiztitle','modules.title as modtitle')
+            ->where('courses.id', '=', $course_id)
+            ->get();
 
-        return view('_auth.grades.show',compact('student','student_id','assgrades'));
+
+
+
+
+        return view('_auth.grades.show',compact('student','student_id','assgrades','quizgrades'));
     }
 
     /**

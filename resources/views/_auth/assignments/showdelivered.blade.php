@@ -15,7 +15,6 @@
                     <table class="table table-hover">
                         <thead>
                         <tr>
-                            <th>Module</th>
                             <th>Title</th>
                             <th>Student Name</th>
                             <th>Student Comment</th>
@@ -32,9 +31,7 @@
                         <tbody>
                             @foreach ($assdelivered as $delivered)
                                 <tr>
-                                    <td>
-                                        {{$delivered->module_id}} {{--module name--}}
-                                    </td>
+
                                     <td>
                                         {{$delivered->title ? $delivered->title : "No title" }}
                                     </td>

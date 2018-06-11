@@ -62,7 +62,20 @@
                                 </td>
 
                                 <td>
-                                    TODO
+
+                                    @if($quizgrades->where('user_id', $student->std_id)->sum('grade') && $quizgrades->where('user_id', $student->std_id)->sum('total_grade') && $student->quizzes_weight)
+
+                                        {{ $quiz= number_format(
+                                               ($quizgrades->where('user_id', $student->std_id)->sum('grade')
+                                              / $quizgrades->where('user_id', $student->std_id)->sum('total_grade') )
+                                               * $student->quizzes_weight *100
+                                             , 2)
+                                        }}%
+
+                                    @else
+                                        {{$quiz=0}}
+                                    @endif
+
 
                                 </td>
                                 <td>
@@ -93,28 +106,28 @@
 
                                 <td style="color: green">
 
-                                        {{number_format($avg=$finalexam+$practical+$midterm+$assignment , 2)}}%
+                                        {{number_format($avg=$finalexam+$quiz+$practical+$midterm+$assignment , 2)}}%
+
 
 
                                 </td>
 
                                 <td style="color: green">
 
-                                        @if ($avg >= 97)
-                                        {{$lettergrade = "A+"}}
-                                        @elseif ($avg >= 93 && $avg <= 96)
-                                            {{$lettergrade = "A"}}
-                                        @elseif ($avg >= 84 && $avg <= 93)
+                                        @if ($avg >= 90)
+                                        {{$lettergrade = "A"}}
+                                        @elseif ($avg >= 80 && $avg <= 89)
                                             {{$lettergrade = "B"}}
-                                        @elseif ($avg >= 74 && $avg <= 73)
+                                        @elseif ($avg >= 70 && $avg <= 79)
                                             {{$lettergrade = "C"}}
-                                        @elseif ($avg >= 64 && $avg <= 73)
+                                         @elseif ($avg >= 60 && $avg <= 69)
                                             {{$lettergrade = "D"}}
-                                        @elseif ($avg >= 50 && $avg <= 63)
-                                            {{$lettergrade = "D-"}}
-                                        @else($avg < 50)
+                                         @elseif ($avg <= 59)
                                             {{$lettergrade = "F"}}
-                                        @endif
+
+
+
+                                    @endif
 
 
                                 </td>

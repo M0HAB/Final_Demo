@@ -56,20 +56,33 @@
                     <table class="table table-hover">
                         <thead>
                         <tr>
+                            <th>Module</th>
                             <th>Quiz</th>
                             <th>Grade</th>
 
                         </tr>
                         </thead>
                         <tbody>
+                        @foreach ($quizgrades as $quizgrade)
 
                             <tr>
                                 <td>
+                                    {{$quizgrade->modtitle}}
+
+                                </td>
+                                <td>
+                                    {{$quizgrade->quiztitle }}
+
+                                </td>
+                                <td>
+                                    {{$quizgrade->grade }} / {{$quizgrade->total_grade}}
 
                                 </td>
 
-                            </tr>
 
+
+                            </tr>
+                        @endforeach
 
 
                         </tbody>
@@ -158,7 +171,18 @@
                                     </td>
 
                                     <td>
-                                        TODO
+                                        @if($quizgrades->where('user_id', $student_id)->sum('grade') && $quizgrades->where('user_id', $student_id)->sum('total_grade') )
+
+                                            {{ $quiz= number_format(
+                                                   ($quizgrades->where('user_id', $student_id)->sum('grade')
+                                                  / $quizgrades->where('user_id', $student_id)->sum('total_grade') )
+                                                   * $qw
+                                                 , 2)
+                                            }}%
+
+                                        @else
+                                            {{$quiz=0}}
+                                        @endif
 
                                     </td>
                                     <td>
@@ -189,27 +213,26 @@
 
                                     <td style="color: green">
 
-                                        {{number_format($avg=$finalexam+$practical+$midterm+$assignment , 2)}}%
+                                        {{number_format($avg=$finalexam+$quiz+$practical+$midterm+$assignment , 2)}}%
 
 
                                     </td>
 
                                     <td style="color: green">
 
-                                        @if ($avg >= 97)
-                                            {{$lettergrade = "A+"}}
-                                        @elseif ($avg >= 93 && $avg <= 96)
+                                        @if ($avg >= 90)
                                             {{$lettergrade = "A"}}
-                                        @elseif ($avg >= 84 && $avg <= 93)
+                                        @elseif ($avg >= 80 && $avg <= 89)
                                             {{$lettergrade = "B"}}
-                                        @elseif ($avg >= 74 && $avg <= 73)
+                                        @elseif ($avg >= 70 && $avg <= 79)
                                             {{$lettergrade = "C"}}
-                                        @elseif ($avg >= 64 && $avg <= 73)
+                                        @elseif ($avg >= 60 && $avg <= 69)
                                             {{$lettergrade = "D"}}
-                                        @elseif ($avg >= 50 && $avg <= 63)
-                                            {{$lettergrade = "D-"}}
-                                        @else($avg < 50)
+                                        @elseif ($avg <= 59)
                                             {{$lettergrade = "F"}}
+
+
+
                                         @endif
 
 
