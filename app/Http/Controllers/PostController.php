@@ -8,6 +8,7 @@ use App\Reply;
 use Auth;
 use URL;
 use App\File;
+use Storage;
 class PostController extends Controller
 {
 
@@ -35,6 +36,10 @@ class PostController extends Controller
       }
       private function saveFiles($files){
         foreach ($files as $k => $file) {
+          if(substr($file['src'], 0, 1) == '/'){
+            $files[$k]['skip']=true;
+            continue;
+          }
           $files[$k]['src'] = $this->getImgData($file,$k);
           if($files[$k]['src']===0)return 0;
         }
@@ -49,7 +54,7 @@ class PostController extends Controller
                     $record = new Post;
                     $record->discussion_id = $request->discussion_id;
                     $record->module_id = $request->module_id;
-                }else { $record = Post::find($request->id); }
+                }else { $record = Post::find($request->id);}
                 $record->title = $request->title;
                 break;
             case "reply":
@@ -73,7 +78,6 @@ class PostController extends Controller
               //if the filtering returned a 404 then return error not found
               if ($newRecord === 0) return redirect()->route('error.api', 'Not Found');
               $body = $request->body;
-
               //save the received body if not empty to the $newRecord->body
               $newRecord->body = $body;
               //set the user id of new record to current auth user
@@ -82,8 +86,9 @@ class PostController extends Controller
               if(!$newRecord->save()) return redirect()->route('error.api', 'Failed to save Try Resubmitting');
               //get array of sources
               $files = $this->saveFiles($request->file_list);
-              if ($files === 0) return redirect()->route('error.api', 'Images too big, maximum 2mb per image');
+              if ($files === 0) return redirect()->route('error.api', 'File too big, maximum 2mb per File');
               //loop on each source and store in DB to get later
+
               foreach ($files as $file) {
                 $file_rec = new File;
                 $file_rec->relate_type = $request->type;
@@ -109,28 +114,33 @@ class PostController extends Controller
       {
         if($request->ajax()){
           $record = $this->filterRecordType($request,true);
-          $record->files()->delete();
           if($record === 0) return redirect()->route('error.api', 'Not Found');
-          $returns = $this->formulateBody($request->body);
-          $body = $returns['body'];
-          if ($body === 0) return redirect()->route('error.api', 'Images too big, maximum 2mb per image');
+          $body = $request->body;
           //save the received body to the $newRecord->body
-          $record->body = $body;
+          $record->body = $request->body;
           if(!$record->save()) return redirect()->route('error.api','Failed to save please retry');
           //get array of sources
-          $arr = $returns['arr'];
+          $files = $this->saveFiles($request->file_list);
+          if ($files === 0) return redirect()->route('error.api', 'File too big, maximum 2mb per File');
+          foreach ($request->delete_list as $file) {
+            File::where('filename', $file['src'])->delete();
+            Storage::disk('public')->delete($file['src']);
+          }
           //loop on each source and store in DB to get later
-          foreach ($arr as $img) {
-            $photo = new File;
-            $photo->relate_type = $request->type;
-            $photo->relate_id = $record->id;
-            $photo->filename = $img['src'];
-            $photo->type = "image";
-            $photo->save();
+          foreach ($files as $file) {
+            if(isset($file['skip'])){
+              continue;
+            }
+            $file_rec = new File;
+            $file_rec->relate_type = $request->type;
+            $file_rec->relate_id = $record->id;
+            $file_rec->filename = $file['src'];
+            $file_rec->type = $file['type'];
+            $file_rec->save();
           }
           return response()->json([
             "record" => $record,
-            "srcs" =>$record->files()->where('type', 'image')->get()
+            "srcs" =>$record->files
           ]);
         }
       }

@@ -85,3 +85,6 @@ Route::group(['prefix' => 'discussions'], function () {
   Route::get('/{id}/search', 'DiscussionController@searchPosts')->name('discussion.search');
 
 });
+Route::get('/test3', function () {
+  echo ('App\Post')::find(123);
+});

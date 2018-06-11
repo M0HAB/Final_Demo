@@ -2,6 +2,7 @@ function dropBoxInput(listdiv,dropZoneDivId,allowedTypes,unknowSrc){
     this.listdiv=listdiv;
     this.dropZoneDivId=dropZoneDivId;
     this.list = [];
+    this.deleteList = [];
     this.allowedTypes=allowedTypes;
     this.dropZone = document.getElementById(this.dropZoneDivId);
     this.unknowSrc = unknowSrc;
@@ -42,7 +43,8 @@ function dropBoxInput(listdiv,dropZoneDivId,allowedTypes,unknowSrc){
     }
 
     this.listDel = function (evt){
-        id = evt.target.id;
+        let id = evt.target.id;
+        let index;
         id = id.split("-").pop();
         that.list.forEach(function(element, i){
             if(element.id == id){
@@ -50,8 +52,10 @@ function dropBoxInput(listdiv,dropZoneDivId,allowedTypes,unknowSrc){
                 return false;
             }
         });
+        that.deleteList.push(that.list[index]);
         that.list.splice(index, 1);
         $("#"+that.listdiv+" #file-"+id).remove();
+        console.log(that.deleteList,that.list)
     }
 
     this.handleFileSelect = function (evt) {
@@ -68,6 +72,7 @@ function dropBoxInput(listdiv,dropZoneDivId,allowedTypes,unknowSrc){
                 continue;
             }
             if(!that.allowedTypes.includes(f.type.split("/").pop())){
+                console.log(f.type);
                 error=true;
                 msg = "File Type Not Allowed";
                 continue;

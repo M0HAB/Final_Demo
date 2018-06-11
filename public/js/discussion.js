@@ -1,6 +1,6 @@
 //define toolbarOptions for quill WYSIWYG text editor
 
-var allowedtypes = ['jpg','png','pdf'];
+var allowedtypes = ['jpg', 'jpeg', 'png', 'pdf'];
 var unknowSrc = "/images/file.png";
 var dropZone = new dropBoxInput('list','drop_zone',allowedtypes,unknowSrc);
 
@@ -98,7 +98,7 @@ $('#req').on('show.bs.modal', function (event) {
     modal.find('#modal_title').text("Edit "+type);
     modal.find('#submit_req').text("Confirm edit");
     id = button.data("id");
-    body = $('#'+type+'_container_'+id+' .edit_body').html();
+    body = $('#'+type+'_container_'+id+' .edit_body').text();
     files = $('#'+type+'_container_'+id+' .edit_image').text().split(",").filter(function(e){return e;});
     dropZone.clearBox();
     files.forEach((element)=>{
@@ -106,9 +106,10 @@ $('#req').on('show.bs.modal', function (event) {
             name:element.split('/').pop(),
             type:element.split(';')[0],
             src:element.split(';').pop()
-        })
+      });
     })
-    $('#req_body').text(body);
+    console.log("editing");
+    modal.find('#req_body').val(body);
     if(type == "post"){
       title_area.show();
       title = $('#post_container_'+id+' .edit_title').text();
@@ -156,6 +157,7 @@ $('#req').on('show.bs.modal', function (event) {
       }
       payload["title"] = title;
       if (mode == "edit"){
+        payload["delete_list"]= dropZone.deleteList;
         payload["id"] = id;
       }else{
         payload["discussion_id"] = discussion_id;
@@ -165,6 +167,7 @@ $('#req').on('show.bs.modal', function (event) {
     }else if (type == "reply") {
       payload["file_list"]= dropZone.list;
       if (mode == "edit"){
+        payload["delete_list"]= dropZone.deleteList;
         payload["id"] = id;
       }else{
         payload["post_id"] = id;
@@ -186,9 +189,10 @@ $('#req').on('show.bs.modal', function (event) {
           if (mode == "edit"){
             $('#post_container_'+id+' .edit_title').text(response.data.record.title);
             $('#'+type+'_container_'+id+' .edit_body').html(response.data.record.body);
+            console.log(response.data.record.body);
             $('#'+type+'_container_'+id+' .edit_image').text("");
             response.data.srcs.forEach((element)=>{
-              $('#'+type+'_container_'+id+' .edit_image').append(element.filename+",");
+              $('#'+type+'_container_'+id+' .edit_image').append(element.type+";"+element.filename+",");
             });
             toastr.success("Post Edited Successfully");
           }else{
