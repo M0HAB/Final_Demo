@@ -18,22 +18,20 @@ best-solution
         <span class="lb"><small>Created at: {{$reply->created_at}}</small></span>
     </div>
     <div class="card-body pb-1">
-        <p>
-          {!! $reply->body !!}
-        </p>
+          <span class="reply_msg">{!! $reply->body !!}</span>
         <div class="row">
             @if($reply->approved)
             <div class="col-lg-12 mt-2 mb-3">
-                <p class="best-solution-show-lbl"><strong><span class="badge badge-success badge-pill"><i class="fas fa-check mr-1"></i>  BEST SOLUTION</span></strong></p>
+                <p class="lbl best-solution-show-lbl"><strong><span class="badge badge-success badge-pill"><i class="fas fa-check mr-1"></i>  BEST SOLUTION</span></strong></p>
             </div>
             @else
             <div class="col-lg-12 mt-2 mb-3">
-                <p class="best-solution-hide-lbl"><strong><span class="badge badge-success badge-pill"><i class="fas fa-check mr-1"></i>  BEST SOLUTION</span></strong></p>
+                <p class="lbl best-solution-hide-lbl"><strong><span class="badge badge-success badge-pill"><i class="fas fa-check mr-1"></i>  BEST SOLUTION</span></strong></p>
             </div>
             @endif
             <div class="col-lg-12 mb-1 pb-3 btn-wrapper" >
                 @if(Auth::user()->isInstructor())
-                <a href="JavaScript:void(0)" class="btn vote
+                <a href="JavaScript:void(0)" class="btn approve
                   @if(Auth::user()->voted($reply))
                   btn-success active
                   @else
@@ -58,10 +56,23 @@ best-solution
                 </a>
 
                 <span class="float-right interactive-likes-comments">
-                    <a href="" class="btn-link text-primary coll-btn rm-td mr-2"  data-toggle="tooltip" data-placement="top" title="@foreach($reply->votes as $vote){{$vote->user->fname.' '.$vote->user->lname}}@endforeach" data-original-title="Votes">
-                        <span class="badge badge-dark badge-pill mr-1 votes">{{count($reply->votes)}}</span> Like
+                    @php
+                    $title = '';
+                    $lastkey = count($reply->votes) - 1;
+                    foreach($reply->votes as $indx => $vote){
+                      if($indx == $lastkey){
+                        $title .= $vote->user->fname.' '.$vote->user->lname;
+                      }else{
+                        $title .= $vote->user->fname.' '.$vote->user->lname.'<br/>';
+                      }
+                    }
+                    @endphp
+                    <a href="" class="btn-link text-primary coll-btn rm-td mr-2 vote_link"  data-html="true" data-toggle="tooltip" data-placement="top"
+                    title="{!! $title !!}"
+                    data-original-title="Votes">
+                        <span class="badge badge-dark badge-pill mr-1 votes">{{count($reply->votes)}}</span> Vote
                     </a>
-                    <a class="btn-link text-primary coll-btn rm-td" data-toggle="collapse" href="#reply-{{$reply->id}}" role="button" aria-expanded="false" aria-controls="reply-{{$reply->id}}">
+                    <a class="btn-link text-primary coll-btn rm-td comment_link" data-toggle="collapse" href="#reply-{{$reply->id}}" role="button" aria-expanded="false" aria-controls="reply-{{$reply->id}}">
                         <span class="badge badge-dark badge-pill comments">{{count($reply->comments)}}</span> Comments
                     </a>
                 </span>

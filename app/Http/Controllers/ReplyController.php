@@ -13,6 +13,7 @@ class ReplyController extends Controller
 
     public function setVote(Request $request)
     {
+      $btn;$approve;
       $vote = Vote::where([
         'reply_id' => $request->id,
         'user_id' => Auth::user()->id
@@ -25,7 +26,9 @@ class ReplyController extends Controller
           'reply_id' => $request->id,
           'user_id' => Auth::user()->id
         ]);
+        $btn = true;
         if (Auth::user()->isInstructor()){
+          $approve = true;
           if ( $reply->approved == 0  ){
             $reply->approved = 1;
             $reply->save();
@@ -35,17 +38,19 @@ class ReplyController extends Controller
         }
         return response()->json([
           'comments_body' => view('_auth.posts.load_comments')->with('comments', $reply->comments)->render(),
+          'btn'=>$btn,
+          'reply' => $reply,
           'votes' => count($reply->votes),
-          'comments' => count($reply->comments)
-          'reply' => $reply
-          'vote' => true
-          'instructor' => Auth::user()->isInstructor()
+          'comments' => count($reply->comments),
+          'approve' =>$approve,
+          'voters' => $reply->voters()
         ]);
 
       }
-
-      ($vote->delete())? ($set = 1): ($set = 0);
+      $vote->delete();
+      $btn = false;
       if (Auth::user()->isInstructor()){
+        $approve = true;
         if (count($reply->whoApproved()) == 0){
           $reply->approved = 0;
           $reply->save();
@@ -54,9 +59,12 @@ class ReplyController extends Controller
       }
       return response()->json([
         'comments_body' => view('_auth.posts.load_comments')->with('comments', $reply->comments)->render(),
+        'btn'=>$btn,
+        'reply' => $reply,
         'votes' => count($reply->votes),
-        'comments' =>count($reply->comments)
-        'reply' => $reply
+        'comments' => count($reply->comments),
+        'approve' =>$approve,
+        'voters' => $reply->voters()
       ]);
     }
 

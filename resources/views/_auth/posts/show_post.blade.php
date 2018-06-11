@@ -24,9 +24,19 @@
                                     <i class="fas fa-ellipsis-v font-weight-bold browse-icon"></i>
                                 </button>
                                 <div class="dropdown-menu dropdown-menu-right text-left">
-                                    <a class="dropdown-item" href="#">Send Message</a>
-                                    <a class="dropdown-item" href="#">Edit</a>
-                                    <a class="dropdown-item" href="#">Delete</a>
+                                    @if(Auth::user()->id != $post->user->id)
+                                    <a class="dropdown-item" href="{{route('messages.show', $post->user->id)}}">Send Message</a>
+                                    @endif
+                                    @if(Auth::user()->id == $post->user->id)
+                                    <a class="dropdown-item" href="JavaScript:void(0)"
+                                    data-toggle="modal" data-target="#req" data-type="post" data-id="{{$post->id}}" data-mode="edit">
+                                      Edit
+                                    </a>
+                                    <a class="dropdown-item" href="JavaScript:void(0)"
+                                    data-toggle="modal" data-target="#confirm" data-id="{{$post->id}}" data-type="post">
+                                      Delete
+                                    </a>
+                                    @endif
                                 </div>
                             </div>
                         </div>
@@ -101,7 +111,7 @@
 
 @endsection
 @section('scripts')
-<script src="{{asset('js/quill.min.js')}}"></script>
+<script src="{{asset('js/dropBox.js')}}"></script>
 <script src="{{asset('js/axios.min.js')}}"></script>
 <script>
   var api_token     = "{{ Auth::user()->api_token}}",

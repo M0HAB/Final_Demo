@@ -14,6 +14,9 @@ class Reply extends Model
   protected $fillable = [
       'post_id', 'user_id', 'approved', 'body'
   ];
+  protected $hidden = [
+      'votes', 'comments'
+  ];
   protected $dates = ['deleted_at'];
   public function files()
   {
@@ -35,7 +38,14 @@ class Reply extends Model
   {
     return $this->hasMany('App\Comment', 'reply_id');
   }
-
+  public function voters()
+  {
+    $voters=null;
+    foreach ($this->votes as $vote) {
+        $voters[]= $vote->user->fname." ".$vote->user->lname;
+    }
+    return $voters;
+  }
   public function whoApproved()
   {
     if($this->approved == true){

@@ -1,38 +1,74 @@
 //define toolbarOptions for quill WYSIWYG text editor
-var toolbarOptions = [
-  ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
-  ['blockquote', 'code-block'],
-  ['image'],
-  [{ 'list': 'ordered'}, { 'list': 'bullet' }],
-  [{ 'script': 'sub'}, { 'script': 'super' }],      // superscript/subscript
-  [{ 'indent': '-1'}, { 'indent': '+1' }],          // outdent/indent
-  [{ 'direction': 'rtl' }],                         // text direction
-  [{ 'color': [] }, { 'background': [] }],          // dropdown with defaults from theme
-  [{ 'align': [] }],
-  ['clean']                                         // remove formatting button
-];
 
-//init quill WYSIWYG text editor and bind to div ("post_body") with toolbar and theme snow['added in CSS']
-var quill = new Quill('#req_body', {
-    modules: {
-      toolbar: toolbarOptions
-    },
-    placeholder: "Type here...",
-    bounds: document.body,
-    theme: 'snow'
-});
+var allowedtypes = ['jpg','png','pdf'];
+var unknowSrc = "/images/file.png";
+var dropZone = new dropBoxInput('list','drop_zone',allowedtypes,unknowSrc);
+
 
 //function applied onClick of Vote button in discussion, make ajax call to save vote and receive new reply data
 //id: reply id
 function vote(id){
+  approvebtn = $('#reply_body_'+id+' .approve');
+  votebtn = $('#reply_body_'+id+' .vote');
+  badge = $('#reply_body_'+id+' .lbl');
+  frame = $('#reply_body_'+id+' .reply-wrapper');
+  reply_msg = $('#reply_body_'+id+' .reply_msg');
+  votes = $('#reply_body_'+id+' .votes');
+  comments = $('#reply_body_'+id+' .comments');
+  vote_tooltip = $('#reply_body_'+id+' .vote_link');
+  comments_tooltip = $('#reply_body_'+id+' .comment_link');
   axios.post('/api/vote/'+id+'/set',{
     id: id,
     api_token : api_token
   })
   .then( (response) => {
-    $('#reply_body_'+id).html(response.data.body);
+    $('#reply-'+id).html(response.data.comments_body);
+    reply = response.data.reply;
+    reply_msg = reply.body;
+    votes.text(response.data.votes);
+    comments.text(response.data.comments);
+    if(response.data.voters){
+      vote_tooltip.attr('data-original-title','');
+      response.data.voters.forEach((element,idx,array)=>{
+        old = vote_tooltip.attr('data-original-title');
+        if (idx === array.length - 1){
+          vote_tooltip.attr('data-original-title', old+element);
+          return;
+        }
+        vote_tooltip.attr('data-original-title', old+element+"<br/>");
+      });
+    }
+
+    if(reply.approved == 1){
+      (frame.hasClass('best-solution') || frame.addClass('best-solution'));
+      (badge.hasClass('best-solution-show-lbl') || badge.addClass('best-solution-show-lbl'));
+      (!badge.hasClass('best-solution-hide-lbl') || badge.removeClass('best-solution-hide-lbl'));
+    }else{
+      (!frame.hasClass('best-solution') || frame.removeClass('best-solution'));
+      (!badge.hasClass('best-solution-show-lbl') || badge.removeClass('best-solution-show-lbl'));
+      (badge.hasClass('best-solution-hide-lbl') || badge.addClass('best-solution-hide-lbl'));
+    }
+    if(response.data.btn){
+      if(response.data.approve){
+        (approvebtn.hasClass('btn-success active') || approvebtn.addClass('btn-success active'));
+        (!approvebtn.hasClass('btn-light') || approvebtn.removeClass('btn-light'));
+      }else{
+        (votebtn.hasClass('btn-primary active') || votebtn.addClass('btn-primary active'));
+        (!votebtn.hasClass('btn-light') || votebtn.removeClass('btn-light'));
+      }
+    }else{
+      if(response.data.approve){
+        (!approvebtn.hasClass('btn-success active') || approvebtn.removeClass('btn-success active'));
+        (approvebtn.hasClass('btn-light') || approvebtn.addClass('btn-light'));
+      }else{
+        (!votebtn.hasClass('btn-primary active') || votebtn.removeClass('btn-primary active'));
+        (votebtn.hasClass('btn-light') || votebtn.addClass('btn-light'));
+      }
+    }
+
   })
   .catch(function (error) {
+    console.log(error);
     toastr.warning("Something went Wrong");
   });
 }
@@ -52,8 +88,8 @@ $('#req').on('show.bs.modal', function (event) {
   //Delete Input data on clicking close button
   modal.find('#close').off('click').on("click", function (event) {
     modal.find("#req_title").val("");
-    quill.container.firstChild.innerHTML = "";
-    quill.container.lastChild.innerHTML = "";
+    $('#req_body').val("");
+    dropZone.clearBox();
   });
 
   //populating fields and setting requestURL
@@ -63,8 +99,11 @@ $('#req').on('show.bs.modal', function (event) {
     modal.find('#submit_req').text("Confirm edit");
     id = button.data("id");
     body = $('#'+type+'_container_'+id+' .edit_body').html();
-    quill.container.firstChild.innerHTML = body;
-
+    images = $('#'+type+'_container_'+id+' .edit_image').text().split(",").filter(function(e){return e});;
+    images.forEach((element)=>{
+      body+= '<img src="'+element+'"></img>';
+    })
+    $('#req_body').text(body);
     if(type == "post"){
       title_area.show();
       title = $('#post_container_'+id+' .edit_title').text();
@@ -87,9 +126,10 @@ $('#req').on('show.bs.modal', function (event) {
 
   //on clicking submit assign values and prepare payload,headers then send ajax request
   modal.find('#submit_req').off('click').on("click", function (event) {
-    body = quill.container.firstChild.innerHTML;
-    if(!body.match(/<img/) && !$(body).text()){
-      toastr.warning("All fields are required");
+    body = $('#req_body').val();
+    if(!body){
+      console.log(body);
+      toastr.warning("All Text fields are required");
       return 0;
     }
     headers = {
@@ -100,11 +140,11 @@ $('#req').on('show.bs.modal', function (event) {
     payload = {
       api_token: api_token,
       type: type,
-      body: body
+      body: body,
     };
-
     if(type == "post"){
       title = $("#req_title").val();
+      payload["file_list"]= dropZone.list;
       if(!title){
         toastr.warning("All fields are required");
         return 0;
@@ -118,6 +158,7 @@ $('#req').on('show.bs.modal', function (event) {
       }
 
     }else if (type == "reply") {
+      payload["file_list"]= dropZone.list;
       if (mode == "edit"){
         payload["id"] = id;
       }else{
@@ -130,14 +171,20 @@ $('#req').on('show.bs.modal', function (event) {
       if(response.data.error){
         toastr.warning(response.data.message);
       }else{
-        quill.container.firstChild.innerHTML = "";
-        quill.container.lastChild.innerHTML = "";
+        $('#req_body').text("");
         $("#req .close").click();
+        modal.find("#req_title").val("");
+        $('#req_body').val("");
+        dropZone.clearBox();
         if (type == "post"){
           $("#req_title").val("");
           if (mode == "edit"){
-            $('#post_container_'+id+' .edit_title').text(response.data.title);
-            $('#'+type+'_container_'+id+' .edit_body').html(response.data.body);
+            $('#post_container_'+id+' .edit_title').text(response.data.record.title);
+            $('#'+type+'_container_'+id+' .edit_body').html(response.data.record.body);
+            $('#'+type+'_container_'+id+' .edit_image').text("");
+            response.data.srcs.forEach((element)=>{
+              $('#'+type+'_container_'+id+' .edit_image').append(element.filename+",");
+            });
             toastr.success("Post Edited Successfully");
           }else{
             $("#posts").prepend(response.data.body);
@@ -158,6 +205,7 @@ $('#req').on('show.bs.modal', function (event) {
 
     })
     .catch(function (error) {
+      console.log(error);
       toastr.warning("Something went Wrong");
     });
   })

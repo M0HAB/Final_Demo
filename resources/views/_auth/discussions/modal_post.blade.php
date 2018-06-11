@@ -14,8 +14,16 @@
             <input type="text" class="form-control" id="req_title">
           </div>
           <div class="form-group">
-            <label class="col-form-label">Body:</label>
-            <div id="req_body"></div>
+            <label for="exampleFormControlTextarea1">Body</label>
+            <textarea class="form-control" id="req_body" rows="3"></textarea>
+          </div>
+          <div class="card text-center" id="drop_zone">
+              <div class="card-body" style="border-style: dashed;">
+                  <div>Drop files here</div>
+              </div>
+              <div class="card-footer text-muted" id="list" style="height:120px;overflow-y: auto">
+
+              </div>
           </div>
       </div>
       <div class="modal-footer">

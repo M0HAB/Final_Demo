@@ -10,102 +10,35 @@ use URL;
 use App\File;
 class PostController extends Controller
 {
-      public function loadReplies($id)
-      {
-        $post = Post::find($id);
-        return view('_auth.discussions.load_replies')->with('post', $post);
+
+      function remove_empty_tags($str, $repto = NULL){
+          if (!is_string ($str) || trim ($str) == '')return $str;
+          return preg_replace (
+            '/<([^<\/>]*)>([\s]*?|(?R))<\/\1>/imsU',
+              !is_string ($repto) ? '' : $repto,
+              $str
+            );
       }
       private function getImgData($data,$k){
-        list($type, $data) = explode(';', $data);
-        list(, $data) = explode(',', $data);
-        $decode_data = base64_decode($data);
+        list(, $data['src']) = explode(',', $data['src']);
+        $decode_data = base64_decode($data['src']);
         $size = (strlen($decode_data)/1024);
         if($size > 2048 ){
           return 0;
         }
-        $image_name= time().$k.'.png';
-        $path = public_path() . '\images\\' . $image_name;
+        $image_name= time().$k.'.'.$data['ext'];
+        $path = public_path() . '\files\\' . $image_name;
         file_put_contents($path, $decode_data);
+        $image_name = '/files/'.$image_name;
         return $image_name;
-      }
-      private function formulateBody($body){
-        $doms = new \domdocument();
-        $doms->preserveWhiteSpace = false;
-        $body = mb_convert_encoding($body, 'HTML-ENTITIES', "UTF-8");
-        $doms->loadHtml('<div>'.$body.'</div>');
-        $container = $doms->getElementsByTagName('div')->item(0);
-        $container = $container->parentNode->removeChild($container);
-        while ($doms->firstChild) {
-            $doms->removeChild($doms->firstChild);
-        }
-        while ($container->firstChild ) {
-            $doms->appendChild($container->firstChild);
-        }
-        //Edit class of <pre> elemtents in sent request
-        $pres = $doms->getelementsbytagname('pre');
-        foreach ($pres  as $pre) {
-          $pre->setattribute('class', 'p-2 rounded bg-primary text-white text-monospace');
-        }
-        //Edit images since they are sent in base64 encoding.
-        $images = $doms->getelementsbytagname('img');
-        //to prevent duplicate images from being stored
-        $arr = array();
-        foreach ($images as $k => $img) {
-          $data = $img->getattribute('src');
-          if(substr($data, 0, 1) == '/'){
-              $data = 'data:image/png;base64,'.base64_encode(file_get_contents(URL::to('/').$data));
-          }
-          if(!$arr){
-            $image_name = $this->getImgData($data,$k);
-            if($image_name == 0)return 0;
-            $img->removeattribute('src');
-            $image_name = '/images/'.$image_name;
-            $img->setattribute('src', $image_name);
-            array_push($arr,[
-              'data' => $data,
-              'src' => $image_name
-            ]);
-          }else{
-            $skip = false;
-            foreach ($arr as $test) {
-              if($data == $test['data']){
-                $img->removeattribute('src');
-                $image_name = $test['src'];
-                $img->setattribute('src', $image_name);
-                $skip = true;
-                continue;
-              }
-            }
-            if(!$skip){
-              $image_name = $this->getImgData($data,$k);
-              if($image_name == 0)return 0;
-              $img->removeattribute('src');
-              $image_name = '/images/'.$image_name;
-              $img->setattribute('src', $image_name);
-              array_push($arr,[
-                'data' => $data,
-                'src' => $image_name
-              ]);
-            }
-          }
-          $img->setattribute('class', 'img-thumbnail');
-          $img->setattribute('href', $image_name);
 
+      }
+      private function saveFiles($files){
+        foreach ($files as $k => $file) {
+          $files[$k]['src'] = $this->getImgData($file,$k);
+          if($files[$k]['src']===0)return 0;
         }
-        $imgs = array();
-        foreach($images as $img) {
-            $imgs[] = $img;
-        }
-        foreach($imgs as $img) {
-            $img->parentNode->removeChild($img);
-        }
-        $body = $doms->savehtml();
-        $body = html_entity_decode($body);
-        $returns = [
-          "body" => $body,
-          "arr" => $arr
-        ];
-        return $returns;
+        return $files;
       }
       private function filterRecordType(Request $request,$edit)
       {
@@ -139,10 +72,8 @@ class PostController extends Controller
               $newRecord = $this->filterRecordType($request,false);
               //if the filtering returned a 404 then return error not found
               if ($newRecord === 0) return redirect()->route('error.api', 'Not Found');
-              //formulate the message body
-              $returns = $this->formulateBody($request->body);
-              $body = $returns['body'];
-              if ($body === 0) return redirect()->route('error.api', 'Images too big, maximum 2mb per image');
+              $body = $request->body;
+
               //save the received body if not empty to the $newRecord->body
               $newRecord->body = $body;
               //set the user id of new record to current auth user
@@ -150,15 +81,16 @@ class PostController extends Controller
               //if new record failed to save return 404;
               if(!$newRecord->save()) return redirect()->route('error.api', 'Failed to save Try Resubmitting');
               //get array of sources
-              $arr = $returns['arr'];
+              $files = $this->saveFiles($request->file_list);
+              if ($files === 0) return redirect()->route('error.api', 'Images too big, maximum 2mb per image');
               //loop on each source and store in DB to get later
-              foreach ($arr as $img) {
-                $photo = new File;
-                $photo->relate_type = $request->type;
-                $photo->relate_id = $newRecord->id;
-                $photo->filename = $img['src'];
-                $photo->type = "image";
-                $photo->save();
+              foreach ($files as $file) {
+                $file_rec = new File;
+                $file_rec->relate_type = $request->type;
+                $file_rec->relate_id = $newRecord->id;
+                $file_rec->filename = $file['src'];
+                $file_rec->type = $file['type'];
+                $file_rec->save();
               }
               if($request->type == "reply" || $request->type == "Reply"){
                 $reply = Reply::find($newRecord->id);
@@ -177,13 +109,29 @@ class PostController extends Controller
       {
         if($request->ajax()){
           $record = $this->filterRecordType($request,true);
-          $record->photos->delete();
+          $record->files()->delete();
           if($record === 0) return redirect()->route('error.api', 'Not Found');
-          $body = $this->formulateBody($request->body);
+          $returns = $this->formulateBody($request->body);
+          $body = $returns['body'];
+          if ($body === 0) return redirect()->route('error.api', 'Images too big, maximum 2mb per image');
           //save the received body to the $newRecord->body
           $record->body = $body;
           if(!$record->save()) return redirect()->route('error.api','Failed to save please retry');
-          return $record;
+          //get array of sources
+          $arr = $returns['arr'];
+          //loop on each source and store in DB to get later
+          foreach ($arr as $img) {
+            $photo = new File;
+            $photo->relate_type = $request->type;
+            $photo->relate_id = $record->id;
+            $photo->filename = $img['src'];
+            $photo->type = "image";
+            $photo->save();
+          }
+          return response()->json([
+            "record" => $record,
+            "srcs" =>$record->files()->where('type', 'image')->get()
+          ]);
         }
       }
       public function delete(Request $request,$id)

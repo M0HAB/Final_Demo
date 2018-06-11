@@ -6,7 +6,9 @@
                 <i class="fas fa-ellipsis-v font-weight-bold browse-icon"></i>
             </button>
             <div class="dropdown-menu dropdown-menu-right text-left">
+                @if(Auth::user()->id != $post->user->id)
                 <a class="dropdown-item" href="{{route('messages.show', $post->user->id)}}">Send Message</a>
+                @endif
                 @if(Auth::user()->id == $post->user->id)
                 <a class="dropdown-item" href="JavaScript:void(0)"
                 data-toggle="modal" data-target="#req" data-type="post" data-id="{{$post->id}}" data-mode="edit">
@@ -27,6 +29,7 @@
             <a class="edit_title" href="{{route('discussion.show',$post->discussion->id).'?module_order='.$post->module->module_order.'&post='.$post->id}}">{{$post->title}}</a>
         </h4>
         <div class="card-text edit_body">{!! $post->body !!}</div>
+        <div class="edit_image" hidden>@foreach($post->files()->where('type', 'image')->get() as $k => $photo){{$photo->filename}},@endforeach</div>
     </div>
     <div class="card-footer right-side-footer-card">
         <div class="row">
