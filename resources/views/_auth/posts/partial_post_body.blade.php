@@ -29,7 +29,7 @@
             <a class="edit_title" href="{{route('discussion.show',$post->discussion->id).'?module_order='.$post->module->module_order.'&post='.$post->id}}">{{$post->title}}</a>
         </h4>
         <div class="card-text edit_body">{!! $post->body !!}</div>
-        <div class="edit_image" hidden>@foreach($post->files()->where('type', 'image')->get() as $k => $photo){{$photo->filename}},@endforeach</div>
+        <div class="edit_image" hidden>@foreach($post->files as $file){{$file->type.';'.$file->filename}},@endforeach</div>
     </div>
     <div class="card-footer right-side-footer-card">
         <div class="row">

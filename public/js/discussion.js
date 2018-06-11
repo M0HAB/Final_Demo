@@ -99,9 +99,14 @@ $('#req').on('show.bs.modal', function (event) {
     modal.find('#submit_req').text("Confirm edit");
     id = button.data("id");
     body = $('#'+type+'_container_'+id+' .edit_body').html();
-    images = $('#'+type+'_container_'+id+' .edit_image').text().split(",").filter(function(e){return e});;
-    images.forEach((element)=>{
-      body+= '<img src="'+element+'"></img>';
+    files = $('#'+type+'_container_'+id+' .edit_image').text().split(",").filter(function(e){return e;});
+    dropZone.clearBox();
+    files.forEach((element)=>{
+      dropZone.listPut({
+            name:element.split('/').pop(),
+            type:element.split(';')[0],
+            src:element.split(';').pop()
+        })
     })
     $('#req_body').text(body);
     if(type == "post"){
