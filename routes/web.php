@@ -76,7 +76,7 @@ Route::group(['prefix' => 'messages'], function () {
   Route::get('/{id}', 'MessagesController@selectMessage')->name('messages.show');
 
 });
-Route::get('/error', function(){ return "error"; })->name('error.web');
+Route::get('/error', function(){ return "404"; })->name('error.web');
 
 Route::group(['prefix' => 'discussions'], function () {
 
@@ -84,7 +84,4 @@ Route::group(['prefix' => 'discussions'], function () {
   Route::get('/{id}', 'DiscussionController@show')->name('discussion.show');
   Route::get('/{id}/search', 'DiscussionController@searchPosts')->name('discussion.search');
 
-});
-Route::get('/test3', function () {
-  echo ('App\Post')::find(123);
 });

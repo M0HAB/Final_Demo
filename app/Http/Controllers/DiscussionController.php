@@ -23,6 +23,9 @@ class DiscussionController extends Controller
     {
       if(isset($_GET['post'])){
         $post = Discussion::find($id)->posts()->where('id', $_GET['post'])->first();
+        if(!$post){
+          return redirect()->route('error.web');
+        }
         return view('_auth.posts.show_post')->with('post', $post);
       }
       if(isset($_GET['module_order']))
@@ -33,7 +36,7 @@ class DiscussionController extends Controller
       }
       $discussion = Discussion::find($id);
       if(!$discussion){
-        return redirect()->route('error.404');
+        return redirect()->route('error.web');
       }
       $module_data = $discussion->course->modules->where('module_order', $module_order)->first();
       if ($module_data){

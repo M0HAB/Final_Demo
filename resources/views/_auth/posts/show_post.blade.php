@@ -13,10 +13,10 @@
             </div>
             <div class="col-lg-11 mb-3">
                 {{-- Post --}}
-                <div class="discussion-container">
+                <div class="discussion-container" id="post_container_{{$post->id}}">
                     <div class="row">
                         <div class="col-lg-11">
-                            <h3 class="post-title font-weight-bold">{{$post->title}}</h3>
+                            <h3 class="post-title font-weight-bold edit_title">{{$post->title}}</h3>
                         </div>
                         <div class="col-lg-1">
                             <div class="dropdown float-right">
@@ -33,7 +33,7 @@
                                       Edit
                                     </a>
                                     <a class="dropdown-item" href="JavaScript:void(0)"
-                                    data-toggle="modal" data-target="#confirm" data-id="{{$post->id}}" data-type="post">
+                                    data-toggle="modal" data-target="#confirm" data-id="{{$post->id}}" data-type="post" data-redirect="true">
                                       Delete
                                     </a>
                                     @endif
@@ -44,14 +44,18 @@
 
                     <p class="text-muted">at <strong>{{$post->created_at}} by <span class="text-success">{{$post->user->fname. ' ' . $post->user->lname}}</span></strong></p>
                     <div class="user-content my-4">
-                        <p class="discussion-body-content mb-4">
-                            {!! $post->body !!}
-                        </p>
+                        <div class="discussion-body-content mb-4 edit_body">{{ $post->body }}</div>
+                        <div class="edit_image" hidden>@foreach($post->files as $file){{$file->type.';'.$file->filename}},@endforeach</div>
                         <div id="carouselExampleIndicators" class="carousel slide" data-interval="false" data-ride="carousel">
                             <ol class="carousel-indicators">
                                 {{-- image counter indicator --}}
-                                <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
-                                <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
+                                @foreach($post->files()->where('type', 'image')->get() as $k => $photo)
+                                <li data-target="#carouselExampleIndicators" data-slide-to="{{$k}}"
+                                @if($k==0)
+                                class="active"
+                                @endif
+                                ></li>
+                                @endforeach
                             </ol>
                             <div class="carousel-inner">
                                 {{-- First image displayed as default --}}
@@ -119,4 +123,5 @@
       discussion_id = {{$post->discussion_id}};
 </script>
 <script src="{{asset('js/discussion.js')}}" charset="utf-8"></script>
+<script src="{{asset('js/modal_confirm.js')}}" charset="utf-8"></script>
 @endsection

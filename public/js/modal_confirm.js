@@ -27,6 +27,10 @@ $('#confirm').on('show.bs.modal', function (event) {
           }else{
             $("#"+type+"_container_"+id).remove();
           }
+          if(button.data('redirect')){
+            alert('redirecting');
+            window.location.href = '/user/dashboard';
+          }
           $("#confirm #close").click();
           toastr.success(type+ " deleted successfully");
         }else{
