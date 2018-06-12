@@ -5,7 +5,7 @@
 <link href="{{asset('css/quill.snow.css')}}" rel="stylesheet">
 @endsection
 @section('content')
-<div class="row disscusion">
+<div class="row disscusion" id="app">
     <div class="col-lg-8">
         <div class="row">
             <div class="col-lg-1 col-sm-12">
@@ -47,6 +47,7 @@
                         <div class="discussion-body-content mb-4 edit_body">{{ $post->body }}</div>
                         <div class="edit_image" hidden>@foreach($post->files as $file){{$file->type.';'.$file->filename}},@endforeach</div>
                         <div id="carouselExampleIndicators" class="carousel slide" data-interval="false" data-ride="carousel">
+                            <span class="indicators">
                             <ol class="carousel-indicators">
                                 {{-- image counter indicator --}}
                                 @foreach($post->files()->where('type', 'image')->get() as $k => $photo)
@@ -57,6 +58,7 @@
                                 ></li>
                                 @endforeach
                             </ol>
+                            </span>
                             <div class="carousel-inner">
                                 {{-- First image displayed as default --}}
                                 @foreach($post->files()->where('type', 'image')->get() as $k => $photo)
@@ -100,9 +102,7 @@
             <div class="offset-lg-1 col-lg-11" id="reply_container">
                 {{-- default Reply --}}
                 @foreach($post->replies as $reply)
-                <span id="reply_body_{{$reply->id}}">
                 @include('_auth.posts.partial_reply_body')
-                </span>
                 @endforeach
             </div>
         </div>
@@ -118,9 +118,7 @@
 <script src="{{asset('js/dropBox.js')}}"></script>
 <script src="{{asset('js/axios.min.js')}}"></script>
 <script>
-  var api_token     = "{{ Auth::user()->api_token}}",
-      module_id     = {{$post->module_id}},
-      discussion_id = {{$post->discussion_id}};
+  var api_token = "{{ Auth::user()->api_token}}";
 </script>
 <script src="{{asset('js/discussion.js')}}" charset="utf-8"></script>
 <script src="{{asset('js/modal_confirm.js')}}" charset="utf-8"></script>

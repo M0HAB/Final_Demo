@@ -2,7 +2,7 @@
 @if($reply->approved)
 best-solution
 @endif
-">
+" id="reply_container_{{$reply->id}}">
     <div class="card-header reply-header">
         <span class="username-post">{{$reply->user->fname.' '.$reply->user->lname}}<span></span></span>
         <div class="dropdown float-right">
@@ -10,15 +10,26 @@ best-solution
                 <i class="fas fa-chevron-down font-weight-bold browse-icon"></i>
             </button>
             <div class="dropdown-menu dropdown-menu-right text-left">
-                <a class="dropdown-item" href="#">Send Message</a>
-                <a class="dropdown-item" href="#">Edit</a>
-                <a class="dropdown-item" href="#">Delete</a>
+              @if(Auth::user()->id != $reply->user->id)
+              <a class="dropdown-item" href="{{route('messages.show', $reply->user->id)}}">Send Message</a>
+              @endif
+              @if(Auth::user()->id == $reply->user->id)
+              <a class="dropdown-item" href="JavaScript:void(0)"
+              data-toggle="modal" data-target="#req" data-type="reply" data-id="{{$reply->id}}" data-mode="edit">
+                Edit
+              </a>
+              <a class="dropdown-item" href="JavaScript:void(0)"
+              data-toggle="modal" data-target="#confirm" data-id="{{$reply->id}}" data-type="reply">
+                Delete
+              </a>
+              @endif
             </div>
         </div>
         <span class="lb"><small>Created at: {{$reply->created_at}}</small></span>
     </div>
     <div class="card-body pb-1">
-          <span class="reply_msg">{!! $reply->body !!}</span>
+          <span class="reply_msg edit_body">{{$reply->body}}</span>
+          <div class="edit_image" hidden>@foreach($reply->files as $file){{$file->type.';'.$file->filename}},@endforeach</div>
         <div class="row">
             @if($reply->approved)
             <div class="col-lg-12 mt-2 mb-3">
@@ -67,9 +78,7 @@ best-solution
                       }
                     }
                     @endphp
-                    <a href="" class="btn-link text-primary coll-btn rm-td mr-2 vote_link"  data-html="true" data-toggle="tooltip" data-placement="top"
-                    title="{!! $title !!}"
-                    data-original-title="Votes">
+                    <a href="" class="btn-link text-primary coll-btn rm-td mr-2 vote_link"  data-html="true" title="{!! $title !!}">
                         <span class="badge badge-dark badge-pill mr-1 votes">{{count($reply->votes)}}</span> Vote
                     </a>
                     <a class="btn-link text-primary coll-btn rm-td comment_link" data-toggle="collapse" href="#reply-{{$reply->id}}" role="button" aria-expanded="false" aria-controls="reply-{{$reply->id}}">

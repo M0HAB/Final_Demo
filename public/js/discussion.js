@@ -8,21 +8,21 @@ var dropZone = new dropBoxInput('list','drop_zone',allowedtypes,unknowSrc);
 //function applied onClick of Vote button in discussion, make ajax call to save vote and receive new reply data
 //id: reply id
 function vote(id){
-  approvebtn = $('#reply_body_'+id+' .approve');
-  votebtn = $('#reply_body_'+id+' .vote');
-  badge = $('#reply_body_'+id+' .lbl');
-  frame = $('#reply_body_'+id+' .reply-wrapper');
-  reply_msg = $('#reply_body_'+id+' .reply_msg');
-  votes = $('#reply_body_'+id+' .votes');
-  comments = $('#reply_body_'+id+' .comments');
-  vote_tooltip = $('#reply_body_'+id+' .vote_link');
-  comments_tooltip = $('#reply_body_'+id+' .comment_link');
+  approvebtn = $('#reply_container_'+id+' .approve');
+  votebtn = $('#reply_container_'+id+' .vote');
+  badge = $('#reply_container_'+id+' .lbl');
+  frame = $('#reply_container_'+id);
+  reply_msg = $('#reply_container_'+id+' .reply_msg');
+  votes = $('#reply_container_'+id+' .votes');
+  comments = $('#reply_container_'+id+' .comments');
+  vote_tooltip = $('#reply_container_'+id+' .vote_link');
+  comments_tooltip = $('#reply_container_'+id+' .comment_link');
   axios.post('/api/vote/'+id+'/set',{
     id: id,
     api_token : api_token
   })
   .then( (response) => {
-    $('#reply-'+id).html(response.data.comments_body);
+    frame.find('#reply-'+id).html(response.data.comments_body);
     reply = response.data.reply;
     reply_msg = reply.body;
     votes.text(response.data.votes);
@@ -32,11 +32,13 @@ function vote(id){
       response.data.voters.forEach((element,idx,array)=>{
         old = vote_tooltip.attr('data-original-title');
         if (idx === array.length - 1){
-          vote_tooltip.attr('data-original-title', old+element);
+          vote_tooltip.attr('title', old+element);
           return;
         }
-        vote_tooltip.attr('data-original-title', old+element+"<br/>");
+        vote_tooltip.attr('title', old+element+"<br/>");
       });
+    }else{
+      vote_tooltip.attr('title', "");
     }
 
     if(reply.approved == 1){
@@ -189,11 +191,23 @@ $('#req').on('show.bs.modal', function (event) {
           if (mode == "edit"){
             $('#post_container_'+id+' .edit_title').text(response.data.record.title);
             $('#'+type+'_container_'+id+' .edit_body').html(response.data.record.body);
-            console.log(response.data.record.body);
             $('#'+type+'_container_'+id+' .edit_image').text("");
+            $('#post_container_'+id+' .carousel-indicators').html('');
+            $('#post_container_'+id+' .carousel-inner').html('');
+            let counter=0;
             response.data.srcs.forEach((element)=>{
+              if(element.type == "image"){
+                $('#post_container_'+id+' .carousel-indicators').append('<li data-target="#carouselExampleIndicators" data-slide-to="'+counter+'" '+((counter==0)? 'class="active"':'')+' ></li>');
+                $('#post_container_'+id+' .carousel-inner').append(
+                  '<div class="carousel-item'+
+                  ((counter==0)? ' active':'') +'"><a href="'+element.filename+'" data-lightbox="test">'+
+                  '<img class="d-block w-100" src="'+element.filename+'" alt="slide '+counter+'"></a></div>'
+                );
+                  counter++;
+              }
               $('#'+type+'_container_'+id+' .edit_image').append(element.type+";"+element.filename+",");
             });
+            //edit srcs display
             toastr.success("Post Edited Successfully");
           }else{
             $("#posts").prepend(response.data.body);
@@ -201,10 +215,14 @@ $('#req').on('show.bs.modal', function (event) {
           }
         }else if (type == "reply") {
           if (mode == "edit"){
-            $('#'+type+'_container_'+id+' .edit_body').html(response.data.body);
+            $('#'+type+'_container_'+id+' .edit_body').html(response.data.record.body);
+            $('#'+type+'_container_'+id+' .edit_image').text("");
+            response.data.srcs.forEach((element)=>{
+              $('#'+type+'_container_'+id+' .edit_image').append(element.type+";"+element.filename+",");
+            });
             toastr.success("Reply Edited Successfully");
           }else{
-            $('#reply_container').append(response.data.body);
+            $('#reply_container').prepend(response.data.body);
             toastr.success("Reply Submitted Successfully");
           }
 

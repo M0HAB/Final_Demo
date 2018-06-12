@@ -22,15 +22,10 @@ $('#confirm').on('show.bs.modal', function (event) {
     axios.post('/api/'+type+'/'+id+'/delete',payload,headers)
     .then( (response) => {
         if(response.data){
-          if(type == "reply"){
-            $('#post_footer_'+post_id).html(response.data);
-          }else{
-            $("#"+type+"_container_"+id).remove();
-          }
           if(button.data('redirect')){
-            alert('redirecting');
             window.location.href = '/user/dashboard';
           }
+          $("#"+type+"_container_"+id).remove();
           $("#confirm #close").click();
           toastr.success(type+ " deleted successfully");
         }else{
