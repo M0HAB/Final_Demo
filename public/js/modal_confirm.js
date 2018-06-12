@@ -1,10 +1,10 @@
 //bind some data to the opened modal from the create post button
 $('#confirm').on('show.bs.modal', function (event) {
-  var post_id;
+  var reply_id;
   var button = $(event.relatedTarget);
   var type = button.data('type');
-  if (type == "reply"){
-    post_id = button.data('post');
+  if (type == "comment"){
+    reply_id = button.data('reply');
   }
   var id = button.data('id');
   var modal = $(this);
@@ -24,6 +24,10 @@ $('#confirm').on('show.bs.modal', function (event) {
         if(response.data){
           if(button.data('redirect')){
             window.location.href = '/user/dashboard';
+          }
+          if(type == "comment"){
+            comments = $('#reply_container_'+reply_id+' .comments');
+            comments.text(comments.text()-1);
           }
           $("#"+type+"_container_"+id).remove();
           $("#confirm #close").click();

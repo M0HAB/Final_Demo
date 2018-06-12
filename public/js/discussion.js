@@ -100,7 +100,7 @@ $('#req').on('show.bs.modal', function (event) {
     modal.find('#modal_title').text("Edit "+type);
     modal.find('#submit_req').text("Confirm edit");
     id = button.data("id");
-    body = $('#'+type+'_container_'+id+' .edit_body').text();
+    body = $('#'+type+'_container_'+id+' .edit_'+type).text();
     if(type != "comment"){
       files = $('#'+type+'_container_'+id+' .edit_image').text().split(",").filter(function(e){return e;});
       dropZone.clearBox();
@@ -221,9 +221,12 @@ $('#req').on('show.bs.modal', function (event) {
             $('#'+type+'_container_'+id+' .edit_image').text("");
             $('#post_container_'+id+' .carousel-indicators').html('');
             $('#post_container_'+id+' .carousel-inner').html('');
+            $('#'+type+'_container_'+id+' .'+type+'_files').html('');
             let counter=0;
             response.data.srcs.forEach((element)=>{
+              let thumb;
               if(element.type == "image"){
+                thumb = element.filename;
                 $('#post_container_'+id+' .carousel-indicators').append('<li data-target="#carouselExampleIndicators" data-slide-to="'+counter+'" '+((counter==0)? 'class="active"':'')+' ></li>');
                 $('#post_container_'+id+' .carousel-inner').append(
                   '<div class="carousel-item'+
@@ -232,6 +235,9 @@ $('#req').on('show.bs.modal', function (event) {
                 );
                   counter++;
               }
+              $('#'+type+'_container_'+id+' .'+type+'_files').append('<div class="card float-left ml-2 mb-1 " style="width: 5rem;" id="div-1">'+
+                  '<img class="card-img-top" width="70px" height="70px" src="'+
+                  thumb+'" title="'+element.filename.split("/").pop()+'"></div>');
               $('#'+type+'_container_'+id+' .edit_image').append(element.type+";"+element.filename+",");
             });
             //edit srcs display
@@ -244,7 +250,15 @@ $('#req').on('show.bs.modal', function (event) {
           if (mode == "edit"){
             $('#'+type+'_container_'+id+' .edit_body').html(response.data.record.body);
             $('#'+type+'_container_'+id+' .edit_image').text("");
+            $('#'+type+'_container_'+id+' .'+type+'_files').html('');
             response.data.srcs.forEach((element)=>{
+              thumb = "/images/file.png";
+              if(element.type == "image"){
+                thumb = element.filename;
+              }
+              $('#'+type+'_container_'+id+' .'+type+'_files').append('<div class="card float-left ml-2 mb-1 " style="width: 5rem;" id="div-1">'+
+                  '<img class="card-img-top" width="70px" height="70px" src="'+
+                  thumb+'" title="'+element.filename.split("/").pop()+'"></div>');
               $('#'+type+'_container_'+id+' .edit_image').append(element.type+";"+element.filename+",");
             });
             toastr.success("Reply Edited Successfully");
@@ -255,7 +269,7 @@ $('#req').on('show.bs.modal', function (event) {
 
         }else if(type == "comment"){
           if(mode == "edit"){
-            $('#'+type+'_container_'+id+' .edit_body').html(response.data.body);
+            $('#'+type+'_container_'+id+' .edit_'+type).html(response.data.body);
           }else{
             frame = $('#reply_container_'+id);
             frame.find('#reply-'+id).html(response.data.comments_body);

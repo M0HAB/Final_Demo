@@ -28,7 +28,7 @@ best-solution
         <span class="lb"><small>Created at: {{$reply->created_at}}</small></span>
     </div>
     <div class="card-body pb-1">
-          <span class="reply_msg edit_body">{{$reply->body}}</span>
+          <span class="reply_msg edit_reply">{{$reply->body}}</span>
           <div class="edit_image" hidden>@foreach($reply->files as $file){{$file->type.';'.$file->filename}},@endforeach</div>
         <div class="row">
             @if($reply->approved)
@@ -85,6 +85,21 @@ best-solution
                         <span class="badge badge-dark badge-pill comments">{{count($reply->comments)}}</span> Comments
                     </a>
                 </span>
+            </div>
+            <div class="text-muted list-files w-100 reply_files" style="max-height:90px;overflow-y: auto;background: none;">
+              @foreach($reply->files as $file)
+              <div class="card float-left ml-2 mb-1" style="width: 5rem;background: none;" id="div-1">
+                  @if($file->type == "image")
+                  <a href="{{$file->filename}}" data-lightbox="{{$reply->id}}">
+                    <img class="card-img-top" width="70px" height="70px" src="{{$file->filename}}" title="{{(explode("/",$file->filename)[2])}}">
+                  </a>
+                  @else
+                  <a href="{{$file->filename}}">
+                    <img class="card-img-top" width="70px" height="70px" src="/images/file.png" title="{{(explode("/",$file->filename)[2])}}">
+                  </a>
+                  @endif
+              </div>
+              @endforeach
             </div>
             {{-- Comments --}}
             <div class="col-lg-12">

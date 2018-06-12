@@ -19,7 +19,7 @@
                 Edit
               </a>
               <a class="dropdown-item" href="JavaScript:void(0)"
-              data-toggle="modal" data-target="#confirm" data-id="{{$comment->id}}" data-type="comment">
+              data-toggle="modal" data-target="#confirm" data-reply="{{$comment->reply->id}}" data-id="{{$comment->id}}" data-type="comment">
                 Delete
               </a>
               @endif
@@ -27,6 +27,6 @@
         </div>
     </div>
     <div class="card-body py-2">
-        <div class="card-text edit_body">{{$comment->body}}</div>
+        <div class="card-text edit_comment">{{$comment->body}}</div>
     </div>
 </div>

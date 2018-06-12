@@ -44,7 +44,7 @@
 
                     <p class="text-muted">at <strong>{{$post->created_at}} by <span class="text-success">{{$post->user->fname. ' ' . $post->user->lname}}</span></strong></p>
                     <div class="user-content my-4">
-                        <div class="discussion-body-content mb-4 edit_body">{{ $post->body }}</div>
+                        <div class="discussion-body-content mb-4 edit_post">{{ $post->body }}</div>
                         <div class="edit_image" hidden>@foreach($post->files as $file){{$file->type.';'.$file->filename}},@endforeach</div>
                         <div id="carouselExampleIndicators" class="carousel slide" data-interval="false" data-ride="carousel">
                             <span class="indicators">
@@ -82,6 +82,21 @@
                                 <span class="sr-only">Next</span>
                             </a>
                         </div>
+                    </div>
+                    <div class="text-muted list-files post_files" style="max-height:100px;overflow-y: auto">
+                      @foreach($post->files as $file)
+                      <div class="card float-left ml-2 mb-1" style="width: 5rem;" id="div-1">
+                          @if($file->type == "image")
+                          <a href="{{$file->filename}}" data-lightbox="{{$post->id}}">
+                            <img class="card-img-top" width="70px" height="70px" src="{{$file->filename}}" title="{{(explode("/",$file->filename)[2])}}">
+                          </a>
+                          @else
+                          <a href="{{$file->filename}}">
+                            <img class="card-img-top" width="70px" height="70px" src="/images/file.png" title="{{(explode("/",$file->filename)[2])}}">
+                          </a>
+                          @endif
+                      </div>
+                      @endforeach
                     </div>
                 </div>
             </div>
