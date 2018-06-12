@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
+use App\Department;
 
 class Courses_CRUD_Controller extends Controller{
 
@@ -56,7 +57,8 @@ class Courses_CRUD_Controller extends Controller{
      */
 
     public function getNewCourseForm(){
-        return view('courses.newCourseForm');
+        $departments = Department::all();
+        return view('courses.newCourseForm')->with('departments', $departments);
     }
 
     /**
@@ -70,7 +72,7 @@ class Courses_CRUD_Controller extends Controller{
 
             // Variables to hold the valid selected values in the form
 
-            $departmentValues = ['Computer Department', 'Communication Department', 'Architecture Department', 'Mechanical Department'];
+            $departmentValues = Department::where('id' ,'>' ,0)->pluck('id')->toArray();
             $courseSpecializationValues = ['Computer Science', 'Data Science', 'Embedded System', 'Communication', 'Electronics', 'Basic Science',];
             $languageValues = ['Arabic', 'English'];
             $commitmentValues = [1, 2, 3, 4];

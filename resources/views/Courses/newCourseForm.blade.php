@@ -105,10 +105,9 @@
                                     <label for="inputCourseDepartment">Course Department</label>
                                     <select name="course_department" class="form-control" id="inputCourseDepartment"   style="width: 100%">
                                         <option value="">Select....</option>
-                                        <option value="Computer Department">Computer Department</option>
-                                        <option value="Communication Department">Communication Department</option>
-                                        <option value="Architecture Department">Architecture Department</option>
-                                        <option value="Mechanical Department">Mechanical Department</option>
+                                        @foreach($departments as $department)
+                                        <option value="{{$department->id}}">{{$department->name}}</option>
+                                        @endforeach
                                     </select>
                                 </div>
                             </div>

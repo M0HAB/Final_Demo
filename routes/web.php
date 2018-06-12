@@ -238,7 +238,3 @@ Route::group(['prefix' => 'Courses'], function(){
         'as' => 'quiz.submitQuizAnswer'
     ]);
 });
-
-Route::get('/test4', function(){
-   return Auth::user()->rolee->name;
-});
