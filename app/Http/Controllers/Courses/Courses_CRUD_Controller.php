@@ -138,7 +138,7 @@ class Courses_CRUD_Controller extends Controller{
         if(\Illuminate\Support\Facades\Request::ajax()){
 
             // Variables to hold the valid selected values in the form
-            $departmentValues = ['Computer Department', 'Communication Department', 'Architecture Department', 'Mechanical Department'];
+            $departmentValues = Department::where('id' ,'>' ,0)->pluck('id')->toArray();
             $courseSpecializationValues = ['Computer Science', 'Data Science', 'Embedded System', 'Communication', 'Electronics', 'Basic Science',];
             $languageValues = ['Arabic', 'English'];
             $commitmentValues = [1, 2, 3, 4];

@@ -126,6 +126,7 @@ $('#req').on('show.bs.modal', function (event) {
     }
 
   }else{
+    modal.find('#submit_req').text("Confirm "+type);
     if(type == "reply"){
       requestURL = '/api/newRecord';
       title_area.hide();
