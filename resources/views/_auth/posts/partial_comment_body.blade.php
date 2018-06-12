@@ -1,4 +1,4 @@
-<div class="card my-3 comment">
+<div class="card my-3 comment" id="comment_container_{{$comment->id}}">
     <div class="card-header comment-header">
         <span class="username-post">
             <i class="fas fa-reply mr-2"></i>
@@ -10,13 +10,23 @@
                 <i class="fas fa-ellipsis-v font-weight-bold browse-icon"></i>
             </button>
             <div class="dropdown-menu dropdown-menu-right text-left">
-                <a class="dropdown-item" href="#">Send Message</a>
-                <a class="dropdown-item" href="#">Edit</a>
-                <a class="dropdown-item" href="#">Delete</a>
+              @if(Auth::user()->id != $comment->user->id)
+              <a class="dropdown-item" href="{{route('messages.show', $comment->user->id)}}">Send Message</a>
+              @endif
+              @if(Auth::user()->id == $comment->user->id)
+              <a class="dropdown-item" href="JavaScript:void(0)"
+              data-toggle="modal" data-target="#req" data-type="comment" data-id="{{$comment->id}}" data-mode="edit">
+                Edit
+              </a>
+              <a class="dropdown-item" href="JavaScript:void(0)"
+              data-toggle="modal" data-target="#confirm" data-id="{{$comment->id}}" data-type="comment">
+                Delete
+              </a>
+              @endif
             </div>
         </div>
     </div>
     <div class="card-body py-2">
-        <p class="card-text">{{$comment->body}}</p>
+        <div class="card-text edit_body">{{$comment->body}}</div>
     </div>
 </div>

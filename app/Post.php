@@ -20,11 +20,11 @@ class Post extends Model
   protected static function boot()
   {
     parent::boot();
-    static::deleting(function($posts) {
-       foreach ($posts->replies as $reply) {
+    static::deleting(function($post) {
+       foreach ($post->replies as $reply) {
           $reply->delete();
        }
-       foreach ($posts->files as $file) {
+       foreach ($post->files as $file) {
           $file->delete();
        }
     });

@@ -34,7 +34,10 @@ Route::middleware('auth:api')->group(function () {
 
   Route::post('/newRecord', 'PostController@store');
   Route::post('/editRecord', 'PostController@edit');
+  Route::post('/newComment', 'CommentController@store');
+  Route::post('/editComment', 'CommentController@edit');
 
+  Route::delete('/comment/{id}/delete', 'CommentController@delete');
   Route::delete('/post/{id}/delete', 'PostController@delete');
   Route::delete('/reply/{id}/delete', 'ReplyController@delete');
   Route::delete('/department/{id}/delete', 'DepartmentsController@destroy');
@@ -43,4 +46,3 @@ Route::middleware('auth:api')->group(function () {
   Route::get('/{id}/search', 'DiscussionController@searchPosts');
 
 });
-

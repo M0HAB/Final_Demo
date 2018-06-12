@@ -12,14 +12,7 @@ use App\FileUp;
 class PostController extends Controller
 {
 
-      function remove_empty_tags($str, $repto = NULL){
-          if (!is_string ($str) || trim ($str) == '')return $str;
-          return preg_replace (
-            '/<([^<\/>]*)>([\s]*?|(?R))<\/\1>/imsU',
-              !is_string ($repto) ? '' : $repto,
-              $str
-            );
-      }
+      
       private function getImgData($data,$k){
         list(, $data['src']) = explode(',', $data['src']);
         $decode_data = base64_decode($data['src']);

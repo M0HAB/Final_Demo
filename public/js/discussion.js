@@ -75,10 +75,6 @@ function vote(id){
   });
 }
 
-$('#comment').on('show.bs.modal', function (event) {
-
-
-});
 //bind some data to the opened modal from the create post button
 $('#req').on('show.bs.modal', function (event) {
   var button = $(event.relatedTarget),//button that triggered the event
@@ -96,38 +92,62 @@ $('#req').on('show.bs.modal', function (event) {
 
   //populating fields and setting requestURL
   if(mode == "edit"){
-    requestURL = "/api/editRecord";
+    if(type == "comment"){
+      requestURL = "/api/editComment";
+    }else{
+      requestURL = "/api/editRecord";
+    }
     modal.find('#modal_title').text("Edit "+type);
     modal.find('#submit_req').text("Confirm edit");
     id = button.data("id");
     body = $('#'+type+'_container_'+id+' .edit_body').text();
-    files = $('#'+type+'_container_'+id+' .edit_image').text().split(",").filter(function(e){return e;});
-    dropZone.clearBox();
-    files.forEach((element)=>{
-      dropZone.listPut({
-            name:element.split('/').pop(),
-            type:element.split(';')[0],
-            src:element.split(';').pop()
-      });
-    })
-    console.log("editing");
+    if(type != "comment"){
+      files = $('#'+type+'_container_'+id+' .edit_image').text().split(",").filter(function(e){return e;});
+      dropZone.clearBox();
+      files.forEach((element)=>{
+        dropZone.listPut({
+              name:element.split('/').pop(),
+              type:element.split(';')[0],
+              src:element.split(';').pop()
+        });
+      })
+    }
     modal.find('#req_body').val(body);
     if(type == "post"){
       title_area.show();
+      dropZone.enable();
       title = $('#post_container_'+id+' .edit_title').text();
       modal.find('#req_title').val(title);
     }else if (type == "reply") {
       title_area.hide();
+      dropZone.enable();
+    }else if (type == "comment") {
+      title_area.hide();
+      dropZone.disable();
     }
 
   }else{
     if(type == "reply"){
+      requestURL = '/api/newRecord';
       title_area.hide();
+      dropZone.enable();
       id = button.data("id");
     }else if (type == "post") {
+      requestURL = '/api/newRecord';
       title_area.show();
+      dropZone.enable();
+    }else if (type == "comment"){
+      requestURL = '/api/newComment';
+      id = button.data("id");
+      title_area.hide();
+      dropZone.disable();
+      //Optional----------------------------
+      $('.coll-btn').addClass('collapsed');
+      $('.comments-block').removeClass('show');
+      //---------------------------------------
+      $('#reply_container_'+id+' .coll-btn').removeClass('collapsed');
+      $('#reply_container_'+id+' .comments-block').addClass('show');
     }
-    requestURL = '/api/newRecord';
     modal.find('#modal_title').text("Create new "+type);
     modal.find('.btn-text-modal').text("Submit "+type);
   }
@@ -136,8 +156,11 @@ $('#req').on('show.bs.modal', function (event) {
   modal.find('#submit_req').off('click').on("click", function (event) {
     body = $('#req_body').val();
     if(!body){
-      console.log(body);
-      toastr.warning("All Text fields are required");
+      if(type == "comment" || type == "reply"){
+        toastr.warning("Text field is required");
+      }else{
+        toastr.warning("All Text fields are required");
+      }
       return 0;
     }
     headers = {
@@ -174,6 +197,8 @@ $('#req').on('show.bs.modal', function (event) {
       }else{
         payload["post_id"] = id;
       }
+    }else if(type == "comment"){
+      payload["id"] = id;
     }
     //send ajax request with url and payload assigned previously
     axios.post(requestURL,payload,headers)
@@ -183,10 +208,11 @@ $('#req').on('show.bs.modal', function (event) {
       }else{
         $('#req_body').text("");
         $("#req .close").click();
-        modal.find("#req_title").val("");
         $('#req_body').val("");
-        dropZone.clearBox();
-        dropZone.deleteList=[];
+        if(type != "comment"){
+          dropZone.clearBox();
+          dropZone.deleteList=[];
+        }
         if (type == "post"){
           $("#req_title").val("");
           if (mode == "edit"){
@@ -225,6 +251,32 @@ $('#req').on('show.bs.modal', function (event) {
           }else{
             $('#reply_container').prepend(response.data.body);
             toastr.success("Reply Submitted Successfully");
+          }
+
+        }else if(type == "comment"){
+          if(mode == "edit"){
+            $('#'+type+'_container_'+id+' .edit_body').html(response.data.body);
+          }else{
+            frame = $('#reply_container_'+id);
+            frame.find('#reply-'+id).html(response.data.comments_body);
+            votes = $('#reply_container_'+id+' .votes');
+            comments = $('#reply_container_'+id+' .comments');
+            vote_tooltip = $('#reply_container_'+id+' .vote_link');
+            votes.text(response.data.votes);
+            comments.text(response.data.comments);
+            if(response.data.voters){
+              vote_tooltip.attr('title','');
+              response.data.voters.forEach((element,idx,array)=>{
+                old = vote_tooltip.attr('title');
+                if (idx === array.length - 1){
+                  vote_tooltip.attr('title', old+element);
+                  return;
+                }
+                vote_tooltip.attr('title', old+element+"\n");
+              });
+            }else{
+              vote_tooltip.attr('title', "");
+            }
           }
 
         }

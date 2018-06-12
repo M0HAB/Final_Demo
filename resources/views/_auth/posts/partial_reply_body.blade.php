@@ -62,7 +62,7 @@ best-solution
                 </a>
                 @endif
                 <a href="JavaScript:void(0)" class="btn btn-light mr-2"
-                data-toggle="modal" data-target="#comment" data-id="{{$reply->id}}">
+                data-toggle="modal" data-target="#req" data-id="{{$reply->id}}" data-type="comment">
                   <i class="fas fa-comment-alt mr-1"></i> Comment
                 </a>
 
@@ -89,7 +89,7 @@ best-solution
             {{-- Comments --}}
             <div class="col-lg-12">
                 <div class="collapse comments-block" id="reply-{{$reply->id}}">
-                    @foreach($reply->comments as $comment)
+                    @foreach($reply->comments()->latest()->get() as $comment)
                     @include('_auth.posts.partial_comment_body')
                     @endforeach
                 </div>

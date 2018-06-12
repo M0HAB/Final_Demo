@@ -18,9 +18,18 @@ class Reply extends Model
       'votes', 'comments'
   ];
   protected $dates = ['deleted_at'];
+  protected static function boot()
+  {
+    parent::boot();
+    static::deleting(function($reply) {
+       foreach ($reply->files as $file) {
+          $file->delete();
+       }
+    });
+  }
   public function files()
   {
-    return $this->hasMany('App\file', 'relate_id')->where('relate_type', 'reply');
+    return $this->hasMany('App\fileUp', 'relate_id')->where('relate_type', 'reply');
   }
   public function post()
   {

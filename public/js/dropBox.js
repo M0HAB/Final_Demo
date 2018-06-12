@@ -12,7 +12,14 @@ function dropBoxInput(listdiv,dropZoneDivId,allowedTypes,unknowSrc){
       that.list = [];
       document.getElementById(that.listdiv).innerHTML="";
     }
-
+    this.disable = function(){
+      $('#'+that.listdiv).hide();
+      $('#'+that.dropZoneDivId).hide();
+    }
+    this.enable = function(){
+      $('#'+that.listdiv).show();
+      $('#'+that.dropZoneDivId).show();
+    }
     this.listPut = function(file){
         that.list.push({
             name:file.name,
