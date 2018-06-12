@@ -7,8 +7,9 @@ use App\Post;
 use App\Reply;
 use Auth;
 use URL;
-use App\File;
+use App\FileUp;
 use Storage;
+use File;
 class PostController extends Controller
 {
 
@@ -90,7 +91,7 @@ class PostController extends Controller
               //loop on each source and store in DB to get later
 
               foreach ($files as $file) {
-                $file_rec = new File;
+                $file_rec = new FileUp;
                 $file_rec->relate_type = $request->type;
                 $file_rec->relate_id = $newRecord->id;
                 $file_rec->filename = $file['src'];
@@ -123,15 +124,15 @@ class PostController extends Controller
           $files = $this->saveFiles($request->file_list);
           if ($files === 0) return redirect()->route('error.api', 'File too big, maximum 2mb per File');
           foreach ($request->delete_list as $file) {
-            File::where('filename', $file['src'])->delete();
-            Storage::disk('public')->delete($file['src']);
+            FileUp::where('filename', $file['src'])->delete();
+            File::Delete($file['src']);
           }
           //loop on each source and store in DB to get later
           foreach ($files as $file) {
             if(isset($file['skip'])){
               continue;
             }
-            $file_rec = new File;
+            $file_rec = new FileUp;
             $file_rec->relate_type = $request->type;
             $file_rec->relate_id = $record->id;
             $file_rec->filename = $file['src'];

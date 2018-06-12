@@ -24,12 +24,15 @@ class Post extends Model
        foreach ($posts->replies as $reply) {
           $reply->delete();
        }
+       foreach ($posts->files as $file) {
+          $file->delete();
+       }
     });
   }
 
   public function files()
   {
-    return $this->hasMany('App\File', 'relate_id')->where('relate_type', 'post');
+    return $this->hasMany('App\FileUp', 'relate_id')->where('relate_type', 'post');
   }
   public function discussion()
   {
