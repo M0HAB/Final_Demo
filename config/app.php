@@ -209,11 +209,9 @@ return [
         'URL' => Illuminate\Support\Facades\URL::class,
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
-<<<<<<< HEAD
-=======
         'Youtube' => Dawson\Youtube\Facades\Youtube::class,
 
->>>>>>> course_assignment_module
+
     ],
 
 ];

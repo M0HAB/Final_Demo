@@ -24,7 +24,7 @@
                         <li class="nav-item">
                             <a class="nav-link" href="#"><i class="fas fa-bell"></i></a>
                         </li>
-<<<<<<< HEAD
+
                         <li class="nav-item dropdown ml-1">
                           <a class="nav-link" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="msg-dropdown" onclick="toggleArrow('arrow-up')">
                             <i class="fas fa-envelope"></i>
@@ -69,11 +69,8 @@
                                     <a class="pl-4 py-2 d-block" href="{{ route('messages.index')}}" style="font-size:12px;display:inline-block">See All Messages</a>
                             </div>
                           </div>
-=======
-                        <li class="nav-item">
-                            <a class="nav-link" href="#"><i class="fas fa-envelope"></i></a>
->>>>>>> course_assignment_module
-                        </li>
+
+
                     @if (Request::url() == Route('user.dashboard'))
                         <li class="nav-item">
                             <a class="nav-link d-none" href="{{ route('user.dashboard') }}">Dashboard</a>

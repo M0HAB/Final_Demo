@@ -85,15 +85,17 @@ our animation centered, and no-repeating */
                             <h6 class="text-uppercase border-left border-primary"><strong class="ml-2">Course Activities</strong></h6>
                             <div class="card mt-4" style="box-shadow: 5px 5px 10px gray">
                                 <div class="card-block mt-4 mb-3 p-2">
-                                    <p>
-                                        <a href="{{ route('course.getUpdateCourseForm', ['id' => $course->id]) }}" class="mt-2 text-capitalize"><i class="fa fa-edit"></i> update course information</a>
-                                    </p>
-                                    <p>
-                                        <a href="{{ route('course.getNewModuleForm', ['id' => $course->id]) }}" class="mt-2 text-capitalize"><i class="fa fa-plus"></i> add new module</a>
-                                    </p>
+
 
 
                                 @if (Auth::user()->role == 'instructor')
+
+                                        <p>
+                                            <a href="{{ route('course.getUpdateCourseForm', ['id' => $course->id]) }}" class="mt-2 text-capitalize"><i class="fa fa-edit"></i> update course information</a>
+                                        </p>
+                                        <p>
+                                            <a href="{{ route('course.getNewModuleForm', ['id' => $course->id]) }}" class="mt-2 text-capitalize"><i class="fa fa-plus"></i> add new module</a>
+                                        </p>
 
                                     <form id="submit-course-activation">
                                         @if(!$course->is_active)

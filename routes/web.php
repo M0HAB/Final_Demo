@@ -50,9 +50,9 @@ Route::get('/test2', function(){
     Route::get('profile', 'UserDashboardController@profile')->name('user.profile');
  });
 
-<<<<<<< HEAD
+
 Route::resource('departments', 'DepartmentsController');
-=======
+
 /**
  * --------------------------------------------------------------------------
  * Course Module Routes
@@ -158,7 +158,7 @@ Route::resource('departments', 'DepartmentsController');
  });
 
 Route::resource('department', 'DepartmentsController');
->>>>>>> course_assignment_module
+
 
 /**
  * --------------------------------------------------------------------------
@@ -175,10 +175,11 @@ Route::resource('Courses/{course}/Modules/{module}/assignments', 'AssignmentsCon
     'destroy' => 'assignments.destroy',
     'update' => 'assignments.update'
 ]]);
-<<<<<<< HEAD
+
 Route::get('/assignment/{id}', 'AssignmentsController@deliver')->name('assignment.deliver');
 Route::post('/AssignmentDeliver/', 'AssignmentsController@deliverstore')->name('assignment.deliverstore');
 Route::get('/assignmentDelivered/', 'AssignmentsController@delivered')->name('assignment.delivered');
+
 Route::resource('/pindex', 'PIndexController', [
     'only' => ['edit', 'update', 'index']
 ]);
@@ -202,7 +203,6 @@ Route::group(['prefix' => 'discussions'], function () {
   Route::get('/{id}/search', 'DiscussionController@searchPosts')->name('discussion.search');
 
 });
-=======
 
 Route::get('Courses/{course}/Modules/{module}/assignment/{assignment}/deliver', 'AssignmentsController@deliver')->name('assignment.deliver');
 Route::post('Courses/{course}/Modules/{module}/AssignmentDeliver/', 'AssignmentsController@deliverstore')->name('assignment.deliverstore');
@@ -238,4 +238,7 @@ Route::group(['prefix' => 'Courses'], function(){
         'as' => 'quiz.submitQuizAnswer'
     ]);
 });
->>>>>>> course_assignment_module
+
+Route::get('/test4', function(){
+   return Auth::user()->rolee->name;
+});

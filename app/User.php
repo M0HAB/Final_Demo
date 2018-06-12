@@ -4,14 +4,10 @@ namespace App;
 
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-<<<<<<< HEAD
-use App\User;
 use App\Reply;
 use Auth;
-=======
-use Illuminate\Support\Facades\Auth;
+
 use Illuminate\Support\Facades\DB;
->>>>>>> course_assignment_module
 
 class User extends Authenticatable
 {
@@ -31,6 +27,7 @@ class User extends Authenticatable
         'dep_id',
         'gender',
         'role_id',
+        'role',
         'location',
         'level',
         'gpa',
@@ -59,7 +56,7 @@ class User extends Authenticatable
 
     public function isAdmin()
     {
-        if (!$this->role == 'admin')
+        if (!$this->getRole == 'admin')
         {
             return false;
         }
@@ -67,7 +64,7 @@ class User extends Authenticatable
     }
     public function isInstructor()
     {
-      return ($this->role->name == 'Instructor' || $this->role->name == 'instructor');
+      return ($this->rolee->name == 'Instructor' || $this->rolee->name == 'instructor');
     }
     public static function getStudents()
     {
@@ -84,8 +81,8 @@ class User extends Authenticatable
   		return $this->belongsTo('App\Department', 'dep_id');
     }
 
-    public function role(){
-	     return $this->belongsTo('App\Role');
+    public function rolee(){
+	     return $this->belongsTo('App\Role', 'role_id');
     }
 
     //Function to get messages between this user & friend ($friend_id)

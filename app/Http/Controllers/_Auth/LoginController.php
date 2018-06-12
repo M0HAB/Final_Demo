@@ -45,8 +45,9 @@ class LoginController extends Controller
             {
                 //if failed login as user try as admin
                 if (Auth::guard('admin')->attempt(['email' => $request->email, 'password' => $request->password]))
-                    return redirect()->route('permission.index');
+                    return redirect()->route('pindex.index');
                 else{
+//                    return $request;
                     Session::flash('error', "The email or password you have entered is invalid");
                     return redirect()->back();
                 }

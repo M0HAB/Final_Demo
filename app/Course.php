@@ -6,7 +6,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class Course extends Model
 {
-<<<<<<< HEAD
   protected $fillable = [
       'code', 'title', 'description', 'course_language', 'start_date', 'end_date',
       'course_specialization',  'commitment', 'course_department',
@@ -16,14 +15,7 @@ class Course extends Model
   {
     return $this->hasMany('App\Module', 'course_id');
   }
-=======
-    protected $fillable = [
-        'code', 'title', 'description', 'course_language', 'start_date', 'end_date',
-        'course_specialization',  'commitment', 'course_department',
-        'how_to_pass','instructor_id'
-    ];
 
 
 
->>>>>>> course_assignment_module
 }

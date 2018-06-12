@@ -13,7 +13,7 @@ class ReplyController extends Controller
 
     public function setVote(Request $request)
     {
-      $btn;$approve;
+      $btn;$approve=false;
       $vote = Vote::where([
         'reply_id' => $request->id,
         'user_id' => Auth::user()->id

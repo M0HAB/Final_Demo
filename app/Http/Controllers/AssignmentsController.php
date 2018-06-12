@@ -238,10 +238,12 @@ class AssignmentsController extends Controller
                 'user_id' => $userid,
                 'ass_id' => $assignment->id,
             ]);
+            if($assdelivered) return redirect()->route('user.dashboard')->with('error', 'Unauthorized Access');
+
 
 
           //  dd($assdelivered->exists() );
-          
+
 
 
             return view('_auth.assignments.deliver', compact('assignment','assdelivered','course','module'));
@@ -334,16 +336,17 @@ class AssignmentsController extends Controller
         }
 
     }
-public function deliveredEdit(assdeliver $assdeliver){
-
-    $delivered = assdeliver::findOrFail($assdeliver->id);
+public function deliveredEdit($assdeliver){
+    //return $assdeliver;
+    $delivered = assdeliver::findOrFail($assdeliver);
+    //return $delivered;
     return view('_auth.assignments.editdelivered',compact('delivered'));
 
 }
-public function deliveredUpdate(Request $request, assdeliver $assdeliver){
+public function deliveredUpdate(Request $request,  $assdeliver){
 
 //dd($request);
-    $delivered = assdeliver::findOrFail($assdeliver->id);
+    $delivered = assdeliver::findOrFail($assdeliver);
     //dd($delivered);
     $delivered->comment = $request->input('comment');
     $delivered->grade   = $request->input('grade');
