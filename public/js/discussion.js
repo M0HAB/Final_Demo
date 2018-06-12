@@ -28,14 +28,14 @@ function vote(id){
     votes.text(response.data.votes);
     comments.text(response.data.comments);
     if(response.data.voters){
-      vote_tooltip.attr('data-original-title','');
+      vote_tooltip.attr('title','');
       response.data.voters.forEach((element,idx,array)=>{
-        old = vote_tooltip.attr('data-original-title');
+        old = vote_tooltip.attr('title');
         if (idx === array.length - 1){
           vote_tooltip.attr('title', old+element);
           return;
         }
-        vote_tooltip.attr('title', old+element+"<br/>");
+        vote_tooltip.attr('title', old+element+"\n");
       });
     }else{
       vote_tooltip.attr('title', "");
