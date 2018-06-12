@@ -122,9 +122,9 @@ class Courses_CRUD_Controller extends Controller{
     |------------------------------------------
      */
     public function getUpdateCourseForm(Course $course){
-
+        $departments = Department::all();
         if(Auth::User()->checkIfUserTeachCourse($course->id)) {
-            return view('courses.updateCourseForm', compact('course'));
+            return view('courses.updateCourseForm', compact('course'))->with('departments' ,$departments);
         }else{
             return redirect()->route('user.dashboard')->with('error', 'Unauthorized Access');
         }

@@ -105,10 +105,9 @@
                                     <label for="inputCourseDepartment">Course Department</label>
                                     <select name="course_department" class="form-control" id="inputCourseDepartment"   style="width: 100%">
                                         <option value="">Select....</option>
-                                        <option value="Computer Department" {{ $course->course_department === 'Computer Department'? 'selected' : '' }}>Computer Department</option>
-                                        <option value="Communication Department" {{ $course->course_department === 'Communication Department'? 'selected' : '' }}>Communication Department</option>
-                                        <option value="Architecture Department" {{ $course->course_department === 'Architecture Department'? 'selected' : '' }}>Architecture Department</option>
-                                        <option value="Mechanical Department" {{ $course->course_department === 'Mechanical Department'? 'selected' : '' }}>Mechanical Department</option>
+                                        @foreach($departments as $department)
+                                        <option value="{{$department->id}}" {{ $course->course_department == $department->id ? 'selected' : '' }}>{{$department->name}}</option>
+                                        @endforeach
                                     </select>
                                 </div>
                             </div>
