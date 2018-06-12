@@ -28,6 +28,7 @@
     @include('_partials.modal_confirm')
 @endsection
 @section('scripts')
+<script src="{{asset('js/dropBox.js')}}"></script>
 <script src="{{asset('js/quill.min.js')}}"></script>
 <script src="{{asset('js/axios.min.js')}}"></script>
 <script>

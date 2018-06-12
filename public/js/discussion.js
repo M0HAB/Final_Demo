@@ -70,7 +70,6 @@ function vote(id){
 
   })
   .catch(function (error) {
-    console.log(error);
     toastr.warning("Something went Wrong");
   });
 }
@@ -217,7 +216,7 @@ $('#req').on('show.bs.modal', function (event) {
           $("#req_title").val("");
           if (mode == "edit"){
             $('#post_container_'+id+' .edit_title').text(response.data.record.title);
-            $('#'+type+'_container_'+id+' .edit_body').html(response.data.record.body);
+            $('#'+type+'_container_'+id+' .edit_post').html(response.data.record.body);
             $('#'+type+'_container_'+id+' .edit_image').text("");
             $('#post_container_'+id+' .carousel-indicators').html('');
             $('#post_container_'+id+' .carousel-inner').html('');
@@ -248,7 +247,7 @@ $('#req').on('show.bs.modal', function (event) {
           }
         }else if (type == "reply") {
           if (mode == "edit"){
-            $('#'+type+'_container_'+id+' .edit_body').html(response.data.record.body);
+            $('#'+type+'_container_'+id+' .edit_'+type).html(response.data.record.body);
             $('#'+type+'_container_'+id+' .edit_image').text("");
             $('#'+type+'_container_'+id+' .'+type+'_files').html('');
             response.data.srcs.forEach((element)=>{
@@ -299,7 +298,6 @@ $('#req').on('show.bs.modal', function (event) {
 
     })
     .catch(function (error) {
-      console.log(error);
       toastr.warning("Something went Wrong");
     });
   })
