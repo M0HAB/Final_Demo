@@ -91,7 +91,7 @@
                                         <input type="text" class="form-control {{ $errors->has('location') ? ' is_invalid' : '' }}" id="location" name="location" value="{{ old('location') }}">
                                     </div>
                                 </div>
-                                <div class="col-lg-3 col-sm-12">
+                                <div class="col-lg-3 col-sm-12" id="levelGrp">
                                     <div class="form-group">
                                         <label for="sel1">Level</label>
                                         <select class="form-control {{ $errors->has('level') ? ' is_invalid' : '' }}" id="level" name="level" id="list" value="{{ old('level') }}">
@@ -104,7 +104,7 @@
                                         </select>
                                     </div>
                                 </div>
-                                <div class="col-lg-3 col-sm-12">
+                                <div class="col-lg-3 col-sm-12" id="gpaGrp">
                                     <div class="form-group {{ $errors->has('gpa') ? ' is_invalid' : '' }}">
                                         <label for="">GPA</label>
                                         <input type="text" class="form-control" id="gpa" name="gpa" value="{{ old('gpa') }}">
@@ -124,7 +124,19 @@
 
 @section('scripts')
 <script>
-    $(document).ready(function() {    
+    $(document).ready(function() {
+        var instructorId = {{('App\Role')::where('name', 'instructor')->first()->id}}
+        $('#role').change(function(){
+          if($(this).val()== instructorId){
+            $('#levelGrp').hide();
+            $('#gpaGrp').hide();
+            $('#level').val('');
+            $('#gpa').val('');
+          }else{
+            $('#levelGrp').show();
+            $('#gpaGrp').show();
+          }
+        });
         $('#reg-form').submit(function(e) {
             e.preventDefault();
             $.ajax({
@@ -142,7 +154,7 @@
                     $('#reg-form')[0].reset();
                 }
                 else {
-                    $.each(data.error, function(i, val) 
+                    $.each(data.error, function(i, val)
                     {
                         toastr.error(val);
                     });
