@@ -1,7 +1,14 @@
 @include('_partials._head')
 
+<<<<<<< HEAD
 <body id="my-body" class="no-selection">
     <a id="top"></a>
+=======
+<!-- yield additional css styles inside <style> tag(If Required) -->
+@yield('styles')
+
+<body class="no-selection">
+>>>>>>> course_assignment_module
     {{--  Navbar  --}}
     @include('_partials._navbar')
 

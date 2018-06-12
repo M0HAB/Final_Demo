@@ -13,7 +13,6 @@ class assdeliver extends Model
 
     public function assignment(){
 
-
         return $this->belongsTo('App\assignment','ass_id');
 
     }

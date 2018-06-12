@@ -43,3 +43,4 @@ Route::middleware('auth:api')->group(function () {
   Route::get('/{id}/search', 'DiscussionController@searchPosts');
 
 });
+

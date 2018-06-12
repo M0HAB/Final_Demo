@@ -146,6 +146,7 @@ return [
         Illuminate\Translation\TranslationServiceProvider::class,
         Illuminate\Validation\ValidationServiceProvider::class,
         Illuminate\View\ViewServiceProvider::class,
+        Dawson\Youtube\YoutubeServiceProvider::class,
 
         /*
          * Package Service Providers...
@@ -208,6 +209,11 @@ return [
         'URL' => Illuminate\Support\Facades\URL::class,
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
+<<<<<<< HEAD
+=======
+        'Youtube' => Dawson\Youtube\Facades\Youtube::class,
+
+>>>>>>> course_assignment_module
     ],
 
 ];

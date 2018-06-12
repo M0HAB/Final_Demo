@@ -4,9 +4,14 @@ namespace App;
 
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+<<<<<<< HEAD
 use App\User;
 use App\Reply;
 use Auth;
+=======
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+>>>>>>> course_assignment_module
 
 class User extends Authenticatable
 {
@@ -128,4 +133,41 @@ class User extends Authenticatable
                           ->where('user_id', $this->id)
                           ->count();
     }
+
+    /*Create a function to check if the user(student OR instructor) is enrolled to a specific course */
+    public function checkIfUserTeachCourse($course_id){
+        return (bool) DB::table('courses')
+            ->leftjoin('users', 'users.id', '=', 'courses.instructor_id')
+            ->where('courses.id', '=', $course_id)
+            ->where('users.id', '=', $this->id)
+            ->count();
+    }
+
+    public function checkIfUserEnrolled($course_id){
+        return (bool) DB::table('courses')
+            ->leftjoin('course_user', 'course_user.course_id', '=', 'courses.id')
+            ->leftjoin('users', 'users.id', '=','course_user.user_id')
+            ->where('course_user.user_id', '=', $this->id)
+            ->where('course_user.course_id', '=', $course_id)
+            ->where('course_user.is_passed', '=', 0)
+            ->count();
+    }
+
+    /*Create a function to check if a student delivered an assignment */
+    public function checkIfStudentDeliveredAss(assignment $assignment){
+      return (bool)DB::table('assdelivers')
+          ->where('ass_id', '=', $assignment->id)
+          ->where('user_id', '=', $this->id)
+          ->count();
+    }
+
+    /*Create a function to check if a student submitted a quiz */
+    public function checkIfStudentSubmittedQuiz($quiz){
+      return (bool)DB::table('quiz_user')
+          ->where('quiz_id', '=', $quiz->id)
+          ->where('user_id', '=', $this->id)
+          ->count();
+    }
+
+
 }
