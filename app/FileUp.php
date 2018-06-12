@@ -4,7 +4,8 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Storage;
+use Illuminate\Http\File;
+use Illuminate\Support\Facades\Storage;
 
 class FileUp extends Model
 {
@@ -17,14 +18,17 @@ class FileUp extends Model
   protected static function boot()
   {
     parent::boot();
-    static::deleting(function($files) {
-       foreach ($files as $file) {
-          $url = URL::to('/').$file->$filename;
-          $contents = file_get_contents($url);
-          $name = substr($url, strrpos($url, '/') + 1);
-          Storage::disk('local')->put($name, $contents);
-          $file->delete();
-       }
+    static::deleted(function($file) {
+      $oldname = $file->filename;
+      try {
+       $file->filename = Storage::putFile('deleted', new File(public_path().$file->filename));
+       $file->save();
+      } catch (\Exception $e) {
+      }
+      try {
+       unlink(public_path().$oldname);
+      } catch (\Exception $e) {
+      }
     });
   }
   public function post()

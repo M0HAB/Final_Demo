@@ -186,6 +186,7 @@ $('#req').on('show.bs.modal', function (event) {
         modal.find("#req_title").val("");
         $('#req_body').val("");
         dropZone.clearBox();
+        dropZone.deleteList=[];
         if (type == "post"){
           $("#req_title").val("");
           if (mode == "edit"){

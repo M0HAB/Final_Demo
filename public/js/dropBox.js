@@ -33,7 +33,7 @@ function dropBoxInput(listdiv,dropZoneDivId,allowedTypes,unknowSrc){
             +'" title="'+
             escape(file.name)
             +'"><div id="div-1a" data-role="fieldcontain" data-id="del-'+that.list[that.list.length-1].id+'">'+
-            '<button class="btn btn-danger btn-sm rounded-0 delete-dropZoneImg"><i class="fas fa-times delete-dropZoneImg"></i></button></div></div>';
+            '<button class="btn btn-danger btn-sm rounded-0  delete-dropZoneImg"><i class="fas fa-times"></i></button></div></div>';
         document.getElementById(that.listdiv).insertBefore(span, null);
         classname = document.getElementsByClassName("delete-dropZoneImg");
         Array.from(classname).forEach(function(element) {
@@ -43,7 +43,6 @@ function dropBoxInput(listdiv,dropZoneDivId,allowedTypes,unknowSrc){
     }
 
     this.listDel = function (){
-
         let id = $(this).closest('div').attr('data-id');
         let index;
         id = id.split("-").pop();
@@ -53,7 +52,9 @@ function dropBoxInput(listdiv,dropZoneDivId,allowedTypes,unknowSrc){
                 return false;
             }
         });
-        that.deleteList.push(that.list[index]);
+        if (that.list[index].src.split(',')[0].split(';').pop() != "base64"){
+          that.deleteList.push(that.list[index]);
+        }
         that.list.splice(index, 1);
         $("#"+that.listdiv+" #file-"+id).remove();
         console.log(that.deleteList,that.list)
@@ -111,7 +112,7 @@ function dropBoxInput(listdiv,dropZoneDivId,allowedTypes,unknowSrc){
                             +'" title="'+
                             escape(theFile.name)
                             +'"><div id="div-1a" data-role="fieldcontain" data-id="del-'+that.list[that.list.length-1].id+'">'+
-                            '<button class="btn btn-danger btn-sm rounded-0 delete-dropZoneImg"><i class="fas fa-times delete-dropZoneImg"></i></button></div></div>';
+                            '<button class="btn btn-danger btn-sm rounded-0 delete-dropZoneImg"><i class="fas fa-times"></i></button></div></div>';
                         document.getElementById(that.listdiv).insertBefore(span, null);
                         classname = document.getElementsByClassName("delete-dropZoneImg");
                         Array.from(classname).forEach(function(element) {
