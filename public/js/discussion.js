@@ -224,7 +224,7 @@ $('#req').on('show.bs.modal', function (event) {
             $('#'+type+'_container_'+id+' .'+type+'_files').html('');
             let counter=0;
             response.data.srcs.forEach((element)=>{
-              let thumb;
+              thumb = "/images/file.png";
               if(element.type == "image"){
                 thumb = element.filename;
                 $('#post_container_'+id+' .carousel-indicators').append('<li data-target="#carouselExampleIndicators" data-slide-to="'+counter+'" '+((counter==0)? 'class="active"':'')+' ></li>');

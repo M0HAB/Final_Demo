@@ -74,7 +74,7 @@ best-solution
                       if($indx == $lastkey){
                         $title .= $vote->user->fname.' '.$vote->user->lname;
                       }else{
-                        $title .= $vote->user->fname.' '.$vote->user->lname.'<br/>';
+                        $title .= $vote->user->fname.' '.$vote->user->lname.'&#013;&#010;';
                       }
                     }
                     @endphp
@@ -86,7 +86,7 @@ best-solution
                     </a>
                 </span>
             </div>
-            <div class="text-muted list-files w-100 reply_files" style="max-height:90px;overflow-y: auto;background: none;">
+            <div class="text-muted list-files w-100 reply_files ml-2" style="max-height:90px;overflow-y: auto;background: none;">
               @foreach($reply->files as $file)
               <div class="card float-left ml-2 mb-1" style="width: 5rem;background: none;" id="div-1">
                   @if($file->type == "image")
