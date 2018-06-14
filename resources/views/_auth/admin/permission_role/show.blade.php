@@ -29,7 +29,21 @@
   						<td>
   							<a href={{ route('prole.show',$x->id)}}>View Permissions for this role</a>
   						</td>
+                        @if($x->id == 1 || $x->id == 2)
   						<td>
+  							<a href="#">
+  								<button class="btn btn-success" disabled>
+  									<span class="far fa-edit"></span>
+  								</button>
+  							</a>
+  						</td>
+  						<td>
+							<button class="btn btn-danger" disabled>
+									<span class="far fa-trash-alt fa-lg"></span>
+							</button>
+  						</td>
+                        @else
+                        <td>
   							<a href="{{ route('prole.edit',$x->id)}}">
   								<button class="btn btn-success" href="{{ route('prole.edit',$x->id)}}">
   									<span class="far fa-edit"></span>
@@ -41,6 +55,7 @@
 									<span class="far fa-trash-alt fa-lg"></span>
 							</button>
   						</td>
+                        @endif
   					</tr>
   					@endforeach
   				</tbody>
