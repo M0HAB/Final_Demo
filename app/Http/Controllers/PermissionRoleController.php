@@ -62,7 +62,7 @@ class PermissionRoleController extends Controller
     private function decodePermissions(Request $request,$id,$type){
 
       $name = ucfirst(strtolower($request->input('name')));
-      if($type == "update"){
+      if($type === "update"){
         $role = Role::find($id);
       }else{
         $role = new Role;
