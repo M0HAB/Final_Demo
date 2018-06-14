@@ -1,15 +1,17 @@
 <?php
 
-namespace App\Http\Controllers\_Auth;
+namespace App\Http\Controllers\Admin;
+
 
 use Auth;
 use Session;
 use App\User;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
 
 class LoginController extends Controller
 {
+
     /*
     |--------------------------------------------------------------------------
     | Login Controller
@@ -23,12 +25,18 @@ class LoginController extends Controller
 
     public function __construct()
     {
-        $this->middleware(['guest'], ['except' => ['logout']]);
+        $this->middleware(['guest:admin', 'revalidate'], ['except' => ['logout']]);
+    }
+
+
+    public function index()
+    {
+      return view('_auth.admin.index');
     }
 
     /**
      * @param request
-     * @return user dashboard
+     * @return admin dashboard
      */
     public function login(Request $request)
     {
@@ -39,18 +47,12 @@ class LoginController extends Controller
         }
         else
         {
-            if (Auth::attempt(['email' => $request->email, 'password' => $request->password]))
-                return redirect()->route('user.dashboard');
+            if (Auth::guard('admin')->attempt(['email' => $request->email, 'password' => $request->password]))
+                return redirect()->route('admin.dashboard');
             else
             {
-                //if failed login as user try as admin
-                if (Auth::guard('admin')->attempt(['email' => $request->email, 'password' => $request->password]))
-                    return redirect()->route('pindex.index');
-                else{
-//                    return $request;
-                    Session::flash('error', "The email or password you have entered is invalid");
-                    return redirect()->back();
-                }
+                Session::flash('error', "The email or password you have entered is invalid");
+                return redirect()->back();
 
             }
         }
@@ -58,16 +60,13 @@ class LoginController extends Controller
 
     /**
      * Log the user out of the application.
-     * Guard web
-     * @return index page
+     * Guard admin
+     * @return admin.index page
      */
     public function logout()
     {
-        if (Auth::check())
-        {
-
-            Auth::guard('web')->logout();
-            return redirect()->route('index');
-        }
+        Auth::guard('admin')->logout();
+        return redirect()->route('admin.index');
     }
+
 }

@@ -180,12 +180,6 @@ Route::get('/assignment/{id}', 'AssignmentsController@deliver')->name('assignmen
 Route::post('/AssignmentDeliver/', 'AssignmentsController@deliverstore')->name('assignment.deliverstore');
 Route::get('/assignmentDelivered/', 'AssignmentsController@delivered')->name('assignment.delivered');
 
-Route::resource('/pindex', 'PIndexController', [
-    'only' => ['edit', 'update', 'index']
-]);
-Route::resource('/prole', 'PermissionRoleController')->except([
-    'destroy'
-]);
 
 Route::group(['prefix' => 'messages'], function () {
 
@@ -237,4 +231,24 @@ Route::group(['prefix' => 'Courses'], function(){
         'uses' => '\App\Http\Controllers\Quizes\Quizes_CRUD_Controller@submitQuizAnswer',
         'as' => 'quiz.submitQuizAnswer'
     ]);
+});
+
+Route::group(['prefix' => 'admin'], function () {
+  //-- Authentications
+  Route::namespace('Admin')->group(function() {
+      Route::get('/', 'LoginController@index')->name('admin.index');
+      Route::post('login', 'LoginController@login')->name('admin.login');
+      Route::get('dashboard', 'DashboardController@index')->name('admin.dashboard');
+      Route::post('logout', 'LoginController@logout')->name('admin.logout');
+      Route::get('logout', 'LoginController@logout')->name('admin.logout.web');
+      Route::get('profile', 'DashboardController@profile')->name('admin.profile');
+      Route::resource('/pindex', 'PIndexController', [
+          'only' => ['edit', 'update', 'index']
+      ]);
+      Route::resource('/prole', 'PermissionRoleController')->except([
+          'destroy'
+      ]);
+  });
+
+
 });

@@ -41,7 +41,7 @@ class Handler extends ExceptionHandler
     {
         parent::report($exception);
     }
-    
+
     /**
      * Render an exception into an HTTP response.
      *
@@ -69,8 +69,19 @@ class Handler extends ExceptionHandler
 
     protected function unauthenticated($request, AuthenticationException $exception)
     {
-        return $request->expectsJson()
-                    ? response()->json(['message' => $exception->getMessage()], 401)
-                    : redirect()->guest(route('index'));
+        if($request->expectsJson()){
+            return response()->json(['message' => $exception->getMessage()], 401);
+        }
+        $guard = array_get($exception->guards(), 0);
+        switch ($guard) {
+            case 'admin':
+                $login = 'admin.index';
+                break;
+
+            default:
+                $login = 'index';
+                break;
+        }
+        return redirect()->guest(route($login));
     }
 }
