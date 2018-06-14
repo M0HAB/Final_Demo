@@ -24,20 +24,19 @@ class Modules_CRUD_Controller extends Controller{
      */
 
     public function viewCourseModules(Course $course){
-
-        $course = DB::table('courses')
-            ->leftjoin('users', 'users.id', '=', 'courses.instructor_id')
-            ->select('courses.*', 'users.fname', 'users.lname')
-            ->where('courses.id', '=', $course->id)
-            ->first();
-
-        $modules = DB::table('modules')
-            ->leftjoin('courses', 'courses.id', '=', 'modules.course_id')
-            ->select('modules.*')
-            ->where('modules.course_id', '=', $course->id)
-            ->orderBy('module_order')
-            ->get();
         if(Auth::User()->checkIfUserEnrolled($course->id) or Auth::User()->checkIfUserTeachCourse($course->id)) {
+            $course = DB::table('courses')
+                ->leftjoin('users', 'users.id', '=', 'courses.instructor_id')
+                ->select('courses.*', 'users.fname', 'users.lname')
+                ->where('courses.id', '=', $course->id)
+                ->first();
+
+            $modules = DB::table('modules')
+                ->leftjoin('courses', 'courses.id', '=', 'modules.course_id')
+                ->select('modules.*')
+                ->where('modules.course_id', '=', $course->id)
+                ->orderBy('module_order')
+                ->get();
             return view('courses.courseModules', compact('course', 'modules'));
         }else{
             return redirect()->back()->with('error', 'Unauthorized access');
@@ -51,9 +50,8 @@ class Modules_CRUD_Controller extends Controller{
      */
 
     public function getNewModuleForm(Course $course){
-        $course_id = $course->id;
         if(Auth::User()->checkIfUserEnrolled($course->id) or Auth::User()->checkIfUserTeachCourse($course->id)) {
-            return view('courses.newModuleForm', compact('course_id'));
+            return view('courses.newModuleForm')->with('course_id', $course->id);
         }else{
             return redirect()->back();
         }

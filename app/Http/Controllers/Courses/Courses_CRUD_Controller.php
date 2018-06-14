@@ -27,23 +27,23 @@ class Courses_CRUD_Controller extends Controller{
 
     public function listUserCourses(){
 
-        $user = User::find(Auth::User()->id);
+        // $user = User::find(Auth::User()->id);
 
-        if($user->role == 'instructor'){
+        if(Auth::user()->isInstructor()){
             // Get the courses of the instructor and the instructor name of each course
             $courses = DB::table('courses')
                 ->leftjoin('users', 'users.id', '=', 'courses.instructor_id')
                 ->select('courses.*', 'users.fname', 'users.lname')
-                ->where('courses.instructor_id', '=', $user->id)
+                ->where('courses.instructor_id', '=', Auth::User()->id)
                 ->get();
-        }elseif($user->role == 'student'){
+        }elseif(Auth::user()->isStudent()){
             // Get the courses of the user and the instructor name of each course
             $courses = DB::table('courses')
                 ->leftjoin('course_user', 'course_user.course_id', '=', 'courses.id')
                 ->leftjoin('users as u1', 'u1.id', '=', 'courses.instructor_id')
                 ->leftjoin('users as u2', 'u2.id', '=','course_user.user_id')
                 ->select('courses.*', 'u1.fname', 'u1.lname')
-                ->where('course_user.user_id', '=', $user->id)
+                ->where('course_user.user_id', '=', Auth::User()->id)
                 ->where('course_user.is_passed', '=', 0)
                 ->where('courses.is_active', '=', 1)
                 ->get();

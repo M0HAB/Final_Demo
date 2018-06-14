@@ -22,13 +22,12 @@ class GradesBookController extends Controller
 
     public function index($course_id)
     {
-        $authuser = Auth::user();
         $course  = Course::find($course_id);
         $gradesBooks= gradeBook::where('course_id',$course_id)->get();
         //$practical=$gradesBooks->practical_weight
         //$totalweights=  $gradesBooks->assignments_weight + $gradesBooks->quizzes_weight + $gradesBooks->midterm_weight + $gradesBooks->finalexam_weight + $gradesBooks->practical_weight;
 
-        if ($authuser->role == 'instructor'){
+        if (Auth::user()->isInstructor()){
             return view('_auth.gradesBook.index', compact( 'course','gradesBooks','course_id'));
         }else{
             return redirect()->route('user.dashboard')->with('error', 'Unauthorized Access');
@@ -43,11 +42,10 @@ class GradesBookController extends Controller
     public function create($course_id)
     {
         $course = Course::find($course_id);
-        $authuser = Auth::user();
 
 
 
-        if ($authuser->role == 'instructor'){
+        if (Auth::user()->isInstructor()){
             return view('_auth.gradesBook.create', compact( 'gradebook','course'));
         }else{
             return redirect()->route('user.dashboard')->with('error', 'Unauthorized Access');
@@ -109,13 +107,12 @@ class GradesBookController extends Controller
      */
     public function edit($course_id,$gradesBook_id)
     {
-        $authuser = Auth::user();
         $gradebook=gradeBook::find($gradesBook_id)  ;
 
         //dd($gradesBook_id);
 
 
-        if ($authuser->role == 'instructor'){
+        if (Auth::user()->isInstructor()){
             return view('_auth.gradesBook.edit', compact( 'gradebook','course_id'));
         }else{
             return redirect()->route('user.dashboard')->with('error', 'Unauthorized Access');

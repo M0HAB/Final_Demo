@@ -13,15 +13,12 @@
                       </h5>
                     </div>
                     <div id="collapseOne" class="collapse
-                    @if(Route::is('prole') || Route::is('admin.dashboard')) show @endif
+                    @if(Route::is('prole.*') || Route::is('admin.dashboard')) show @endif
                     rounded-0" aria-labelledby="headingOne" data-parent="#accordion">
                           <div class="card-body">
-                              <p class="mb-1"><a href="#" class="bbp-breadcrumb-home forum-nav"><strong><i class="fas fa-list mr-2"></i>List All Roles</strong></a></p>
-                              <p class="mb-1"><a href="#" class="bbp-breadcrumb-home forum-nav"><strong><i class="fas fa-plus mr-2"></i>Add New Role</strong></a></p>
-                              <p class="mb-1"><a href="#" class="bbp-breadcrumb-home forum-nav"><strong><i class="fas fa-eye mr-2"></i>View Role Permissions</strong></a></p>
+                              <p class="mb-1"><a href="{{route('prole.index')}}" class="bbp-breadcrumb-home forum-nav"><strong><i class="fas fa-list mr-2"></i>List All Roles</strong></a></p>
+                              <p class="mb-1"><a href="{{route('prole.create')}}" class="bbp-breadcrumb-home forum-nav"><strong><i class="fas fa-plus mr-2"></i>Add New Role</strong></a></p>
                               <p class="mb-1"><a href="#" class="bbp-breadcrumb-home forum-nav"><strong><i class="fas fa-eye mr-2"></i>View User Permissions</strong></a></p>
-                              <p class="mb-1"><a href="#" class="bbp-breadcrumb-home forum-nav"><strong><i class="fas fa-edit mr-2"></i>Edit Role Permissions</strong></a></p>
-                              <p class="mb-1"><a href="#" class="bbp-breadcrumb-home forum-nav"><strong><i class="fas fa-edit mr-2"></i>Edit User Permissions</strong></a></p>
                           </div>
                     </div>
                 </div>
@@ -55,10 +52,6 @@
                               <p class="mb-1"><a href="#" class="bbp-breadcrumb-home forum-nav"><strong><i class="fas fa-list mr-2"></i>List All Specializations</strong></a></p>
                               <p class="mb-1"><a href="#" class="bbp-breadcrumb-home forum-nav"><strong><i class="fas fa-plus mr-2"></i>Add Department</strong></a></p>
                               <p class="mb-1"><a href="#" class="bbp-breadcrumb-home forum-nav"><strong><i class="fas fa-plus mr-2"></i>Add Specialization</strong></a></p>
-                              <p class="mb-1"><a href="#" class="bbp-breadcrumb-home forum-nav"><strong><i class="fas fa-edit mr-2"></i>Edit Department</strong></a></p>
-                              <p class="mb-1"><a href="#" class="bbp-breadcrumb-home forum-nav"><strong><i class="fas fa-edit mr-2"></i>Edit Specialization</strong></a></p>
-                              <p class="mb-1"><a href="#" class="bbp-breadcrumb-home forum-nav"><strong><i class="fas fa-trash mr-2"></i>Delete Department</strong></a></p>
-                              <p class="mb-1"><a href="#" class="bbp-breadcrumb-home forum-nav"><strong><i class="fas fa-trash mr-2"></i>Delete Specialization</strong></a></p>
                           </div>
                     </div>
                 </div>

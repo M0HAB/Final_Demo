@@ -27,7 +27,6 @@ class User extends Authenticatable
         'dep_id',
         'gender',
         'role_id',
-        'role',
         'location',
         'level',
         'gpa',
@@ -56,7 +55,7 @@ class User extends Authenticatable
 
     public function isAdmin()
     {
-        if (!$this->getRole == 'admin')
+        if (!$this->role == 'admin')
         {
             return false;
         }
@@ -64,7 +63,11 @@ class User extends Authenticatable
     }
     public function isInstructor()
     {
-      return ($this->rolee->name == 'Instructor' || $this->rolee->name == 'instructor');
+      return ($this->role->name == 'Instructor' || $this->role->name == 'instructor');
+    }
+    public function isStudent()
+    {
+      return ($this->role->name == 'Student' || $this->role->name == 'student');
     }
     public static function getStudents()
     {
@@ -81,7 +84,7 @@ class User extends Authenticatable
   		return $this->belongsTo('App\Department', 'dep_id');
     }
 
-    public function rolee(){
+    public function role(){
 	     return $this->belongsTo('App\Role', 'role_id');
     }
 

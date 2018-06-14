@@ -96,7 +96,7 @@
                                     <div class="col-sm-7">
                                         <p class="ml-4"><span class="text-muted font-weight-bold">Due:</span><span class="text-danger ml-1">{{date('d-m-Y', strtotime($assignment->deadline))}}</span></p>
                                     </div>
-                                    @if(Auth::User()->role == 'student')
+                                    @if(Auth::User()->isStudent())
                                         <div class="col-sm-5">
                                             @if(!Auth::User()->checkIfStudentDeliveredAss($assignment))
                                                 <a href="{{ route('assignment.deliver', ['course_id' => $course->id, 'module_id' => $module->id, 'id' => $assignment->id]) }}" class="text-info"><i class="far fa-envelope-open mr-1"></i>Deliver</a>
@@ -140,7 +140,7 @@
                                         <span class="font-weight-bold text-success forum-nav">
                                             <i class="fas fa-question-circle mr-1"></i>
                                             {{ $quiz->title }}
-                                            @if(Auth::User()->role == 'instructor')
+                                            @if(Auth::User()->isInstructor())
                                                 <span id="quiz-status" class="p-1 rounded text-white  {{ $quiz->is_active ? 'badge badge-success': 'badge badge-danger' }}" >{{ $quiz->is_active ? 'Activated quiz': 'Deactivated quiz' }}</span>
                                             @endif
 
@@ -151,7 +151,7 @@
                                     <div class="col-sm-7">
                                         <p class="ml-4"><span class="text-muted font-weight-bold">Due:</span><span class="text-danger ml-1">{{date('d-m-Y', strtotime($quiz->deadline))}}</span></p>
                                     </div>
-                                    @if(Auth::User()->role == 'student')
+                                    @if(Auth::User()->isStudent())
                                         <div class="col-sm-5">
                                             @if(!Auth::User()->checkIfStudentSubmittedQuiz($quiz))
                                                 <a href="{{ route('quiz.getSubmitQuizForm', ['course_id' => $course->id, 'module_id' => $module->id, 'quiz_id' => $quiz->id]) }}" class="text-info"><i class="far fa-file mr-1"></i>Start quiz</a>
@@ -159,7 +159,7 @@
                                                 <span class="text-success"><i class="fas fa-check mr-1"></i>Submitted</span>
                                             @endif
                                         </div>
-                                    @elseif(Auth::User()->role == 'instructor')
+                                    @elseif(Auth::User()->isInstructor())
                                         <div class="col-sm-5">
                                             <a href="#" class="text-info"><i class="fas fa-eye mr-1"></i>preview</a>
                                         </div>
@@ -186,7 +186,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @if(Auth::User()->role == 'instructor')
+                            @if(Auth::User()->isInstructor())
                                 <tr>
                                     <td>
                                         <a href="{{ route('course.addNewVideo', ['course_id' => $course->id, 'module_id' => $module->id]) }}" class="ml-1"><i class="fas fa-plus mr-1"></i>Add New Lesson</a>
@@ -213,7 +213,7 @@
                                     </td>
                                 </tr>
 
-                            @elseif(Auth::User()->role == 'student')
+                            @elseif(Auth::User()->isStudent())
                                 <tr>
                                     <td>
                                         <a href="{{ route('assignment.delivered', ['course_id' => $course->id, 'module_id' => $module->id]) }}" class="ml-1"><i class="fas fa-folder mr-1"></i>My Assignment Directory</a>

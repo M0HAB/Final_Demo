@@ -242,13 +242,14 @@ Route::group(['prefix' => 'admin'], function () {
       Route::post('logout', 'LoginController@logout')->name('admin.logout');
       Route::get('logout', 'LoginController@logout')->name('admin.logout.web');
       Route::get('profile', 'DashboardController@profile')->name('admin.profile');
-      Route::resource('/pindex', 'PIndexController', [
-          'only' => ['edit', 'update', 'index']
-      ]);
-      Route::resource('/prole', 'PermissionRoleController')->except([
-          'destroy'
-      ]);
+
   });
+  Route::resource('/pindex', 'PIndexController', [
+      'only' => ['edit', 'update', 'index']
+  ]);
+  Route::resource('/prole', 'PermissionRoleController')->except([
+      'destroy'
+  ]);
 
 
 });

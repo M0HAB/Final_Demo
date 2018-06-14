@@ -88,7 +88,7 @@ our animation centered, and no-repeating */
 
 
 
-                                @if (Auth::user()->role == 'instructor')
+                                @if (Auth::user()->isInstructor())
 
                                         <p>
                                             <a href="{{ route('course.getUpdateCourseForm', ['id' => $course->id]) }}" class="mt-2 text-capitalize"><i class="fa fa-edit"></i> update course information</a>
@@ -121,7 +121,7 @@ our animation centered, and no-repeating */
                                     <a href="{{ route('course.studentGrades.index', ['id' => $course->id]) }}" class="ml-1"><i class="fas fa-graduation-cap mr-1"></i>Students grades</a>
                                 </p>
 
-                                @elseif (Auth::user()->role == 'student')
+                                @elseif (Auth::user()->isStudent())
                                 <p>
                                     <a href="{{route('course.studentGrades.show', ['student_id' => Auth::user()->id,'course_id' =>$course->id])}}" class="ml-1"><i class="fas fa-graduation-cap mr-1"></i>My grades</a>
                                 </p>
@@ -141,11 +141,10 @@ our animation centered, and no-repeating */
 @endsection
 
 @section('scripts')
-    @if(Auth::User()->role == 'instructor')
+    @if(Auth::User()->isInstructor())
         <script>
             var courseID = {!! json_encode($course->id) !!};
         </script>
     @endif
     <script src="{{ asset('js/courseModules.js') }}"></script>
 @endsection
-

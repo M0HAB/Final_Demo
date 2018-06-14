@@ -9,7 +9,7 @@
     <div class="content mt-5 mb-4">
         <div class="container">
             <h1>Assignments
-                @if (Auth::user()->role == 'instructor')
+                @if (Auth::user()->isInstructor())
                     <a href="{{ route('assignments.create', ['course_id' => $course->id, 'module_id' => $module->id]) }}" class="btn btn-info" role="button">Create</a>
                     <a href="{{ route('assignment.delivered', ['course_id' => $course->id, 'module_id' => $module->id]) }}" class="btn btn-success" role="button">Delivered </a>
                 @endif
@@ -58,7 +58,7 @@
                                     {{$ass->full_mark}}
                                 </td>
 
-                                @if (Auth::user()->role == 'instructor')
+                                @if (Auth::user()->isInstructor())
                                     <td>
                                         <button  class="btn btn-group-sm btn-link"><a href="{{route('assignments.edit', ['course_id' => $course->id, 'module_id' => $module->id, 'ass_id' => $ass->id])}}"><i class="far fa-edit fa-lg fam-mod"></i> </a> </button>
 
@@ -70,7 +70,7 @@
                                             </button>
                                         </form>
                                     </td>
-                                    @elseif(Auth::user()->role == 'student')
+                                    @elseif(Auth::user()->isInstructor())
                                     <td>
                                         @if(!Auth::User()->checkIfStudentDeliveredAss($ass))
                                             <button  class="btn btn-group btn-link">
