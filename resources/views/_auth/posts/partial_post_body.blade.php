@@ -37,9 +37,7 @@
                 <span class="reply-lbl">Reply</span>
                 <span class="badge badge-dark badge-pill reply-lbl-counter">{{count($post->replies)}}</span>
             </div>
-            <div class="col-lg-9">
-                <button id="add-reply-btn" class="btn btn-light float-right" data-toggle="modal" data-target="#add-reply-modal"><i class="fas fa-reply mr-2"></i> Reply</button>
-            </div>
+            
         </div>
     </div>
 </div>

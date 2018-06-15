@@ -9,6 +9,26 @@ $.ajaxSetup({
     }
 });
 
+$('#inputCourseSpecialization').on('change', function(){
+    let id = $(this).val();
+    if(id == "null"){
+        $('.deps').show();
+    }else{
+        $("#inputCourseSpecialization").val("null");
+        $('.deps').hide();
+        $('.dep-'+id).show();
+    }
+});
+$('#inputCourseDepartment').on('change', function(){
+    let id = $(this).val();
+    if(id == "null"){
+        $('.specs').show();
+    }else{
+        $("#inputCourseSpecialization").val("null");
+        $('.specs').hide();
+        $('.spec-'+id).show();
+    }
+});
 $('#submit-new-course').submit(function(event){
     event.preventDefault();
     $.ajax({
@@ -35,6 +55,9 @@ $('#submit-new-course').submit(function(event){
             $('textarea').val('');
         },
         error: function(response){
+            if(response.responseText === "Unauthorized"){
+                toastr.error("Unauthorized Operation");
+            }
             $('.error-msg').remove(); // To clear the old error messages before submit new course
             $('#response-message-success').hide();
             $.each(response.responseJSON, function(key, val){
@@ -45,4 +68,3 @@ $('#submit-new-course').submit(function(event){
         }
     });
 });
-

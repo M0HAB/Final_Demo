@@ -41,6 +41,7 @@ Route::middleware('auth:api')->group(function () {
   Route::delete('/post/{id}/delete', 'PostController@delete');
   Route::delete('/reply/{id}/delete', 'ReplyController@delete');
   Route::delete('/department/{id}/delete', 'DepartmentsController@destroy');
+  Route::delete('/specialization/{id}/delete', 'SpecializationController@destroy');
 
   Route::get('/{id}/replies', 'PostController@loadReplies');
   Route::get('/{id}/search', 'DiscussionController@searchPosts');

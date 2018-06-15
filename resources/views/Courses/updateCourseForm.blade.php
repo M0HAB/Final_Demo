@@ -76,14 +76,11 @@
                             <div class="col-md-3">
                                 <div class="form-group">
                                     <label for="inputCourseSpecialization">Course Specialization</label>
-                                    <select name="course_specialization" class="form-control" id="inputCourseSpecialization" value="{{ Request::old('gender')? : '' }}"  style="width: 100%">
-                                        <option value="">Select....</option>
-                                        <option value="Computer Science" {{ $course->course_specialization === 'Computer Science'? 'selected' : '' }}>Computer Science</option>
-                                        <option value="Data Science" {{ $course->course_specialization === 'Data Science'? 'selected' : '' }}>Data Science</option>
-                                        <option value="Embedded System" {{ $course->course_specialization === 'Embedded System'? 'selected' : '' }}>Embedded System</option>
-                                        <option value="Communication" {{ $course->course_specialization === 'Communication'? 'selected' : '' }}>Communication</option>
-                                        <option value="Electronics" {{ $course->course_specialization === 'Electronics'? 'selected' : '' }}>Electronics</option>
-                                        <option value="Basic Science" {{ $course->course_specialization === 'Basic Science'? 'selected' : '' }}>Basic Science</option>
+                                    <select name="course_specialization" class="form-control" id="inputCourseSpecialization" value="{{ Request::old('course_specialization')? : '' }}"  style="width: 100%">
+                                        <option value=0>Select....</option>
+                                        @foreach($specializations as $specialization)
+                                        <option class="specs @foreach($specialization->departments as $department) spec-{{$department->id}}@endforeach" value="{{$specialization->id}}" {{($course->course_specialization == $specialization->id)? 'selected':''}}>{{$specialization->name}}</option>
+                                        @endforeach
                                     </select>
                                 </div>
                             </div>
@@ -103,10 +100,10 @@
                             <div class="col-md-3">
                                 <div class="form-group">
                                     <label for="inputCourseDepartment">Course Department</label>
-                                    <select name="course_department" class="form-control" id="inputCourseDepartment"   style="width: 100%">
-                                        <option value="">Select....</option>
+                                    <select name="course_department" class="form-control" id="inputCourseDepartment"  value="{{ Request::old('course_department')? : '' }}" style="width: 100%">
+                                        <option value=0>Select....</option>
                                         @foreach($departments as $department)
-                                        <option value="{{$department->id}}" {{ $course->course_department == $department->id ? 'selected' : '' }}>{{$department->name}}</option>
+                                        <option class="deps @foreach($department->specializations as $specialization) dep-{{$specialization->id}}@endforeach" value="{{$department->id}}" {{($course->course_department == $department->id)? 'selected':''}}>{{$department->name}}</option>
                                         @endforeach
                                     </select>
                                 </div>
