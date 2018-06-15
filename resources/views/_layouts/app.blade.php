@@ -7,8 +7,11 @@
 
 <body class="no-selection">
     {{--  Navbar  --}}
-    @include('_partials._navbar')
-
+    @if(isset($admin))
+        @include('_partials.admin_navbar')
+    @else
+        @include('_partials._navbar')
+    @endif
     <div class="container my-5">
         <div class="content" id="content">
             @yield('content')

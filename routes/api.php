@@ -24,6 +24,8 @@ Route::get('/error/{error}', function($error){
 
 Route::middleware('auth:admin-api')->group(function () {
   Route::delete('/prole/{id}/delete', 'PermissionRoleController@destroy');
+  Route::get('/search', 'Admin\UserController@getUsers');
+
 });
 
 Route::middleware('auth:api')->group(function () {

@@ -1,5 +1,7 @@
+@php
+	$admin = true;
+@endphp
 @extends('_layouts.app')
-
 @section('content')
 	<!-- Start: Dashboard -->
 	<div class="row">

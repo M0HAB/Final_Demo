@@ -246,6 +246,7 @@ Route::group(['prefix' => 'admin'], function () {
       Route::post('logout', 'LoginController@logout')->name('admin.logout');
       Route::get('logout', 'LoginController@logout')->name('admin.logout.web');
       Route::get('profile', 'DashboardController@profile')->name('admin.profile');
+      Route::get('users', 'UserController@index')->name('admin.user.index');
 
   });
   Route::resource('/pindex', 'PIndexController', [
