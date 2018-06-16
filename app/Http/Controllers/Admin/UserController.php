@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\User;
 use App\Role;
+use App\Department;
 class UserController extends Controller
 {
     public function __construct()
@@ -15,13 +16,21 @@ class UserController extends Controller
     public function index()
     {
         $users = User::getStudents()->orderBy('level')->orderBy('dep_id')->orderBy('fname')->get();
-        return view('_auth.admin.users.index')->with('users', $users);
+        $departments = Department::all();
+        $roles = Role::all();
+        return view('_auth.admin.users.index')->with('users', $users)->with('departments', $departments)->with('roles', $roles);
     }
     public function getUsers(Request $request)
     {
+
         if($request->name == ""){
+            $users = User::where('role_id', $request->type)->orderBy('level')->orderBy('dep_id')->orderBy('fname')->get();
+            $users->transform(function ($item, $key) {
+                $item['dep_id'] = $item->department->name;
+                return $item;
+            });
             return response()->json([
-                'users' => User::getStudents()->orderBy('level')->orderBy('dep_id')->orderBy('fname')->get()
+                'users' => $users
             ]);
         }
         $fname = "NULL";
@@ -33,8 +42,7 @@ class UserController extends Controller
         if(isset($name[1])){
             $lname = $name[1];
         }
-        $role_id = Role::where('name', 'student')->first()->id;
-        $results = User::where('role_id', $role_id)
+        $results = User::where('role_id', $request->type)
         ->whereRaw('(fname LIKE "'.$fname.'%" and lname LIKE "'.$lname.'%")')
         ->orderBy('level')->orderBy('dep_id')
         ->orderBy('fname')->get();
