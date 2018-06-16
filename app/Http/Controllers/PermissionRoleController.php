@@ -62,7 +62,7 @@ class PermissionRoleController extends Controller
     private function decodePermissions(Request $request,$id,$type){
 
       $name = ucfirst(strtolower($request->input('name')));
-      if($type == "update"){
+      if($type === "update"){
         $role = Role::find($id);
       }else{
         $role = new Role;
@@ -132,12 +132,18 @@ class PermissionRoleController extends Controller
      */
     public function edit($id)
     {
-      $role = Role::find($id);
-      $pindexes = Pindex::all();
-      $envelope = $this->getAndCombinePermissions($pindexes, $role);
-      Session::flashInput($envelope);
-      // Session::flashInput(['name'=>$role->name]);
-      return view('_auth.admin.permission_role.edit')->with('role', $role)->with('pindexes', $pindexes);
+        //disable ability to edit student and instructor permissions
+        if($id != 1 && $id != 2){
+            $role = Role::find($id);
+            $pindexes = Pindex::all();
+            $envelope = $this->getAndCombinePermissions($pindexes, $role);
+            Session::flashInput($envelope);
+            // Session::flashInput(['name'=>$role->name]);
+            return view('_auth.admin.permission_role.edit')->with('role', $role)->with('pindexes', $pindexes);
+        }else{
+            return redirect()->back()->with('error', 'Operation Not Allowed');
+        }
+
     }
 
     /**
@@ -149,24 +155,29 @@ class PermissionRoleController extends Controller
      */
     public function update(Request $request, $id)
     {
-      $rules =  [
-          'name' => 'sometimes|required|max:100|unique:roles,name,'.$id
-      ];
-      $messages =  [
-          'name.required' => 'Role name is required',
-          'name.unique' => 'Role name must be unique.',
-          'name.max' => 'Role name is 100 chars max'
-      ];
-      $this->validate($request, $rules, $messages);
-      $role = $this->decodePermissions($request,$id,"update");
-      if($role->name == Role::find($id)->name && $role->permission == Role::find($id)->permission ){
-        return redirect()->back()->with('warning', 'Same Value Resubmittion');
-      }
-      if ($role->save()){
-          return redirect()->back()->with('success', 'Role Updated Successfully');
-      }else{
-          return redirect()->back()->with('error', 'Some error has occured please try resubmitting');
-      }
+        if($id != 1 && $id != 2){
+            $rules =  [
+                'name' => 'sometimes|required|max:100|unique:roles,name,'.$id
+            ];
+            $messages =  [
+                'name.required' => 'Role name is required',
+                'name.unique' => 'Role name must be unique.',
+                'name.max' => 'Role name is 100 chars max'
+            ];
+            $this->validate($request, $rules, $messages);
+            $role = $this->decodePermissions($request,$id,"update");
+            if($role->name == Role::find($id)->name && $role->permission == Role::find($id)->permission ){
+              return redirect()->back()->with('warning', 'Same Value Resubmittion');
+            }
+            if ($role->save()){
+                return redirect()->back()->with('success', 'Role Updated Successfully');
+            }else{
+                return redirect()->back()->with('error', 'Some error has occured please try resubmitting');
+            }
+        }else{
+            return redirect()->back()->with('error', 'Operation Not Allowed');
+        }
+
     }
 
     /**
@@ -177,16 +188,21 @@ class PermissionRoleController extends Controller
      */
     public function destroy(Request $request,$id)
     {
-        $role = Role::find($id);
-        if($request->ajax()){
-          return ($role->delete())? 1:0;
+        if($id != 1 && $id != 2){
+            $role = Role::find($id);
+            if($request->ajax()){
+              return ($role->delete())? 1:0;
+            }else{
+              if($role->delete()){
+                  return redirect()->back()->with('success', 'Role Deleted Successfully');
+              }else{
+                  return redirect()->back()->with('error', 'Some error has occured please try resubmitting');
+              }
+            }
         }else{
-          if($role->delete()){
-              return redirect()->back()->with('success', 'Role Deleted Successfully');
-          }else{
-              return redirect()->back()->with('error', 'Some error has occured please try resubmitting');
-          }
+            return redirect()->back()->with('error', 'Operation Not Allowed');
         }
+
 
 
     }

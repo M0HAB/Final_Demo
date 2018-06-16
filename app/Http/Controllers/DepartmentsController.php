@@ -202,4 +202,14 @@ class DepartmentsController extends Controller
         }
 
     }
+    public function getCourses($id)
+    {
+        $department = Department::find($id);
+        return view('_auth.department.dep_courses')->with('department', $department);
+    }
+    public function getSpecializations($id)
+    {
+        $department = Department::find($id);
+        return view('_auth.department.dep_specs')->with('department', $department);
+    }
 }

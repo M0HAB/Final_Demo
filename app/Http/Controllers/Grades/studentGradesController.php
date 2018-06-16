@@ -23,35 +23,32 @@ class studentGradesController extends Controller
 
     public function index($course_id)
     {
-        $authuser = Auth::user();
-        //get all students enrolled in this course
-        $students = DB::table('users')
-            ->leftjoin('course_user', 'course_user.user_id', '=', 'users.id')
-            ->leftjoin('grades', 'grades.user_id', '=', 'users.id')
-            ->leftjoin('grade_books', 'grade_books.course_id', '=', 'course_user.course_id')
-            ->select('users.fname','users.lname','users.email','users.id as std_id','grades.*','grade_books.*')
-            ->where('course_user.course_id', '=', $course_id)
-            ->get();
 
-       $assgrades = DB::table('assdelivers')
-            ->leftjoin('assignments', 'assdelivers.ass_id', '=', 'assignments.id')
-            ->leftjoin('modules', 'assignments.module_id', '=', 'modules.id')
-            ->leftjoin('courses', 'modules.course_id', '=', 'courses.id')
-            ->select('assdelivers.*' , 'assignments.full_mark')
-            ->where('courses.id', '=', $course_id)
-            ->get();
-        $quizgrades = DB::table('quiz_user')
-            ->leftjoin('quizzes', 'quiz_user.quiz_id', '=', 'quizzes.id')
-            ->leftjoin('modules', 'quizzes.module_id', '=', 'modules.id')
-            ->leftjoin('courses', 'modules.course_id', '=', 'courses.id')
-            ->select('quiz_user.*' , 'quizzes.total_grade')
-            ->where('courses.id', '=', $course_id)
-            ->get();
-        //dd($quizgrades);
+        if (Auth::user()->isInstructor()){
+            //get all students enrolled in this course
+            $students = DB::table('users')
+                ->leftjoin('course_user', 'course_user.user_id', '=', 'users.id')
+                ->leftjoin('grades', 'grades.user_id', '=', 'users.id')
+                ->leftjoin('grade_books', 'grade_books.course_id', '=', 'course_user.course_id')
+                ->select('users.fname','users.lname','users.email','users.id as std_id','grades.*','grade_books.*')
+                ->where('course_user.course_id', '=', $course_id)
+                ->get();
 
-
-
-        if ($authuser->role == 'instructor'){
+           $assgrades = DB::table('assdelivers')
+                ->leftjoin('assignments', 'assdelivers.ass_id', '=', 'assignments.id')
+                ->leftjoin('modules', 'assignments.module_id', '=', 'modules.id')
+                ->leftjoin('courses', 'modules.course_id', '=', 'courses.id')
+                ->select('assdelivers.*' , 'assignments.full_mark')
+                ->where('courses.id', '=', $course_id)
+                ->get();
+            $quizgrades = DB::table('quiz_user')
+                ->leftjoin('quizzes', 'quiz_user.quiz_id', '=', 'quizzes.id')
+                ->leftjoin('modules', 'quizzes.module_id', '=', 'modules.id')
+                ->leftjoin('courses', 'modules.course_id', '=', 'courses.id')
+                ->select('quiz_user.*' , 'quizzes.total_grade')
+                ->where('courses.id', '=', $course_id)
+                ->get();
+            //dd($quizgrades);
             return view('_auth.grades.index',compact('students','assgrades','course_id','quizgrades'));
         }else{
             return redirect()->route('user.dashboard')->with('error', 'Unauthorized Access');
@@ -125,9 +122,6 @@ class studentGradesController extends Controller
             ->get();
 
 
-
-
-
         return view('_auth.grades.show',compact('student','student_id','assgrades','quizgrades'));
     }
 
@@ -144,7 +138,7 @@ class studentGradesController extends Controller
       $grades=grade::where('user_id', '=' ,$student_id)->first();
       $student=user::where('id', '=', $student_id)->first();
 
-        if ($authuser->role == 'instructor'){
+        if (Auth::user()->isInstructor()){
 
             return view('_auth.grades.edit',compact('grades','student'));
         }else{

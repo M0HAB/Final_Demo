@@ -28,7 +28,7 @@ class LoginController extends Controller
 
     /**
      * @param request
-     * @return user dashboard 
+     * @return user dashboard
      */
     public function login(Request $request)
     {
@@ -43,33 +43,23 @@ class LoginController extends Controller
                 return redirect()->route('user.dashboard');
             else
             {
-                //if failed login as user try as admin
-                if (Auth::guard('admin')->attempt(['email' => $request->email, 'password' => $request->password]))
-                    return redirect()->route('pindex.index');
-                else{
-//                    return $request;
-                    Session::flash('error', "The email or password you have entered is invalid");
-                    return redirect()->back();
-                }
-                
+                Session::flash('error', "The email or password you have entered is invalid");
+                return redirect()->back();
             }
         }
     }
 
     /**
      * Log the user out of the application.
-     * Guard Default
+     * Guard web
      * @return index page
      */
     public function logout()
     {
         if (Auth::check())
         {
-             //to logout admin too xD
-            if (Auth::guard('admin')->check()){
-                Auth::guard('admin')->logout();
-            }            
-            Auth::logout();
+
+            Auth::guard('web')->logout();
             return redirect()->route('index');
         }
     }

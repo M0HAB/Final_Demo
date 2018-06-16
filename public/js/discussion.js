@@ -214,6 +214,7 @@ $('#req').on('show.bs.modal', function (event) {
           dropZone.deleteList=[];
         }
         if (type == "post"){
+          $("#alert_row").hide();
           $("#req_title").val("");
           if (mode == "edit"){
             $('#post_container_'+id+' .edit_title').text(response.data.record.title);

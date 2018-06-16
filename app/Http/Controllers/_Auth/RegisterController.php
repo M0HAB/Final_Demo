@@ -45,8 +45,8 @@ class RegisterController extends Controller
      * @return \App\User
      */
     public function register(Request $request)
-    {   
-        /** 
+    {
+        /**
          * Override laravel default validation messages
          * Not the best way to customize validation rules and messages, not clear and reusable.
          * Refactoring..Later
@@ -54,31 +54,31 @@ class RegisterController extends Controller
         $rules =  [
             'fname' => 'required|min:3|max:100',
             'lname' => 'required|min:3|max:100',
-            'email' => 'required|email|unique:users|max:100',            
+            'email' => 'required|email|unique:users|max:100',
             'password' => 'required|confirmed|min:6|max:255',
             'department' => 'required|max:2',
             'gender' => 'required|max:1',
             'role' => 'required|max:1',
-            'location' => 'required|max:255',
-            'level' => 'required|max:255',
-            'gpa' => 'required|max:255' 
+            'location' => 'required|max:255'
         ];
-
         $messages =  [
             'fname.required' => 'First name is required',
             'fname.min' => 'First name must be at least 3 characters.',
             'lname.required' => 'Last name is required',
             'lname.min' => 'Last name must be at least 3 characters.',
-            'email.required' => 'Email is required',           
+            'email.required' => 'Email is required',
             'password.required' => 'Password is required',
             'department.required' => 'Department is required',
-            'gender.required' => 'Gender is required', 
+            'gender.required' => 'Gender is required',
             'role.required' => 'Role is required',
-            'location.required' => 'Location field is required',
-            'level.required' => 'level is required',
-            'gpa.required' => 'GPA field is required' 
+            'location.required' => 'Location field is required'
         ];
-
+        if(Role::where('name', 'student')->first()->id == $request->role){
+          $rules['level'] = 'required|max:255';
+          $rules['gpa'] = 'required|max:255';
+          $messages['level.required'] = 'level is required';
+          $messages ['gpa.required'] = 'GPA field is required';
+        }
         // Apply validation rules on incoming request
         $validator = Validator::make($request->all(), $rules, $messages);
 
@@ -91,7 +91,7 @@ class RegisterController extends Controller
             $request['password'] = bcrypt($request->password);
             $request['dep_id'] = $request->department;
             $request['role_id'] = $request->role;
-            // Generate unique api token 
+            // Generate unique api token
             $request['api_token'] = str_random(50) . time();
             // Create user instance
             User::create($request->all());

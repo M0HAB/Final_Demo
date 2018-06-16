@@ -18,7 +18,7 @@
         <!-- Start: Content -->
     <div class="content mt-5 mb-5 pl-2 pr-2">
         <div class="container">
-            @if(Auth::User()->role == 'instructor')
+            @if(Auth::User()->isInstructor())
                 <div class="text-right">
                     <a href="{{ route('course.getNewCourseForm') }}" ><i class="fa fa-plus"></i> <strong>Add New Course</strong></a>
                 </div>
@@ -31,7 +31,7 @@
                     <div class=" col-sm-6">
                         <div class="card text-center mt-5 " style="box-shadow: 5px 5px 10px gray">
                             <div class="card-header">
-                                @if(Auth::User()->role === 'instructor')
+                                @if(Auth::User()->isInstructor())
                                     <ul class="nav nav-pills card-header-pills">
                                         <li class="nav-item">
                                             <span id="course-status" class="nav-link text-white {{ $course->is_active ? 'bg-success': 'bg-danger' }}" >{{ $course->is_active ? 'Activated Course': 'Deactivated Course' }}</span>

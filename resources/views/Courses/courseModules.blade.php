@@ -88,8 +88,9 @@ our animation centered, and no-repeating */
 
 
 
-                                @if (Auth::user()->role == 'instructor')
-                                        <p class="mb-2">
+                                @if (Auth::user()->isInstructor())
+
+                                        <p>
                                             <a href="{{ route('course.getUpdateCourseForm', ['id' => $course->id]) }}" class="mt-2 text-capitalize"><i class="fa fa-edit"></i> update course information</a>
                                         </p>
                                         <p>
@@ -112,7 +113,7 @@ our animation centered, and no-repeating */
                                         <div id="response-message-success" class="alert alert-success mt-2" style="display: none"></div>
                                         <div id="response-message-danger" class="alert alert-danger mt-2" style="display: none"></div>
                                         <hr>
-                                <p class="mb-2">
+                                <p>
                                     <a href="{{ route('course.gradeBook.index', ['id' => $course->id]) }}" class="ml-1"><i class="fas fa-cogs mr-1"></i>Grades book setting</a>
                                 </p>
 
@@ -120,7 +121,7 @@ our animation centered, and no-repeating */
                                     <a href="{{ route('course.studentGrades.index', ['id' => $course->id]) }}" class="ml-1"><i class="fas fa-graduation-cap mr-1"></i>Students grades</a>
                                 </p>
 
-                                @elseif (Auth::user()->role == 'student')
+                                @elseif (Auth::user()->isStudent())
                                 <p>
                                     <a href="{{route('course.studentGrades.show', ['student_id' => Auth::user()->id,'course_id' =>$course->id])}}" class="ml-1"><i class="fas fa-graduation-cap mr-1"></i>My grades</a>
                                 </p>
@@ -128,9 +129,10 @@ our animation centered, and no-repeating */
 
                             </div>
                         </div>
-                </div>
-                <div class="col-sm-12 mt-4  text-center">
-                    <a href="{{ route('course.listUserCourses') }}" style="width: 100%" class="btn btn-primary"><i class="fas fa-list"></i> Courses Catalog</a>
+
+                    <div class="col-sm-12 mt-4  text-center">
+                        <a href="{{ route('course.listUserCourses') }}" style="width: 100%" class="btn btn-primary"><i class="fas fa-list"></i> Courses Catalog</a>
+                    </div>
                 </div>
             </div>
         </div>
@@ -139,11 +141,10 @@ our animation centered, and no-repeating */
 @endsection
 
 @section('scripts')
-    @if(Auth::User()->role == 'instructor')
+    @if(Auth::User()->isInstructor())
         <script>
             var courseID = {!! json_encode($course->id) !!};
         </script>
     @endif
     <script src="{{ asset('js/courseModules.js') }}"></script>
 @endsection
-

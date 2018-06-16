@@ -15,7 +15,17 @@ class Course extends Model
   {
     return $this->hasMany('App\Module', 'course_id');
   }
-
-
+  public function department()
+  {
+      return $this->belongsTo('App\Department', 'course_department');
+  }
+  public function specialization()
+  {
+      return $this->belongsTo('App\Specialization', 'course_specialization');
+  }
+  public function instructor()
+  {
+      return $this->belongsTo('App\User','instructor_id');
+  }
 
 }

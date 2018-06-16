@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use App\Department;
+use App\Specialization;
 
 class Courses_CRUD_Controller extends Controller{
 
@@ -27,23 +28,23 @@ class Courses_CRUD_Controller extends Controller{
 
     public function listUserCourses(){
 
-        $user = User::find(Auth::User()->id);
+        // $user = User::find(Auth::User()->id);
 
-        if($user->role == 'instructor'){
+        if(Auth::user()->isInstructor()){
             // Get the courses of the instructor and the instructor name of each course
             $courses = DB::table('courses')
                 ->leftjoin('users', 'users.id', '=', 'courses.instructor_id')
                 ->select('courses.*', 'users.fname', 'users.lname')
-                ->where('courses.instructor_id', '=', $user->id)
+                ->where('courses.instructor_id', '=', Auth::User()->id)
                 ->get();
-        }elseif($user->role == 'student'){
+        }elseif(Auth::user()->isStudent()){
             // Get the courses of the user and the instructor name of each course
             $courses = DB::table('courses')
                 ->leftjoin('course_user', 'course_user.course_id', '=', 'courses.id')
                 ->leftjoin('users as u1', 'u1.id', '=', 'courses.instructor_id')
                 ->leftjoin('users as u2', 'u2.id', '=','course_user.user_id')
                 ->select('courses.*', 'u1.fname', 'u1.lname')
-                ->where('course_user.user_id', '=', $user->id)
+                ->where('course_user.user_id', '=', Auth::User()->id)
                 ->where('course_user.is_passed', '=', 0)
                 ->where('courses.is_active', '=', 1)
                 ->get();
@@ -58,7 +59,8 @@ class Courses_CRUD_Controller extends Controller{
 
     public function getNewCourseForm(){
         $departments = Department::all();
-        return view('courses.newCourseForm')->with('departments', $departments);
+        $specializations = Specialization::all();
+        return view('courses.newCourseForm')->with('departments', $departments)->with('specializations', $specializations);
     }
 
     /**
@@ -73,7 +75,7 @@ class Courses_CRUD_Controller extends Controller{
             // Variables to hold the valid selected values in the form
 
             $departmentValues = Department::where('id' ,'>' ,0)->pluck('id')->toArray();
-            $courseSpecializationValues = ['Computer Science', 'Data Science', 'Embedded System', 'Communication', 'Electronics', 'Basic Science',];
+            $courseSpecializationValues = Specialization::where('id' ,'>' ,0)->pluck('id')->toArray();
             $languageValues = ['Arabic', 'English'];
             $commitmentValues = [1, 2, 3, 4];
 
@@ -94,7 +96,14 @@ class Courses_CRUD_Controller extends Controller{
             if (!($validator->passes())) {
                 return response($validator->errors(), 401);
             }
-
+            //////
+            //extra check to see if someone tampered with the values in select drop down and inserted invalid value
+            if(Department::find($request->course_department)
+            ->specializations
+            ->where('id', $request->course_specialization)->count() == 0){
+                return "Unauthorized";
+            }
+            //////
             $course = Course::create([
                 'title'            => $request->title,
                 'code'             => $request->code,
@@ -123,8 +132,9 @@ class Courses_CRUD_Controller extends Controller{
      */
     public function getUpdateCourseForm(Course $course){
         $departments = Department::all();
+        $specializations = Specialization::all();
         if(Auth::User()->checkIfUserTeachCourse($course->id)) {
-            return view('courses.updateCourseForm', compact('course'))->with('departments' ,$departments);
+            return view('courses.updateCourseForm', compact('course'))->with('departments' ,$departments)->with('specializations', $specializations);
         }else{
             return redirect()->route('user.dashboard')->with('error', 'Unauthorized Access');
         }
@@ -139,7 +149,7 @@ class Courses_CRUD_Controller extends Controller{
 
             // Variables to hold the valid selected values in the form
             $departmentValues = Department::where('id' ,'>' ,0)->pluck('id')->toArray();
-            $courseSpecializationValues = ['Computer Science', 'Data Science', 'Embedded System', 'Communication', 'Electronics', 'Basic Science',];
+            $courseSpecializationValues = Specialization::where('id' ,'>' ,0)->pluck('id')->toArray();
             $languageValues = ['Arabic', 'English'];
             $commitmentValues = [1, 2, 3, 4];
 
@@ -160,7 +170,14 @@ class Courses_CRUD_Controller extends Controller{
             if (!($validator->passes())) {
                 return response($validator->errors(), 401);
             }
-
+            //////
+            //extra check to see if someone tampered with the values in select drop down and inserted invalid value
+            if(Department::find($request->course_department)
+            ->specializations
+            ->where('id', $request->course_specialization)->count() == 0){
+                return "Unauthorized";
+            }
+            //////
             $myCourse = Course::where('id', '=',$course->id)->update([
                     'title'            => $request->title,
                     'code'             => $request->code,

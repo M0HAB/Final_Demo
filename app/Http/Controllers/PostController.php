@@ -12,7 +12,7 @@ use App\FileUp;
 class PostController extends Controller
 {
 
-      
+
       private function getImgData($data,$k){
         list(, $data['src']) = explode(',', $data['src']);
         $decode_data = base64_decode($data['src']);
@@ -81,7 +81,6 @@ class PostController extends Controller
               $files = $this->saveFiles($request->file_list);
               if ($files === 0) return redirect()->route('error.api', 'File too big, maximum 2mb per File');
               //loop on each source and store in DB to get later
-
               foreach ($files as $file) {
                 $file_rec = new FileUp;
                 $file_rec->relate_type = $request->type;

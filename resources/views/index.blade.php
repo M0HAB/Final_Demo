@@ -17,7 +17,7 @@
 							</p>
 						</div>
 					</div>
-					
+
 					<div class="d-flex flex-row">
 						<div class="p-4 align-self-start mt-1">
 							<i class="fa fa-check fa-lg check-bg"></i>
@@ -38,7 +38,7 @@
 								LMSs can be complemented by other learning technologies such as a training management system to manage instructor-led training or a Learning Record Store to store and track learning data.
 							</p>
 						</div>
-					</div> 
+					</div>
 				</div>
 			</div>
 			<div class="col-lg-4 col-sm-12">
@@ -66,10 +66,6 @@
 								</div>
 								<input id="signupPassword" type="password" name="password" maxlength="25" class="form-control" length="40">
 							</div>
-						</div>
-						<div class="custom-control custom-checkbox">
-							<input type="checkbox" class="custom-control-input" id="customCheck1">
-							<label class="custom-control-label" for="customCheck1">Remember me</label>
 						</div>
 						<div class="form-group mt-4">
 							<button id="signupSubmit" type="submit" class="btn btn-primary btn-block">Sign in</button>

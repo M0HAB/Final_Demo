@@ -1,12 +1,12 @@
-@extends('_layouts.app')
+@extends('_Auth.admin.admin_layout.admin')
 @section('title', 'Permissions - '.$envelope['name'])
-@section('content')
+@section('admin_content')
 <!-- Start: Content -->
-	<div class="content mt-5 mb-4">
-		<div class="container">
-        <h3>Permissions of <strong>{{old('name')}}</strong></h3>
+<div class="card">
+	<div class="card-body">
+		<h3 class="pb-2 f-rw">Permissions of <strong>{{$envelope['name']}}</strong></h3>
 			<div class="row justify-content-center">
-                <table class="table table-hover">
+                <table class="table">
                     <thead>
                         <tr>
                             <th>Index Name</th>
@@ -23,32 +23,32 @@
                                 {{$pindex->name}}
                             </td>
                             <td>
-																@if(isset($envelope['create'.$pindex->index]))
-																<p class="f-rw text-success font-weight-bold"><i class="fas fa-check"></i></p>
-																@else
-																<p class="f-rw text-danger font-weight-bold"><i class="fas fa-times"></i></p>
-																@endif
+								@if(isset($envelope['create'.$pindex->index]))
+								<p class="f-rw text-success font-weight-bold"><i class="fas fa-check"></i></p>
+								@else
+								<p class="f-rw text-danger font-weight-bold"><i class="fas fa-times"></i></p>
+								@endif
                             </td>
-														<td>
-																@if(isset($envelope['read'.$pindex->index]))
-																<p class="f-rw text-success font-weight-bold"><i class="fas fa-check"></i></p>
-																@else
-																<p class="f-rw text-danger font-weight-bold"><i class="fas fa-times"></i></p>
-																@endif
-                            </td>
-                            <td>
-																@if(isset($envelope['update'.$pindex->index]))
-																<p class="f-rw text-success font-weight-bold"><i class="fas fa-check"></i></p>
-																@else
-																<p class="f-rw text-danger font-weight-bold"><i class="fas fa-times"></i></p>
-																@endif
+							<td>
+								@if(isset($envelope['read'.$pindex->index]))
+								<p class="f-rw text-success font-weight-bold"><i class="fas fa-check"></i></p>
+								@else
+								<p class="f-rw text-danger font-weight-bold"><i class="fas fa-times"></i></p>
+								@endif
                             </td>
                             <td>
-																@if(isset($envelope['delete'.$pindex->index]))
-																<p class="f-rw text-success font-weight-bold"><i class="fas fa-check"></i></p>
-																@else
-																<p class="f-rw text-danger font-weight-bold"><i class="fas fa-times"></i></p>
-																@endif
+								@if(isset($envelope['update'.$pindex->index]))
+								<p class="f-rw text-success font-weight-bold"><i class="fas fa-check"></i></p>
+								@else
+								<p class="f-rw text-danger font-weight-bold"><i class="fas fa-times"></i></p>
+								@endif
+                            </td>
+                            <td>
+								@if(isset($envelope['delete'.$pindex->index]))
+								<p class="f-rw text-success font-weight-bold"><i class="fas fa-check"></i></p>
+								@else
+								<p class="f-rw text-danger font-weight-bold"><i class="fas fa-times"></i></p>
+								@endif
                             </td>
                         </tr>
                         @endforeach
@@ -56,6 +56,6 @@
                 </table>
 
 			</div>
-		</div>
-	</div> <!-- End: Content -->
+	</div>
+</div>
 @endsection

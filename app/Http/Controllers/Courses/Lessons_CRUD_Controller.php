@@ -25,14 +25,14 @@ class Lessons_CRUD_Controller extends Controller
 
         $assignments = $module->assignments()->get();
 
-        if(Auth::User()->role == 'student'){
+        if(Auth::User()->isStudent()){
             $quizzes = DB::table('quizzes')
                 ->leftjoin('modules', 'modules.id', '=', 'quizzes.module_id')
                 ->select('quizzes.*')
                 ->where('quizzes.module_id', '=', $module->id)
                 ->where('quizzes.is_active', '=', 1)
                 ->get();
-        }elseif(Auth::User()->role == 'instructor'){
+        }elseif(Auth::User()->isInstructor()){
             $quizzes = DB::table('quizzes')
                 ->leftjoin('modules', 'modules.id', '=', 'quizzes.module_id')
                 ->select('quizzes.*')

@@ -23,7 +23,6 @@ class Vote extends Model
   }
   public function isByInstructor()
   {
-    $role = Auth::user()->role->name;
-    return $role == 'instructor';
+    return Auth::user()->isInstructor();
   }
 }

@@ -94,7 +94,7 @@
                 </div>
             </div>
             @if(count($module_data->posts) == 0)
-            <div class="row">
+            <div class="row" id="alert_row">
                 <div class="alert alert-dismissible alert-info mx-3" style="width:100%">
                     <button type="button" class="close" data-dismiss="alert">&times;</button>
                     <i class="fas fa-info-circle fa-1x mr-2"></i>

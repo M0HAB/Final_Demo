@@ -50,8 +50,14 @@ Route::get('/test2', function(){
     Route::get('profile', 'UserDashboardController@profile')->name('user.profile');
  });
 
-
+Route::get('/departments/{id}/courses', 'DepartmentsController@getCourses')->name('department.courses');
+Route::get('/departments/{id}/specializations', 'DepartmentsController@getSpecializations')->name('department.specializations');
 Route::resource('departments', 'DepartmentsController');
+
+Route::get('/specialization/{id}/courses', 'SpecializationController@getCourses')->name('specialization.courses');
+Route::get('/specialization/{id}/departments', 'SpecializationController@getDepartments')->name('specialization.departments');
+Route::resource('specialization', 'SpecializationController');
+
 
 /**
  * --------------------------------------------------------------------------
@@ -157,8 +163,6 @@ Route::resource('departments', 'DepartmentsController');
 
  });
 
-Route::resource('department', 'DepartmentsController');
-
 
 /**
  * --------------------------------------------------------------------------
@@ -180,12 +184,6 @@ Route::get('/assignment/{id}', 'AssignmentsController@deliver')->name('assignmen
 Route::post('/AssignmentDeliver/', 'AssignmentsController@deliverstore')->name('assignment.deliverstore');
 Route::get('/assignmentDelivered/', 'AssignmentsController@delivered')->name('assignment.delivered');
 
-Route::resource('/pindex', 'PIndexController', [
-    'only' => ['edit', 'update', 'index']
-]);
-Route::resource('/prole', 'PermissionRoleController')->except([
-    'destroy'
-]);
 
 Route::group(['prefix' => 'messages'], function () {
 
@@ -237,4 +235,48 @@ Route::group(['prefix' => 'Courses'], function(){
         'uses' => '\App\Http\Controllers\Quizes\Quizes_CRUD_Controller@submitQuizAnswer',
         'as' => 'quiz.submitQuizAnswer'
     ]);
+});
+
+Route::group(['prefix' => 'admin'], function () {
+  //-- Authentications
+  Route::namespace('Admin')->group(function() {
+      Route::get('/', 'LoginController@index')->name('admin.index');
+      Route::post('login', 'LoginController@login')->name('admin.login');
+      Route::get('dashboard', 'DashboardController@index')->name('admin.dashboard');
+      Route::post('logout', 'LoginController@logout')->name('admin.logout');
+      Route::get('logout', 'LoginController@logout')->name('admin.logout.web');
+      Route::get('profile', 'DashboardController@profile')->name('admin.profile');
+      Route::get('users', 'UserController@index')->name('admin.user.index');
+
+  });
+  Route::resource('/pindex', 'PIndexController', [
+      'only' => ['edit', 'update', 'index']
+  ]);
+  Route::resource('/prole', 'PermissionRoleController')->except([
+      'destroy'
+  ]);
+
+});
+use App\User;
+Route::get('/insertt', function () {
+    $names = ['ahmed', 'mohamed', 'ali', 'abdelrahman', 'mostafa', 'mohab', 'gamal', 'hussein',
+              'waref', 'hossam', 'krara', 'mohsen'];
+    for ($i=0; $i < 100 ; $i++) {
+        $user = new User;
+        $user->fname = $names[mt_rand(0,11)];
+        $user->lname = $names[mt_rand(0,11)];
+        $user->username = $user->fname.'_'.$user->lname.'_'.time();
+        $user->email = 'b'.$i.'@a.com';
+        $user->dep_id = mt_rand(1,2);
+        $user->role_id = mt_rand(1,2);
+        $user->password = bcrypt('123456');
+        $user->gender = 1;
+        $user->location = 'Egypt';
+        $user->api_token = str_random(50) . time();
+        if($user->role_id == 2){
+            $user->level = mt_rand(1,5);
+            $user->gpa = mt_rand(2*10,4*10)/10;
+        }
+        $user->save();
+    }
 });
