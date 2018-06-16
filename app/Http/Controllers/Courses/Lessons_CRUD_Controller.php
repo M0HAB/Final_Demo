@@ -80,7 +80,10 @@ class Lessons_CRUD_Controller extends Controller
     }
 
     public function uploadVideo(Request $request, Course $course, Module $module){
-
+        if(!file_exists(public_path().'/videos')){
+            mkdir(public_path().'/videos', 0700);
+        }
+        
         ini_set('memory_limit','256M');
         $privacyValues = ['unlisted', 'public'];
         ini_set('max_execution_time', 1500);
@@ -95,6 +98,7 @@ class Lessons_CRUD_Controller extends Controller
 
 
         $file = $request->file('myVideo');
+
         $fileName = storage_path('app/public/videos/' . $file->getClientOriginalName());
         $destination = storage_path('app/public/videos');
         if($file->move($destination, $fileName)){
