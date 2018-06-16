@@ -16,6 +16,10 @@ class Course extends Model
     return $this->hasMany('App\Module', 'course_id');
   }
 
+	public function setTitleAttribute($value)
+	{
+		return $this->attributes['title'] = ucfirst($value);
+	}
 
 
 }

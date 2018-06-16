@@ -1,11 +1,10 @@
 @include('_partials._head')
-
-<body id="my-body" class="no-selection">
-    <a id="top"></a>
+    
 <!-- yield additional css styles inside <style> tag(If Required) -->
 @yield('styles')
 
-<body class="no-selection">
+<body id="my-body" class="no-selection">
+    <a id="top"></a>
     {{--  Navbar  --}}
     @include('_partials._navbar')
 

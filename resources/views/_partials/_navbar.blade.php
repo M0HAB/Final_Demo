@@ -70,7 +70,7 @@
                             </div>
                           </div>
 
-
+                        </li>
                     @if (Request::url() == Route('user.dashboard'))
                         <li class="nav-item">
                             <a class="nav-link d-none" href="{{ route('user.dashboard') }}">Dashboard</a>
@@ -98,7 +98,6 @@
                     @elseif(Auth::guard('admin')->check())
                     @include('._partials.admin_navbar')
                     @endif
-
                 </ul>
             </div>
         </div>

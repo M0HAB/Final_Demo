@@ -6,10 +6,10 @@
 
 @section('styles')
     <style>
-        body{
+        /*body{
             background-color: #fafbfc;
             height: auto;
-        }
+        }*/
         /* Start by setting display:none to make this hidden.
    Then we position it in relation to the viewport window
    with position:fixed. Width, height, top and left speak
@@ -48,7 +48,7 @@
 
     <div class="row">
         <div class="col-sm-12 mb-3">
-            <div class="jumbotron border text-center mt-5" style="box-shadow: 5px 5px 10px gray;background: url('{{ asset('course_images/courseBackground.png') }}');background-size: 100%">
+            <div class="jumbotron border text-center">
                 <h4 class="text-muted text-uppercase">module</h4>
                 <h2 style="color: #02b3e4;letter-spacing: 2px">{{ $module->title }}</h2>
                 <p>{{ $module->introduction }}</p>
