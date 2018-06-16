@@ -31,7 +31,9 @@
                       </h5>
                     </div>
 
-                    <div id="collapse2" class="collapse rounded-0" aria-labelledby="heading2" data-parent="#accordion">
+                    <div id="collapse2" class="collapse
+					@if(Route::is('admin.user.*')) show @endif
+					rounded-0" aria-labelledby="heading2" data-parent="#accordion">
                           <div class="card-body">
                               <p class="mb-1"><a href="{{route('admin.user.index')}}" class="bbp-breadcrumb-home forum-nav"><strong><i class="fas fa-list mr-2"></i>List All Users</strong></a></p>
                               <p class="mb-1"><a href="#" class="bbp-breadcrumb-home forum-nav"><strong><i class="fas fa-plus mr-2"></i>Create New User</strong></a></p>
