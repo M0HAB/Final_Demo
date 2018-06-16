@@ -1,55 +1,53 @@
-  <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
 
-        <div class="container">
+    <div class="container">
 
-            @if (Auth::check())
-                <a class="navbar-brand" href="{{ route('user.dashboard') }}">E-LMS</a>
-            @else
-                <a class="navbar-brand" href="{{ route('index') }}">E-LMS</a>
-            @endif
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarColor01">
-                <ul class="navbar-nav ml-auto">
-                    @if (!Auth::check())
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ route('about') }}">About</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ route('contact_us') }}">Contact us</a>
-                        </li>
-                    @elseif(Auth::guard('web')->check())
-                        <li class="nav-item">
-                            <a class="nav-link" href="#"><i class="fas fa-bell"></i></a>
-                        </li>
-
-                        <li class="nav-item dropdown ml-1">
-                          <a class="nav-link" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="msg-dropdown" onclick="toggleArrow('arrow-up')">
+        @if (Auth::check())
+            <a class="navbar-brand" href="{{ route('user.dashboard') }}">E-LMS</a>
+        @else
+            <a class="navbar-brand" href="{{ route('index') }}">E-LMS</a>
+        @endif
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarColor01">
+            <ul class="navbar-nav ml-auto">
+                @if (!Auth::check())
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('about') }}">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('contact_us') }}">Contact us</a>
+                    </li>
+                @else
+                    <li class="nav-item">
+                        <a class="nav-link" href="#"><i class="fas fa-bell"></i></a>
+                    </li>
+                    <li class="nav-item dropdown ml-1">
+                        <a class="nav-link" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="msg-dropdown" onclick="toggleArrow('arrow-up')">
                             <i class="fas fa-envelope"></i>
-                          </a>
-                          <i id="arrow-up" class="fas fa-caret-up" style="font-size:30px;position:absolute;top:24px;left:6px;color:#fff;height: 33px;"></i>
-
-                          <div class="dropdown-menu dropdown-menu-custom" aria-labelledby="navbarDropdown">
-                            @php
-                              $msgsNav = messageNav();
-                            @endphp
-                            @if(count($msgsNav) == 0 )
+                        </a>
+                    <i id="arrow-up" class="fas fa-caret-up" style="font-size:30px;position:absolute;top:24px;left:6px;color:#fff;height: 33px;"></i>
+                    <div class="dropdown-menu dropdown-menu-custom" aria-labelledby="navbarDropdown">
+                        @php
+                            $msgsNav = messageNav();
+                        @endphp
+                        @if(count($msgsNav) == 0 )
                             <p class="text-left pl-4 py-2" style="font-size: 14px;">No messages found</p>
-                            @endif
-                            @foreach ($msgsNav as $msgNav)
-                              @php
+                        @endif
+                        @foreach ($msgsNav as $msgNav)
+                            @php
                                 if(Auth::user()->id == $msgNav->user_id){
-                                  $msgUser = ('App\User')::find($msgNav->friend_id);
+                                    $msgUser = ('App\User')::find($msgNav->friend_id);
                                 }else{
-                                  $msgUser = ('App\User')::find($msgNav->user_id);
+                                    $msgUser = ('App\User')::find($msgNav->user_id);
                                 }
                                 $msgUser->name = $msgUser->fname .' '.$msgUser->lname;
                                 if(strlen($msgNav->body)>15){
-                                  $msgNav->body = mb_substr($msgNav->body,0,15,'UTF-8').'...';
+                                    $msgNav->body = mb_substr($msgNav->body,0,15,'UTF-8').'...';
                                 }
-                              @endphp
+                            @endphp
 
                             <ul class="list-group list-group-scroll">
                                 <a class="rm-deco" href="{{route('messages.show', $msgUser->id)}}">
@@ -61,16 +59,15 @@
                                 </a>
                             </ul>
 
-                              {{-- <h6 class="dropdown-header">{{$msgUser->name}}</h6>
-                              <a class="dropdown-item" href="{{route('messages.show', $msgUser->id)}}">{{$msgNav->body}}</a>
-                              <div class="dropdown-divider"></div> --}}
-                            @endforeach
-                            <div>
-                                    <a class="pl-4 py-2 d-block" href="{{ route('messages.index')}}" style="font-size:12px;display:inline-block">See All Messages</a>
-                            </div>
-                          </div>
+                            {{-- <h6 class="dropdown-header">{{$msgUser->name}}</h6>
+                            <a class="dropdown-item" href="{{route('messages.show', $msgUser->id)}}">{{$msgNav->body}}</a>
+                            <div class="dropdown-divider"></div> --}}
 
-                        </li>
+                        @endforeach
+                        <div>
+                            <a class="pl-4 py-2 d-block" href="{{ route('messages.index')}}" style="font-size:12px;display:inline-block">See All Messages</a>
+                        </div>
+                    </div>
                     @if (Request::url() == Route('user.dashboard'))
                         <li class="nav-item">
                             <a class="nav-link d-none" href="{{ route('user.dashboard') }}">Dashboard</a>
@@ -95,10 +92,8 @@
                             </form>
                         </div>
                     </li>
-                    @elseif(Auth::guard('admin')->check())
-                    @include('._partials.admin_navbar')
-                    @endif
-                </ul>
-            </div>
+                @endif
+            </ul>
         </div>
-    </nav> <!-- End: Navbar -->
+    </div>
+</nav> <!-- End: Navbar -->

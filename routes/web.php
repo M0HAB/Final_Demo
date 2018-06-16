@@ -50,8 +50,14 @@ Route::get('/test2', function(){
     Route::get('profile', 'UserDashboardController@profile')->name('user.profile');
  });
 
-
+Route::get('/departments/{id}/courses', 'DepartmentsController@getCourses')->name('department.courses');
+Route::get('/departments/{id}/specializations', 'DepartmentsController@getSpecializations')->name('department.specializations');
 Route::resource('departments', 'DepartmentsController');
+
+Route::get('/specialization/{id}/courses', 'SpecializationController@getCourses')->name('specialization.courses');
+Route::get('/specialization/{id}/departments', 'SpecializationController@getDepartments')->name('specialization.departments');
+Route::resource('specialization', 'SpecializationController');
+
 
 /**
  * --------------------------------------------------------------------------
@@ -157,8 +163,6 @@ Route::resource('departments', 'DepartmentsController');
 
  });
 
-Route::resource('department', 'DepartmentsController');
-
 
 /**
  * --------------------------------------------------------------------------
@@ -242,6 +246,7 @@ Route::group(['prefix' => 'admin'], function () {
       Route::post('logout', 'LoginController@logout')->name('admin.logout');
       Route::get('logout', 'LoginController@logout')->name('admin.logout.web');
       Route::get('profile', 'DashboardController@profile')->name('admin.profile');
+      Route::get('users', 'UserController@index')->name('admin.user.index');
 
   });
   Route::resource('/pindex', 'PIndexController', [
@@ -250,6 +255,5 @@ Route::group(['prefix' => 'admin'], function () {
   Route::resource('/prole', 'PermissionRoleController')->except([
       'destroy'
   ]);
-
 
 });

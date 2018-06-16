@@ -29,7 +29,6 @@
 @endsection
 @section('scripts')
 <script src="{{asset('js/dropBox.js')}}"></script>
-<script src="{{asset('js/quill.min.js')}}"></script>
 <script src="{{asset('js/axios.min.js')}}"></script>
 <script>
   var api_token     = "{{ Auth::user()->api_token}}",

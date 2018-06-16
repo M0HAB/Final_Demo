@@ -64,7 +64,7 @@ loadData = function(course_id, module_id){
                 $('#lesson-recap').text(recap);
                 console.log(response.data[0].url);
             }else{
-                $('#module-lessons').append('<p class="ml-2">The module has not lessons yet</p>');
+                $('#module-lessons').append('<p class="font-weight-bold text-muted ml-2 px-2 py-3">The module has not lessons yet</p>');
 
             }
         },

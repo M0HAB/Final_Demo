@@ -7,7 +7,38 @@ $.ajaxSetup({
         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
     }
 });
-
+$( document ).ready(function () {
+    $('.deps').hide();
+    $('.specs').hide();
+    dep_id = $('select#inputCourseDepartment').val();
+    spec_id = $('select#inputCourseSpecialization').val();
+    $('.dep-'+spec_id).show();
+    $('.spec-'+dep_id).show();
+});
+$('select#inputCourseSpecialization').on('change', function(){
+    let id = $(this).val();
+    if(id == 0){
+        $('.deps').show();
+    }else{
+        if(!$('select#inputCourseDepartment :selected').hasClass('dep-'+id)){
+            $('select#inputCourseDepartment').val(0);
+        }
+        $('.deps').hide();
+        $('.dep-'+id).show();
+    }
+});
+$('select#inputCourseDepartment').on('change', function(){
+    let id = $(this).val();
+    if(id == 0){
+        $('.specs').show();
+    }else{
+        if(!$('select#inputCourseSpecialization :selected').hasClass('spec-'+id)){
+            $('select#inputCourseSpecialization').val(0);
+        }
+        $('.specs').hide();
+        $('.spec-'+id).show();
+    }
+});
 $('#submit-update-course').submit(function(event){
     event.preventDefault();
     var courseID = $('#course-id').val();
@@ -34,6 +65,9 @@ $('#submit-update-course').submit(function(event){
             $('#form-course-title-parent').append('<Span id="form-course-title-child">' + response.data.title + '</span>');
         },
         error: function(response){
+            if(response.responseText === "Unauthorized"){
+                toastr.error("Unauthorized Operation");
+            }
             $('.error-msg').remove(); // To clear the old error messages before submit new course
             $('#response-message-success').hide();
             $.each(response.responseJSON, function(key, val){
@@ -44,4 +78,3 @@ $('#submit-update-course').submit(function(event){
         }
     });
 });
-

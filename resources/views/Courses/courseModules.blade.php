@@ -8,8 +8,10 @@
 
 @section('content')
     <div class="row">
-        <div class="col-lg-12 mb-4">
-            <a href="{{ route('course.listUserCourses') }}" class="btn go-back-btn mb-1" style="position:relative; left:18px"><i class="fas fa-arrow-left fa-1x"></i> Back</a>    
+        <div class="col-lg-12 mb-2">
+            <a href="{{ route('course.listUserCourses') }}" class="btn go-back-btn mb-1" style="position:relative; left:18px"><i class="fas fa-arrow-left fa-1x"></i> Back</a>   
+        <hr>
+             
         </div>
         <div class="col-lg-8 mb-4">
             {{--  Doctor section  --}}
@@ -62,11 +64,11 @@
                                 <div class="card-header f-rw-bold bg-smookie text-uppercase">Course Activities</div>
                                 <div class="card-block mb-2 p-3">
                                 @if (Auth::user()->isInstructor())
-                                        <p>
-                                            <a href="{{ route('course.getUpdateCourseForm', ['id' => $course->id]) }}" class="mt-2 text-capitalize"><i class="fa fa-edit mr-1"></i> update course information</a>
+                                        <p class="my-1">
+                                            <a href="{{ route('course.getUpdateCourseForm', ['id' => $course->id]) }}" class=" text-capitalize text-primary"><i class="fa fa-edit mr-1"></i> update course information</a>
                                         </p>
-                                        <p>
-                                            <a href="{{ route('course.getNewModuleForm', ['id' => $course->id]) }}" class="mt-2 text-capitalize"><i class="fa fa-plus mr-2"></i> add new module</a>
+                                        <p class="mb-1">
+                                            <a href="{{ route('course.getNewModuleForm', ['id' => $course->id]) }}" class="mt-2 text-capitalize text-primary"><i class="fa fa-plus mr-2"></i> add new module</a>
                                         </p>
 
                                     <form id="submit-course-activation">
@@ -78,19 +80,19 @@
                                         @else
                                             <input type="hidden" name="is_active" value='0'>
                                             <p id="submit-status">
-                                                <i id="icon-course-status" class="fas fa-toggle-on text-success"></i><button id="submit-course-status" class="text-success" style="border: none;background-color: transparent;cursor: pointer">Deactivate The Course</button>
+                                                <i id="icon-course-status" class="fas fa-toggle-on text-success"></i><button  class="text-primary text-primary" style="border: none;background-color: transparent;cursor: pointer">Deactivate The Course</button>
                                             </p>
                                         @endif
                                     </form>
                                     <div id="response-message-success" class="alert alert-success mt-2" style="display: none"></div>
                                     <div id="response-message-danger" class="alert alert-danger mt-2" style="display: none"></div>
                                     <hr>
-                                    <p>
-                                        <a href="{{ route('course.gradeBook.index', ['id' => $course->id]) }}"><i class="fas fa-cogs mr-2"></i>Grades book setting</a>
+                                    <p class="mb-1">
+                                        <a href="{{ route('course.gradeBook.index', ['id' => $course->id]) }}" class="text-primary"><i class="fas fa-cogs mr-2"></i>Grades book settings</a>
                                     </p>
 
                                     <p>
-                                        <a href="{{ route('course.studentGrades.index', ['id' => $course->id]) }}"><i class="fas fa-graduation-cap mr-2"></i>Students grades</a>
+                                        <a href="{{ route('course.studentGrades.index', ['id' => $course->id]) }}" class="text-primary"><i class="fas fa-graduation-cap mr-2"></i>Students grades</a>
                                     </p>
 
                                     @elseif (Auth::user()->isStudent())

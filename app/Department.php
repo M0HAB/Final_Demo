@@ -24,4 +24,12 @@ class Department extends Model
       $role_id = ('App\Role')::where('name', 'student')->first()->id;
       return $this->users()->where('role_id', $role_id);
     }
+    public function courses()
+    {
+        return $this->hasMany('App\Course', 'course_department');
+    }
+    public function specializations()
+    {
+        return $this->belongsToMany('App\Specialization','department_specialization', 'dep_id', 'spec_id');
+    }
 }

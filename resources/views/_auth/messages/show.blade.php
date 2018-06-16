@@ -11,7 +11,6 @@
         <h5 class="card-header chat-header">{{$friend->fname . ' ' . $friend->lname}}</h5>
         <div class="card-body" style="overflow-y: scroll;height:350px" v-chat-scroll>
             @foreach ($messages as $msg)
-
             <div class="row">
               <div class="container">
                 <div class="alert col-auto {{ ($msg->sender->id != Auth::user()->id)? 'alert-primary text-left rounded-box float-left':'alert-light text-right float-right' }} " style="max-width:65%" role="alert" title="{{$msg->created_at}}">
@@ -20,7 +19,6 @@
 
               </div>
             </div>
-
             @endforeach
             <message
               v-for="value,index in chat.message"
@@ -38,7 +36,6 @@
           <div class="input-group">
             <input type="text" class="form-control" placeholder="Enter Your message Here" v-model="message" v-on:keyup.enter="send">
             <div class="input-group-append">
-              <button class="btn btn-outline-secondary" type="button"><span class="far fa-image"></span></button>
               <button class="btn  btn-success" type="button" v-on:click="send">Submit</button>
             </div>
           </div>
@@ -73,9 +70,8 @@
         Echo.private('msg.'+this.channel)
             .whisper('typing', {
               message: this.message,
-            });
+        });
       }
-
     },
     methods: {
       markRead(){
