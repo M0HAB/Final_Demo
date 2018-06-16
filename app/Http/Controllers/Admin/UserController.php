@@ -19,8 +19,25 @@ class UserController extends Controller
     }
     public function getUsers(Request $request)
     {
+        if($request->name == ""){
+            return response()->json([
+                'users' => User::getStudents()->orderBy('level')->orderBy('dep_id')->orderBy('fname')->get()
+            ]);
+        }
+        $fname = "NULL";
+        $lname = "";
+        $name = explode(" ",$request->name);
+        if(isset($name[0])){
+            $fname = $name[0];
+        }
+        if(isset($name[1])){
+            $lname = $name[1];
+        }
         $role_id = Role::where('name', 'student')->first()->id;
-        $results = User::where('role_id', $role_id)->whereRaw('(fname LIKE "%'.$request->name.'%" or lname LIKE "%'.$request->name.'%")')->orderBy('level')->orderBy('dep_id')->orderBy('fname')->get();
+        $results = User::where('role_id', $role_id)
+        ->whereRaw('(fname LIKE "'.$fname.'%" and lname LIKE "'.$lname.'%")')
+        ->orderBy('level')->orderBy('dep_id')
+        ->orderBy('fname')->get();
         $results->transform(function ($item, $key) {
             $item['dep_id'] = $item->department->name;
             return $item;
