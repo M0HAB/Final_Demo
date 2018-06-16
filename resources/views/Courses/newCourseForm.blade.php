@@ -77,7 +77,7 @@
                                 <div class="form-group">
                                     <label for="inputCourseSpecialization">Course Specialization</label>
                                     <select name="course_specialization" class="form-control" id="inputCourseSpecialization" value="{{ Request::old('course_specialization')? : '' }}"  data-placeholder="Select the specialization" style="width: 100%">
-                                        <option value="null">Select....</option>
+                                        <option value=0>Select....</option>
                                         @foreach($specializations as $specialization)
                                         <option class="specs @foreach($specialization->departments as $department) spec-{{$department->id}}@endforeach" value="{{$specialization->id}}">{{$specialization->name}}</option>
                                         @endforeach
@@ -101,7 +101,7 @@
                                 <div class="form-group">
                                     <label for="inputCourseDepartment">Course Department</label>
                                     <select name="course_department" class="form-control" id="inputCourseDepartment"  value="{{ Request::old('course_department')? : '' }}" style="width: 100%">
-                                        <option value="null">Select....</option>
+                                        <option value=0>Select....</option>
                                         @foreach($departments as $department)
                                         <option class="deps @foreach($department->specializations as $specialization) dep-{{$specialization->id}}@endforeach" value="{{$department->id}}">{{$department->name}}</option>
                                         @endforeach

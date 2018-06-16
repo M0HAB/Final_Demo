@@ -9,22 +9,26 @@ $.ajaxSetup({
     }
 });
 
-$('#inputCourseSpecialization').on('change', function(){
+$('select#inputCourseSpecialization').on('change', function(){
     let id = $(this).val();
-    if(id == "null"){
+    if(id == 0){
         $('.deps').show();
     }else{
-        $("#inputCourseSpecialization").val("null");
+        if(!$('select#inputCourseDepartment :selected').hasClass('dep-'+id)){
+            $('select#inputCourseDepartment').val(0);
+        }
         $('.deps').hide();
         $('.dep-'+id).show();
     }
 });
-$('#inputCourseDepartment').on('change', function(){
+$('select#inputCourseDepartment').on('change', function(){
     let id = $(this).val();
-    if(id == "null"){
+    if(id == 0){
         $('.specs').show();
     }else{
-        $("#inputCourseSpecialization").val("null");
+        if(!$('select#inputCourseSpecialization :selected').hasClass('spec-'+id)){
+            $('select#inputCourseSpecialization').val(0);
+        }
         $('.specs').hide();
         $('.spec-'+id).show();
     }
