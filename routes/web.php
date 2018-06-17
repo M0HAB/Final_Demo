@@ -157,8 +157,13 @@ Route::resource('specialization', 'SpecializationController');
          'index'=>'course.studentGrades.index',
          'edit'=>'course.studentGrades.edit',
          'update'=>'course.studentGrades.update',
-         'show' =>'course.studentGrades.show'
+         'show' =>'course.studentGrades.show',
      ]]);
+
+     Route::get('/{course_id}/studentGrades/student/{student_id}', 'studentGradesController@create')->name('course.studentGrades.create');
+     Route::post('/{course_id}/studentGrades/student/{student_id}', 'studentGradesController@store')->name('course.studentGrades.store');
+
+
 
 
 
