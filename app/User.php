@@ -4,6 +4,7 @@ namespace App;
 
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Reply;
 use Auth;
 
@@ -11,6 +12,7 @@ use Illuminate\Support\Facades\DB;
 
 class User extends Authenticatable
 {
+    use SoftDeletes;
     use Notifiable;
 
     /**
@@ -32,7 +34,7 @@ class User extends Authenticatable
         'gpa',
         'api_token'
     ];
-
+    protected $dates = ['deleted_at'];
     /**
      * The attributes that should be hidden for arrays.
      *

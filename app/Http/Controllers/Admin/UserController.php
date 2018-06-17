@@ -11,11 +11,11 @@ class UserController extends Controller
 {
     public function __construct()
     {
-        $this->middleware(['auth:admin', 'revalidate'], ['except' => ['getUsers']]);
+        $this->middleware(['auth:admin', 'revalidate'], ['except' => ['getUsers', 'destroy']]);
     }
     public function index()
     {
-        $users = User::getStudents()->orderBy('level')->orderBy('dep_id')->orderBy('fname')->get();
+        $users = User::getStudents()->withTrashed()->orderBy('level')->orderBy('dep_id')->orderBy('fname')->get();
         $departments = Department::all();
         $roles = Role::all();
         return view('_auth.admin.users.index')->with('users', $users)->with('departments', $departments)->with('roles', $roles);
@@ -24,7 +24,7 @@ class UserController extends Controller
     {
 
         if($request->name == ""){
-            $users = User::where('role_id', $request->type)->orderBy('level')->orderBy('dep_id')->orderBy('fname')->get();
+            $users = User::withTrashed()->where('role_id', $request->type)->orderBy('level')->orderBy('dep_id')->orderBy('fname')->get();
             $users->transform(function ($item, $key) {
                 $item['dep_id'] = $item->department->name;
                 return $item;
@@ -42,7 +42,7 @@ class UserController extends Controller
         if(isset($name[1])){
             $lname = $name[1];
         }
-        $results = User::where('role_id', $request->type)
+        $results = User::withTrashed()->where('role_id', $request->type)
         ->whereRaw('(fname LIKE "'.$fname.'%" and lname LIKE "'.$lname.'%")')
         ->orderBy('level')->orderBy('dep_id')
         ->orderBy('fname')->get();
@@ -67,6 +67,22 @@ class UserController extends Controller
             return view('_auth.admin.users.profile')->with('user', $user);
         }else{
             return "404";
+        }
+    }
+    public function destroy(Request $request, $id)
+    {
+        $user = User::withTrashed()->find($id);
+        if($user->trashed()){
+            return ($user->restore())? 1:0;        
+        }
+        if($request->ajax()){
+          return ($user->delete())? 1:0;
+        }else{
+          if($user->delete()){
+              return redirect()->back()->with('success', 'Role Deleted Successfully');
+          }else{
+              return redirect()->back()->with('error', 'Some error has occured please try resubmitting');
+          }
         }
     }
 }

@@ -50,16 +50,31 @@
                         <th>Department</th>
                         <th id="level_table">Level</th>
                         <th>Email</th>
+                        <th>Actions</th>
 
                     </tr>
                 </thead>
                 <tbody id="users_body">
                     @foreach($users as $user)
-                    <tr>
+                    <tr id="user_container_{{$user->id}}">
                         <td><a href="{{route('admin.user.profile', ['id'=>$user->id])}}">{{$user->fname.' '.$user->lname}}</a></td>
                         <td>{{$user->department->name}}</td>
                         <td>{{$user->level}}</td>
                         <td>{{$user->email}}</td>
+                        <td>
+                            <button class="btn btn-success" title="Edit">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            @if(!$user->trashed())
+                                <button class="btn btn-danger" type="submit" data-toggle="modal" data-target="#confirm" data-id="{{$user->id}}" data-type="user" data-keep="3" title="Delete">
+                                        <span class="fas fa-trash"></span>
+                                </button>
+                            @else
+                                <button class="btn btn-info" type="submit" data-toggle="modal" data-target="#confirm" data-id="{{$user->id}}" data-type="user" data-keep="2" title="UnDelete">
+                                        <span class="fas fa-undo"></span>
+                                </button>
+                            @endif
+                        </td>
                     </tr>
 
                     @endforeach
@@ -71,6 +86,7 @@
 
   	</div>
 </div>
+@include('_partials.modal_confirm')
 @endsection
 @section('scripts')
 <script type="text/javascript">
@@ -79,4 +95,5 @@
 </script>
 <script src="{{asset('js/axios.min.js')}}"></script>
 <script src="{{asset('js/user.js')}}" charset="utf-8"></script>
+<script src="{{asset('js/modal_confirm.js')}}" charset="utf-8"></script>
 @endsection
