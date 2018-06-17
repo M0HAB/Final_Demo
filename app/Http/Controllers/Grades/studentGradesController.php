@@ -122,6 +122,8 @@ class studentGradesController extends Controller
             ->get();
 
 
+
+
         return view('_auth.grades.show',compact('student','student_id','assgrades','quizgrades'));
     }
 

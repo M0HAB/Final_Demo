@@ -306,9 +306,10 @@ class AssignmentsController extends Controller
         }
 
     }
-    public function deliveredEdit($assdeliver){
+    public function deliveredEdit($assginment_id,$std_id,$assdel_id){
         //return $assdeliver;
-        $delivered = assdeliver::findOrFail($assdeliver);
+        $delivered = assdeliver::findOrFail($assdel_id);
+        //dd($assdel_id);
         //return $delivered;
         return view('_auth.assignments.editdelivered',compact('delivered'));
 

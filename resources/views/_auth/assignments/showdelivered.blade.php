@@ -40,6 +40,7 @@
                                     </td>
                                     <td>
                                         {{$delivered->answer ? $delivered->answer : 'No Answer'}}
+
                                     </td>
                                     <td>
 

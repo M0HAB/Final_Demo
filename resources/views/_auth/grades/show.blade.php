@@ -15,7 +15,7 @@
             <h3>Viewing <strong>{{$student[0]->fname . ' '. $student[0]->lname}}</strong> grades in details</h3>
             <strong>For course {{$student[0]->title}}</strong>
             <div class="row justify-content-center">
-                @if (count($student)>0)
+                @if (!empty($student) &&!empty($assgrades)  &&!empty($quizgrades))
                     <h4 style="color: #1b4f72">Assginments grades</h4>
                     <table class="table table-hover">
                         <thead>

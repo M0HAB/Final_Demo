@@ -70,7 +70,7 @@
                                             </button>
                                         </form>
                                     </td>
-                                    @elseif(Auth::user()->isInstructor())
+                                    @elseif(!Auth::user()->isInstructor())
                                     <td>
                                         @if(!Auth::User()->checkIfStudentDeliveredAss($ass))
                                             <button  class="btn btn-group btn-link">
