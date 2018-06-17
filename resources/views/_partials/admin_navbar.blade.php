@@ -4,9 +4,9 @@
     <div class="container">
 
         @if (Auth::guard('admin')->check())
-            <a class="navbar-brand" href="{{ route('admin.dashboard') }}">E-LMS</a>
+            <a class="navbar-brand" href="{{ route('user.dashboard') }}">E-LMS</a>
         @else
-            <a class="navbar-brand" href="{{ route('admin.index') }}">E-LMS</a>
+            <a class="navbar-brand" href="{{ route('user.index') }}">E-LMS</a>
         @endif
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
