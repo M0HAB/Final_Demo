@@ -19,7 +19,7 @@ class Specialization extends Model
 
     public function departments()
     {
-        return $this->belongsToMany('App\Department', 'department_specialization', 'spec_id', 'dep_id');
+        return $this->belongsToMany('App\Department', 'department_specialization', 'spec_id', 'dep_id')->withTimestamps();
     }
     public function courses()
     {

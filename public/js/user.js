@@ -35,7 +35,7 @@ $('#search').keyup(function (key) {
         }
         response.data.users.forEach(function(element) {
             $('#users_body').append('<tr>');
-            $('#users_body').append('<td>'+element.fname+' '+element.lname+'</td>');
+            $('#users_body').append('<td><a href="'+profileRoute+'?id='+element.id+'">'+element.fname+' '+element.lname+'</a></td>');
             $('#users_body').append('<td>'+element.dep_id+'</td>');
             if(showLvl){
                 $('#users_body').append('<td>'+element.level+'</td>');

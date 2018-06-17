@@ -19,6 +19,9 @@ $('#confirm').on('show.bs.modal', function (event) {
           'X-Requested-With': 'XMLHttpRequest'
       }
     };
+    if(type == 'depspec'){
+        payload['dep_id'] = button.data('depid');
+    }
     axios.post('/api/'+type+'/'+id+'/delete',payload,headers)
     .then( (response) => {
         if(response.data){
@@ -31,7 +34,11 @@ $('#confirm').on('show.bs.modal', function (event) {
           }
           $("#"+type+"_container_"+id).remove();
           $("#confirm #close").click();
-          toastr.success(type+ " deleted successfully");
+          if(type == "depspec"){
+              toastr.success("Department Updated Successfully");
+          }else{
+              toastr.success(type+ " deleted successfully");
+          }
         }else{
           toastr.warning("Something went Wrong");
 

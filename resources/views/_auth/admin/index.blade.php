@@ -1,3 +1,6 @@
+@php
+$admin=true;
+@endphp
 @extends('_layouts.app')
 @section('title', 'Admin Login')
 
