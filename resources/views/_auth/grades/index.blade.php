@@ -114,6 +114,7 @@
 
                                 <td style="color: green">
 
+
                                         @if ($avg >= 90)
                                         {{$lettergrade = "A"}}
                                         @elseif ($avg >= 80 && $avg <= 89)
@@ -134,7 +135,13 @@
 
                                 <td>
                                     <button  class="btn btn-group-sm btn-link"><a href="{{route('course.studentGrades.show', ['student_id' => $student->std_id,'course_id' => $student->course_id])}}"><i class="fas fa-eye fa-1x"></i> </a> </button>
+
+                                    @if($student->gradeid)
                                     <button  class="btn btn-group-sm btn-link"><a href="{{route('course.studentGrades.edit', ['student_id' => $student->std_id,'course_id' => $student->course_id])}}"><i class="far fa-edit fa-1x fam-mod"></i> </a> </button>
+                                    @else
+                                    <button  class="btn btn-group-sm btn-link"><a href="{{route('course.studentGrades.create', ['student_id' => $student->std_id,'course_id' => $student->course_id])}}"><i class="fas fa-plus fa-1x fam-mod"></i> </a> </button>
+                                        @endif
+
 
                                 </td>
 
