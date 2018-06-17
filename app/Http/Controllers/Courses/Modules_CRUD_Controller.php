@@ -2,6 +2,7 @@
 namespace App\Http\Controllers\Courses;
 
 use App\Course;
+use App\grade;
 use App\Http\Controllers\Controller;
 use App\Module;
 use App\User;
@@ -37,7 +38,10 @@ class Modules_CRUD_Controller extends Controller{
                 ->where('modules.course_id', '=', $course->id)
                 ->orderBy('module_order')
                 ->get();
-            return view('courses.courseModules', compact('course', 'modules'));
+
+            $grades=grade::where('user_id', '=' ,Auth::User()->id)->first();
+
+            return view('courses.courseModules', compact('course', 'modules','grades'));
         }else{
             return redirect()->back()->with('error', 'Unauthorized access');
         }

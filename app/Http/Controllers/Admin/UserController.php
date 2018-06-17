@@ -15,7 +15,7 @@ class UserController extends Controller
     }
     public function index()
     {
-        $users = User::getStudents()->withTrashed()->orderBy('level')->orderBy('dep_id')->orderBy('fname')->get();
+        $users = User::getStudents()->withTrashed()->orderBy('level')->orderBy('dep_id')->orderBy('fname')->take(30)->get();
         $departments = Department::all();
         $roles = Role::all();
         return view('_auth.admin.users.index')->with('users', $users)->with('departments', $departments)->with('roles', $roles);
@@ -24,8 +24,11 @@ class UserController extends Controller
     {
 
         if($request->name == ""){
-            $users = User::withTrashed()->where('role_id', $request->type)->orderBy('level')->orderBy('dep_id')->orderBy('fname')->get();
+            $users = User::withTrashed()->where('role_id', $request->type)->orderBy('level')->orderBy('dep_id')->orderBy('fname')->take(30)->get();
             $users->transform(function ($item, $key) {
+                if($item->trashed()){
+                    $item['trashed'] = true;
+                }
                 $item['dep_id'] = $item->department->name;
                 return $item;
             });
@@ -45,8 +48,11 @@ class UserController extends Controller
         $results = User::withTrashed()->where('role_id', $request->type)
         ->whereRaw('(fname LIKE "'.$fname.'%" and lname LIKE "'.$lname.'%")')
         ->orderBy('level')->orderBy('dep_id')
-        ->orderBy('fname')->get();
+        ->orderBy('fname')->take(30)->get();
         $results->transform(function ($item, $key) {
+            if($item->trashed()){
+                $item['trashed'] = true;
+            }
             $item['dep_id'] = $item->department->name;
             return $item;
         });
@@ -73,7 +79,7 @@ class UserController extends Controller
     {
         $user = User::withTrashed()->find($id);
         if($user->trashed()){
-            return ($user->restore())? 1:0;        
+            return ($user->restore())? 1:0;
         }
         if($request->ajax()){
           return ($user->delete())? 1:0;
@@ -84,5 +90,10 @@ class UserController extends Controller
               return redirect()->back()->with('error', 'Some error has occured please try resubmitting');
           }
         }
+    }
+    public function edit(Request $request)
+    {
+        return $request->id;
+        return "BEEEP";
     }
 }

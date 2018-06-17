@@ -5,8 +5,11 @@
 @section('admin_content')
 
 <div class="card">
-  	<div class="card-body">
-
+  	<div class="card-body position-relative" id="mainBody">
+        <div class="overlay" id="overlay">
+            <span class="helper"></span>
+            <img src="/images/load.gif" class="img-fluid" ></img>
+        </div>
         <form class="form-inline">
             <h3 class="pb-2 mr-3 f-rw " >Users List</h3>
             <h3>
@@ -42,7 +45,7 @@
         </form>
 
         <input type="text" class="my-2 form-control" name="search" id="search" placeholder="Search for Users here...">
-        <div style="overflow-y:auto;max-height:400px">
+        <div style="overflow-y:auto;max-height:400px;" id="scrollBody">
             <table class="table">
                 <thead>
                     <tr>
@@ -62,16 +65,16 @@
                         <td>{{$user->level}}</td>
                         <td>{{$user->email}}</td>
                         <td>
-                            <button class="btn btn-success" title="Edit">
+                            <a href="{{route('admin.user.edit', ['id'=>$user->id])}}"><button class="btn btn-success" title="Edit">
                                 <i class="fas fa-edit"></i>
-                            </button>
+                            </button></a>
                             @if(!$user->trashed())
                                 <button class="btn btn-danger" type="submit" data-toggle="modal" data-target="#confirm" data-id="{{$user->id}}" data-type="user" data-keep="3" title="Delete">
-                                        <span class="fas fa-trash"></span>
+                                        <i class="fas fa-trash"></i>
                                 </button>
                             @else
                                 <button class="btn btn-info" type="submit" data-toggle="modal" data-target="#confirm" data-id="{{$user->id}}" data-type="user" data-keep="2" title="UnDelete">
-                                        <span class="fas fa-undo"></span>
+                                        <i class="fas fa-undo"></i>
                                 </button>
                             @endif
                         </td>
@@ -91,7 +94,8 @@
 @section('scripts')
 <script type="text/javascript">
     var api_token    = "{{ Auth::user()->api_token}}",
-        profileRoute = "{{route('admin.user.profile')}}";
+        profileRoute = "{{route('admin.user.profile')}}",
+        editRoute    = "{{route('admin.user.edit')}}";
 </script>
 <script src="{{asset('js/axios.min.js')}}"></script>
 <script src="{{asset('js/user.js')}}" charset="utf-8"></script>

@@ -45,6 +45,20 @@
 @endsection
 
 @section('content')
+    {{-- Start Breadcrumbs--}}
+    <div class="col-lg-12">
+        <div class="row">
+            <div class="col-lg-12">
+                <ol class="breadcrumb breadcrumb-custom">
+                    <li class="breadcrumb-item text-success">Courses</li>
+                    <li class="breadcrumb-item text-success"><a href="/Courses/{{$course->id}}">{{ $course->title }}</a></li>
+                    <li class="breadcrumb-item text-success">Module</li>
+                    <li class="breadcrumb-item active"><a href="/Courses/{{$course->id. "/Modules/" .$module->id}}">{{ $module->title }}</a></li>
+
+                </ol>
+            </div>
+        </div>
+        {{-- End Breadcrumbs--}}
 
     <div class="row">
         <div class="col-lg-12">
