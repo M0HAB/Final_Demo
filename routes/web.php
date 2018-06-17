@@ -52,6 +52,8 @@ Route::get('/test2', function(){
 
 Route::get('/departments/{id}/courses', 'DepartmentsController@getCourses')->name('department.courses');
 Route::get('/departments/{id}/specializations', 'DepartmentsController@getSpecializations')->name('department.specializations');
+Route::get('/departments/{id}/addspec', 'DepartmentsController@addSpecCreate')->name('department.spec.add');
+Route::post('/departments/{id}/addspec', 'DepartmentsController@addSpecStore')->name('department.spec.store');
 Route::resource('departments', 'DepartmentsController');
 
 Route::get('/specialization/{id}/courses', 'SpecializationController@getCourses')->name('specialization.courses');
@@ -252,7 +254,7 @@ Route::group(['prefix' => 'admin'], function () {
       Route::get('logout', 'LoginController@logout')->name('admin.logout.web');
       Route::get('profile', 'DashboardController@profile')->name('admin.profile');
       Route::get('users', 'UserController@index')->name('admin.user.index');
-
+      Route::get('/user/profile', 'UserController@profile')->name('admin.user.profile');
   });
   Route::resource('/pindex', 'PIndexController', [
       'only' => ['edit', 'update', 'index']
@@ -261,4 +263,27 @@ Route::group(['prefix' => 'admin'], function () {
       'destroy'
   ]);
 
+});
+use App\User;
+Route::get('/insertt', function () {
+    $names = ['ahmed', 'mohamed', 'ali', 'abdelrahman', 'mostafa', 'mohab', 'gamal', 'hussein',
+              'waref', 'hossam', 'krara', 'mohsen'];
+    for ($i=0; $i < 100 ; $i++) {
+        $user = new User;
+        $user->fname = $names[mt_rand(0,11)];
+        $user->lname = $names[mt_rand(0,11)];
+        $user->username = $user->fname.'_'.$user->lname.'_'.time();
+        $user->email = 'b'.$i.'@a.com';
+        $user->dep_id = mt_rand(1,2);
+        $user->role_id = mt_rand(1,2);
+        $user->password = bcrypt('123456');
+        $user->gender = 1;
+        $user->location = 'Egypt';
+        $user->api_token = str_random(50) . time();
+        if($user->role_id == 2){
+            $user->level = mt_rand(1,5);
+            $user->gpa = mt_rand(2*10,4*10)/10;
+        }
+        $user->save();
+    }
 });

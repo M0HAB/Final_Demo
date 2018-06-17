@@ -56,6 +56,17 @@ class UserController extends Controller
               'users' => $results
           ]);
         }
-        return view('_auth.discussions.search')->with('results', $results)->with('discussion_id', $id);
+        //incase of non ajax call
+        return 1;
+    }
+    public function profile(Request $request)
+    {
+        $id = $request->id;
+        $user = User::find($id);
+        if($user){
+            return view('_auth.admin.users.profile')->with('user', $user);
+        }else{
+            return "404";
+        }
     }
 }

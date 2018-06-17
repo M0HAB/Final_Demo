@@ -56,7 +56,7 @@
                 <tbody id="users_body">
                     @foreach($users as $user)
                     <tr>
-                        <td>{{$user->fname.' '.$user->lname}}</td>
+                        <td><a href="{{route('admin.user.profile', ['id'=>$user->id])}}">{{$user->fname.' '.$user->lname}}</a></td>
                         <td>{{$user->department->name}}</td>
                         <td>{{$user->level}}</td>
                         <td>{{$user->email}}</td>
@@ -74,7 +74,8 @@
 @endsection
 @section('scripts')
 <script type="text/javascript">
-    var api_token     = "{{ Auth::user()->api_token}}";
+    var api_token    = "{{ Auth::user()->api_token}}",
+        profileRoute = "{{route('admin.user.profile')}}";
 </script>
 <script src="{{asset('js/axios.min.js')}}"></script>
 <script src="{{asset('js/user.js')}}" charset="utf-8"></script>

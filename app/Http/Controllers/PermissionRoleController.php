@@ -59,7 +59,7 @@ class PermissionRoleController extends Controller
       return $envelope;
     }
 
-    private function decodePermissions(Request $request,$id,$type){
+    private function encodePermissions(Request $request,$id,$type){
 
       $name = ucfirst(strtolower($request->input('name')));
       if($type === "update"){
@@ -98,7 +98,7 @@ class PermissionRoleController extends Controller
             'name.max' => 'Role name is 100 chars max'
         ];
         $this->validate($request, $rules, $messages);
-        $role = $this->decodePermissions($request,0,0);
+        $role = $this->encodePermissions($request,0,0);
         if ($role->save()){
             return redirect()->back()->with('success', 'Role Created Successfully');
         }else{
@@ -165,7 +165,7 @@ class PermissionRoleController extends Controller
                 'name.max' => 'Role name is 100 chars max'
             ];
             $this->validate($request, $rules, $messages);
-            $role = $this->decodePermissions($request,$id,"update");
+            $role = $this->encodePermissions($request,$id,"update");
             if($role->name == Role::find($id)->name && $role->permission == Role::find($id)->permission ){
               return redirect()->back()->with('warning', 'Same Value Resubmittion');
             }
@@ -206,4 +206,5 @@ class PermissionRoleController extends Controller
 
 
     }
+
 }
