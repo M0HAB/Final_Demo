@@ -46,7 +46,7 @@ textarea {resize: none}
 /* def-msgs */
 .def-msg { position: absolute; top: 12%;}
 /* Dashboard */
-.bbp-breadcrumb-home {font-weight: 600}
+.bbp-breadcrumb-home {font-weight: 400}
 .bbp-breadcrumb-sep { font-size: 20px;}
 .bbp-breadcrumb-current { font-weight: 600;color: #888888 }
 .user-dashboard-diss-forum-prev { font-family: "Raleway"; }

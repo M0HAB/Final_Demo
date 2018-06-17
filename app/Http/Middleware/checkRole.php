@@ -12,7 +12,7 @@ class checkRole
     {
         if(!(strtolower(Auth::user()->role->name) === strtolower($role))){
             return redirect()->route('user.dashboard')->with('error', 'Unauthorized Access');
-       }
+        }
         return $next($request);
     }
 }

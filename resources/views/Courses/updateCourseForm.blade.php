@@ -42,113 +42,110 @@
 @endsection
 
 @section('content')
-    <div class="content mt-5 mb-5">
-        <div class="container">
-            <div id="response-message-success" class="alert alert-success" style="display: none"></div>
-            <fieldset>
-                <div class="reg-log-form p-3 my-3">
-                    <legend><i class="fa fa-edit"></i> Update <span id="form-course-title-parent"><span id="form-course-title-child">{{ $course->title }}</span></span> Course</legend>
-                    <hr>
-                    <form id="submit-update-course">
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="inputTitle">Course Title</label>
-                                    <input type="text" name="title" class="form-control" id="inputTitle" value="{{ $course->title }}" >
-                                </div>
-                                <div class="form-group">
-                                    <label for="inputCode">Course Code</label>
-                                    <input type="text" name="code" class="form-control" id="inputCode" value="{{ $course->code }}">
-                                </div>
-                            </div>
-
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="inputStartDate">Start Date</label>
-                                    <input type="date" name="start_date" class="form-control" id="inputStartDate" value="{{ $course->start_date }}">
-                                </div>
-                                <div class="form-group">
-                                    <label for="inputEndDate">End Date</label>
-                                    <input type="date" name="end_date" class="form-control" id="inputEndDate" value="{{ $course->end_date }}">
-                                </div>
-                            </div>
-
-                            <div class="col-md-3">
-                                <div class="form-group">
-                                    <label for="inputCourseSpecialization">Course Specialization</label>
-                                    <select name="course_specialization" class="form-control" id="inputCourseSpecialization" value="{{ Request::old('course_specialization')? : '' }}"  style="width: 100%">
-                                        <option value=0>Select....</option>
-                                        @foreach($specializations as $specialization)
-                                        <option class="specs @foreach($specialization->departments as $department) spec-{{$department->id}}@endforeach" value="{{$specialization->id}}" {{($course->course_specialization == $specialization->id)? 'selected':''}}>{{$specialization->name}}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                            </div>
-
-
-                            <div class="col-md-3">
-                                <div class="form-group">
-                                    <label for="inputCourseLanguage">Course Language</label>
-                                    <select name="course_language" class="form-control" id="inputCourseLanguage" style="width: 100%">
-                                        <option value="">Select....</option>
-                                        <option value="English" {{ $course->course_language === 'English'? 'selected' : '' }}>English</option>
-                                        <option value="Arabic" {{ $course->course_language === 'Arabic'? 'selected' : '' }}>Arabic</option>
-                                    </select>
-                                </div>
-                            </div>
-
-                            <div class="col-md-3">
-                                <div class="form-group">
-                                    <label for="inputCourseDepartment">Course Department</label>
-                                    <select name="course_department" class="form-control" id="inputCourseDepartment"  value="{{ Request::old('course_department')? : '' }}" style="width: 100%">
-                                        <option value=0>Select....</option>
-                                        @foreach($departments as $department)
-                                        <option class="deps @foreach($department->specializations as $specialization) dep-{{$specialization->id}}@endforeach" value="{{$department->id}}" {{($course->course_department == $department->id)? 'selected':''}}>{{$department->name}}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                            </div>
-
-                            <div class="col-md-3">
-                                <div class="form-group">
-                                    <label for="inputCommitment">Course Commitment</label>
-                                    <select name="commitment" class="form-control" id="inputCommitment"   style="width: 100%">
-                                        <option value="">Select....</option>
-                                        <option value=1 {{ $course->commitment === 1? 'selected': '' }}>1</option>
-                                        <option value=2 {{ $course->commitment === 2? 'selected': '' }}>2</option>
-                                        <option value=3 {{ $course->commitment === 3? 'selected': '' }}>3</option>
-                                        <option value=4 {{ $course->commitment === 4? 'selected': '' }}>4</option>
-                                    </select>
-                                </div>
-                            </div>
-
-                            <div class="col-md-6">
-                                <div class="form-group}}">
-                                    <label for="inputCourseDescription">Course Description</label>
-                                    <textarea name="description" class="form-control"  id="inputCourseDescription">{{ $course->description }}</textarea>
-                                </div>
-                            </div>
-
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="inputHowToPass">How To Pass The Course</label>
-                                    <textarea name="how_to_pass" class="form-control" id="inputHowToPass">{{ $course->how_to_pass }}</textarea>
-                                </div>
-                            </div>
-
-                            <input type="hidden" id="course-id" value="{{ $course->id }}">
-
-                            <div class="col-md-3">
-                                <br>
-                                <button  class="btn btn-primary">Update The Course</button>
-                            </div>
+    <div id="response-message-success" class="alert alert-success" style="display: none"></div>
+    <a href="{{ route('course.listUserCourses') }}" class="btn go-back-btn mb-1"><i class="fas fa-arrow-left fa-1x"></i> Back</a> 
+    <fieldset>
+        <div class="reg-log-form p-3 my-3">
+            <legend><i class="fa fa-edit"></i> Update <span id="form-course-title-parent"><span id="form-course-title-child">{{ $course->title }}</span></span> Course</legend>
+            <hr>
+            <form id="submit-update-course">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="inputTitle">Course Title</label>
+                            <input type="text" name="title" class="form-control" id="inputTitle" value="{{ $course->title }}" >
                         </div>
-                    </form>
+                        <div class="form-group">
+                            <label for="inputCode">Course Code</label>
+                            <input type="text" name="code" class="form-control" id="inputCode" value="{{ $course->code }}">
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="inputStartDate">Start Date</label>
+                            <input type="date" name="start_date" class="form-control" id="inputStartDate" value="{{ $course->start_date }}">
+                        </div>
+                        <div class="form-group">
+                            <label for="inputEndDate">End Date</label>
+                            <input type="date" name="end_date" class="form-control" id="inputEndDate" value="{{ $course->end_date }}">
+                        </div>
+                    </div>
+
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label for="inputCourseSpecialization">Course Specialization</label>
+                            <select name="course_specialization" class="form-control" id="inputCourseSpecialization" value="{{ Request::old('course_specialization')? : '' }}"  style="width: 100%">
+                                <option value=0>Select....</option>
+                                @foreach($specializations as $specialization)
+                                <option class="specs @foreach($specialization->departments as $department) spec-{{$department->id}}@endforeach" value="{{$specialization->id}}" {{($course->course_specialization == $specialization->id)? 'selected':''}}>{{$specialization->name}}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+
+
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label for="inputCourseLanguage">Course Language</label>
+                            <select name="course_language" class="form-control" id="inputCourseLanguage" style="width: 100%">
+                                <option value="">Select....</option>
+                                <option value="English" {{ $course->course_language === 'English'? 'selected' : '' }}>English</option>
+                                <option value="Arabic" {{ $course->course_language === 'Arabic'? 'selected' : '' }}>Arabic</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label for="inputCourseDepartment">Course Department</label>
+                            <select name="course_department" class="form-control" id="inputCourseDepartment"  value="{{ Request::old('course_department')? : '' }}" style="width: 100%">
+                                <option value=0>Select....</option>
+                                @foreach($departments as $department)
+                                <option class="deps @foreach($department->specializations as $specialization) dep-{{$specialization->id}}@endforeach" value="{{$department->id}}" {{($course->course_department == $department->id)? 'selected':''}}>{{$department->name}}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label for="inputCommitment">Course Commitment</label>
+                            <select name="commitment" class="form-control" id="inputCommitment"   style="width: 100%">
+                                <option value="">Select....</option>
+                                <option value=1 {{ $course->commitment === 1? 'selected': '' }}>1</option>
+                                <option value=2 {{ $course->commitment === 2? 'selected': '' }}>2</option>
+                                <option value=3 {{ $course->commitment === 3? 'selected': '' }}>3</option>
+                                <option value=4 {{ $course->commitment === 4? 'selected': '' }}>4</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-group}}">
+                            <label for="inputCourseDescription">Course Description</label>
+                            <textarea name="description" class="form-control"  id="inputCourseDescription">{{ $course->description }}</textarea>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="inputHowToPass">How To Pass The Course</label>
+                            <textarea name="how_to_pass" class="form-control" id="inputHowToPass">{{ $course->how_to_pass }}</textarea>
+                        </div>
+                    </div>
+
+                    <input type="hidden" id="course-id" value="{{ $course->id }}">
+
+                    <div class="col-md-3">
+                        <br>
+                        <button  class="btn btn-primary">Update The Course</button>
+                    </div>
                 </div>
-            </fieldset>
+            </form>
         </div>
-        <div class="modal"><!-- Place at bottom of page --></div>
-    </div>
+    </fieldset>
+<div class="modal"><!-- Place at bottom of page --></div>
 @endsection
 
 @section('scripts')

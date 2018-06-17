@@ -62,5 +62,6 @@ class Kernel extends HttpKernel
         'role' => \App\Http\Middleware\RoleMiddleware::class,
         'icu' => \App\Http\Middleware\ISeeYou::class,
         'checkRole' => \App\Http\Middleware\checkRole::class,
+        'IsAdmin' => \App\Http\Middleware\IsAdmin::class,
     ];
 }
