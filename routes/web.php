@@ -255,6 +255,7 @@ Route::group(['prefix' => 'admin'], function () {
       Route::get('profile', 'DashboardController@profile')->name('admin.profile');
       Route::get('users', 'UserController@index')->name('admin.user.index');
       Route::get('/user/profile', 'UserController@profile')->name('admin.user.profile');
+      Route::get('/user/edit', 'UserController@edit')->name('admin.user.edit');
   });
   Route::resource('/pindex', 'PIndexController', [
       'only' => ['edit', 'update', 'index']

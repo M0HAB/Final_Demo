@@ -148,6 +148,21 @@ blockquote {background-color: #f9f9f9;border-left: 10px solid #ccc;margin: 1.5em
     top:0;
     right:0;
 }
+.overlay {
+  background-color: rgba(255, 255, 255, 0.85);
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  text-align: center;
+}
+.helper {
+    display: inline-block;
+    height: 100%;
+    vertical-align: middle;
+}
+
 /* Courses */
 .course-card-header {background-color: #fff}
 .dark-border {border-color: #c6c6c6 !important}

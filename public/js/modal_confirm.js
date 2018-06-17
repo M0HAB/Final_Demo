@@ -59,15 +59,12 @@ $('#confirm').on('show.bs.modal', function (event) {
                   toastr.success("User Restored Successfully");
 
               }else{
-                  console.log('here');
                   button.removeClass('btn-danger');
                   button.addClass('btn-info');
                   button.html('<span class="fas fa-undo"></span>');
                   button.data('keep', "2");
                   toastr.success("User Deleted Successfully");
-
               }
-
           }
           $("#confirm #close").click();
 
