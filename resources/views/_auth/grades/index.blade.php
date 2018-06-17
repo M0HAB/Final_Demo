@@ -13,6 +13,13 @@
     <div class="content mt-5 mb-4">
         <div class="container">
             <h1>View All students grades</h1>
+            @if(!$gradesbook)
+            <div class="reg-log-form p-3 my-3 " style="background-color: #ff343f; ">
+
+                <b>Attention!!</b> Please Fill the Grade Book First from  <a style="color: white" href="{{ route('course.gradeBook.index',['course_id' =>$course_id]) }}"> here</a>
+
+            </div>
+            @else
             @if (count($students)>0)
 
             <div class="row justify-content-center">
@@ -153,6 +160,7 @@
                         </tbody>
                     </table>
 
+                @endif
                 @endif
 
             </div>

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\assdeliver;
 use App\grade;
+use App\gradeBook;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -48,8 +49,9 @@ class studentGradesController extends Controller
                 ->select('quiz_user.*' , 'quizzes.total_grade')
                 ->where('courses.id', '=', $course_id)
                 ->get();
-            //dd($quizgrades);
-            return view('_auth.grades.index',compact('students','assgrades','course_id','quizgrades'));
+            $gradesbook=gradeBook::where('course_id', '=' ,$course_id)->first();
+            //dd($grades);
+            return view('_auth.grades.index',compact('students','assgrades','course_id','quizgrades','gradesbook'));
         }else{
             return redirect()->route('user.dashboard')->with('error', 'Unauthorized Access');
         }
@@ -147,10 +149,12 @@ class studentGradesController extends Controller
             ->where('courses.id', '=', $course_id)
             ->get();
 
+        $grades=grade::where('course_id', '=' ,$course_id)->first();
 
 
 
-        return view('_auth.grades.show',compact('student','student_id','assgrades','quizgrades'));
+
+        return view('_auth.grades.show',compact('student','student_id','assgrades','quizgrades','grades','course_id'));
     }
 
     /**

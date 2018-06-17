@@ -9,11 +9,33 @@
 
     </div>
 
+    @if(!$grades)
+        @if(Auth::user()->isInstructor())
+        <div class="reg-log-form p-3 my-3 " style="background-color: #ff343f; ">
+
+            <b>Attention!!</b> Please Fill student Grades First from  <a style="color: white" href="{{ route('course.studentGrades.index',['course_id' =>$course_id]) }}"> here</a>
+
+        </div>
+            @else
+            <div class="reg-log-form p-3 my-3 " style="background-color: #eeff41; ">
+
+                <b>Attention!!</b> Grades not set yet !
+
+            </div>
+            @endif
+
+    @else
 
     <div class="content mt-5 mb-4">
         <div class="container">
             <h3>Viewing <strong>{{$student[0]->fname . ' '. $student[0]->lname}}</strong> grades in details</h3>
             <strong>For course {{$student[0]->title}}</strong>
+
+
+
+
+
+
             <div class="row justify-content-center">
                 @if (!empty($student) &&!empty($assgrades)  &&!empty($quizgrades))
                     <h4 style="color: #1b4f72">Assginments grades</h4>
@@ -249,6 +271,8 @@
                         </table>
 
                         @endif
+                @endif
+
 
                     </div>
 
