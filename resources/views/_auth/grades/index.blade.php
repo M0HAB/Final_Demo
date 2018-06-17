@@ -4,10 +4,20 @@
 
 @section('content')
 
-    <div class="reg-log-form p-3 my-3">
-        <a href="{{ URL::previous() }}"><i class="fas fa-arrow-alt-circle-left"></i> Back</a>
+    {{-- Start Breadcrumbs--}}
+    <div class="col-lg-12">
+        <div class="row">
+            <div class="col-lg-12">
+                <ol class="breadcrumb breadcrumb-custom">
+                    <li class="breadcrumb-item text-success"><a href="/Courses/">Courses</a></li>
+                    <li class="breadcrumb-item text-success"><a href="/Courses/{{$course->id}}">{{ $course->title }}</a></li>
+                    <li class="breadcrumb-item text-success">Student grades</li>
 
-    </div>
+
+                </ol>
+            </div>
+        </div>
+        {{-- End Breadcrumbs--}}
 
 
     <div class="content mt-5 mb-4">

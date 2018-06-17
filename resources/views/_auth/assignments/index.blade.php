@@ -1,11 +1,25 @@
 @extends('_layouts.app')
 @section('title', 'Assignments')
 @section('content')
-    <div class="reg-log-form p-3 my-3">
-        <a href="{{ URL::previous() }}"><i class="fas fa-arrow-alt-circle-left"></i> Back</a>
 
-    </div>
     <!-- Start: Content -->
+
+    {{-- Start Breadcrumbs--}}
+    <div class="col-lg-12">
+        <div class="row">
+            <div class="col-lg-12">
+                <ol class="breadcrumb breadcrumb-custom">
+                    <li class="breadcrumb-item text-success"><a href="/Courses/">Courses</a></li>
+                    <li class="breadcrumb-item text-success"><a href="/Courses/{{$course->id}}">{{ $course->title }}</a></li>
+                    <li class="breadcrumb-item text-success">Module</li>
+                    <li class="breadcrumb-item text-success"><a href="/Courses/{{$course->id. "/Modules/" .$module->id}}">{{ $module->title }}</a></li>
+                    <li class="breadcrumb-item active"><a href="/Courses/{{$course->id. "/Modules/" .$module->id. "/assignments"}}">Assignments</a></li>
+
+                </ol>
+            </div>
+        </div>
+        {{-- End Breadcrumbs--}}
+
     <div class="content mt-5 mb-4">
         <div class="container">
             <h1>Assignments

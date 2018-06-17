@@ -7,7 +7,19 @@
 
 
 @section('content')
+    {{-- Start Breadcrumbs--}}
+    <div class="col-lg-12">
+        <div class="row">
+            <div class="col-lg-12">
+                <ol class="breadcrumb breadcrumb-custom">
+                    <li class="breadcrumb-item text-success">Courses</li>
+                    <li class="breadcrumb-item active"><a href="/Courses/{{$course->id}}">{{ $course->title }}</a></li>
+                </ol>
+            </div>
+        </div>
+        {{-- End Breadcrumbs--}}
     <div class="row">
+
         <div class="col-lg-12 mb-2">
             <a href="{{ route('course.listUserCourses') }}" class="btn go-back-btn mb-1" style="position:relative; left:18px"><i class="fas fa-arrow-left fa-1x"></i> Back</a>   
         <hr>
