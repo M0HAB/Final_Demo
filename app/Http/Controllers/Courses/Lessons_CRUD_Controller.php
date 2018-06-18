@@ -81,7 +81,7 @@ class Lessons_CRUD_Controller extends Controller
         if(!file_exists(public_path().'/videos')){
             mkdir(public_path().'/videos', 0700);
         }
-        
+
         ini_set('memory_limit','256M');
         $privacyValues = ['unlisted', 'public'];
         ini_set('max_execution_time', 1500);
@@ -105,10 +105,10 @@ class Lessons_CRUD_Controller extends Controller
             Session::flash('error', 'Please select a video to be upload');
             return redirect()->back();
         }
-        
+
 
         if(file_exists(public_path() . '\videos\\' . $filename)){
-            $fullPathToVideo = $filename;
+            $fullPathToVideo = public_path() . '\videos\\' . $filename;
             $video = \Dawson\Youtube\Facades\Youtube::upload($fullPathToVideo, [
                 'title'       => $request->title,
                 'description' => $request->description,
@@ -128,11 +128,11 @@ class Lessons_CRUD_Controller extends Controller
                 ]);
 
                 if($lesson){
-                    unlink($filename);
+                    unlink($fullPathToVideo);
                     Session::flash('success', "Video uploaded successfully!");
                     return redirect()->back();
                 }
-            } 
+            }
         }
     }
 }
