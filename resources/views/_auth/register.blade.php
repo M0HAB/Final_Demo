@@ -138,13 +138,6 @@
           }
         });
         $('#reg-form').submit(function(e) {
-            var email = $('#email').val();
-            var confEmail = $('#confirm-email').val();
-            
-            if (confEmail != email) {
-                toastr.error('Email confirmation not match');
-                return false;
-            } 
             e.preventDefault();
             $.ajax({
                 type : "POST",
@@ -167,6 +160,13 @@
                     });
                 }
             });
+            var email = $('#email').val();
+            var confEmail = $('#confirm-email').val();
+            
+            if (confEmail != email) {
+                toastr.error('Email confirmation not match');
+                return false;
+            } 
         });
     });
 </script>
