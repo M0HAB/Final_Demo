@@ -20,6 +20,9 @@
                   <li class="nav-item">
                       <a class="nav-link" data-toggle="tab" href="#roll-posts">User discussions</a>
                   </li>
+                  <li class="nav-item">
+                      <a class="nav-link" data-toggle="tab" href="#roll-permissions">User permissions</a>
+                  </li>
 
               </ul>
               <div id="myTabContent" class="tab-content">
@@ -153,6 +156,21 @@
                               @endforeach
                           </tbody>
                       </table>
+                  </div>
+                  <div class="tab-pane" id="roll-permissions">
+                      @if($user->permission == null)
+                           <p class="text-center mt-4 text-muted">Default Permissions for <strong><a href="{{route('prole.show', $user->role->id)}}">{{$user->role->name}}</a> | <a href="#">Edit here <i class="fas fa-edit"></i></a></strong></p>
+                       @endif
+                      <!-- <table class="table">
+                          <tbody>
+                              @if($user->permission == null)
+                               <tr>
+                                   <td>NoPERMISSION</td>
+                               </tr>
+                               @endif
+
+                          </tbody>
+                      </table> -->
                   </div>
               </div>
           </div>

@@ -1,7 +1,3 @@
-$( document ).ready(function(){
-    $('#overlay').hide();
-});
-
 
 $('select#type').on('change', function () {
     if($(this).val() != 2){
@@ -11,14 +7,23 @@ $('select#type').on('change', function () {
     }
 });
 var oldQuery="";
-$('#search').keyup(function (key) {
-    let value = $(this).val();
+var typingTimer;
+var doneTypingInterval = 100;
+var $input = $('#search');
+$input.on('keyup', function () {
+  clearTimeout(typingTimer);
+  typingTimer = setTimeout(doneTyping, doneTypingInterval);
+});
+$input.on('keydown', function () {
+  clearTimeout(typingTimer);
+});
+function doneTyping () {
+    let value = $('#search').val();
     if(value != oldQuery){
         oldQuery=value;
-        $('#overlay').show();
         let params = {
             api_token: api_token,
-            name: $(this).val(),
+            name: $('#search').val(),
             type: $('select#type').val(),
             dep: $('select#dep').val()
         }
@@ -33,42 +38,14 @@ $('#search').keyup(function (key) {
           params
         })
         .then( (response) => {
-            $('#users_body').html('');
-            if(response.data.users.length > 0){
-                let showLvl = true;
-                $('#level_table').show();
-                if(!response.data.users[0].level){
-                    $('#level_table').hide();
-                    showLvl = false;
-                }
-                response.data.users.forEach(function(element) {
-                    let btn;
-                    if(element.trashed){
-                        btn = '<button class="btn btn-info" type="submit" data-toggle="modal" data-target="#confirm" data-id="'+element.id+'" data-type="user" data-keep="2" title="UnDelete"><i class="fas fa-undo"></i></button>';
-                    }else{
-                        btn = '<button class="btn btn-danger" type="submit" data-toggle="modal" data-target="#confirm" data-id="'+element.id+'" data-type="user" data-keep="3" title="Delete"><i class="fas fa-trash"></i></button>';
-                    }
-                    $('#users_body').append('<tr>');
-                    $('#users_body').append('<td><a href="'+profileRoute+'?id='+element.id+'">'+element.fname+' '+element.lname+'</a></td>');
-                    $('#users_body').append('<td>'+element.dep_id+'</td>');
-                    if(showLvl){
-                        $('#users_body').append('<td>'+element.level+'</td>');
-                    }
-                    $('#users_body').append('<td>'+element.email+'</td>');
-                    $('#users_body').append('<td>'+
-                    '<a href="'+editRoute+'?id='+element.id+'"><button class="btn btn-success" title="Edit"><i class="fas fa-edit"></i></button></a> '+
-                    btn+'</td>')
-                    $('#users_body').append('</tr>');
-                });
-
-            }
-            $('#overlay').hide();
-
+            $('#users_body').html(response.data.body);
         })
         .catch(function (error) {
-            $('#overlay').hide();
             console.log(error);
         });
     }
+}
+$('#search').keyup(function (key) {
+
 
 });
