@@ -62,5 +62,8 @@ class Kernel extends HttpKernel
         'role' => \App\Http\Middleware\RoleMiddleware::class,
         'icu' => \App\Http\Middleware\ISeeYou::class,
         'checkRole' => \App\Http\Middleware\checkRole::class,
+        'checkCourseActivation' => \App\Http\Middleware\checkCourseActivation::class,
+        'checkUserEnrollmentInCourse' => \App\Http\Middleware\checkUserEnrollmentInCourse::class,
+        'checkQuizActivation' => \App\Http\Middleware\checkQuizActivation::class,
     ];
 }

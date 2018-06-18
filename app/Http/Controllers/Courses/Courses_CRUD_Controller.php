@@ -118,9 +118,8 @@ class Courses_CRUD_Controller extends Controller{
                 'instructor_id'      => Auth::User()->id,
             ]);
             if($course){
-
                 return response()->json([
-                    'message' => 'The course has been created successfully!',
+                    'success' => 'course created successfully!',
                 ]);
             }
         }
@@ -133,11 +132,7 @@ class Courses_CRUD_Controller extends Controller{
     public function getUpdateCourseForm(Course $course){
         $departments = Department::all();
         $specializations = Specialization::all();
-        if(Auth::User()->checkIfUserTeachCourse($course->id)) {
-            return view('courses.updateCourseForm', compact('course'))->with('departments' ,$departments)->with('specializations', $specializations);
-        }else{
-            return redirect()->route('user.dashboard')->with('error', 'Unauthorized Access');
-        }
+        return view('courses.updateCourseForm', compact('course'))->with('departments' ,$departments)->with('specializations', $specializations);
     }
 
     /**
@@ -192,9 +187,10 @@ class Courses_CRUD_Controller extends Controller{
                     'instructor_id'      => Auth::User()->id,
             ]);
             if($myCourse){
+                $course = Course::find($course->id);
                 return response()->json([
-                    'message' => 'The course has been updated successfully!',
-                    'data' => $course
+                    'success' => 'course updated successfully!',
+                    'course' => $course
                 ]);
             }
         }
@@ -212,9 +208,11 @@ class Courses_CRUD_Controller extends Controller{
             ]);
 
             if($myCourse){
+                $course = Course::find($course->id);
                 return response()->json([
-                    'message' => $course->is_active?'The course has been activated successfully!':'The course has been deactivated successfully!',
-                    'data' => $course
+                    'success' => $course->is_active?'course activated successfully!':'course deactivated successfully!',
+                    'course' => $course
+
                 ]);
             }else{
                 return response()->json([

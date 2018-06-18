@@ -21,18 +21,21 @@ $('#submit-update-module').submit(function(event){
             module_order: $('#inputOrder').val()
         },
         success: function(response){
+            console.log(response);
             $('.error-msg').remove(); // To clear the old error messages before update the module
-            $('#response-message-success').show().text(response.message).show();
             $('#form-module-title-child').remove();
-            $('#form-module-title-parent').append('<Span id="form-module-title-child">' + response.data.title + '</span>');
+            $('#form-module-title-parent').append('<Span id="form-module-title-child">' + response.module.title + '</span>');
         },
         error: function(response){
             $('.error-msg').remove(); // To clear the old error messages before update the module
-            $('#response-message-success').hide();
             $.each(response.responseJSON, function(key, val){
                 $('input[name=' + key +']').after('<span  class= "error-msg text-danger">' + val +'</span>');
                 $('textarea[name=' + key +']').after('<span  class= "error-msg text-danger">' + val +'</span>');
             })
+        }
+    }).done(function(data){
+        if ($.isEmptyObject(data.error)) {
+            toastr.success(data.success);
         }
     });
 

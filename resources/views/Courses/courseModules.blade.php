@@ -71,7 +71,7 @@ our animation centered, and no-repeating */
                         </div>
                     </div>
                 @endfor
-            @else
+            @elseif(Auth::User()->isInstructor())
                 <div class="alert alert-info mt-4">
                     <p><i class="fa fa-info-circle mr-2"></i>This course has no modules.Click <a href="{{ route('course.getNewModuleForm', ['id' => $course->id]) }}"> here </a> to add modules</p>
                 </div>
@@ -86,10 +86,7 @@ our animation centered, and no-repeating */
                             <div class="card mt-4" style="box-shadow: 5px 5px 10px gray">
                                 <div class="card-block mt-4 mb-3 p-2">
 
-
-
-                                @if (Auth::user()->isInstructor())
-
+                                @if(Auth::user()->isInstructor())
                                         <p>
                                             <a href="{{ route('course.getUpdateCourseForm', ['id' => $course->id]) }}" class="mt-2 text-capitalize"><i class="fa fa-edit"></i> update course information</a>
                                         </p>

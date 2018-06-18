@@ -24,17 +24,19 @@ $('#submit-new-module').submit(function(event){
         },
         success: function(response){
             $('.error-msg').remove(); // To clear the old error messages before submit new course
-            $('#response-message-success').show().text(response.message).show();
             $('input').val('');
             $('textarea').val('');
         },
         error: function(response){
             $('.error-msg').remove(); // To clear the old error messages before submit new course
-            $('#response-message-success').hide();
             $.each(response.responseJSON, function(key, val){
                 $('input[name=' + key +']').after('<span  class= "error-msg text-danger">' + val +'</span>');
                 $('textarea[name=' + key +']').after('<span  class= "error-msg text-danger">' + val +'</span>');
             })
+        }
+    }).done(function(data){
+        if ($.isEmptyObject(data.error)) {
+            toastr.success(data.success);
         }
     });
 

@@ -24,23 +24,20 @@ class Modules_CRUD_Controller extends Controller{
      */
 
     public function viewCourseModules(Course $course){
-        if(Auth::User()->checkIfUserEnrolled($course->id) or Auth::User()->checkIfUserTeachCourse($course->id)) {
-            $course = DB::table('courses')
-                ->leftjoin('users', 'users.id', '=', 'courses.instructor_id')
-                ->select('courses.*', 'users.fname', 'users.lname')
-                ->where('courses.id', '=', $course->id)
-                ->first();
+        $course = DB::table('courses')
+            ->leftjoin('users', 'users.id', '=', 'courses.instructor_id')
+            ->select('courses.*', 'users.fname', 'users.lname')
+            ->where('courses.id', '=', $course->id)
+            ->first();
 
-            $modules = DB::table('modules')
-                ->leftjoin('courses', 'courses.id', '=', 'modules.course_id')
-                ->select('modules.*')
-                ->where('modules.course_id', '=', $course->id)
-                ->orderBy('module_order')
-                ->get();
+        $modules = DB::table('modules')
+            ->leftjoin('courses', 'courses.id', '=', 'modules.course_id')
+            ->select('modules.*')
+            ->where('modules.course_id', '=', $course->id)
+            ->orderBy('module_order')
+            ->get();
             return view('courses.courseModules', compact('course', 'modules'));
-        }else{
-            return redirect()->back()->with('error', 'Unauthorized access');
-        }
+
     }
 
 
@@ -50,11 +47,8 @@ class Modules_CRUD_Controller extends Controller{
      */
 
     public function getNewModuleForm(Course $course){
-        if(Auth::User()->checkIfUserEnrolled($course->id) or Auth::User()->checkIfUserTeachCourse($course->id)) {
+
             return view('courses.newModuleForm')->with('course_id', $course->id);
-        }else{
-            return redirect()->back();
-        }
     }
 
     /**
@@ -90,8 +84,7 @@ class Modules_CRUD_Controller extends Controller{
 
             if($module){
                 return response()->json([
-                    'message' => 'The module has been created successfully!',
-                    'data' => $module
+                    'success' => 'module created successfully!',
                 ]);
             }
         }
@@ -103,11 +96,7 @@ class Modules_CRUD_Controller extends Controller{
      */
     public function getUpdateModuleForm(Course $course, Module $module){
 
-        if(Auth::User()->checkIfUserEnrolled($course->id) or Auth::User()->checkIfUserTeachCourse($course->id)) {
-            return view('courses.updateModuleForm', compact('course', 'module'));
-        }else{
-            return redirect()->back();
-        }
+        return view('courses.updateModuleForm', compact('course', 'module'));
 
     }
 
@@ -138,9 +127,10 @@ class Modules_CRUD_Controller extends Controller{
             ]);
 
             if($myModule){
+                $module = Module::find($module->id);
                 return response()->json([
-                    'message' => 'The module has been updated successfully!',
-                    'data' => $module
+                    'success' => 'module updated successfully!',
+                    'module' => $module
                 ]);
             }
         }

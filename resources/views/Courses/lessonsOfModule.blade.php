@@ -70,6 +70,40 @@
                 </table>
             </div>
 
+
+            <div class="col-sm-12">
+                <table class="table table-hover mt-5" style="box-shadow: 5px 5px 10px gray">
+                    <thead class="bg-primary" style="color: #02b3e4">
+                    <tr>
+                        <th>Files</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    @forelse($files as $file)
+                        <tr>
+                            <td>
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <a class="font-weight-bold text-success forum-nav" href="#" download>
+                                            <i class="fa fa-download mr-2"></i>
+                                            {{ $file->title }}
+                                        </a>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td>
+                                <span>The module has no files</span>
+                            </td>
+                        </tr>
+                    @endforelse
+                    </tbody>
+                </table>
+            </div>
+            <!--------------------------------------------------------------------->
+
             <!--------------------------------------------------------------------->
             <div class="col-sm-12">
                 <table class="table table-hover mt-5" style="box-shadow: 5px 5px 10px gray">
@@ -161,7 +195,7 @@
                                         </div>
                                     @elseif(Auth::User()->isInstructor())
                                         <div class="col-sm-5">
-                                            <a href="#" class="text-info"><i class="fas fa-eye mr-1"></i>preview</a>
+                                            <a href="{{ route('quiz.getSubmitQuizForm', ['course_id' => $course->id, 'module_id' => $module->id, 'quiz_id' => $quiz->id]) }}" class="text-info"><i class="fas fa-eye mr-1"></i>preview</a>
                                         </div>
                                     @endif
                                 </div>
@@ -189,30 +223,39 @@
                             @if(Auth::User()->isInstructor())
                                 <tr>
                                     <td>
-                                        <a href="{{ route('course.addNewVideo', ['course_id' => $course->id, 'module_id' => $module->id]) }}" class="ml-1"><i class="fas fa-plus mr-1"></i>Add New Lesson</a>
+                                        <a href="{{ route('course.addNewVideo', ['course_id' => $course->id, 'module_id' => $module->id]) }}" class="ml-1"><i class="fas fa-plus mr-1"></i>Add New Video</a>
                                     </td>
                                 </tr>
+
+                                <tr>
+                                    <td>
+                                        <a href="{{ route('course.addNewFile', ['course_id' => $course->id, 'module_id' => $module->id]) }}" class="ml-1"><i class="fas fa-plus mr-1"></i>Add New File</a>
+                                    </td>
+                                </tr>
+
                                 <tr>
                                     <td>
                                         <a href="{{ route('quiz.getNewQuizForm', ['course_id' => $course->id, 'module_id' => $module->id]) }}" class="ml-1"><i class="fas fa-plus mr-1"></i>Add New Quiz</a>
                                     </td>
                                 </tr>
+
                                 <tr>
                                     <td>
                                         <a href="{{ route('assignments.create', ['course_id' => $course->id, 'module_id' => $module->id]) }}" class="ml-1"><i class="fas fa-plus mr-1"></i>Add New Assignment</a>
                                     </td>
                                 </tr>
+
                                 <tr>
                                     <td>
                                         <a href="{{ route('course.getUpdateModuleForm', ['course_id' => $course->id, 'module_id' => $module->id]) }}" class="ml-1"><i class="fas fa-edit mr-1"></i>Update The Module</a>
                                     </td>
                                 </tr>
+
                                 <tr>
                                     <td>
                                         <a href="{{ route('assignment.delivered', ['course_id' => $course->id, 'module_id' => $module->id]) }}" class="ml-1"><i class="fas fa-eye mr-1"></i>Student Assignments</a>
                                     </td>
                                 </tr>
-
                             @elseif(Auth::User()->isStudent())
                                 <tr>
                                     <td>

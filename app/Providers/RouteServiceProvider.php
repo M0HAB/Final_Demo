@@ -2,6 +2,11 @@
 
 namespace App\Providers;
 
+use App\assignment;
+use App\Course;
+use App\Module;
+use App\Quiz;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 
@@ -23,8 +28,37 @@ class RouteServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-
         parent::boot();
+
+        Route::bind('module', function(){
+            $module = Module::where('id', request()->module);
+
+            if (request()->route()->hasParameter('course')) {
+                $course = Course:: findOrFail(request()->course);
+                $module = $module->where('course_id', $course->id);
+            }
+            return $module->firstOrFail();
+        });
+
+        Route::bind('assignment', function(){
+            $assignment = assignment::where('id', request()->assignment);
+            if(request()->route()->hasParameter('module')){
+                $module = Module::where('id', request()->module->id)->first();
+                $assignment = $assignment->where('module_id', $module->id);
+            }
+            return $assignment->firstOrFail();
+        });
+
+        Route::bind('quiz', function(){
+            $quiz = Quiz::where('id', request()->quiz);
+            if(request()->route()->hasParameter('module')){
+                $module = Module::where('id', request()->module->id)->first();
+                $quiz = $quiz->where('module_id', $module->id);
+            }
+            return $quiz->firstOrFail();
+        });
+
+
     }
 
     /**

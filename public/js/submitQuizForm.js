@@ -6,10 +6,10 @@ $.ajaxSetup({
         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
     }
 });
-$('#submit-course-activation').submit(function(event){
+$('#submit-quiz-activation').submit(function(event){
     event.preventDefault();
     $.ajax({
-        url: '/Courses/' + courseID +'/updateActivation',
+        url: '/Quizzes/' + quizID +'/updateActivation',
         type: 'POST',
         dataType: 'JSON',
         data: {
@@ -17,15 +17,15 @@ $('#submit-course-activation').submit(function(event){
         },
         success: function(data){
             console.log(data);
-            console.log(data.course.is_active);
-            if(data.course.is_active){
+            console.log(data.quiz.is_active);
+            if(data.quiz.is_active){
                 $('input[name = is_active]').val('0');
-                $('#submit-course-status').html('Deactivate the Course');
-                $('#icon-course-status').removeClass('fa-toggle-off').addClass('fa-toggle-on text-success')
+                $('#submit-quiz-status').html('Deactivate the quiz');
+                $('#quiz-status').html('Activated quiz').removeClass('bg-danger').addClass('bg-success');
             }else{
                 $('input[name = is_active]').val('1');
-                $('#submit-course-status').html('Activate the Course');
-                $('#icon-course-status').removeClass('fa-toggle-on text-success').addClass('fa-toggle-off')
+                $('#submit-quiz-status').html('Activate the quiz');
+                $('#quiz-status').html('Deactivated quiz').removeClass('bg-success').addClass('bg-danger');
 
             }
         },

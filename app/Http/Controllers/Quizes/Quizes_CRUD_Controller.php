@@ -22,7 +22,7 @@ class Quizes_CRUD_Controller extends Controller{
 
     public function getSubmitQuizForm(Course $course, Module $module, Quiz $quiz){
 
-        if(Auth::User()->checkIfUserEnrolled($course->id)){
+        if(Auth::User()->checkIfUserEnrolled($course->id) or Auth::User()->checkIfUserTeachCourse($course->id)){
             $questions = DB::table('questions')
                 ->leftjoin('quizzes', 'quizzes.id', '=', 'questions.quiz_id')
                 ->where('questions.quiz_id', '=', $quiz->id)
@@ -118,7 +118,33 @@ class Quizes_CRUD_Controller extends Controller{
             }
             if($inserted_questions == count($request->questions)){
                 return response()->json([
-                    'message' => 'The quiz has been created successfully',
+                    'success' => 'The quiz has been created successfully',
+                ]);
+            }
+        }
+    }
+
+    /**
+    | Update A quiz Activation :-
+    |----------------------------
+     */
+    public function updateQuizActivation(Request $request, Quiz $quiz){
+        if(\Illuminate\Support\Facades\Request::ajax()){
+
+            $myQuiz = Quiz::where('id', $quiz->id)->update([
+                'is_active' => $request->is_active,
+            ]);
+
+            if($myQuiz){
+                $quiz = Quiz::find($quiz->id);
+                return response()->json([
+                    'success' => $quiz->is_active?' quiz activated successfully!':'quiz deactivated successfully!',
+                    'quiz' => $quiz
+
+                ]);
+            }else{
+                return response()->json([
+                    'message' => 'Something went wrong.Please,Try again!',
                 ]);
             }
         }
