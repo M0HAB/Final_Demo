@@ -35,7 +35,7 @@
                                 <div class="col-lg-6 col-sm-12">
                                     <div class="form-group">
                                         <label for="">Confirm Email</label>
-                                        <input type="email" class="form-control" id="confirm-email">
+                                        <input type="email" class="form-control" id="confirm-email" name="email_confirmation">
                                     </div>
                                 </div>
                                 <div class="col-lg-6 col-sm-12">
@@ -138,7 +138,7 @@
           }
         });
         $('#reg-form').submit(function(e) {
-            e.preventDefault();
+            e.preventDefault();           
             $.ajax({
                 type : "POST",
                 url : "{{ route('user.create') }}",
@@ -160,13 +160,6 @@
                     });
                 }
             });
-            var email = $('#email').val();
-            var confEmail = $('#confirm-email').val();
-            
-            if (confEmail != email) {
-                toastr.error('Email confirmation not match');
-                return false;
-            } 
         });
     });
 </script>
