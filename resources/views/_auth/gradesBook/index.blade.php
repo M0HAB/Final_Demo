@@ -3,105 +3,98 @@
 
 
 @section('content')
-
-    {{-- Start Breadcrumbs--}}
+    <div class="row">
+            {{-- Start Breadcrumbs--}}
     <div class="col-lg-12">
-        <div class="row">
-            <div class="col-lg-12">
-                <ol class="breadcrumb breadcrumb-custom">
-                    <li class="breadcrumb-item text-success"><a href="/Courses/">Courses</a></li>
-                    <li class="breadcrumb-item text-success"><a href="/Courses/{{$course->id}}">{{ $course->title }}</a></li>
-                    <li class="breadcrumb-item text-success"><a href="/Courses/{{$course->id}}/gradesBook"> Grades Book</a></li>
-
-
-                </ol>
+            <div class="row">
+                <div class="col-lg-12">
+                    <ol class="breadcrumb breadcrumb-custom">
+                        <li class="breadcrumb-item text-success"><a href="/Courses/">Courses</a></li>
+                        <li class="breadcrumb-item text-success"><a href="/Courses/{{$course->id}}">{{ $course->title }}</a></li>
+                        <li class="breadcrumb-item text-success"><a href="/Courses/{{$course->id}}/gradesBook"> Grades Book</a></li>
+                    </ol>
+                </div>
             </div>
-        </div>
-    {{-- End Breadcrumbs--}}
-    <!-- Start: Content -->
-    <div class="content mt-5 mb-4">
-        <div class="container">
-            <h1>Grades Book
+        {{-- End Breadcrumbs--}}
+        <!-- Start: Content -->
+        <div class="row mt-4">
+            <div class="col-lg-8">
+                <h1 class="f-rw">Grades Book</h1>
+            </div>
+            <div class="col-lg-4">
                 @if (count($gradesBooks) ==0)
-                    <a href="{{route('course.gradeBook.create', ['course_id' => $course_id])}}" class="btn btn-info" role="button">Create</a>
+                    <a href="{{route('course.gradeBook.create', ['course_id' => $course_id])}}" class="btn btn-success float-right" role="button">Create</a>
                 @endif
-
-            </h1>
-            <div class="row justify-content-center">
+            </div>
+            <div class="col-lg-12 mt-4">
                 @if (count($gradesBooks)>0)
-                    <table class="table table-hover">
-                        <thead>
+                <table class="table table-hover">
+                    <thead>
+                    <tr>
+                        <th>Code</th>
+                        <th>Course Name</th>
+                        <th>Assignments weight</th>
+                        <th>Quizzes weight</th>
+                        <th>Midterm weight</th>
+                        <th>Final Exam weight</th>
+                        <th>Practical weight</th>
+                        <th>Total</th>
+                        <th>Actions</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    @foreach ($gradesBooks as $gradesBook)
                         <tr>
-                            <th>Code</th>
-                            <th>Course Name</th>
-                            <th>Assignments weight</th>
-                            <th>Quizzes weight</th>
-                            <th>Midterm weight</th>
-                            <th>Final Exam weight</th>
-                            <th>Practical weight</th>
-                            <th>Total</th>
-                            <th>Actions</th>
-
-
-
+                            <td>
+                                {{$gradesBook->course->code ? $gradesBook->course->code : "course has no code"}}
+                            </td>
+                            <td>
+                                {{$gradesBook->course->title ? $gradesBook->course->title : "course has no title"}}
+                            </td>
+                            <td>
+                                {{$gradesBook->assignments_weight ? $gradesBook->assignments_weight * 100 : 'Ø'}}%
+                            </td>
+                            <td>
+                                {{$gradesBook->quizzes_weight ? $gradesBook->quizzes_weight * 100 : 'Ø'}}%
+                            </td>
+                            <td>
+                                {{$gradesBook->midterm_weight ? $gradesBook->midterm_weight * 100 : 'Ø'}}%
+                            </td>
+                            <td>
+                                {{$gradesBook->finalexam_weight ? $gradesBook->finalexam_weight * 100 : 'Ø'}}%
+                            </td>
+                            <td>
+                                {{$gradesBook->practical_weight ? $gradesBook->practical_weight * 100 : 'Ø'}}%
+                            </td>
+    
+                            <td>
+                                {{($gradesBook->assignments_weight + $gradesBook->quizzes_weight + $gradesBook->midterm_weight + $gradesBook->finalexam_weight + $gradesBook->practical_weight) * 100}}%
+    
+                            </td>
+    
+                            <td>
+                                <a href="{{route('course.gradeBook.edit', ['gradesBook_id' => $gradesBook->id,'course_id' => $course->id])}}" class="btn btn-link py-0"><i class="far fa-edit fa-lg text-dark"></i> </a>
+                            </td>
+    
                         </tr>
-                        </thead>
-                        <tbody>
-                        @foreach ($gradesBooks as $gradesBook)
-                            <tr>
-                                <td>
-                                    {{$gradesBook->course->code ? $gradesBook->course->code : "course has no code"}}
-                                </td>
-                                <td>
-                                    {{$gradesBook->course->title ? $gradesBook->course->title : "course has no title"}}
-                                </td>
-                                <td>
-                                    {{$gradesBook->assignments_weight ? $gradesBook->assignments_weight * 100 : 'Ø'}}%
-                                </td>
-                                <td>
-                                    {{$gradesBook->quizzes_weight ? $gradesBook->quizzes_weight * 100 : 'Ø'}}%
-                                </td>
-                                <td>
-                                    {{$gradesBook->midterm_weight ? $gradesBook->midterm_weight * 100 : 'Ø'}}%
-                                </td>
-                                <td>
-                                    {{$gradesBook->finalexam_weight ? $gradesBook->finalexam_weight * 100 : 'Ø'}}%
-                                </td>
-                                <td>
-                                    {{$gradesBook->practical_weight ? $gradesBook->practical_weight * 100 : 'Ø'}}%
-                                </td>
-
-                                <td>
-
-                                    {{($gradesBook->assignments_weight + $gradesBook->quizzes_weight + $gradesBook->midterm_weight + $gradesBook->finalexam_weight + $gradesBook->practical_weight) * 100}}%
-
-
-                                </td>
-
-                                <td>
-                                    <button  class="btn btn-group-sm btn-link"><a href="{{route('course.gradeBook.edit', ['gradesBook_id' => $gradesBook->id,'course_id' => $course->id])}}"><i class="far fa-edit fa-lg fam-mod"></i> </a> </button>
-
-                                </td>
-
-                            </tr>
-                        @endforeach
-                        @else
-                            <strong style="color: red"> No Grade book yet for this course please create one</strong>
-                        </tbody>
-                    </table>
-                    <script>
-
-                        function ConfirmDelete(){
-                            return confirm('Are you sure you ? THIS CANNOT BE UNDONE');
-                        }
-
-                    </script>
-                @endif
-
+                    @endforeach
+                    @else
+                        <div class="alert alert-dismissible alert-light mt-3">
+                            <strong>No Grade book yet</strong> for this course please create one
+                        </div>
+                    </tbody>
+                </table>
+                <script>
+    
+                    function ConfirmDelete(){
+                        return confirm('Are you sure you ? THIS CANNOT BE UNDONE');
+                    }
+    
+                </script>
+            @endif
             </div>
         </div>
-    </div> <!-- End: Content -->
-
+    </div>
 @stop
 
 

@@ -6,6 +6,7 @@ use App\Course;
 use App\gradeBook;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Session;
 
 class GradesBookController extends Controller
 {
@@ -60,32 +61,34 @@ class GradesBookController extends Controller
      */
     public function store(Request $request,$course_id)
     {
-        $course = Course::find($course_id);
-
-
-        if (gradeBook::where('course_id', '=', $course_id)->exists()){
-            return redirect()->back()->with('error', 'Grade book already exist ');
+        if ($request->assw == null || $request->quizw == null || $request->midw == null || $request->finalw == null) {
+            Session::flash('error', 'Please be sure you fill out the required fields.');
+            return redirect()->back()->withInput();
+        } else {
+            $course = Course::find($course_id);
+            if (gradeBook::where('course_id', '=', $course_id)->exists()){
+                return redirect()->back()->with('error', 'Grade book already exist ');
+            }
+            else{
+                $gradebook = new gradeBook;
+                $gradebook ->assignments_weight = $request->input('assw') / 100;
+                $gradebook ->quizzes_weight = $request->input('quizw') /100;
+                $gradebook ->midterm_weight = $request->input('midw') /100;
+                $gradebook ->finalexam_weight = $request->input('finalw') /100;
+                $gradebook ->course_id= $course_id;
+    
+                if (!empty($request->input('practw'))) {
+                    $gradebook ->practical_weight = $request->input('practw') /100;
+                }
+    
+    
+                if ($gradebook->save()){
+                    return redirect()->back()->with('success', 'Grade Book created successfully');
+                }else{
+                    return redirect()->back()->with('error', 'An Error Occurred ');
+                }
+            }
         }
-        else{
-        $gradebook = new gradeBook;
-        $gradebook ->assignments_weight = $request->input('assw') / 100;
-        $gradebook ->quizzes_weight = $request->input('quizw') /100;
-        $gradebook ->midterm_weight = $request->input('midw') /100;
-        $gradebook ->finalexam_weight = $request->input('finalw') /100;
-        $gradebook ->course_id= $course_id;
-
-        if (!empty($request->input('practw'))) {
-            $gradebook ->practical_weight = $request->input('practw') /100;
-        }
-
-
-        if ($gradebook->save()){
-            return redirect()->back()->with('success', 'Grade Book created successfully');
-        }else{
-            return redirect()->back()->with('error', 'An Error Occurred ');
-        }
-        }
-
     }
 
     /**
