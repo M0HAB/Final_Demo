@@ -43,7 +43,7 @@ function dechexper($perName,$type){
     //Extract index from received data
     $perIndex = $perIndex->index;
     //If current Auth user has no special permissions get the default ones
-    if (empty($number)){
+    if ($number === null){
         $number = Role::find($authuser->role_id)->permission;
     }
     //Decimal to hex of permission

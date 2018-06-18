@@ -284,6 +284,8 @@ Route::group(['prefix' => 'admin'], function () {
   Route::resource('/pindex', 'PIndexController', [
       'only' => ['edit', 'update', 'index']
   ]);
+  Route::get('/prole/user', 'PermissionRoleController@viewUserPermission')->name('prole.user.view');
+  Route::post('/prole/user', 'PermissionRoleController@setUserPermission')->name('prole.user.store');
   Route::resource('/prole', 'PermissionRoleController')->except([
       'destroy'
   ]);

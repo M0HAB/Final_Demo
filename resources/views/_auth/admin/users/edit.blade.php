@@ -10,7 +10,7 @@
     @include('_partials.messages')
         <fildset>
             <legend class="f-rw">
-                Edit <strong>{{$user->fname.' '.$user->lname}}</strong> <span class="badge badge-light">{{$user->role->name}}</span>
+                Edit <strong><a href="{{route('admin.user.profile', ['id'=>$user->id])}}">{{$user->fname.' '.$user->lname}}</a></strong> <span class="badge badge-light">{{$user->role->name}}</span>
                 @if($user->trashed())
                     <span class="badge badge-danger">Deleted</span>
                 @endif

@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use App\Role;
 use Session;
+use App\User;
 use App\Pindex;
 
 class PermissionRoleController extends Controller
@@ -58,15 +59,7 @@ class PermissionRoleController extends Controller
       return $envelope;
     }
 
-    private function encodePermissions(Request $request,$id,$type){
-
-      $name = ucfirst(strtolower($request->input('name')));
-      if($type === "update"){
-        $role = Role::find($id);
-      }else{
-        $role = new Role;
-      }
-      $role->name = $name;
+    private function encodePermissions(Request $request){
       $binary="";
       $moduleCount = Pindex::count();
       for ($i = 1;$i<=$moduleCount;$i++){
@@ -77,8 +70,7 @@ class PermissionRoleController extends Controller
           $binary .= $c.$r.$u.$d;
       }
       $permission = bindec($binary);
-      $role->permission = $permission;
-      return $role;
+      return $permission;
     }
     /**
      * Store a newly created resource in storage.
@@ -97,7 +89,11 @@ class PermissionRoleController extends Controller
             'name.max' => 'Role name is 100 chars max'
         ];
         $this->validate($request, $rules, $messages);
-        $role = $this->encodePermissions($request,0,0);
+
+        $name = ucfirst(strtolower($request->input('name')));
+        $role = new Role;
+        $role->name = $name;
+        $role->permission = $this->encodePermissions($request);
         if ($role->save()){
             return redirect()->back()->with('success', 'Role Created Successfully');
         }else{
@@ -166,7 +162,10 @@ class PermissionRoleController extends Controller
                 'name.max' => 'Role name is 100 chars max'
             ];
             $this->validate($request, $rules, $messages);
-            $role = $this->encodePermissions($request,$id,"update");
+            $name = ucfirst(strtolower($request->input('name')));
+            $role = Role::find($id);
+            $role->name = $name;
+            $role->permission = $this->encodePermissions($request);
             if($role->name == Role::find($id)->name && $role->permission == Role::find($id)->permission ){
               return redirect()->back()->with('warning', 'Same Value Resubmittion');
             }
@@ -207,8 +206,32 @@ class PermissionRoleController extends Controller
 
     }
 
-    public function setUserPermission($id)
+    public function viewUserPermission(Request $request)
     {
+        $user = User::find($request->id);
+        $pindexes = Pindex::all();
+        $envelope = $this->getAndCombinePermissions($pindexes, $user);
+        if(empty($envelope)){
+            $user['empty'] = true;
+        }
+        Session::flashInput($envelope);
+        return view('_auth.admin.permission_role.user_role')->with('user', $user)->with('pindexes', $pindexes);
+    }
+
+    public function setUserPermission(Request $request)
+    {
+        $user = User::find($request->id);
+        if(isset($_POST['revert'])){
+            $user->permission =null;
+            $user->save();
+            return redirect()->back()->with('success', 'Permissions Reverted Successfully');
+        }else{
+            $permission = $this->encodePermissions($request);
+            $user->permission = $permission;
+            $user->save();
+            return redirect()->back()->with('success', 'Permissions Updated Successfully');
+
+        }
 
     }
 

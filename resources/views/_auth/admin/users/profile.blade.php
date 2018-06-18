@@ -8,7 +8,19 @@
       <div class="row f-rw">
           {{--  User-Info  --}}
           <div class="col-lg-12 col-sm-12 mb-4">
-              <h3 class="f-rw">{{$user->fname.' '.$user->lname}}</h1>
+              <h3 class="f-rw">{{$user->fname.' '.$user->lname}}
+                  <a href="{{route('admin.user.edit', ['id'=>$user->id])}}"><button class="btn btn-success" title="Edit">
+                  <i class="fas fa-edit"></i>
+              </button></a>
+              @if(!$user->trashed())
+                  <button class="btn btn-danger" type="submit" data-toggle="modal" data-target="#confirm" data-id="{{$user->id}}" data-type="user" data-keep="3" title="Delete">
+                          <i class="fas fa-trash"></i>
+                  </button>
+              @else
+                  <button class="btn btn-info" type="submit" data-toggle="modal" data-target="#confirm" data-id="{{$user->id}}" data-type="user" data-keep="2" title="UnDelete">
+                          <i class="fas fa-undo"></i>
+                  </button>
+              @endif</h3>
 
               <ul class="nav nav-tabs">
                   <li class="nav-item">
@@ -159,23 +171,72 @@
                   </div>
                   <div class="tab-pane" id="roll-permissions">
                       @if($user->permission == null)
-                           <p class="text-center mt-4 text-muted">Default Permissions for <strong><a href="{{route('prole.show', $user->role->id)}}">{{$user->role->name}}</a> | <a href="#">Edit here <i class="fas fa-edit"></i></a></strong></p>
-                       @endif
-                      <!-- <table class="table">
-                          <tbody>
-                              @if($user->permission == null)
+                           <p class="text-center mt-4 text-muted">Default Permissions for <strong><a href="{{route('prole.show', $user->role->id)}}">{{$user->role->name}}</a> | <a href="{{route('prole.user.view', ['id'=>$user->id])}}">Edit here <i class="fas fa-edit"></i></a></strong></p>
+                      @else
+                       <table class="table">
+                           <thead>
                                <tr>
-                                   <td>NoPERMISSION</td>
+                                   <th>Index Name</th>
+                                   <th>Create</th>
+                                   <th>Read</th>
+                                   <th>Update</th>
+                                   <th>Delete</th>
                                </tr>
-                               @endif
+                           </thead>
+                           <tbody>
+                               @foreach ($pindexes as $pindex)
+                               <tr>
+                                   <td>
+                                       {{$pindex->name}}
+                                   </td>
+                                   <td>
+       								@if(isset($envelope['create'.$pindex->index]))
+       								<p class="f-rw text-success font-weight-bold"><i class="fas fa-check"></i></p>
+       								@else
+       								<p class="f-rw text-danger font-weight-bold"><i class="fas fa-times"></i></p>
+       								@endif
+                                   </td>
+       							<td>
+       								@if(isset($envelope['read'.$pindex->index]))
+       								<p class="f-rw text-success font-weight-bold"><i class="fas fa-check"></i></p>
+       								@else
+       								<p class="f-rw text-danger font-weight-bold"><i class="fas fa-times"></i></p>
+       								@endif
+                                   </td>
+                                   <td>
+       								@if(isset($envelope['update'.$pindex->index]))
+       								<p class="f-rw text-success font-weight-bold"><i class="fas fa-check"></i></p>
+       								@else
+       								<p class="f-rw text-danger font-weight-bold"><i class="fas fa-times"></i></p>
+       								@endif
+                                   </td>
+                                   <td>
+       								@if(isset($envelope['delete'.$pindex->index]))
+       								<p class="f-rw text-success font-weight-bold"><i class="fas fa-check"></i></p>
+       								@else
+       								<p class="f-rw text-danger font-weight-bold"><i class="fas fa-times"></i></p>
+       								@endif
+                                   </td>
+                               </tr>
+                               @endforeach
+                           </tbody>
+                       </table>
 
-                          </tbody>
-                      </table> -->
+
+                       <a href="{{route('prole.user.view', ['id'=>$user->id])}}" style="text-decoration:none"><button type="button" class="btn btn-success btn-lg btn-block">Edit here <i class="fas fa-edit"></i></button></a>
+                       @endif
                   </div>
               </div>
           </div>
       </div> <!-- End: Profile -->
   </div>
 </div>
-
+@include('_partials.modal_confirm')
+@endsection
+@section('scripts')
+<script type="text/javascript">
+    var api_token    = "{{ Auth::user()->api_token}}";
+</script>
+<script src="{{asset('js/axios.min.js')}}"></script>
+<script src="{{asset('js/modal_confirm.js')}}" charset="utf-8"></script>
 @endsection

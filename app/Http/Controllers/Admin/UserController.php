@@ -28,7 +28,7 @@ class UserController extends Controller
     {
 
         if($request->name == ""){
-            $users = User::withTrashed()->where('role_id', $request->type)->orderBy('level')->orderBy('dep_id')->orderBy('fname')->take(30)->get();
+            $users = User::withTrashed()->where('role_id', $request->type)->orderBy('level')->orderBy('dep_id')->orderBy('fname')->get();
             $users->transform(function ($item, $key) {
                 if($item->trashed()){
                     $item['trashed'] = true;
@@ -52,7 +52,7 @@ class UserController extends Controller
         $results = User::withTrashed()->where('role_id', $request->type)
         ->whereRaw('(fname LIKE "'.$fname.'%" and lname LIKE "'.$lname.'%")')
         ->orderBy('level')->orderBy('dep_id')
-        ->orderBy('fname')->take(30)->get();
+        ->orderBy('fname')->get();
         $results->transform(function ($item, $key) {
             if($item->trashed()){
                 $item['trashed'] = true;
@@ -78,7 +78,11 @@ class UserController extends Controller
         $envelope = $PRC->getAndCombinePermissions($pindexes,$user);
         // dd($envelope);
         if($user){
-            return view('_auth.admin.users.profile')->with('user', $user);
+            return view('_auth.admin.users.profile')->with([
+                'user' => $user,
+                'envelope' => $envelope,
+                'pindexes' => $pindexes
+            ]);
         }else{
             return "404";
         }
@@ -99,6 +103,7 @@ class UserController extends Controller
           }
         }
     }
+
     public function edit(Request $request)
     {
         $user = User::withTrashed()->find($request->id);
@@ -118,6 +123,7 @@ class UserController extends Controller
             'roles' => $roles
         ]);
     }
+
     public function update(Request $request)
     {
         $id = $request->id;
@@ -149,11 +155,9 @@ class UserController extends Controller
             }
             // Apply validation rules on incoming request
             $validator = Validator::make($request->all(), $rules, $messages);
-
             // If incoming request is valid
             if ($validator->passes())
             {
-
                 $request['dep_id'] = $request->department;
                 $input = array_except($request->all(), ['_token', 'email_confirmation']);
                 $user->update($input);
@@ -166,11 +170,7 @@ class UserController extends Controller
         }else{
             return redirect()->route('error.api', 'Not Found');
         }
-        /**
-         * Override laravel default validation messages
-         * Not the best way to customize validation rules and messages, not clear and reusable.
-         * Refactoring..Later
-        */
 
     }
+
 }
