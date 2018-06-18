@@ -108,14 +108,10 @@
                                     </p>
 
                                     @elseif (Auth::user()->isStudent())
-                                        @if($grades)
-                                    <p>
-                                        <a href="{{route('course.studentGrades.show', ['student_id' => Auth::user()->id,'course_id' =>$course->id])}}" class="ml-1"><i class="fas fa-graduation-cap mr-1"></i>My grades</a>
-                                    </p>
-                                            @else
-                                            <p style="color: red">Grades not set yet</p>
-                                        @endif
-                                @endif
+                                        <p>
+                                            <a href="{{route('course.studentGrades.show', ['student_id' => Auth::user()->id,'course_id' =>$course->id])}}" class="ml-1"><i class="fas fa-graduation-cap mr-1"></i>My grades</a>
+                                        </p>
+                                    @endif
                             </div>
                         </div>
                     <div class="col-sm-12 mt-4 text-center px-0">

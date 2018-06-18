@@ -85,9 +85,9 @@
             </div>
 
 
-            <div class="col-sm-12">
-                <table class="table table-hover mt-5" style="box-shadow: 5px 5px 10px gray">
-                    <thead class="bg-primary" style="color: #02b3e4">
+            <div class="col-lg-12">
+                <table class="table table-hover mt-5" style="border: 1px solid #DEE2E6">
+                    <thead class="bg-primary f-rw-bold bg-light">
                     <tr>
                         <th>Files</th>
                     </tr>
@@ -240,19 +240,19 @@
                             @if(Auth::User()->isInstructor())
                                 <tr>
                                     <td>
-                                        <a href="{{ route('course.addNewVideo', ['course_id' => $course->id, 'module_id' => $module->id]) }}" class="ml-1"><i class="fas fa-plus mr-1"></i>Add New Video</a>
+                                        <a href="{{ route('course.addNewVideo', ['course_id' => $course->id, 'module_id' => $module->id]) }}" class="ml-1 text-primary"><i class="fas fa-plus mr-1"></i>Add New Video</a>
                                     </td>
                                 </tr>
 
                                 <tr>
                                     <td>
-                                        <a href="{{ route('course.addNewFile', ['course_id' => $course->id, 'module_id' => $module->id]) }}" class="ml-1"><i class="fas fa-plus mr-1"></i>Add New File</a>
+                                        <a href="{{ route('course.addNewFile', ['course_id' => $course->id, 'module_id' => $module->id]) }}" class="ml-1 text-primary"><i class="fas fa-plus mr-1"></i>Add New File</a>
                                     </td>
                                 </tr>
 
                                 <tr>
                                     <td>
-                                        <a href="{{ route('quiz.getNewQuizForm', ['course_id' => $course->id, 'module_id' => $module->id]) }}" class="ml-1"><i class="fas fa-plus mr-1"></i>Add New Quiz</a>
+                                        <a href="{{ route('quiz.getNewQuizForm', ['course_id' => $course->id, 'module_id' => $module->id]) }}" class="ml-1 text-primary"><i class="fas fa-plus mr-1"></i>Add New Quiz</a>
                                     </td>
                                 </tr>
                                 <tr>

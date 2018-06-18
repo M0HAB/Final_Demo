@@ -77,45 +77,26 @@ class Lessons_CRUD_Controller extends Controller
     }
 
     public function uploadVideo(Request $request, Course $course, Module $module){
-        if(!file_exists(public_path().'/videos')){
-            mkdir(public_path().'/videos', 0700);
-        }
-        
         ini_set('memory_limit','256M');
         $privacyValues = ['unlisted', 'public'];
         ini_set('max_execution_time', 1500);
-
-
         $this->validate($request, [
             'title'       => 'required|string|max:255|unique:lessons',
             'description' => 'required|string|max:255',
             'recap'       => 'required|string|max:255',
             'privacy' => ['required', Rule::in($privacyValues)],
         ]);
-
-
-        if ($request->hasFile('myVideo')) {
-            $file= $request->file('myVideo');
-            $filename = $file->getClientOriginalName();
-            $destination = public_path() . '\videos';
-            $temp = storage_path('app\public\video') . '\\' . $filename;
-            $file->move($destination, $temp);
-        } else {
-            Session::flash('error', 'Please select a video to be upload');
-            return redirect()->back();
-        }
-        
-
-        if(file_exists(public_path() . '\videos\\' . $filename)){
-            $fullPathToVideo = $filename;
+        $file = $request->file('myVideo');
+        $fileName = storage_path('app/public/videos/' . $file->getClientOriginalName());
+        $destination = storage_path('app/public/videos');
+        if($file->move($destination, $fileName)){
+            $fullPathToVideo = $fileName;
             $video = \Dawson\Youtube\Facades\Youtube::upload($fullPathToVideo, [
                 'title'       => $request->title,
                 'description' => $request->description,
                 'category_id' => 10
             ], $request->privacy);
-
             $video_id = $video->getVideoId();
-
             if($video){
                 $lesson = Lesson::create([
                     'title'       => $request->title,
@@ -125,15 +106,17 @@ class Lessons_CRUD_Controller extends Controller
                     'url'         => 'https://www.youtube.com/watch?v=' . $video_id,
                     'module_id'   => $module->id
                 ]);
-
                 if($lesson){
-                    unlink($filename);
+                    unlink($fileName);
                     Session::flash('success', "Video uploaded successfully!");
                     return redirect()->back();
                 }
-            } 
-        }
             }
+        }
+    }
+
+
+
 
     public function getNewFileForm(Course $course,Module $module){
 
