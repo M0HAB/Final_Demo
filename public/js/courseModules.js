@@ -26,7 +26,6 @@ $('#submit-course-activation').submit(function(event){
                 $('input[name = is_active]').val('1');
                 $('#submit-course-status').html('Activate the Course');
                 $('#icon-course-status').removeClass('Òfa-toggle-on text-success').addClass('fa-toggle-off')
-
             }
         },
         error: function(response){
