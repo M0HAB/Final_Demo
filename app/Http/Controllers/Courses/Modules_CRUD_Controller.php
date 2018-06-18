@@ -2,6 +2,7 @@
 namespace App\Http\Controllers\Courses;
 
 use App\Course;
+use App\grade;
 use App\Http\Controllers\Controller;
 use App\Module;
 use App\User;

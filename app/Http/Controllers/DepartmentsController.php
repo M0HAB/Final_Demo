@@ -8,6 +8,7 @@ use Illuminate\Validation\Rule;
 use App\Department;
 use App\User;
 use App\Role;
+use App\Specialization;
 use DB;
 
 class DepartmentsController extends Controller
@@ -181,7 +182,7 @@ class DepartmentsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Request $request,$id)
+    public function destroy(Request $request, $id)
     {
 
         if (canDelete($this->controllerName)){
@@ -204,12 +205,70 @@ class DepartmentsController extends Controller
     }
     public function getCourses($id)
     {
-        $department = Department::find($id);
-        return view('_auth.department.dep_courses')->with('department', $department);
+        if(canRead($this->controllerName)){
+            $department = Department::find($id);
+            return view('_auth.department.dep_courses')->with('department', $department);
+        }
     }
     public function getSpecializations($id)
     {
-        $department = Department::find($id);
-        return view('_auth.department.dep_specs')->with('department', $department);
+        if(canRead($this->controllerName)){
+            $department = Department::find($id);
+            return view('_auth.department.dep_specs')->with('department', $department);
+        }
+    }
+
+    public function addSpecCreate($id)
+    {
+        if(canUpdate($this->controllerName)){
+            $department = Department::find($id);
+            $dep_spec = $department->specializations->where('id' ,'>' ,0)->pluck('id')->toArray();
+            $specializations = Specialization::all()->whereNotIn('id', $dep_spec);
+            return view('_auth.department.add_spec')->with([
+                'department' => $department,
+                'specializations' => $specializations
+            ]);
+        }else{
+            return redirect()->route('user.dashboard')->with('error', 'Unauthorized Access');
+        }
+    }
+    public function addSpecStore(Request $request, $id)
+    {
+        if(canUpdate($this->controllerName)){
+            $department = Department::find($id);
+            $dep_spec = $department->specializations->where('id' ,'>' ,0)->pluck('id')->toArray();
+            $this->validate($request, [
+                'specialization' => [
+                    'required',
+                    Rule::notIn($dep_spec)
+                ],
+            ]);
+            $spec = Specialization::find($request->specialization);
+            if ($department->specializations()->save($spec)){
+                return redirect()->back()->with('success', 'Department updated successfully');
+            }else{
+                return redirect()->back()->with('error', 'Some error has occured please try resubmitting');
+            }
+        }else{
+            return redirect()->route('user.dashboard')->with('error', 'Unauthorized Access');
+        }
+    }
+    public function specDestroy(Request $request, $id)
+    {
+        if (canUpdate($this->controllerName)){
+          $department = Department::find($request->dep_id);
+          if($request->ajax()){
+            return ($department->specializations()->detach($id))? 1:0;
+          }else{
+            if($department->specializations()->detach($id)){
+                return redirect()->back()->with('success', 'Department updated Successfully');
+            }else{
+                return redirect()->back()->with('error', 'Some error has occured please try resubmitting');
+            }
+          }
+        }else{
+            if($request->ajax())return 0;
+            return redirect()->route('user.dashboard')->with('error', 'Unauthorized Access');
+        }
     }
 }

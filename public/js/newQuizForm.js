@@ -3,11 +3,11 @@ var question_number = 1;
 var total_questions = 1;
 function createNewQuestion(){
     question_number ++;
-    var new_question =  '<hr><div class=" border-success p-2" style="border-left-style: groove;">' +
+    var new_question =  '<hr><div class="p-2">' +
         '<div class="row">' +
         '<div class="col-md-12">' +
         '<div class="form-group">' +
-        '<label for="inputQuestion">Question <span class="badge badge-primary" id="question_number_' + question_number  +'"></span></label>' +
+        '<label for="inputQuestion" class="font-weight-bold">Question <span class="badge badge-primary" id="question_number_' + question_number  +'"></span></label>' +
         '<input type="text" name="questions[]" class="form-control" id="inputQuestion" placeholder="Enter the Question">' +
         '</div></div> <div class="col-md-6"> <div class="form-group"> <label for="inputFirstAnswer">Choice <span class="badge badge-success">#1</span></label>' +
         '<input type="text" name="first_choices[]" class="form-control" id="inputFirstAnswer"   placeholder="Enter the First choice"> </div> </div>'+

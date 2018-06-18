@@ -219,7 +219,7 @@ class AssignmentsController extends Controller
             ]);
             //Not sure about this
             if($assdelivered->exists()) return redirect()->route('user.dashboard')->with('error', 'Unauthorized Access');
-          //  dd($assdelivered->exists() );
+
             return view('_auth.assignments.deliver', compact('assignment','assdelivered','course','module'));
 
         }else{
@@ -287,9 +287,9 @@ class AssignmentsController extends Controller
                 ->select('assdelivers.*', 'assignments.id as ass_id','assignments.title', 'assignments.module_id', 'assignments.deadline','assignments.full_mark', 'users.fname')
                 ->where('assignments.module_id', '=', $module->id)
                 ->get();
+            //dd($course->title);
 
-
-            return view('_auth.assignments.showdelivered')->with('assdelivered', $assdelivered);
+            return view('_auth.assignments.showdelivered',compact('course','module','assdelivered'));
 
         }elseif(Auth::user()->isStudent() and Auth::user()->checkIfUserEnrolled($course->id)){
             $assdelivered = DB::table('assdelivers')
@@ -300,16 +300,17 @@ class AssignmentsController extends Controller
                 ->where('assdelivers.user_id', '=', Auth::user()->id)
                 ->get();
 
-            return view('_auth.assignments.showdelivered')->with('assdelivered',$assignments, $assdelivered);
+            return view('_auth.assignments.showdelivered',compact('course'))->with('assdelivered',$assignments, $assdelivered);
         }else{
             return redirect()->route('user.dashboard')->with('error', 'Unauthorized Access');
         }
 
     }
-    public function deliveredEdit($assdeliver){
-        //return $assdeliver;
-        $delivered = assdeliver::findOrFail($assdeliver);
-        //return $delivered;
+
+    public function deliveredEdit($assginment_id,$std_id,$assdel_id){
+
+        $delivered = assdeliver::findOrFail($assdel_id);
+
         return view('_auth.assignments.editdelivered',compact('delivered'));
 
     }

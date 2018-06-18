@@ -3,7 +3,7 @@
 
     <div class="container">
 
-        @if (Auth::check())
+        @if (Auth::guard('admin')->check())
             <a class="navbar-brand" href="{{ route('user.dashboard') }}">E-LMS</a>
         @else
             <a class="navbar-brand" href="{{ route('index') }}">E-LMS</a>
@@ -13,7 +13,7 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarColor01">
             <ul class="navbar-nav ml-auto">
-                @if (!Auth::check())
+                @if (!Auth::guard('admin')->check())
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route('about') }}">About</a>
                     </li>

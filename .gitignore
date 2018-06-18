@@ -13,3 +13,6 @@ npm-debug.log
 yarn-error.log
 .env
 run.url
+/public/images
+/public/videos
+.env.example

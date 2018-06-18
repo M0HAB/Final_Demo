@@ -42,105 +42,104 @@
 @endsection
 
 @section('content')
-    <div class="content mt-5 mb-5">
-        <div class="container">
-            <div id="response-message-success" class="alert alert-success" style="display: none"></div>
-            <fieldset>
-                <div class="reg-log-form p-3 my-3">
-                    <legend><i class="fa fa-plus"></i> Add New Quiz</legend>
-                    <hr>
-                    <form id="submit-new-quiz">
-                        <h5 class="text-muted  font-weight-bold border-left p-1">First Step: Insert the quiz basic info<i class="fas fa-arrow-down ml-1"></i></h5>
-                        <hr>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="inputTitle">Quiz Title</label>
-                                    <input required="true" type="text" name="title" class="form-control" id="inputTitle"   placeholder="Enter the quiz title">
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="inputDeadline">Deadline</label>
-                                    <input required="true" type="date" name="deadline" class="form-control" id="inputDeadline"   placeholder="Enter the deadline">
-                                </div>
-                            </div>
+    <div id="response-message-success" class="alert alert-success" style="display: none"></div>
+    <a href="{{ route('course.listUserCourses') }}" class="btn go-back-btn mb-1"><i class="fas fa-arrow-left fa-1x"></i> Back</a>  
+    <fieldset>
+        <div class="reg-log-form p-3 my-3">
+            <legend class="f-rw"><i class="fa fa-plus"></i> Add New Quiz</legend>
+            <hr>
+            <form id="submit-new-quiz">
+                <h5 class="text-muted f-rw font-weight-bold p-1">First Step: Insert the quiz basic info<i class="fas fa-arrow-down ml-1"></i></h5>
+                <hr>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="inputTitle">Quiz Title</label>
+                            <input required="true" type="text" name="title" class="form-control" id="inputTitle"   placeholder="Enter the quiz title">
                         </div>
-                        <br>
-                        <hr>
-                        <h5 class="text-muted  font-weight-bold border-left p-1">Second Step: Insert the questions & answers  of the quiz<i class="fas fa-arrow-down ml-1"></i></h5>
-                        <hr>
-                        <div id="array-errors" style="display: none" class="alert alert-danger"></div>
-                        <div class=" border-success p-2" style="border-left-style: groove">
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <div class="form-group">
-                                        <label for="inputQuestion">Question <span id="question_number" class="badge badge-primary">1</span></label>
-                                        <input required="true" type="text" name="questions[]" class="form-control" id="inputQuestion"   placeholder="Enter the Question">
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label for="inputFirstAnswer">Choice <span class="badge badge-success">#1</span></label>
-                                        <input required="true" type="text" name="first_choices[]" class="form-control" id="inputFirstAnswer"   placeholder="Enter the First choice">
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label for="inputSecondAnswer">Choice <span class="badge badge-success">#2</span></label>
-                                        <input required="true" type="text" name="second_choices[]" class="form-control" id="inputSecondAnswer"   placeholder="Enter the Second choice">
-
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label for="inputThirdAnswer">Choice <span class="badge badge-success">#3</span></label>
-                                        <input required="true" type="text" name="third_choices[]" class="form-control" id="inputThirdAnswer"   placeholder="Enter the Third choice">
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label for="inputFourthAnswer">Choice <span class="badge badge-success">#4</span></label>
-                                        <input required="true" type="text" name="fourth_choices[]" class="form-control" id="inputFourthAnswer"   placeholder="Enter the Fourth choice">
-                                    </div>
-                                </div>
-
-                                <div class="col-md-3">
-                                    <div class="form-group">
-                                        <label for="inputPoints">Question Points</label>
-                                        <input required="true" type="text" name="question_points[]" class="form-control" id="inputPoints"   placeholder="Enter the question points">
-                                    </div>
-                                </div>
-                                <div class="col-md-3">
-                                    <div class="form-group">
-                                        <label for="inputCorrectAnswer">Correct Choice</label>
-                                        <select required="true" name="correct_choices[]" class="form-control" id="inputCorrectAnswer"  style="width: 100%">
-                                            <option value="">Select The Correct Choice..</option>
-                                            <option value="1">Choice #1</option>
-                                            <option value="2">Choice #2</option>
-                                            <option value="3">Choice #3</option>
-                                            <option value="4">Choice #4</option>
-                                        </select>
-                                    </div>
-                                </div>
-
-                            </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="inputDeadline">Deadline</label>
+                            <input required="true" type="date" name="deadline" class="form-control" id="inputDeadline"   placeholder="Enter the deadline">
                         </div>
-                        <div id="new-question-div"></div>
-                        <p class="text-right mt-4"><button type="button" onclick="createNewQuestion()" class="font-weight-bold btn  text-success border border-success p-2" style="background-color: white"><i class="fa fa-plus mr-1"></i>Add question</button></p>
-                        <hr>
-                        <div class="row">
-                            <div class="col-md-3">
-                                <br>
-                                <button type="submit" class="btn btn-primary">Create New Quiz</button>
-                            </div>
-                        </div>
-                    </form>
+                    </div>
                 </div>
-            </fieldset>
+                <br>
+                <hr>
+                <h5 class="text-muted f-rw font-weight-bold p-1">Second Step: Insert the questions & answers  of the quiz<i class="fas fa-arrow-down ml-1"></i></h5>
+                <hr>
+                <div id="array-errors" style="display: none" class="alert alert-danger"></div>
+                <div class="p-2">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="inputQuestion" class="font-weight-bold">Question <span id="question_number" class="badge badge-primary">1</span></label>
+                                <input required="true" type="text" name="questions[]" class="form-control" id="inputQuestion"   placeholder="Enter the Question">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="inputFirstAnswer">Choice <span class="badge badge-success">#1</span></label>
+                                <input required="true" type="text" name="first_choices[]" class="form-control" id="inputFirstAnswer"   placeholder="Enter the First choice">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="inputSecondAnswer">Choice <span class="badge badge-success">#2</span></label>
+                                <input required="true" type="text" name="second_choices[]" class="form-control" id="inputSecondAnswer"   placeholder="Enter the Second choice">
+
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="inputThirdAnswer">Choice <span class="badge badge-success">#3</span></label>
+                                <input required="true" type="text" name="third_choices[]" class="form-control" id="inputThirdAnswer"   placeholder="Enter the Third choice">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="inputFourthAnswer">Choice <span class="badge badge-success">#4</span></label>
+                                <input required="true" type="text" name="fourth_choices[]" class="form-control" id="inputFourthAnswer"   placeholder="Enter the Fourth choice">
+                            </div>
+                        </div>
+
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label for="inputPoints">Question Points</label>
+                                <input required="true" type="text" name="question_points[]" class="form-control" id="inputPoints"   placeholder="Enter the question points">
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label for="inputCorrectAnswer">Correct Choice</label>
+                                <select required="true" name="correct_choices[]" class="form-control" id="inputCorrectAnswer"  style="width: 100%">
+                                    <option value="">Select The Correct Choice..</option>
+                                    <option value="1">Choice #1</option>
+                                    <option value="2">Choice #2</option>
+                                    <option value="3">Choice #3</option>
+                                    <option value="4">Choice #4</option>
+                                </select>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div id="new-question-div"></div>
+                <div class="text-right mt-4">
+                    <button type="button" onclick="createNewQuestion()" class="btn btn-outline-success p-2"><i class="fa fa-plus mr-1"></i>Add question</button>
+                </div>
+                <hr>
+                <div class="row">
+                    <div class="col-md-3">
+                        <br>
+                        <button type="submit" class="btn btn-primary">Create New Quiz</button>
+                    </div>
+                </div>
+            </form>
         </div>
-        <div class="modal"><!-- Place at bottom of page --></div>
-    </div>
+    </fieldset>
+<div class="modal"><!-- Place at bottom of page --></div>
 @endsection
 
 @section('scripts')

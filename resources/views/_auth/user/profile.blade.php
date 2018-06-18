@@ -1,12 +1,14 @@
 @extends('_layouts.app')
 @section('title', Auth::user()->fname)
-
+@php
+    $authUser = Auth::user();
+@endphp
 @section('content')
     <!-- Start: Profile -->
     <div class="row f-rw">
         {{--  User-Info  --}}
         <div class="col-lg-12 col-sm-12 mb-4">
-            <h1 class="display-4">Mohab Hamdy Ghareeb</h1>
+            <h1 class="display-4">{{ $authUser->lname . ' ' . $authUser->lname }}</h1>
             <div class="bbp-breadcrumb pb-4">
                 <p>
                     <a href="#" class="bbp-breadcrumb-home profile-a">Home</a> 
@@ -37,36 +39,38 @@
                         <tbody>
                             <tr>
                                 <th scope="row">Username</th>
-                                <td>Mohab Hamdy Ghareeb</td>
+                                <td>{{ $authUser->lname . ' ' . $authUser->lname }}</td>
                             </tr>
                             <tr>
                                 <th scope="row">Email</th>
-                                <td>test@gmail.com</td>
+                                <td>{{ $authUser->email }}</td>
                             </tr> 
                             <tr>
                                 <th scope="row">Department</th>
-                                <td>Computer</td>
+                                <td>{{ $authUser->department->name }}</td>
                             </tr> 
                             <tr>
                                 <th scope="row">Gender</th>
-                                <td>Male</td>
+                                <td>{{ ($authUser->gender) ? 'Male' : 'Female' }}</td>
                             </tr>
                             <tr>
                                 <th scope="row">Role</th>
-                                <td>Student</td>
+                                <td>{{ ($authUser->role_id) ? 'Instructor' : 'Student' }}</td>
                             </tr> 
                             <tr>
                                 <th scope="row">Location</th>
-                                <td>Test 5st.</td>
+                                <td>{{ $authUser->location }}</td>
                                 </tr>
-                            <tr>
-                                <th scope="row">Level</th>
-                                <td>5</td>
-                            </tr>
-                            <tr>
-                                <th scope="row">GPA</th>
-                                <td>1.9</td>
-                            </tr>
+                            @if ($authUser->role_id != 1)
+                                <tr>
+                                    <th scope="row">Level</th>
+                                    <td>{{ $authUser->level }}</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">GPA</th>
+                                    <td>{{ $authUser->gpa }}</td>
+                                </tr>
+                            @endif
                         </tbody>
                     </table> 
                 </div>

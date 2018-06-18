@@ -4,15 +4,32 @@
 
 @section('content')
 
-    <div class="reg-log-form p-3 my-3">
-        <a href="{{ URL::previous() }}"><i class="fas fa-arrow-alt-circle-left"></i> Back</a>
+    {{-- Start Breadcrumbs--}}
+    <div class="col-lg-12">
+        <div class="row">
+            <div class="col-lg-12">
+                <ol class="breadcrumb breadcrumb-custom">
+                    <li class="breadcrumb-item text-success"><a href="/Courses/">Courses</a></li>
+                    <li class="breadcrumb-item text-success"><a href="/Courses/{{$course->id}}">{{ $course->title }}</a></li>
+                    <li class="breadcrumb-item text-success">Student grades</li>
 
-    </div>
+
+                </ol>
+            </div>
+        </div>
+        {{-- End Breadcrumbs--}}
 
 
     <div class="content mt-5 mb-4">
         <div class="container">
             <h1>View All students grades</h1>
+            @if(!$gradesbook)
+            <div class="reg-log-form p-3 my-3 " style="background-color: #ff343f; ">
+
+                <b>Attention!!</b> Please Fill the Grade Book First from  <a style="color: white" href="{{ route('course.gradeBook.index',['course_id' =>$course_id]) }}"> here</a>
+
+            </div>
+            @else
             @if (count($students)>0)
 
             <div class="row justify-content-center">
@@ -114,6 +131,7 @@
 
                                 <td style="color: green">
 
+
                                         @if ($avg >= 90)
                                         {{$lettergrade = "A"}}
                                         @elseif ($avg >= 80 && $avg <= 89)
@@ -134,7 +152,13 @@
 
                                 <td>
                                     <button  class="btn btn-group-sm btn-link"><a href="{{route('course.studentGrades.show', ['student_id' => $student->std_id,'course_id' => $student->course_id])}}"><i class="fas fa-eye fa-1x"></i> </a> </button>
+
+                                    @if($student->gradeid)
                                     <button  class="btn btn-group-sm btn-link"><a href="{{route('course.studentGrades.edit', ['student_id' => $student->std_id,'course_id' => $student->course_id])}}"><i class="far fa-edit fa-1x fam-mod"></i> </a> </button>
+                                    @else
+                                    <button  class="btn btn-group-sm btn-link"><a href="{{route('course.studentGrades.create', ['student_id' => $student->std_id,'course_id' => $student->course_id])}}"><i class="fas fa-plus fa-1x fam-mod"></i> </a> </button>
+                                        @endif
+
 
                                 </td>
 
@@ -146,6 +170,7 @@
                         </tbody>
                     </table>
 
+                @endif
                 @endif
 
             </div>

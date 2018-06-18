@@ -10,7 +10,7 @@
             <div class="accordion mb-4" id="accordion">
                 <div class="card rounded-0">
                     <div class="card-header rounded-0" id="headingOne" data-toggle="collapse" data-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
-                      <h5 class="mb-0">
+                      <h5 class="mb-0 f-rw-bold">
                           Permissions And Roles
                       </h5>
                     </div>

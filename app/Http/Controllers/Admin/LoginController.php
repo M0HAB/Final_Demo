@@ -25,7 +25,7 @@ class LoginController extends Controller
 
     public function __construct()
     {
-        $this->middleware(['guest:admin', 'revalidate'], ['except' => ['logout']]);
+        $this->middleware(['guest:admin', 'revalidate', 'IsAdmin'], ['except' => ['logout']]);
     }
 
 

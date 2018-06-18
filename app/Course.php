@@ -17,6 +17,11 @@ class Course extends Model
   {
     return $this->hasMany('App\Module', 'course_id');
   }
+	public function setTitleAttribute($value)
+	{
+		return $this->attributes['title'] = ucfirst($value);
+	}
+
   public function department()
   {
       return $this->belongsTo('App\Department', 'course_department');

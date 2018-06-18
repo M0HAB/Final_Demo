@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\assdeliver;
+use App\Course;
 use App\grade;
+use App\gradeBook;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -30,7 +32,7 @@ class studentGradesController extends Controller
                 ->leftjoin('course_user', 'course_user.user_id', '=', 'users.id')
                 ->leftjoin('grades', 'grades.user_id', '=', 'users.id')
                 ->leftjoin('grade_books', 'grade_books.course_id', '=', 'course_user.course_id')
-                ->select('users.fname','users.lname','users.email','users.id as std_id','grades.*','grade_books.*')
+                ->select('users.fname','users.lname','users.email','users.id as std_id','grades.*','grade_books.*','grades.id as gradeid')
                 ->where('course_user.course_id', '=', $course_id)
                 ->get();
 
@@ -48,8 +50,13 @@ class studentGradesController extends Controller
                 ->select('quiz_user.*' , 'quizzes.total_grade')
                 ->where('courses.id', '=', $course_id)
                 ->get();
-            //dd($quizgrades);
-            return view('_auth.grades.index',compact('students','assgrades','course_id','quizgrades'));
+            $gradesbook=gradeBook::where('course_id', '=' ,$course_id)->first();
+            $course=Course::where('id', '=' ,$course_id)->first();
+
+            //dd($course);
+
+            //dd($grades);
+            return view('_auth.grades.index',compact('students','assgrades','course_id','quizgrades','gradesbook','course'));
         }else{
             return redirect()->route('user.dashboard')->with('error', 'Unauthorized Access');
         }
@@ -62,9 +69,17 @@ class studentGradesController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create($course_id,$student_id)
     {
-        //
+
+        $student=user::where('id', '=', $student_id)->first();
+        //dd($student);
+        if (Auth::user()->isInstructor()){
+
+            return view('_auth.grades.create',compact('course_id','student_id','student'));
+        }else{
+            return redirect()->route('user.dashboard')->with('error', 'Unauthorized Access');
+        }
     }
 
     /**
@@ -73,9 +88,27 @@ class studentGradesController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request,$course_id,$student_id)
     {
-        //
+        //d($student_id);
+
+        \DB::table('grades')->insert([
+            [
+                'course_id'          => $course_id,
+                'user_id'            => $student_id,
+                'finalgrade'         => $request->input('finalexam'),
+                'midterm'            => $request->input('midtermgrade'),
+                'midterm_fullmark'   => $request->input('midtermfullmark'),
+                'final_fullmark'     => $request->input('finalexamfullmark'),
+                'practical'          => $request->input('practicalgrade'),
+                'practical_fullmark' => $request->input('practicalfullmark')
+
+
+            ]
+        ]);
+
+        return redirect()->back()->with('success', 'Grades Successfully Submitted');
+
     }
 
     /**
@@ -121,8 +154,12 @@ class studentGradesController extends Controller
             ->where('courses.id', '=', $course_id)
             ->get();
 
+        $grades=grade::where('course_id', '=' ,$course_id)->first();
 
-        return view('_auth.grades.show',compact('student','student_id','assgrades','quizgrades'));
+
+
+
+        return view('_auth.grades.show',compact('student','student_id','assgrades','quizgrades','grades','course_id'));
     }
 
     /**
@@ -137,6 +174,10 @@ class studentGradesController extends Controller
 
       $grades=grade::where('user_id', '=' ,$student_id)->first();
       $student=user::where('id', '=', $student_id)->first();
+
+
+
+      //dd($student);
 
         if (Auth::user()->isInstructor()){
 

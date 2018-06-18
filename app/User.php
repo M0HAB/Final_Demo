@@ -4,6 +4,7 @@ namespace App;
 
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Reply;
 use Auth;
 
@@ -11,6 +12,7 @@ use Illuminate\Support\Facades\DB;
 
 class User extends Authenticatable
 {
+    use SoftDeletes;
     use Notifiable;
 
     /**
@@ -32,7 +34,7 @@ class User extends Authenticatable
         'gpa',
         'api_token'
     ];
-
+    protected $dates = ['deleted_at'];
     /**
      * The attributes that should be hidden for arrays.
      *
@@ -88,6 +90,15 @@ class User extends Authenticatable
 	     return $this->belongsTo('App\Role', 'role_id');
     }
 
+    public function studyCourses()
+    {
+        return $this->belongsToMany('App\Course', 'course_user', 'user_id', 'course_id')->withTimestamps();
+    }
+    public function courses()
+    {
+        return $this->hasMany('App\Course', 'instructor_id');
+    }
+
     //Function to get messages between this user & friend ($friend_id)
     public function messages($friend_id)
     {
@@ -121,6 +132,10 @@ class User extends Authenticatable
     public function replies()
     {
       return $this->hasMany('App\Reply', 'user_id');
+    }
+    public function comments()
+    {
+      return $this->hasMany('App\Comment', 'user_id');
     }
     public function votes()
     {

@@ -25,6 +25,8 @@ Route::get('/error/{error}', function($error){
 Route::middleware('auth:admin-api')->group(function () {
   Route::delete('/prole/{id}/delete', 'PermissionRoleController@destroy');
   Route::get('/search', 'Admin\UserController@getUsers');
+  Route::delete('/user/{id}/delete', 'Admin\UserController@destroy');
+
 
 });
 
@@ -44,6 +46,7 @@ Route::middleware('auth:api')->group(function () {
   Route::delete('/reply/{id}/delete', 'ReplyController@delete');
   Route::delete('/department/{id}/delete', 'DepartmentsController@destroy');
   Route::delete('/specialization/{id}/delete', 'SpecializationController@destroy');
+  Route::delete('/depspec/{id}/delete', 'DepartmentsController@specDestroy');
 
   Route::get('/{id}/replies', 'PostController@loadReplies');
   Route::get('/{id}/search', 'DiscussionController@searchPosts');
