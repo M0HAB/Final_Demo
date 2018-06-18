@@ -40,10 +40,9 @@ class PermissionRoleController extends Controller
         $pindexes = Pindex::all();
         return view('_auth.admin.permission_role.create')->with('pindexes', $pindexes);
     }
-    private function getAndCombinePermissions($pindexes,$role)
+    public function getAndCombinePermissions($pindexes,$role)
     {
       $envelope =array();
-      $envelope['name'] = $role->name;
       $sectionsNumber = count($pindexes);
       $hex = dechex( (int) $role->permission);
       while (strlen($hex)<$sectionsNumber){
@@ -121,6 +120,7 @@ class PermissionRoleController extends Controller
         $role = Role::find($id);
         $pindexes = Pindex::all();
         $envelope = $this->getAndCombinePermissions($pindexes,$role);
+        $envelope['name'] = $role->name;
         return view('_auth.admin.permission_role.view')->with('pindexes', $pindexes)->with('envelope', $envelope);
     }
 
@@ -137,6 +137,7 @@ class PermissionRoleController extends Controller
             $role = Role::find($id);
             $pindexes = Pindex::all();
             $envelope = $this->getAndCombinePermissions($pindexes, $role);
+            $envelope['name'] = $role->name;
             Session::flashInput($envelope);
             // Session::flashInput(['name'=>$role->name]);
             return view('_auth.admin.permission_role.edit')->with('role', $role)->with('pindexes', $pindexes);
@@ -204,6 +205,10 @@ class PermissionRoleController extends Controller
         }
 
 
+    }
+
+    public function setUserPermission($id)
+    {
 
     }
 

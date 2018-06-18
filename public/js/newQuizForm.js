@@ -55,7 +55,6 @@ $('#submit-new-quiz').submit(function(event){
         },
         success: function(response){
             $('#array-errors').hide();
-            $('#response-message-success').show().text(response.message).show();
             $('input').val('');
             $('select').val('');
         },
@@ -69,10 +68,13 @@ $('#submit-new-quiz').submit(function(event){
                     $('select[name=' + key +']').after('<span  class= "error-msg text-danger">' + val +'</span>');
                     $body.removeClass("loading")
                 }else{
-                    $('#array-errors').show();
-                    $("#array-errors").text(val);
+                    //
                 }
             })
+        }
+    }).done(function(data){
+        if ($.isEmptyObject(data.error)) {
+            toastr.success(data.success);
         }
     });
 

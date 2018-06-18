@@ -5,11 +5,13 @@ namespace App\Http\Controllers\Courses;
 use App\Course;
 use App\Http\Controllers\Controller;
 use App\Lesson;
+use App\lessonFile;
 use App\Module;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 
 class Lessons_CRUD_Controller extends Controller
@@ -38,17 +40,19 @@ class Lessons_CRUD_Controller extends Controller
                 ->get();
         }
 
-
         $lessons = DB::table('lessons')
             ->leftjoin('modules', 'modules.id', '=', 'lessons.module_id')
             ->select('lessons.*')
             ->where('lessons.module_id', '=', $module->id)
             ->get();
-        if(Auth::User()->checkIfUserEnrolled($course->id) or Auth::User()->checkIfUserTeachCourse($course->id)) {
-            return view('Courses.LessonsOfModule', ['course' => $course, 'module' => $module, 'lessons' => $lessons, 'assignments' => $assignments, 'quizzes' => $quizzes]);
-        }else{
-            return redirect()->back()->with('error', 'Unauthorized access');
-        }
+
+        $files = DB::table('lesson_files')
+            ->leftjoin('modules', 'modules.id', '=', 'lesson_files.module_id')
+            ->select('lesson_files.*')
+            ->where('lesson_files.module_id', '=', $module->id)
+            ->get();
+
+        return view('Courses.LessonsOfModule', ['course' => $course, 'module' => $module, 'lessons' => $lessons, 'assignments' => $assignments, 'quizzes' => $quizzes, 'files' => $files]);
 
     }
 
@@ -69,19 +73,14 @@ class Lessons_CRUD_Controller extends Controller
 
     public function getNewVideoForm(Course $course,Module $module){
 
-        if(Auth::User()->checkIfUserEnrolled($course->id) or Auth::User()->checkIfUserTeachCourse($course->id)) {
-            return view('Courses.newVideoForm', compact('module'));
-        }else{
-            return redirect()->back();
-        }
-
+        return view('Courses.newVideoForm', compact('module'));
     }
 
     public function uploadVideo(Request $request, Course $course, Module $module){
         if(!file_exists(public_path().'/videos')){
             mkdir(public_path().'/videos', 0700);
         }
-        
+
         ini_set('memory_limit','256M');
         $privacyValues = ['unlisted', 'public'];
         ini_set('max_execution_time', 1500);
@@ -105,10 +104,10 @@ class Lessons_CRUD_Controller extends Controller
             Session::flash('error', 'Please select a video to be upload');
             return redirect()->back();
         }
-        
+
 
         if(file_exists(public_path() . '\videos\\' . $filename)){
-            $fullPathToVideo = $filename;
+            $fullPathToVideo = public_path() . '\videos\\' . $filename;
             $video = \Dawson\Youtube\Facades\Youtube::upload($fullPathToVideo, [
                 'title'       => $request->title,
                 'description' => $request->description,
@@ -128,11 +127,52 @@ class Lessons_CRUD_Controller extends Controller
                 ]);
 
                 if($lesson){
-                    unlink($filename);
+                    unlink($fullPathToVideo);
                     Session::flash('success', "Video uploaded successfully!");
                     return redirect()->back();
                 }
-            } 
+            }
         }
     }
+
+
+
+
+    public function getNewFileForm(Course $course,Module $module){
+
+        return view('Courses.newFileForm', compact('course', 'module'));
+    }
+
+    public function uploadFile(Request $request, Course $course, Module $module){
+
+        $validator = Validator::make($request->all(), [
+            'title'           => 'required|max:255',
+            'description'     => 'required|max:255',
+            'lesson_file'     => 'required|max:10000',
+
+        ]);
+        if (!($validator->passes())) {
+            return response($validator->errors(), 401);
+        }
+
+        $file = $request->file('lesson_file');
+        $fileName = storage_path('app/public/files/' . $file->getClientOriginalName());
+        $destination = storage_path('app/public/files');
+        if($file->move($destination, $fileName)){
+            $file = lessonFile::create([
+                'title' => $request->input('title'),
+                'description' => $request->input('description'),
+                'path' => $fileName,
+                'module_id' => $module->id
+            ]);
+            if($file){
+                Session::flash('success', "File uploaded successfully!");
+                return redirect()->back();
+            }
+        }
+
+    }
+
+
+
 }

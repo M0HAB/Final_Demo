@@ -5,11 +5,7 @@
 @section('admin_content')
 
 <div class="card">
-  	<div class="card-body position-relative" id="mainBody">
-        <div class="overlay" id="overlay">
-            <span class="helper"></span>
-            <img src="/images/load.gif" class="img-fluid" ></img>
-        </div>
+  	<div class="card-body position-relative">
         <form class="form-inline">
             <h3 class="pb-2 mr-3 f-rw " >Users List</h3>
             <h3>
@@ -58,29 +54,7 @@
                     </tr>
                 </thead>
                 <tbody id="users_body">
-                    @foreach($users as $user)
-                    <tr id="user_container_{{$user->id}}">
-                        <td><a href="{{route('admin.user.profile', ['id'=>$user->id])}}">{{$user->fname.' '.$user->lname}}</a></td>
-                        <td>{{$user->department->name}}</td>
-                        <td>{{$user->level}}</td>
-                        <td>{{$user->email}}</td>
-                        <td>
-                            <a href="{{route('admin.user.edit', ['id'=>$user->id])}}"><button class="btn btn-success" title="Edit">
-                                <i class="fas fa-edit"></i>
-                            </button></a>
-                            @if(!$user->trashed())
-                                <button class="btn btn-danger" type="submit" data-toggle="modal" data-target="#confirm" data-id="{{$user->id}}" data-type="user" data-keep="3" title="Delete">
-                                        <i class="fas fa-trash"></i>
-                                </button>
-                            @else
-                                <button class="btn btn-info" type="submit" data-toggle="modal" data-target="#confirm" data-id="{{$user->id}}" data-type="user" data-keep="2" title="UnDelete">
-                                        <i class="fas fa-undo"></i>
-                                </button>
-                            @endif
-                        </td>
-                    </tr>
-
-                    @endforeach
+                    @include('_auth.admin.users.search_partial')
 
                 </tbody>
             </table>

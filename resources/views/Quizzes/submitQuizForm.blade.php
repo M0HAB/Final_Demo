@@ -9,7 +9,6 @@
         body{
             background-color: #fafbfc;
             height: auto;
-            padding: 10px;
         }
         /* Start by setting display:none to make this hidden.
    Then we position it in relation to the viewport window
@@ -46,12 +45,14 @@
 @endsection
 
 @section('content')
-
     <div class="row">
         <div class="col-sm-12 mb-3">
             <div class="jumbotron text-center border mt-3" style="box-shadow: 5px 5px 10px gray;background: url('{{ asset('course_images/courseBackground.png') }}');background-size: 100%">
                 <h3 class="text-muted font-weight-bold mb-3">{{ $module->title }}</h3>
-                <h1 class="text-primary font-weight-bold mb-3" style="letter-spacing: 2px">{{ $quiz->title }}</h1>
+                <h1 class="text-primary font-weight-bold mb-3 d-inline" style="letter-spacing: 2px">{{ $quiz->title }}</h1>
+                @if(Auth::User()->isInstructor())
+                    <span id="quiz-status" class="p-1 rounded text-white  {{ $quiz->is_active ? 'badge badge-success': 'badge badge-danger' }}" >{{ $quiz->is_active ? 'Activated quiz': 'Deactivated quiz' }}</span>
+                @endif
                 <hr>
                 <div class="row">
                     <div class="col-sm-4">
@@ -65,7 +66,21 @@
                         <p class="border p-2 bg-white"><span class="text-muted  font-weight-bold">Total grade:</span><span class="badge badge-success ml-1">{{$quiz->total_grade}}</span></p>
                     </div>
                 </div>
-                <button type="button" onclick="test()" class="btn btn-primary mt-3">Start the quiz</button>
+                @if(Auth::User()->isInstructor())
+                    <form id="submit-quiz-activation">
+                        @if(!$quiz->is_active)
+                            <input type="hidden" name="is_active" value='1'>
+                            <p id="submit-status">
+                                <button type="submit" id="submit-quiz-status"  class="btn btn-primary mt-3">Activate the quiz</button>
+                            </p>
+                        @else
+                            <input type="hidden" name="is_active" value='0'>
+                            <p id="submit-status">
+                                <button type="submit" id="submit-quiz-status"  class="btn btn-primary mt-3">Deactivate the quiz</button>
+                            </p>
+                        @endif
+                    </form>
+                @endif
             </div>
         </div>
     </div>
@@ -90,7 +105,9 @@
            <hr>
            <div class="row">
                <div class="col-md-6">
-                   <button type="submit"  class="btn btn-primary" {{ Auth::User()->checkIfStudentSubmittedQuiz($quiz)? 'disabled': '' }}>Submit Answers</button>
+                   @if(Auth::User()->isStudent())
+                       <button type="submit"  class="btn btn-primary" {{ Auth::User()->checkIfStudentSubmittedQuiz($quiz)? 'disabled': '' }}>Submit Answers</button>
+                   @endif
                    @if(Auth::User()->checkIfStudentSubmittedQuiz($quiz))
                        <span class="text-success d-block mt-1"><i class="fas fa-info-circle mr-1"></i>This quiz has been already submitted</span>
                    @endif
@@ -109,11 +126,11 @@
             ajaxStart: function() { $body.addClass("loading"); },
             ajaxStop: function() { $body.removeClass("loading"); }
         });
-        function test(){
-            $("input[name = 'choices[0]']").each(function(){
-                console.log($(this).val())
-            });
-        }
     </script>
-    <Script src=""></Script>
+    @if(Auth::User()->isInstructor())
+        <script>
+            var quizID = {!! json_encode($quiz->id) !!};
+        </script>
+    @endif
+    <script src="{{ asset('js/submitQuizForm.js') }}"></script>
 @endsection

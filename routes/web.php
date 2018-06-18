@@ -68,6 +68,7 @@ Route::resource('specialization', 'SpecializationController');
  */
  Route::group(['prefix' => 'Courses'], function(){
 
+
      Route::get('', '\App\Http\Controllers\Courses\Courses_CRUD_Controller@listUserCourses')
          ->name('course.listUserCourses');
 
@@ -79,65 +80,80 @@ Route::resource('specialization', 'SpecializationController');
          'as' => 'course.addNewCourse'
      ]);
 
-     Route::middleware('checkRole:instructor')->get('{course}/update',[
-         'uses' => '\App\Http\Controllers\Courses\Courses_CRUD_Controller@getUpdateCourseForm',
-         'as' => 'course.getUpdateCourseForm'
-     ]);
+     Route::group(['middleware' => ['checkUserEnrollmentInCourse', 'checkCourseActivation']], function(){
 
-     Route::middleware('checkRole:instructor')->post('{course}/update',[
-         'uses' => '\App\Http\Controllers\Courses\Courses_CRUD_Controller@updateCourse',
-         'as' => 'course.updateCourse'
-     ]);
+         Route::middleware('checkRole:instructor')->get('{course}/update',[
+             'uses' => '\App\Http\Controllers\Courses\Courses_CRUD_Controller@getUpdateCourseForm',
+             'as' => 'course.getUpdateCourseForm'
+         ]);
 
-     Route::get('{course}',[
-         'uses' => '\App\Http\Controllers\Courses\Modules_CRUD_Controller@viewCourseModules',
-         'as' => 'course.viewCourseModules'
-     ]);
+         Route::middleware('checkRole:instructor')->post('{course}/update',[
+             'uses' => '\App\Http\Controllers\Courses\Courses_CRUD_Controller@updateCourse',
+             'as' => 'course.updateCourse'
+         ]);
 
-     Route::post('{course}/Modules/{module}/lessons',[
-         'uses' => '\App\Http\Controllers\Courses\Lessons_CRUD_Controller@loadLessons',
-         'as' => 'course.loadLessons'
-     ]);
+         Route::get('{course}',[
+             'uses' => '\App\Http\Controllers\Courses\Modules_CRUD_Controller@viewCourseModules',
+             'as' => 'course.viewCourseModules'
+         ]);
 
-     Route::get('{course}/Modules/{module}',[
-         'uses' => '\App\Http\Controllers\Courses\Lessons_CRUD_Controller@displayLessonsOfModules',
-         'as' => 'course.displayLessonsOfModules'
-     ]);
+         Route::post('{course}/Modules/{module}/lessons',[
+             'uses' => '\App\Http\Controllers\Courses\Lessons_CRUD_Controller@loadLessons',
+             'as' => 'course.loadLessons'
+         ]);
+
+         Route::get('{course}/Modules/{module}',[
+             'uses' => '\App\Http\Controllers\Courses\Lessons_CRUD_Controller@displayLessonsOfModules',
+             'as' => 'course.displayLessonsOfModules'
+         ]);
 
 
-     Route::middleware('checkRole:instructor')->get('{course}/addNewModule',[
-         'uses' => '\App\Http\Controllers\Courses\Modules_CRUD_Controller@getNewModuleForm',
-         'as' => 'course.getNewModuleForm'
-     ]);
+         Route::middleware('checkRole:instructor')->get('{course}/addNewModule',[
+             'uses' => '\App\Http\Controllers\Courses\Modules_CRUD_Controller@getNewModuleForm',
+             'as' => 'course.getNewModuleForm'
+         ]);
 
-     Route::middleware('checkRole:instructor')->post('{course}/addNewModule',[
-         'uses' => '\App\Http\Controllers\Courses\Modules_CRUD_Controller@addNewModule',
-         'as' => 'course.addNewModule'
-     ]);
+         Route::middleware('checkRole:instructor')->post('{course}/addNewModule',[
+             'uses' => '\App\Http\Controllers\Courses\Modules_CRUD_Controller@addNewModule',
+             'as' => 'course.addNewModule'
+         ]);
 
-     Route::middleware('checkRole:instructor')->get('{course}/modules/{module}/addNewVideo',[
-         'uses' => '\App\Http\Controllers\Courses\lessons_CRUD_Controller@getNewVideoForm',
-         'as' => 'course.addNewVideo'
-     ]);
+         Route::middleware('checkRole:instructor')->get('{course}/modules/{module}/addNewVideo',[
+             'uses' => '\App\Http\Controllers\Courses\lessons_CRUD_Controller@getNewVideoForm',
+             'as' => 'course.addNewVideo'
+         ]);
 
-     Route::middleware('checkRole:instructor')->post('{course}/modules/{module}/addNewVideo',[
-         'uses' => '\App\Http\Controllers\Courses\lessons_CRUD_Controller@uploadVideo',
-         'as' => 'course.uploadVideo'
-     ]);
+         Route::middleware('checkRole:instructor')->post('{course}/modules/{module}/addNewVideo',[
+             'uses' => '\App\Http\Controllers\Courses\lessons_CRUD_Controller@uploadVideo',
+             'as' => 'course.uploadVideo'
+         ]);
 
-     Route::middleware('checkRole:instructor')->get('{course}/Modules/{module}/update',[
-         'uses' => '\App\Http\Controllers\Courses\Modules_CRUD_Controller@getUpdateModuleForm',
-         'as' => 'course.getUpdateModuleForm'
-     ]);
+         Route::middleware('checkRole:instructor')->get('{course}/modules/{module}/addNewFile',[
+             'uses' => '\App\Http\Controllers\Courses\lessons_CRUD_Controller@getNewFileForm',
+             'as' => 'course.addNewFile'
+         ]);
 
-     Route::middleware('checkRole:instructor')->post('{course}/Modules/{module}/update',[
-         'uses' => '\App\Http\Controllers\Courses\Modules_CRUD_Controller@updateModule',
-         'as' => 'course.updateModule'
-     ]);
-     Route::middleware('checkRole:instructor')->post('{course}/updateActivation',[
-         'uses' => '\App\Http\Controllers\Courses\Courses_CRUD_Controller@updateCourseActivation',
-         'as' => 'course.updateCourseActivation'
-     ]);
+         Route::middleware('checkRole:instructor')->post('{course}/modules/{module}/addNewFile',[
+             'uses' => '\App\Http\Controllers\Courses\lessons_CRUD_Controller@uploadFile',
+             'as' => 'course.uploadFile'
+         ]);
+
+         Route::middleware('checkRole:instructor')->get('{course}/Modules/{module}/update',[
+             'uses' => '\App\Http\Controllers\Courses\Modules_CRUD_Controller@getUpdateModuleForm',
+             'as' => 'course.getUpdateModuleForm'
+         ]);
+
+         Route::middleware('checkRole:instructor')->post('{course}/Modules/{module}/update',[
+             'uses' => '\App\Http\Controllers\Courses\Modules_CRUD_Controller@updateModule',
+             'as' => 'course.updateModule'
+         ]);
+
+         Route::middleware('checkRole:instructor')->post('{course}/updateActivation',[
+             'uses' => '\App\Http\Controllers\Courses\Courses_CRUD_Controller@updateCourseActivation',
+             'as' => 'course.updateCourseActivation'
+         ]);
+
+     });
 
          //grades book
 
@@ -222,8 +238,15 @@ Route::patch('assignmentDelivered/update/{id}', array( "as" => "assdelivered.upd
  * Quiz Module Routes
  * --------------------------------------------------------------------------
  */
-Route::group(['prefix' => 'Courses'], function(){
-    Route::middleware('checkRole:instructor')->get('{course}/Modules/{module}/addNewQuiz',[
+
+Route::middleware('checkRole:instructor')->post('Quizzes/{quiz}/updateActivation',[
+    'uses' => '\App\Http\Controllers\Quizes\Quizes_CRUD_Controller@updateQuizActivation',
+    'as' => 'quiz.updateQuizActivation'
+]);
+
+Route::group(['prefix' => 'Courses', 'middleware' => ['checkUserEnrollmentInCourse', 'checkCourseActivation']], function(){
+
+    Route::middleware('checkRole:instructor' )->get('{course}/Modules/{module}/addNewQuiz',[
         'uses' => '\App\Http\Controllers\Quizes\Quizes_CRUD_Controller@getNewQuizForm',
         'as' => 'quiz.getNewQuizForm'
     ]);
@@ -233,12 +256,12 @@ Route::group(['prefix' => 'Courses'], function(){
         'as' => 'quiz.addNewQuiz'
     ]);
 
-    Route::middleware('checkRole:student')->get('{course}/Modules/{module}/Quizzes/{quiz}',[
+    Route::middleware('checkQuizActivation')->get('{course}/Modules/{module}/Quizzes/{quiz}',[
         'uses' => '\App\Http\Controllers\Quizes\Quizes_CRUD_Controller@getSubmitQuizForm',
         'as' => 'quiz.getSubmitQuizForm'
     ]);
 
-    Route::middleware('checkRole:student')->post('{course}/Modules/{module}/Quizzes/{quiz}',[
+    Route::middleware(['checkQuizActivation', 'checkRole:student'])->post('{course}/Modules/{module}/Quizzes/{quiz}',[
         'uses' => '\App\Http\Controllers\Quizes\Quizes_CRUD_Controller@submitQuizAnswer',
         'as' => 'quiz.submitQuizAnswer'
     ]);
@@ -254,8 +277,9 @@ Route::group(['prefix' => 'admin'], function () {
       Route::get('logout', 'LoginController@logout')->name('admin.logout.web');
       Route::get('profile', 'DashboardController@profile')->name('admin.profile');
       Route::get('users', 'UserController@index')->name('admin.user.index');
-      Route::get('/user/profile', 'UserController@profile')->name('admin.user.profile');
-      Route::get('/user/edit', 'UserController@edit')->name('admin.user.edit');
+      Route::get('/users/profile', 'UserController@profile')->name('admin.user.profile');
+      Route::get('/users/edit', 'UserController@edit')->name('admin.user.edit');
+      Route::post('/users/edit', 'UserController@update')->name('admin.user.update');
   });
   Route::resource('/pindex', 'PIndexController', [
       'only' => ['edit', 'update', 'index']

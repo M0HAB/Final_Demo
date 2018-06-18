@@ -60,7 +60,6 @@ $('#submit-update-course').submit(function(event){
         },
         success: function(response){
             $('.error-msg').remove(); // To clear the old error messages before submit new course
-            $('#response-message-success').show().text(response.message).show();
             $('#form-course-title-child').remove();
             $('#form-course-title-parent').append('<Span id="form-course-title-child">' + response.data.title + '</span>');
         },
@@ -75,6 +74,10 @@ $('#submit-update-course').submit(function(event){
                 $('select[name=' + key +']').after('<span  class= "error-msg text-danger">' + val +'</span>');
                 $('textarea[name=' + key +']').after('<span  class= "error-msg text-danger">' + val +'</span>');
             })
+        }
+    }).done(function(data){
+        if ($.isEmptyObject(data.error)) {
+            toastr.success(data.success);
         }
     });
 });

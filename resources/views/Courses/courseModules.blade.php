@@ -87,12 +87,12 @@
                                         @if(!$course->is_active)
                                             <input type="hidden" name="is_active" value='1'>
                                             <p id="submit-status ">
-                                                <i id="icon-course-status" class="fas fa-toggle-off"></i><button id="submit-course-status" class="text-success" style="border: none;background-color: transparent;cursor: pointer">Activate The Course</button>
+                                                <i id="icon-course-status" class="fas fa-toggle-off"></i><button id="submit-course-status" class="text-primary" style="border: none;background-color: transparent;cursor: pointer">Activate The Course</button>
                                             </p>
                                         @else
                                             <input type="hidden" name="is_active" value='0'>
                                             <p id="submit-status">
-                                                <i id="icon-course-status" class="fas fa-toggle-on text-success"></i><button  class="text-primary text-primary" style="border: none;background-color: transparent;cursor: pointer">Deactivate The Course</button>
+                                                <i id="icon-course-status" class="fas fa-toggle-on text-success"></i><button  class="text-primary" style="border: none;background-color: transparent;cursor: pointer">Deactivate The Course</button>
                                             </p>
                                         @endif
                                     </form>
@@ -108,14 +108,10 @@
                                     </p>
 
                                     @elseif (Auth::user()->isStudent())
-                                        @if($grades)
-                                    <p>
-                                        <a href="{{route('course.studentGrades.show', ['student_id' => Auth::user()->id,'course_id' =>$course->id])}}" class="ml-1"><i class="fas fa-graduation-cap mr-1"></i>My grades</a>
-                                    </p>
-                                            @else
-                                            <p style="color: red">Grades not set yet</p>
-                                        @endif
-                                @endif
+                                        <p>
+                                            <a href="{{route('course.studentGrades.show', ['student_id' => Auth::user()->id,'course_id' =>$course->id])}}" class="ml-1"><i class="fas fa-graduation-cap mr-1"></i>My grades</a>
+                                        </p>
+                                    @endif
                             </div>
                         </div>
                     <div class="col-sm-12 mt-4 text-center px-0">

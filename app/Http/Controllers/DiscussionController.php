@@ -17,7 +17,7 @@ class DiscussionController extends Controller
     {
       // return view('_auth.department.show')->with('departments', $departments);
       // return view('_auth.discussions.index');
-      return "yo";
+     // return "yo";
     }
     public function show($id)
     {
