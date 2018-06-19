@@ -83,7 +83,7 @@
 							}
 						}
 					}
-					$recents = $recents->sort()->take(5);
+					$recents = $recents->sortbyDesc('id')->take(5);
 				@endphp
 				@foreach($recents as $recent)
 					<a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
