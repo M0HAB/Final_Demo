@@ -72,7 +72,6 @@
 				@php
 					$recents;
 					$first = true;
-					$count = array();
 					foreach(Auth::user()->courses as $k => $course){
 						if(count($course->discussion->posts)>0){
 							if($first){
