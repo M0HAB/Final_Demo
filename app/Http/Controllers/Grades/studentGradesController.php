@@ -18,6 +18,8 @@ class studentGradesController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    private $controllerName = "Grade";
+
     public function __construct()
     {
         $this->middleware(['auth', 'revalidate']);
@@ -25,41 +27,45 @@ class studentGradesController extends Controller
 
     public function index($course_id)
     {
+        if(canRead($this->controllerName)){
+            if (Auth::user()->isInstructor()){
+                //get all students enrolled in this course
+                $students = DB::table('users')
+                    ->leftjoin('course_user', 'course_user.user_id', '=', 'users.id')
+                    ->leftjoin('grades', 'grades.user_id', '=', 'users.id')
+                    ->leftjoin('grade_books', 'grade_books.course_id', '=', 'course_user.course_id')
+                    ->select('users.fname','users.lname','users.email','users.id as std_id','grades.*','grade_books.*','grades.id as gradeid')
+                    ->where('course_user.course_id', '=', $course_id)
+                    ->get();
 
-        if (Auth::user()->isInstructor()){
-            //get all students enrolled in this course
-            $students = DB::table('users')
-                ->leftjoin('course_user', 'course_user.user_id', '=', 'users.id')
-                ->leftjoin('grades', 'grades.user_id', '=', 'users.id')
-                ->leftjoin('grade_books', 'grade_books.course_id', '=', 'course_user.course_id')
-                ->select('users.fname','users.lname','users.email','users.id as std_id','grades.*','grade_books.*','grades.id as gradeid')
-                ->where('course_user.course_id', '=', $course_id)
-                ->get();
+               $assgrades = DB::table('assdelivers')
+                    ->leftjoin('assignments', 'assdelivers.ass_id', '=', 'assignments.id')
+                    ->leftjoin('modules', 'assignments.module_id', '=', 'modules.id')
+                    ->leftjoin('courses', 'modules.course_id', '=', 'courses.id')
+                    ->select('assdelivers.*' , 'assignments.full_mark')
+                    ->where('courses.id', '=', $course_id)
+                    ->get();
+                $quizgrades = DB::table('quiz_user')
+                    ->leftjoin('quizzes', 'quiz_user.quiz_id', '=', 'quizzes.id')
+                    ->leftjoin('modules', 'quizzes.module_id', '=', 'modules.id')
+                    ->leftjoin('courses', 'modules.course_id', '=', 'courses.id')
+                    ->select('quiz_user.*' , 'quizzes.total_grade')
+                    ->where('courses.id', '=', $course_id)
+                    ->get();
+                $gradesbook=gradeBook::where('course_id', '=' ,$course_id)->first();
+                $course=Course::where('id', '=' ,$course_id)->first();
 
-           $assgrades = DB::table('assdelivers')
-                ->leftjoin('assignments', 'assdelivers.ass_id', '=', 'assignments.id')
-                ->leftjoin('modules', 'assignments.module_id', '=', 'modules.id')
-                ->leftjoin('courses', 'modules.course_id', '=', 'courses.id')
-                ->select('assdelivers.*' , 'assignments.full_mark')
-                ->where('courses.id', '=', $course_id)
-                ->get();
-            $quizgrades = DB::table('quiz_user')
-                ->leftjoin('quizzes', 'quiz_user.quiz_id', '=', 'quizzes.id')
-                ->leftjoin('modules', 'quizzes.module_id', '=', 'modules.id')
-                ->leftjoin('courses', 'modules.course_id', '=', 'courses.id')
-                ->select('quiz_user.*' , 'quizzes.total_grade')
-                ->where('courses.id', '=', $course_id)
-                ->get();
-            $gradesbook=gradeBook::where('course_id', '=' ,$course_id)->first();
-            $course=Course::where('id', '=' ,$course_id)->first();
+                //dd($course);
 
-            //dd($course);
-
-            //dd($grades);
-            return view('_auth.grades.index',compact('students','assgrades','course_id','quizgrades','gradesbook','course'));
+                //dd($grades);
+                return view('_auth.grades.index',compact('students','assgrades','course_id','quizgrades','gradesbook','course'));
+            }else{
+                return redirect()->route('user.dashboard')->with('error', 'Unauthorized Access');
+            }
         }else{
             return redirect()->route('user.dashboard')->with('error', 'Unauthorized Access');
         }
+
 
 
     }
@@ -71,15 +77,19 @@ class studentGradesController extends Controller
      */
     public function create($course_id,$student_id)
     {
+        if(canCreate($this->controllerName)){
+            $student=user::where('id', '=', $student_id)->first();
+            //dd($student);
+            if (Auth::user()->isInstructor()){
 
-        $student=user::where('id', '=', $student_id)->first();
-        //dd($student);
-        if (Auth::user()->isInstructor()){
-
-            return view('_auth.grades.create',compact('course_id','student_id','student'));
+                return view('_auth.grades.create',compact('course_id','student_id','student'));
+            }else{
+                return redirect()->route('user.dashboard')->with('error', 'Unauthorized Access');
+            }
         }else{
             return redirect()->route('user.dashboard')->with('error', 'Unauthorized Access');
         }
+
     }
 
     /**
@@ -91,23 +101,25 @@ class studentGradesController extends Controller
     public function store(Request $request,$course_id,$student_id)
     {
         //d($student_id);
+        if(canCreate($this->controllerName)){
+            \DB::table('grades')->insert([
+                [
+                    'course_id'          => $course_id,
+                    'user_id'            => $student_id,
+                    'finalgrade'         => $request->input('finalexam'),
+                    'midterm'            => $request->input('midtermgrade'),
+                    'midterm_fullmark'   => $request->input('midtermfullmark'),
+                    'final_fullmark'     => $request->input('finalexamfullmark'),
+                    'practical'          => $request->input('practicalgrade'),
+                    'practical_fullmark' => $request->input('practicalfullmark')
+                ]
+            ]);
+            return redirect()->back()->with('success', 'Grades Successfully Submitted');
 
-        \DB::table('grades')->insert([
-            [
-                'course_id'          => $course_id,
-                'user_id'            => $student_id,
-                'finalgrade'         => $request->input('finalexam'),
-                'midterm'            => $request->input('midtermgrade'),
-                'midterm_fullmark'   => $request->input('midtermfullmark'),
-                'final_fullmark'     => $request->input('finalexamfullmark'),
-                'practical'          => $request->input('practicalgrade'),
-                'practical_fullmark' => $request->input('practicalfullmark')
+        }else{
+            return redirect()->route('user.dashboard')->with('error', 'Unauthorized Access');
+        }
 
-
-            ]
-        ]);
-
-        return redirect()->back()->with('success', 'Grades Successfully Submitted');
 
     }
 
@@ -120,46 +132,50 @@ class studentGradesController extends Controller
     public function show($course_id,$student_id)
     {
 
+        if(canRead($this->controllerName)){
+            $student = DB::table('users')
+                ->leftjoin('course_user', 'course_user.user_id', '=', 'users.id')
+                ->leftjoin('grades', 'grades.user_id', '=', 'users.id')
+                ->leftjoin('courses', 'grades.course_id', '=', 'courses.id')
+                ->leftjoin('modules', 'modules.course_id', '=', 'courses.id')
+                ->leftjoin('assignments', 'assignments.module_id', '=', 'modules.id')
+                ->leftjoin('assdelivers', 'assdelivers.ass_id', '=', 'assignments.id')
+                ->leftjoin('grade_books', 'grade_books.course_id', '=', 'course_user.course_id')
+                ->select('users.fname','users.lname','users.email','users.id as std_id','grades.*','grade_books.*',
+                    'courses.title','assignments.title as asstitle','assignments.full_mark as assfullmark' ,
+                    'assdelivers.grade as assgrade','assdelivers.comment','assdelivers.grade as assgrade')
+                ->where('course_user.user_id', '=', $student_id)
+                ->where('course_user.course_id', '=', $course_id)
+                ->where('assdelivers.user_id', '=', $student_id)
+                ->get();
+
+            $assgrades = DB::table('assdelivers')
+                ->leftjoin('assignments', 'assdelivers.ass_id', '=', 'assignments.id')
+                ->leftjoin('modules', 'assignments.module_id', '=', 'modules.id')
+                ->leftjoin('courses', 'modules.course_id', '=', 'courses.id')
+                ->select('assdelivers.*' , 'assignments.full_mark')
+                ->where('courses.id', '=', $course_id)
+                ->get();
+
+            $quizgrades = DB::table('quiz_user')
+                ->leftjoin('quizzes', 'quiz_user.quiz_id', '=', 'quizzes.id')
+                ->leftjoin('modules', 'quizzes.module_id', '=', 'modules.id')
+                ->leftjoin('courses', 'modules.course_id', '=', 'courses.id')
+                ->select('quiz_user.*' , 'quizzes.total_grade','quizzes.title as quiztitle','modules.title as modtitle')
+                ->where('courses.id', '=', $course_id)
+                ->get();
+
+            $grades=grade::where('course_id', '=' ,$course_id)->first();
 
 
-        $student = DB::table('users')
-            ->leftjoin('course_user', 'course_user.user_id', '=', 'users.id')
-            ->leftjoin('grades', 'grades.user_id', '=', 'users.id')
-            ->leftjoin('courses', 'grades.course_id', '=', 'courses.id')
-            ->leftjoin('modules', 'modules.course_id', '=', 'courses.id')
-            ->leftjoin('assignments', 'assignments.module_id', '=', 'modules.id')
-            ->leftjoin('assdelivers', 'assdelivers.ass_id', '=', 'assignments.id')
-            ->leftjoin('grade_books', 'grade_books.course_id', '=', 'course_user.course_id')
-            ->select('users.fname','users.lname','users.email','users.id as std_id','grades.*','grade_books.*',
-                'courses.title','assignments.title as asstitle','assignments.full_mark as assfullmark' ,
-                'assdelivers.grade as assgrade','assdelivers.comment','assdelivers.grade as assgrade')
-            ->where('course_user.user_id', '=', $student_id)
-            ->where('course_user.course_id', '=', $course_id)
-            ->where('assdelivers.user_id', '=', $student_id)
-            ->get();
-
-        $assgrades = DB::table('assdelivers')
-            ->leftjoin('assignments', 'assdelivers.ass_id', '=', 'assignments.id')
-            ->leftjoin('modules', 'assignments.module_id', '=', 'modules.id')
-            ->leftjoin('courses', 'modules.course_id', '=', 'courses.id')
-            ->select('assdelivers.*' , 'assignments.full_mark')
-            ->where('courses.id', '=', $course_id)
-            ->get();
-
-        $quizgrades = DB::table('quiz_user')
-            ->leftjoin('quizzes', 'quiz_user.quiz_id', '=', 'quizzes.id')
-            ->leftjoin('modules', 'quizzes.module_id', '=', 'modules.id')
-            ->leftjoin('courses', 'modules.course_id', '=', 'courses.id')
-            ->select('quiz_user.*' , 'quizzes.total_grade','quizzes.title as quiztitle','modules.title as modtitle')
-            ->where('courses.id', '=', $course_id)
-            ->get();
-
-        $grades=grade::where('course_id', '=' ,$course_id)->first();
 
 
+            return view('_auth.grades.show',compact('student','student_id','assgrades','quizgrades','grades','course_id'));
+        }else{
+            return redirect()->route('user.dashboard')->with('error', 'Unauthorized Access');
+        }
 
 
-        return view('_auth.grades.show',compact('student','student_id','assgrades','quizgrades','grades','course_id'));
     }
 
     /**
@@ -170,21 +186,20 @@ class studentGradesController extends Controller
      */
     public function edit($course_id,$student_id)
     {
-        $authuser = Auth::user();
+        if(canUpdate($this->controllerName)){
+            $grades=grade::where('user_id', '=' ,$student_id)->first();
+            $student=user::where('id', '=', $student_id)->first();
+            //dd($student);
+            if (Auth::user()->isInstructor()){
 
-      $grades=grade::where('user_id', '=' ,$student_id)->first();
-      $student=user::where('id', '=', $student_id)->first();
-
-
-
-      //dd($student);
-
-        if (Auth::user()->isInstructor()){
-
-            return view('_auth.grades.edit',compact('grades','student'));
+                return view('_auth.grades.edit',compact('grades','student'));
+            }else{
+                return redirect()->route('user.dashboard')->with('error', 'Unauthorized Access');
+            }
         }else{
             return redirect()->route('user.dashboard')->with('error', 'Unauthorized Access');
         }
+
 
 }
 
@@ -197,27 +212,31 @@ class studentGradesController extends Controller
      */
     public function update(Request $request, $course_id,$grade_id)
     {
+        if(canUpdate($this->controllerName)){
+            $grades = grade::findOrFail($grade_id);
+            $grades ->midterm = $request->input('midtermgrade') ;
+            $grades ->midterm_fullmark = $request->input('midtermfullmark') ;
+            $grades ->finalgrade = $request->input('finalexam') ;
+            $grades ->final_fullmark = $request->input('finalexamfullmark') ;
 
-        $grades = grade::findOrFail($grade_id);
-        $grades ->midterm = $request->input('midtermgrade') ;
-        $grades ->midterm_fullmark = $request->input('midtermfullmark') ;
-        $grades ->finalgrade = $request->input('finalexam') ;
-        $grades ->final_fullmark = $request->input('finalexamfullmark') ;
+            if (($request->has('practicalgrade'))){
+            $grades->practical = $request->input('practicalgrade');
+            }
 
-        if (($request->has('practicalgrade'))){
-        $grades->practical = $request->input('practicalgrade');
-        }
-
-        elseif (($request->has('practicalfullmark'))){
-            $grades->practical_fullmark = $request->input('practicalfullmark');
-        }
+            elseif (($request->has('practicalfullmark'))){
+                $grades->practical_fullmark = $request->input('practicalfullmark');
+            }
 
 
-        if ($grades->save()){
-            return redirect()->back()->with('success', 'Grades updated successfully');
+            if ($grades->save()){
+                return redirect()->back()->with('success', 'Grades updated successfully');
+            }else{
+                return redirect()->back()->with('error', 'An Error Occurred ');
+            }
         }else{
-            return redirect()->back()->with('error', 'An Error Occurred ');
+            return redirect()->route('user.dashboard')->with('error', 'Unauthorized Access');
         }
+
 
     }
 
@@ -229,6 +248,10 @@ class studentGradesController extends Controller
      */
     public function destroy($id)
     {
-        //
+        if(canDelete($this->controllerName)){
+
+        }else{
+            
+        }
     }
 }

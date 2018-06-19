@@ -16,6 +16,7 @@ $('#submit-course-activation').submit(function(event){
             is_active     : $('input[name = is_active]').val()
         },
         success: function(data){
+            $('#response-message-danger').hide();
             console.log(data);
             console.log(data.course.is_active);
             if(data.course.is_active){
@@ -25,17 +26,21 @@ $('#submit-course-activation').submit(function(event){
             }else{
                 $('input[name = is_active]').val('1');
                 $('#submit-course-status').html('Activate the Course');
-                $('#icon-course-status').removeClass('Òfa-toggle-on text-success').addClass('fa-toggle-off')
+                $('#icon-course-status').removeClass('ï¿½fa-toggle-on text-success').addClass('fa-toggle-off')
             }
         },
         error: function(response){
+            console.log(response.responseJSON.message);
             console.log(typeof(response.data));
             $('#response-message-success').hide();
-            $('#response-message-danger').show().text(response.message).show();
+            $('#response-message-danger').show().text(response.responseJSON.message).show();
+            toastr.error(response.responseJSON.message);
         }
     }).done(function(data){
         if ($.isEmptyObject(data.error)) {
             toastr.success(data.success);
+        }else{
+            toastr.error(data.message);
         }
     });
 });
