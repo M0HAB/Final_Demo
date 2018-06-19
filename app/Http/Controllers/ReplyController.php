@@ -11,6 +11,11 @@ use Auth;
 class ReplyController extends Controller
 {
 
+    public function __construct()
+    {
+        $this->middleware(['auth', 'revalidate', 'checkUserEnrollmentInCourse']);
+    }
+    
     public function setVote(Request $request)
     {
       $btn;$approve=false;

@@ -12,7 +12,10 @@ use App\FileUp;
 class PostController extends Controller
 {
 
-
+    public function __construct()
+    {
+        $this->middleware(['auth', 'revalidate', 'checkUserEnrollmentInCourse']);
+    }
       private function getImgData($data,$k){
         list(, $data['src']) = explode(',', $data['src']);
         $decode_data = base64_decode($data['src']);

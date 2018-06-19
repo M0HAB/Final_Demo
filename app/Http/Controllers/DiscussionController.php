@@ -11,7 +11,7 @@ class DiscussionController extends Controller
 
     public function __construct()
     {
-        $this->middleware(['auth', 'revalidate']);
+        $this->middleware(['auth', 'revalidate', 'checkUserEnrollmentInCourse']);
     }
     public function index()
     {

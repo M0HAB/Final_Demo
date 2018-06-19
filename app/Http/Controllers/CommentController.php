@@ -9,6 +9,10 @@ use Auth;
 
 class CommentController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware(['auth', 'revalidate', 'checkUserEnrollmentInCourse']);
+    }
     public function store(Request $request)
     {
       if($request->ajax()){

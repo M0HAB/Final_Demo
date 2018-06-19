@@ -34,16 +34,16 @@ Route::middleware('auth:api')->group(function () {
   Route::post('/messages/{id}/send', 'MessagesController@send');
   Route::post('/messages/{id}/read', 'MessagesController@readFromUser');
 
-  Route::post('vote/{id}/set', 'ReplyController@setVote');
+  Route::post('vote/{id}/set', 'ReplyController@setVote')->name('discussion.reply.vote');
 
-  Route::post('/newRecord', 'PostController@store');
-  Route::post('/editRecord', 'PostController@edit');
-  Route::post('/newComment', 'CommentController@store');
-  Route::post('/editComment', 'CommentController@edit');
+  Route::post('/newRecord', 'PostController@store')->name('discussion.record.store');
+  Route::post('/editRecord', 'PostController@edit')->name('discussion.record.edit');
+  Route::post('/newComment', 'CommentController@store')->name('discussion.comment.store');
+  Route::post('/editComment', 'CommentController@edit')->name('discussion.comment.edit');
 
-  Route::delete('/comment/{id}/delete', 'CommentController@delete');
-  Route::delete('/post/{id}/delete', 'PostController@delete');
-  Route::delete('/reply/{id}/delete', 'ReplyController@delete');
+  Route::delete('/comment/{id}/delete', 'CommentController@delete')->name('discussion.comment.delete');
+  Route::delete('/post/{id}/delete', 'PostController@delete')->name('discussion.post.delete');
+  Route::delete('/reply/{id}/delete', 'ReplyController@delete')->name('discussion.reply.delete');
   Route::delete('/department/{id}/delete', 'DepartmentsController@destroy');
   Route::delete('/specialization/{id}/delete', 'SpecializationController@destroy');
   Route::delete('/depspec/{id}/delete', 'DepartmentsController@specDestroy');
