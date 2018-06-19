@@ -55,6 +55,20 @@
                           </div>
                     </div>
                 </div>
+                <!---------------------------------->
+                <div class="card rounded-0">
+                    <div class="card-header rounded-0" id="heading4" data-toggle="collapse" data-target="#collapse4" aria-expanded="false" aria-controls="collapseOne">
+                      <h5 class="mb-0">
+                          Courses
+                      </h5>
+                    </div>
+
+                    <div id="collapse4" class="collapse rounded-0" aria-labelledby="heading4" data-parent="#accordion">
+                          <div class="card-body">
+                              <p class="mb-1"><a href="{{ route('admin.course.index') }}" class="bbp-breadcrumb-home forum-nav"><strong><i class="fas fa-list mr-2"></i>List All Courses</strong></a></p>
+                          </div>
+                    </div>
+                </div>
             </div>
 		</div>
 		<div class="col-lg-8 col-sm-12">

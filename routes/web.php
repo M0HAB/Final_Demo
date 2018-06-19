@@ -285,6 +285,15 @@ Route::group(['prefix' => 'admin'], function () {
           Route::get('/create', 'UserController@create')->name('admin.user.create');
           Route::post('/create', 'UserController@store')->name('admin.user.store');
       });
+      Route::group(['prefix' => 'courses'], function ()
+      {
+          Route::get('/', 'courseController@index')->name('admin.course.index');
+          Route::get('{course}/assignStudents', 'courseController@assignStudents')->name('admin.course.assignStudents');
+          Route::post('{course}/assignStudents', 'courseController@submitAssignStudents')->name('admin.course.submitAssignStudents');
+          Route::get('{course}/courseStudents', 'courseController@courseStudents')->name('admin.course.courseStudents');
+          Route::delete('{course}/assigns/{assign}', 'courseController@unAssignStudent')->name('admin.course.unAssignStudent');
+
+      });
 
   });
   Route::resource('/pindex', 'PIndexController', [

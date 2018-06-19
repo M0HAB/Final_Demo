@@ -184,5 +184,13 @@ class User extends Authenticatable
           ->count();
     }
 
+    /*Create a function to check if a student assigned to course */
+    public function checkIfStudentAssignedToCourse($course_id){
+        return (bool) DB::table('course_user')
+            ->where('course_id', '=', $course_id)
+            ->where('user_id', '=', $this->id)
+            ->first();
+    }
+
 
 }
