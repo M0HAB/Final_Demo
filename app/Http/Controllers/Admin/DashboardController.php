@@ -24,7 +24,7 @@ class DashboardController extends Controller
 
     public function readMessages()
     {
-        $messages = AdminMessage::all();
+        $messages = AdminMessage::all()->sortByDesc('id');
         return view('_auth.admin.users.messages')->with('messages', $messages);
     }
     public function showMessage($id)
