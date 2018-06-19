@@ -70,7 +70,7 @@
 			<h4 class="mb-4 pl-2">Recent Topics</h4>
 			<div class="list-group">
 				@php
-					$recents;
+					$recents = false;
 					$first = true;
 					foreach(Auth::user()->courses as $k => $course){
 						if(count($course->discussion->posts)>0){
@@ -82,18 +82,31 @@
 							}
 						}
 					}
-					$recents = $recents->sortbyDesc('id')->take(5);
+					if($recents){
+						$recents = $recents->sortbyDesc('id')->take(5);
+					}
 				@endphp
-				@foreach($recents as $recent)
+				@if($recents)
+					@foreach($recents as $recent)
+						<a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
+							<div class="d-flex w-100 justify-content-between">
+								<h5 class="mb-2">{{$recent->title}}</h5>
+								<small class="text-muted txt-lbl">{{$recent->created_at->diffForHumans()}}</small>
+							</div>
+							<p class="mb-1 recent-p-mod text-truncate">{{$recent->body}}</p>
+							<small class="text-muted txt-lbl">Posted by: <span class="font-weight-bold">{{$recent->user->fname.' '.$recent->user->lname}}</span></small>
+						</a>
+					@endforeach
+				@else
 					<a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
 						<div class="d-flex w-100 justify-content-between">
-							<h5 class="mb-2">{{$recent->title}}</h5>
-							<small class="text-muted txt-lbl">{{$recent->created_at->diffForHumans()}}</small>
+							<h5 class="mb-2">Hmmm this is...</h5>
+							<small class="text-muted txt-lbl">Weird</small>
 						</div>
-						<p class="mb-1 recent-p-mod text-truncate">{{$recent->body}}</p>
-						<small class="text-muted txt-lbl">Posted by: <span class="font-weight-bold">{{$recent->user->fname.' '.$recent->user->lname}}</span></small>
+						<p class="mb-1 recent-p-mod text-truncate">Can't seem to find any</p>
+						<small class="text-muted txt-lbl"><span class="font-weight-bold">POSTS</span></small>
 					</a>
-				@endforeach
+				@endif
 			</div>
 			{{-- <div class="arrow"></div> --}}
 		</div>

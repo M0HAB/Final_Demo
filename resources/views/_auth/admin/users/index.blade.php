@@ -21,7 +21,7 @@
             <div class="form-group mr-3 pb-2">
                 <select class="form-control form-control-sm" id="dep">
                     @foreach($departments as $department)
-                        <option>{{$department->name}}</option>
+                        <option value="{{$department->id}}">{{$department->name}}</option>
                     @endforeach
                 </select>
             </div>
@@ -67,9 +67,7 @@
 @endsection
 @section('scripts')
 <script type="text/javascript">
-    var api_token    = "{{ Auth::user()->api_token}}",
-        profileRoute = "{{route('admin.user.profile')}}",
-        editRoute    = "{{route('admin.user.edit')}}";
+    var api_token    = "{{ Auth::user()->api_token}}";
 </script>
 <script src="{{asset('js/axios.min.js')}}"></script>
 <script src="{{asset('js/user.js')}}" charset="utf-8"></script>

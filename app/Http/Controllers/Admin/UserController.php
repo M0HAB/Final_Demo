@@ -26,9 +26,12 @@ class UserController extends Controller
     }
     public function getUsers(Request $request)
     {
-
         if($request->name == ""){
-            $users = User::withTrashed()->where('role_id', $request->type)->orderBy('level')->orderBy('dep_id')->orderBy('fname')->get();
+            if($request->type == Role::where('name', 'student')->first()->id){
+                $users = User::withTrashed()->where('role_id', $request->type)->where('level', $request->level)->where('dep_id', $request->dep)->orderBy('fname')->get();
+            }else{
+                $users = User::withTrashed()->where('role_id', $request->type)->where('dep_id', $request->dep)->orderBy('fname')->get();
+            }
             $users->transform(function ($item, $key) {
                 if($item->trashed()){
                     $item['trashed'] = true;
@@ -49,10 +52,16 @@ class UserController extends Controller
         if(isset($name[1])){
             $lname = $name[1];
         }
-        $results = User::withTrashed()->where('role_id', $request->type)
-        ->whereRaw('(fname LIKE "'.$fname.'%" and lname LIKE "'.$lname.'%")')
-        ->orderBy('level')->orderBy('dep_id')
-        ->orderBy('fname')->get();
+        if($request->type == Role::where('name', 'student')->first()->id){
+            $results = User::withTrashed()->where('role_id', $request->type)
+            ->whereRaw('(fname LIKE "'.$fname.'%" and lname LIKE "'.$lname.'%")')
+            ->where('level', $request->level)->where('dep_id', $request->dep)
+            ->orderBy('fname')->get();
+        }else{
+            $results = User::withTrashed()->where('role_id', $request->type)
+            ->whereRaw('(fname LIKE "'.$fname.'%" and lname LIKE "'.$lname.'%")')
+            ->where('dep_id', $request->dep)->orderBy('fname')->get();
+        }
         $results->transform(function ($item, $key) {
             if($item->trashed()){
                 $item['trashed'] = true;
