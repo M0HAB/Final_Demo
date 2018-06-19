@@ -168,12 +168,14 @@ class Lessons_CRUD_Controller extends Controller
 
     public function uploadFile(Request $request, Course $course, Module $module){
         if(canCreate($this->controllerName)){
-            $validator = Validator::make($request->all(), [
+            $validator = Validator::make($request->all(), 
+            [
                 'title'           => 'required|max:255',
                 'description'     => 'required|max:255',
                 'lesson_file'     => 'required|max:10000',
 
             ]);
+
             if (!($validator->passes())) {
                 return response($validator->errors(), 401);
             }
