@@ -222,6 +222,9 @@ class PermissionRoleController extends Controller
     {
         $user = User::find($request->id);
         if(isset($_POST['revert'])){
+            if($user->permission === null){
+                return redirect()->back()->with('warning', 'Permissions are already at default');
+            }
             $user->permission =null;
             $user->save();
             return redirect()->back()->with('success', 'Permissions Reverted Successfully');

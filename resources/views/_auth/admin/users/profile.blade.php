@@ -10,11 +10,7 @@
           <div class="col-lg-12 col-sm-12 mb-4">
               <h3 class="f-rw">
                   {{$user->fname.' '.$user->lname}}
-                  <a href="{{route('admin.user.edit', ['id'=>$user->id])}}">
-                      <button class="btn btn-success" title="Edit">
-                          <i class="fas fa-edit"></i>
-                      </button>
-                  </a>
+                  <a href="{{route('admin.user.edit', ['id'=>$user->id])}}"><button class="btn btn-success" title="Edit"><i class="fas fa-edit"></i></button></a>
                   @if(!$user->trashed())
                       <button class="btn btn-danger" type="submit" data-toggle="modal" data-target="#confirm" data-id="{{$user->id}}" data-type="user" data-keep="3" title="Delete">
                               <i class="fas fa-trash"></i>

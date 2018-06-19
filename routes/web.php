@@ -276,10 +276,16 @@ Route::group(['prefix' => 'admin'], function () {
       Route::post('logout', 'LoginController@logout')->name('admin.logout');
       Route::get('logout', 'LoginController@logout')->name('admin.logout.web');
       Route::get('profile', 'DashboardController@profile')->name('admin.profile');
-      Route::get('users', 'UserController@index')->name('admin.user.index');
-      Route::get('/users/profile', 'UserController@profile')->name('admin.user.profile');
-      Route::get('/users/edit', 'UserController@edit')->name('admin.user.edit');
-      Route::post('/users/edit', 'UserController@update')->name('admin.user.update');
+      Route::group(['prefix' => 'users'], function ()
+      {
+          Route::get('/', 'UserController@index')->name('admin.user.index');
+          Route::get('/profile', 'UserController@profile')->name('admin.user.profile');
+          Route::get('/edit', 'UserController@edit')->name('admin.user.edit');
+          Route::post('/edit', 'UserController@update')->name('admin.user.update');
+          Route::get('/create', 'UserController@create')->name('admin.user.create');
+          Route::post('/create', 'UserController@store')->name('admin.user.store');
+      });
+
   });
   Route::resource('/pindex', 'PIndexController', [
       'only' => ['edit', 'update', 'index']
