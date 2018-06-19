@@ -24,6 +24,33 @@
                     <li class="nav-item">
                         <a class="nav-link" href="#"><i class="fas fa-bell"></i></a>
                     </li>
+                    <li class="nav-item dropdown ml-1">
+                        <a class="nav-link" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="msg-dropdown" onclick="toggleArrow('arrow-up')">
+                            <i class="fas fa-envelope"></i>
+                        </a>
+                    <i id="arrow-up" class="fas fa-caret-up" style="font-size:30px;position:absolute;top:24px;left:6px;color:#fff;height: 33px;"></i>
+                    <div class="dropdown-menu dropdown-menu-custom" aria-labelledby="navbarDropdown">
+                        @php
+                            $msgs = ('App\AdminMessage')::all();
+                        @endphp
+                        @if(count($msgs) == 0 )
+                            <p class="text-left pl-4 py-2" style="font-size: 14px;">No messages found</p>
+                        @endif
+                        @foreach ($msgs as $msg)
+                            <ul class="list-group list-group-scroll">
+                                <a class="rm-deco" href="{{route('admin.messages.show', $msg->user->id)}}">
+                                    <li class="list-group-item list-gitem-custom">
+                                        <span class="username-msg">{{$msg->user->fname}}</span>
+                                        <span class="msg-time float-right">{{$msg->created_at->diffForHumans()}}</span>
+                                        <span class="lb drop-msg-body"><i class="fas fa-caret-right"></i> {{$msg->subject}}</span>
+                                    </li>
+                                </a>
+                            </ul>
+                        @endforeach
+                        <div>
+                            <a class="pl-4 py-2 d-block" href="{{ route('admin.messages')}}" style="font-size:12px;display:inline-block">See All Messages</a>
+                        </div>
+                    </div>
                     @if (Request::url() == Route('admin.dashboard'))
                         <li class="nav-item">
                             <a class="nav-link d-none" href="{{ route('admin.dashboard') }}">Dashboard</a>
