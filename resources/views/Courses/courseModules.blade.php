@@ -21,9 +21,9 @@
     <div class="row">
 
         <div class="col-lg-12 mb-2">
-            <a href="{{ route('course.listUserCourses') }}" class="btn go-back-btn mb-1" style="position:relative; left:18px"><i class="fas fa-arrow-left fa-1x"></i> Back</a>   
+            <a href="{{ route('course.listUserCourses') }}" class="btn go-back-btn mb-1" style="position:relative; left:18px"><i class="fas fa-arrow-left fa-1x"></i> Back</a>
         <hr>
-             
+
         </div>
         <div class="col-lg-8 mb-4">
             {{--  Doctor section  --}}
@@ -44,7 +44,7 @@
             <div class="col-lg-12">
                 <div class="card dark-border mb-3">
                     <div class="card-header f-rw-bold bg-smookie text-uppercase"><i class="fas fa-list-ol mr-2"></i> Modules</div>
-                    @if(count($modules) > 0)                    
+                    @if(count($modules) > 0)
                         <div class="card-body">
                             @for($i=0; $i < count($modules); $i++)
                             <div class="card border-light mb-4">
@@ -64,7 +64,7 @@
                         @endif
                     </div>
                 </div>
-            </div>  
+            </div>
         </div>
 
         {{--  Activities  --}}
@@ -111,6 +111,11 @@
                                         <p>
                                             <a href="{{route('course.studentGrades.show', ['student_id' => Auth::user()->id,'course_id' =>$course->id])}}" class="ml-1"><i class="fas fa-graduation-cap mr-1"></i>My grades</a>
                                         </p>
+                                    @endif
+                                    @if(count($modules)>0 && $courseModal->discussion)
+                                    <p>
+                                        <a href="{{ route('discussion.show', $courseModal->discussion->id) }}" class="text-primary"><i class="fas fa-graduation-cap mr-2"></i>Course Discussion forum</a>
+                                    </p>
                                     @endif
                             </div>
                         </div>

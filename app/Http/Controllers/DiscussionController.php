@@ -42,7 +42,7 @@ class DiscussionController extends Controller
       if ($module_data){
         return view('_auth.posts.index')->with('discussion', $discussion)->with('module_data', $module_data);
       }else{
-        return redirect()->back()->with('error', 'Module Not Found');
+          return redirect()->route('user.dashboard')->with('error', 'This Course has no modules');
       }
     }
     public function searchPosts(Request $request, $id)
