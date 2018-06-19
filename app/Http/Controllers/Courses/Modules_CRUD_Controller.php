@@ -40,8 +40,8 @@ class Modules_CRUD_Controller extends Controller{
                 ->where('modules.course_id', '=', $course->id)
                 ->orderBy('module_order')
                 ->get();
-
-            return view('courses.courseModules', compact('course', 'modules'));
+            $courseModal = Course::find($course->id);
+            return view('courses.courseModules', compact('course', 'modules'))->with('courseModal', $courseModal);
 
         }else{
             return redirect()->route('user.dashboard')->with('error', 'Unauthorized Access');

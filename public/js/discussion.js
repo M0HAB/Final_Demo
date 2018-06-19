@@ -17,10 +17,15 @@ function vote(id){
   comments = $('#reply_container_'+id+' .comments');
   vote_tooltip = $('#reply_container_'+id+' .vote_link');
   comments_tooltip = $('#reply_container_'+id+' .comment_link');
+  headers = {
+    headers: {
+        'X-Requested-With': 'XMLHttpRequest'
+    }
+  }
   axios.post('/api/vote/'+id+'/set',{
     id: id,
     api_token : api_token
-  })
+  },headers)
   .then( (response) => {
     frame.find('#reply-'+id).html(response.data.comments_body);
     reply = response.data.reply;

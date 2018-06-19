@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use App\Department;
 use App\Specialization;
+use App\Discussion;
 
 class Courses_CRUD_Controller extends Controller{
 
@@ -127,6 +128,11 @@ class Courses_CRUD_Controller extends Controller{
                     'commitment'       => $request->commitment,
                     'instructor_id'      => Auth::User()->id,
                 ]);
+                //create Discussion for that course
+                Discussion::create([
+                    'course_id' => $course->id
+                ]);
+                ///
                 if($course){
                     return response()->json([
                         'success' => 'course created successfully!',
