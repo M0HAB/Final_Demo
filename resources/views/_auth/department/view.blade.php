@@ -6,34 +6,30 @@
 <!-- Start: Content -->
 <div class="row">
     <h3 class="f-rw"><strong>{{$department->name}}</strong> Department</h3>
-    @if (canUpdate('Department'))
-        <a href="{{ route('departments.edit',$department->id)}}">
-            <span class="far fa-edit" data-toggle="tooltip" data-placement="top" title="Edit this Department"></span>
-        </a>
-    @endif
 </div>
 <div class="row">
     <table class="table">
         <tbody>
             <tr>
                 <td>Department Head</td>
-                <td>{{$department->head_name}}</td>
+                @if(Auth::user()->id != $department->Dep_Head_ID)
+                    <td><a href="{{route('messages.show', $department->Dep_Head_ID)}}">{{$department->head_name}}</a></td>
+                @else
+                    <td>{{$department->head_name}}</td>
+                @endif
             </tr>
 			<tr>
                 <td>Department Courses</td>
-                <td><a href="{{route('department.courses', $department->id)}}">View Courses</a></td>
+                <td><a href="{{route('user.department.courses', $department->id)}}">View Courses</a></td>
             </tr>
             <tr>
                 <td>Department Courses</td>
-                <td><a href="{{route('department.specializations', $department->id)}}">View Specializations</a></td>
+                <td><a href="{{route('user.department.specializations', $department->id)}}">View Specializations</a></td>
             </tr>
-            @if (canUpdate('Department'))
-                <tr>
-                    <td>Number of Students</td>
-                    <td>{{$department->student_count}}</td>
-                </tr>
-             @endif
-
+            <tr>
+                <td>Number of Students</td>
+                <td>{{$department->student_count}}</td>
+            </tr>
         </tbody>
     </table>
 </div>

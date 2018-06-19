@@ -46,11 +46,13 @@
                       </h5>
                     </div>
 
-                    <div id="collapse3" class="collapse rounded-0" aria-labelledby="heading3" data-parent="#accordion">
+                    <div id="collapse3" class="collapse
+					@if(Route::is('department.*') || Route::is('specialization.*')) show @endif
+					rounded-0" aria-labelledby="heading3" data-parent="#accordion">
                           <div class="card-body">
-                              <p class="mb-1"><a href="#" class="bbp-breadcrumb-home forum-nav"><strong><i class="fas fa-list mr-2"></i>List All Departments</strong></a></p>
+                              <p class="mb-1"><a href="{{route('department.index')}}" class="bbp-breadcrumb-home forum-nav"><strong><i class="fas fa-list mr-2"></i>List All Departments</strong></a></p>
                               <p class="mb-1"><a href="#" class="bbp-breadcrumb-home forum-nav"><strong><i class="fas fa-list mr-2"></i>List All Specializations</strong></a></p>
-                              <p class="mb-1"><a href="#" class="bbp-breadcrumb-home forum-nav"><strong><i class="fas fa-plus mr-2"></i>Add Department</strong></a></p>
+                              <p class="mb-1"><a href="{{route('department.create')}}" class="bbp-breadcrumb-home forum-nav"><strong><i class="fas fa-plus mr-2"></i>Add Department</strong></a></p>
                               <p class="mb-1"><a href="#" class="bbp-breadcrumb-home forum-nav"><strong><i class="fas fa-plus mr-2"></i>Add Specialization</strong></a></p>
                           </div>
                     </div>

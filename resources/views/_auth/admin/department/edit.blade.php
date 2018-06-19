@@ -1,16 +1,16 @@
-@extends('_layouts.app')
+@extends('_Auth.admin.admin_layout.admin')
 @section('title', 'Edit Department '.$department->name)
 
 
-@section('content')
+@section('admin_content')
 <!-- Start: Content -->
 
-<div class="row justify-content-center">
-	<div class="col-lg-10 col-sm-12">
+<div class="card">
+  	<div class="card-body">
 		@include('_partials.errors')
-		<h3 class="f-rw">Edit Department : <strong>{{$department->name}}</strong></h3>
-		
-        <form action="{{ route('departments.update',$department->id) }}" method="POST" role="form" autocomplete="off">
+		<h3 class="f-rw">Edit Department : <a href="{{ route('department.show',$department->id)}}"><strong>{{$department->name}}</strong></a></h3>
+
+        <form action="{{ route('department.update',$department->id) }}" method="POST" role="form" autocomplete="off">
             {{ csrf_field() }}
             <input type="hidden" name="_method" value="PUT">
 			<div class="form-group">
@@ -48,7 +48,6 @@
 			@endif
 			<button type="submit" name="submit" class="btn btn-primary">Submit</button>
 		  </form>
-
-	</div>
+  	</div>
 </div>
 @endsection

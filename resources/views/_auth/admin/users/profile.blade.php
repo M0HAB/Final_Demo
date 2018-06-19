@@ -133,32 +133,37 @@
                               </tr>
                           </thead>
                           <tbody>
-                              @foreach($user->posts as $post)
+                              @foreach($user->posts()->withTrashed()->get() as $post)
                                   <tr>
                                       <td>
-                                          <p class="font-weight-bold text-success">{{$post->discussion->course->title}}</p>
+                                          <p class="font-weight-bold">{{$post->discussion->course->title}}</p>
                                       </td>
 
                                       <td><p><span class="font-weight-bold">{{$post->id}}</span></p></td>
-                                      <td>Post</td>
+                                      <td>Post @if($post->trashed()) <span class="badge badge-danger">Deleted</span> @endif</td>
                                       <td><span>{{$post->body}}</span></td>
                                   </tr>
                               @endforeach
-                              @foreach($user->replies as $reply)
+                              @foreach($user->replies()->withTrashed()->get() as $reply)
                                   <tr>
                                       <td>
-                                          <p class="font-weight-bold text-success">{{$reply->post->discussion->course->title}}</p>
+                                          <p class="font-weight-bold">{{$reply->post()->withTrashed()->first()->discussion->course->title}}</p>
                                       </td>
 
                                       <td><p><span class="font-weight-bold">{{$reply->id}}</span></p></td>
-                                      <td>Reply</td>
+                                      <td>Reply @if($reply->trashed()) <span class="badge badge-danger">Deleted</span> @endif</td>
                                       <td><span>{{$reply->body}}</span></td>
                                   </tr>
                               @endforeach
                               @foreach($user->comments as $comment)
+                                    @php
+                                    $record = $comment->reply()->withTrashed()->first();
+                                    $record = $record->post()->withTrashed()->first();
+                                    $title = $record->discussion->course->title;
+                                    @endphp
                                   <tr>
                                       <td>
-                                          <p class="font-weight-bold text-success">{{$comment->reply->post->discussion->course->title}}</p>
+                                          <p class="font-weight-bold">{{$title}}</p>
                                       </td>
 
                                       <td><p><span class="font-weight-bold">{{$comment->id}}</span></p></td>

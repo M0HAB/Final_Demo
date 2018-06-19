@@ -50,15 +50,16 @@ Route::get('/test2', function(){
     Route::get('profile', 'UserDashboardController@profile')->name('user.profile');
  });
 
-Route::get('/departments/{id}/courses', 'DepartmentsController@getCourses')->name('department.courses');
-Route::get('/departments/{id}/specializations', 'DepartmentsController@getSpecializations')->name('department.specializations');
-Route::get('/departments/{id}/addspec', 'DepartmentsController@addSpecCreate')->name('department.spec.add');
-Route::post('/departments/{id}/addspec', 'DepartmentsController@addSpecStore')->name('department.spec.store');
-Route::resource('departments', 'DepartmentsController');
+Route::get('/department', 'DepartmentsController@userIndex')->name('user.department.index');
+Route::get('/department/{id}', 'DepartmentsController@userShow')->name('user.department.show');
+Route::get('/department/{id}/courses', 'DepartmentsController@userGetCourses')->name('user.department.courses');
+Route::get('/department/{id}/specializations', 'DepartmentsController@userGetSpecializations')->name('user.department.specializations');
 
-Route::get('/specialization/{id}/courses', 'SpecializationController@getCourses')->name('specialization.courses');
-Route::get('/specialization/{id}/departments', 'SpecializationController@getDepartments')->name('specialization.departments');
-Route::resource('specialization', 'SpecializationController');
+Route::get('/specialization', 'SpecializationController@userIndex')->name('user.specialization.index');
+Route::get('/specialization/{id}', 'SpecializationController@userShow')->name('user.specialization.show');
+Route::get('/specialization/{id}/courses', 'SpecializationController@userGetCourses')->name('user.specialization.courses');
+Route::get('/specialization/{id}/departments', 'SpecializationController@userGetDepartments')->name('user.specialization.departments');
+// Route::resource('specialization', 'SpecializationController');
 
 
 /**
@@ -296,6 +297,17 @@ Route::group(['prefix' => 'admin'], function () {
       });
 
   });
+  
+  Route::resource('department', 'DepartmentsController');
+  Route::get('/department/{id}/addspec', 'DepartmentsController@addSpecCreate')->name('department.spec.add');
+  Route::post('/department/{id}/addspec', 'DepartmentsController@addSpecStore')->name('department.spec.store');
+  Route::get('/department/{id}/courses', 'DepartmentsController@getCourses')->name('department.courses');
+  Route::get('/department/{id}/specializations', 'DepartmentsController@getSpecializations')->name('department.specializations');
+
+  Route::get('/specialization/{id}/courses', 'SpecializationController@getCourses')->name('specialization.courses');
+  Route::get('/specialization/{id}/departments', 'SpecializationController@getDepartments')->name('specialization.departments');
+  Route::resource('specialization', 'SpecializationController');
+
   Route::resource('/pindex', 'PIndexController', [
       'only' => ['edit', 'update', 'index']
   ]);

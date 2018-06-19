@@ -21,7 +21,7 @@
             @foreach($specialization->departments as $department)
             <tr>
                 <td>{{$department->id}}</td>
-                <td><a href="{{route('departments.show', $department->id)}}">{{ucfirst($department->name)}}</a></td>
+                <td><a href="{{route('user.department.show', $department->id)}}">{{ucfirst($department->name)}}</a></td>
                 <td>{{count($department->courses->where('course_department', $department->id))}}</td>
             </tr>
             @endforeach
