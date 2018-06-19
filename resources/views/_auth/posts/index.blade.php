@@ -93,15 +93,16 @@
                     </ol>
                 </div>
             </div>
-            @if(count($module_data->posts) == 0)
+            @if(count($module_data->posts) == 0 )
             <div class="row" id="alert_row">
                 <div class="alert alert-dismissible alert-info mx-3" style="width:100%">
                     <button type="button" class="close" data-dismiss="alert">&times;</button>
                     <i class="fas fa-info-circle fa-1x mr-2"></i>
-                    <strong>No posts are found</strong>, you can create a new post by hitting <strong>Create Post</strong> button
+                    <strong>No posts are found</strong>
                 </div>
             </div>
             @endif
+            @if(canCreate('Discussion'))
             <div class="row">
                 <div class="col-lg-12 col-sm-12">
                     <button id="create-post" class="btn btn-success mb-3 float-right"
@@ -110,6 +111,7 @@
                     </button>
                 </div>
             </div>
+            @endif
             {{-- Posts --}}
             <div class="row">
                 <div class="col-lg-12" id="posts">

@@ -19,26 +19,32 @@
                             <h3 class="post-title font-weight-bold edit_title">{{$post->title}}</h3>
                         </div>
                         <div class="col-lg-1">
-                            <div class="dropdown float-right">
-                                <button type="button" class="btn btn-light browse-btn" data-toggle="dropdown">
-                                    <i class="fas fa-ellipsis-v font-weight-bold browse-icon"></i>
-                                </button>
-                                <div class="dropdown-menu dropdown-menu-right text-left">
-                                    @if(Auth::user()->id != $post->user->id)
-                                    <a class="dropdown-item" href="{{route('messages.show', $post->user->id)}}">Send Message</a>
-                                    @endif
-                                    @if(Auth::user()->id == $post->user->id)
-                                    <a class="dropdown-item" href="JavaScript:void(0)"
-                                    data-toggle="modal" data-target="#req" data-type="post" data-id="{{$post->id}}" data-mode="edit">
-                                      Edit
-                                    </a>
-                                    <a class="dropdown-item" href="JavaScript:void(0)"
-                                    data-toggle="modal" data-target="#confirm" data-id="{{$post->id}}" data-type="post" data-redirect="true">
-                                      Delete
-                                    </a>
-                                    @endif
+                            @if(Auth::user()->id != $post->user->id || canUpdate('Discussion') || canDelete('Discussion'))
+                                <div class="dropdown float-right">
+                                    <button type="button" class="btn btn-light browse-btn" data-toggle="dropdown">
+                                        <i class="fas fa-ellipsis-v font-weight-bold browse-icon"></i>
+                                    </button>
+                                    <div class="dropdown-menu dropdown-menu-right text-left">
+                                        @if(Auth::user()->id != $post->user->id)
+                                        <a class="dropdown-item" href="{{route('messages.show', $post->user->id)}}">Send Message</a>
+                                        @endif
+                                        @if(Auth::user()->id == $post->user->id)
+                                            @if(canUpdate('Discussion'))
+                                                <a class="dropdown-item" href="JavaScript:void(0)"
+                                                data-toggle="modal" data-target="#req" data-type="post" data-id="{{$post->id}}" data-mode="edit">
+                                                  Edit
+                                                </a>
+                                            @endif
+                                            @if(canDelete('Discussion'))
+                                                <a class="dropdown-item" href="JavaScript:void(0)"
+                                                data-toggle="modal" data-target="#confirm" data-id="{{$post->id}}" data-type="post" data-redirect="true">
+                                                  Delete
+                                                </a>
+                                            @endif
+                                        @endif
+                                    </div>
                                 </div>
-                            </div>
+                            @endif
                         </div>
                     </div>
 
@@ -105,11 +111,13 @@
         {{-- Replies --}}
         <div class="row reply-form">
             <div class="offset-lg-1 col-lg-11 mb-5">
-                <div class="row">
-                    <div class="col-lg-12">
-                        <button id="add-reply-btn" class="btn btn-light btn-block" data-toggle="modal" data-target="#req" data-type="reply" data-id="{{$post->id}}"><i class="fas fa-reply mr-2"></i> Reply</button>
+                @if(canCreate('Discussion'))
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <button id="add-reply-btn" class="btn btn-light btn-block" data-toggle="modal" data-target="#req" data-type="reply" data-id="{{$post->id}}"><i class="fas fa-reply mr-2"></i> Reply</button>
+                        </div>
                     </div>
-                </div>
+                @endif
 
             </div>
         </div>
