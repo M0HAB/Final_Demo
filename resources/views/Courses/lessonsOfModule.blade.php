@@ -76,7 +76,7 @@
                 <table class="table" style="border: 1px solid #DEE2E6">
                     <thead class="bg-light text-black">
                         <tr>
-                            <th class="f-rw-bold">LESSONS</th>
+                            <th class="f-rw-bold">Videos</th>
                         </tr>
                     </thead>
                     <tbody id="module-lessons">
