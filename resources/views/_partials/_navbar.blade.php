@@ -4,7 +4,7 @@
     <div class="container">
 
         @if (Auth::check())
-            <a class="navbar-brand" href="{{ route('user.dashboard') }}">E-LMS</a>
+            <a class="navbar-brand" href="{{ route('user.dashboard') }}"><img width="150px" height="35px"class="mr-1"src="/images/logo4.png"></img></a>
         @else
             <a class="navbar-brand" href="{{ route('index') }}">E-LMS</a>
         @endif
