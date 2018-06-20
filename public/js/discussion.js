@@ -242,8 +242,8 @@ $('#req').on('show.bs.modal', function (event) {
                   counter++;
               }
               $('#'+type+'_container_'+id+' .'+type+'_files').append('<div class="card float-left ml-2 mb-1 " style="width: 5rem;" id="div-1">'+
-                  '<img class="card-img-top" width="70px" height="70px" src="'+
-                  thumb+'" title="'+element.filename.split("/").pop()+'"></div>');
+                  '<a href="'+element.filename+'" data-lightbox="post_'+id+'"><img class="card-img-top" width="70px" height="70px" src="'+
+                  thumb+'" title="'+element.filename.split("/").pop()+'"></a></div>');
               $('#'+type+'_container_'+id+' .edit_image').append(element.type+";"+element.filename+",");
             });
             //edit srcs display
@@ -263,8 +263,8 @@ $('#req').on('show.bs.modal', function (event) {
                 thumb = element.filename;
               }
               $('#'+type+'_container_'+id+' .'+type+'_files').append('<div class="card float-left ml-2 mb-1 " style="width: 5rem;" id="div-1">'+
-                  '<img class="card-img-top" width="70px" height="70px" src="'+
-                  thumb+'" title="'+element.filename.split("/").pop()+'"></div>');
+                  '<a href="'+element.filename+'" data-lightbox="reply_'+id+'"><img class="card-img-top" width="70px" height="70px" src="'+
+                  thumb+'" title="'+element.filename.split("/").pop()+'"></a></div>');
               $('#'+type+'_container_'+id+' .edit_image').append(element.type+";"+element.filename+",");
             });
             toastr.success("Reply Edited Successfully");
