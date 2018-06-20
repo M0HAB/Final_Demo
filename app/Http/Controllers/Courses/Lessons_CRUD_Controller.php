@@ -83,7 +83,7 @@ class Lessons_CRUD_Controller extends Controller
 
     public function getNewVideoForm(Course $course,Module $module){
         if(canCreate($this->controllerName)){
-            return view('Courses.newVideoForm', compact('module'));
+            return view('Courses.newVideoForm', compact('course', 'module'));
         }else{
             return redirect()->route('user.dashboard')->with('error', 'Unauthorized Access');
         }

@@ -16,7 +16,7 @@
         <div class="reg-log-form p-3 my-3">
             <legend><i class="fa fa-plus"></i> Add New Video</legend>
             <hr>
-            <form action="{{ route('course.uploadVideo', ['course_id' => '1', 'module_id' => $module->id]) }}" method="post" enctype="multipart/form-data">
+            <form action="{{ route('course.uploadVideo', ['course_id' => $course->id, 'module_id' => $module->id]) }}" method="post" enctype="multipart/form-data">
                 {{ csrf_field() }}
                 <div class="row">
                     <div class="col-md-6">
