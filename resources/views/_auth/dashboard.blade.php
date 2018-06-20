@@ -14,7 +14,15 @@
 						<span class="bbp-breadcrumb-current">{{ getEndPoint() }}</span>
 					</p>
 				</div>
-				@if(count(Auth::user()->courses) == 0)
+				@php
+					$authUser = Auth::user();
+					if($authUser->isStudent()){
+						$courses = $authUser->studyCourses;
+					}else{
+						$courses = $authUser->courses;
+					}
+				@endphp
+				@if(count($courses) == 0)
 					<div class="alert alert-info alert-dismissible fade show w-100" role="alert">
 						You are not in any course!
 					  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -32,7 +40,7 @@
 							</tr>
 						</thead>
 						<tbody>
-							@foreach(Auth::user()->courses as $course)
+							@foreach($courses as $course)
 							<tr>
 								<td>
 									<a href="{{route('discussion.show', $course->discussion->id)}}" class="font-weight-bold forum-nav">{{$course->title}}</a>
@@ -72,7 +80,7 @@
 				@php
 					$recents = false;
 					$first = true;
-					foreach(Auth::user()->courses as $k => $course){
+					foreach($courses as $k => $course){
 						if(count($course->discussion->posts)>0){
 							if($first){
 								$first = false;

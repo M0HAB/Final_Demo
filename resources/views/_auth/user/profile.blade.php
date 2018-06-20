@@ -2,7 +2,13 @@
 @section('title', Auth::user()->fname)
 @php
     $authUser = Auth::user();
+	if($authUser->isStudent()){
+		$courses = $authUser->studyCourses;
+	}else{
+		$courses = $authUser->courses;
+	}
 @endphp
+
 @section('content')
     <!-- Start: Profile -->
     <div class="row f-rw">
@@ -21,9 +27,9 @@
                 <li class="nav-item">
                     <a class="nav-link active" data-toggle="tab" href="#info">Info.</a>
                 </li>
-                @if(count($authUser->courses)>0)
+                @if(count($courses)>0)
                     <li class="nav-item">
-                        <a class="nav-link" data-toggle="tab" href="#roll-courses">Registered Courses</a>
+                        <a class="nav-link" data-toggle="tab" href="#roll-courses">Courses</a>
                     </li>
                 @endif
                 {{-- <li class="nav-item dropdown">
@@ -76,8 +82,8 @@
                             @endif
                         </tbody>
                     </table>
-                </div>
-                @if(count($authUser->courses)>0)
+                </div>				
+                @if(count($courses)>0)
                     <div class="tab-pane" id="roll-courses">
                         <table class="table">
                             <thead>
@@ -88,7 +94,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach($authUser->courses as $course)
+                                @foreach($courses as $course)
                                 <tr>
                                     <td>
                                         <p class="font-weight-bold text-success">{{$course->title}}</p>
