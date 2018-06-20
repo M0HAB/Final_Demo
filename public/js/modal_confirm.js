@@ -75,8 +75,7 @@ $('#confirm').on('show.bs.modal', function (event) {
 
     })
     .catch(function (error) {
-        console.log(error);
-      toastr.warning("Something went Wroaang");
+      toastr.warning("Something went Wrong");
     });
 
   })

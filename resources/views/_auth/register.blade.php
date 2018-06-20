@@ -29,13 +29,13 @@
                                 <div class="col-lg-6 col-sm-12">
                                     <div class="form-group">
                                         <label for="">Email</label>
-                                        <input type="email" class="form-control {{ $errors->has('email') ? ' is_invalid' : '' }}" id="email" name="email" placeholder="test@example.com" value="{{ old('email') }}">
+                                        <input type="email" class="form-control {{ $errors->has('email') ? ' is_invalid' : '' }}" id="email" name="email" placeholder="test@example.com" value="{{ old('email') }}" required>
                                     </div>
                                 </div>
                                 <div class="col-lg-6 col-sm-12">
                                     <div class="form-group">
                                         <label for="">Confirm Email</label>
-                                        <input type="email" class="form-control" id="confirm-email" name="email_confirmation">
+                                        <input type="email" class="form-control" id="confirm-email" name="email_confirmation" required>
                                     </div>
                                 </div>
                                 <div class="col-lg-6 col-sm-12">

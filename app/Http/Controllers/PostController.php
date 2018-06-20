@@ -11,7 +11,7 @@ use App\FileUp;
 
 class PostController extends Controller
 {
-
+    private $controllerName = "Discussion";
     public function __construct()
     {
         $this->middleware(['auth', 'revalidate', 'checkUserEnrollmentInCourse']);
@@ -68,87 +68,102 @@ class PostController extends Controller
       //same store function for Post and Reply
       public function store(Request $request)
       {
-            if($request->ajax()){
-              //filterRecordType takes the request and boolean to indicate if it is edit or new
-              $newRecord = $this->filterRecordType($request,false);
-              //if the filtering returned a 404 then return error not found
-              if ($newRecord === 0) return redirect()->route('error.api', 'Not Found');
-              $body = $request->body;
-              //save the received body if not empty to the $newRecord->body
-              $newRecord->body = $body;
-              //set the user id of new record to current auth user
-              $newRecord->user_id = Auth::user()->id;
-              //if new record failed to save return 404;
-              if(!$newRecord->save()) return redirect()->route('error.api', 'Failed to save Try Resubmitting');
-              //get array of sources
-              $files = $this->saveFiles($request->file_list);
-              if ($files === 0) return redirect()->route('error.api', 'File too big, maximum 2mb per File');
-              //loop on each source and store in DB to get later
-              foreach ($files as $file) {
-                $file_rec = new FileUp;
-                $file_rec->relate_type = $request->type;
-                $file_rec->relate_id = $newRecord->id;
-                $file_rec->filename = $file['src'];
-                $file_rec->type = $file['type'];
-                $file_rec->save();
-              }
-              if($request->type == "reply" || $request->type == "Reply"){
-                $reply = Reply::find($newRecord->id);
+          if(canCreate($this->controllerName)){
+              if($request->ajax()){
+                //filterRecordType takes the request and boolean to indicate if it is edit or new
+                $newRecord = $this->filterRecordType($request,false);
+                //if the filtering returned a 404 then return error not found
+                if ($newRecord === 0) return redirect()->route('error.api', 'Not Found');
+                $body = $request->body;
+                //save the received body if not empty to the $newRecord->body
+                $newRecord->body = $body;
+                //set the user id of new record to current auth user
+                $newRecord->user_id = Auth::user()->id;
+                //if new record failed to save return 404;
+                if(!$newRecord->save()) return redirect()->route('error.api', 'Failed to save Try Resubmitting');
+                //get array of sources
+                $files = $this->saveFiles($request->file_list);
+                if ($files === 0) return redirect()->route('error.api', 'File too big, maximum 2mb per File');
+                //loop on each source and store in DB to get later
+                foreach ($files as $file) {
+                  $file_rec = new FileUp;
+                  $file_rec->relate_type = $request->type;
+                  $file_rec->relate_id = $newRecord->id;
+                  $file_rec->filename = $file['src'];
+                  $file_rec->type = $file['type'];
+                  $file_rec->save();
+                }
+                if($request->type == "reply" || $request->type == "Reply"){
+                  $reply = Reply::find($newRecord->id);
+                  return response()->json([
+                      'body' => view('_auth.posts.partial_reply_body')->with('reply', $reply)->render()
+                  ]);
+                }
+                $post = Post::find($newRecord->id);
                 return response()->json([
-                    'body' => view('_auth.posts.partial_reply_body')->with('reply', $reply)->render()
+                    'body' => view('_auth.posts.partial_post_body')->with('post', $post)->render()
                 ]);
               }
-              $post = Post::find($newRecord->id);
-              return response()->json([
-                  'body' => view('_auth.posts.partial_post_body')->with('post', $post)->render()
-              ]);
-            }
+          }else{
+              return redirect()->route('error.api', 'Unauthorized Operation!');
+          }
+
 
       }
       public function edit(Request $request)
       {
-        if($request->ajax()){
-          $record = $this->filterRecordType($request,true);
-          if($record === 0) return redirect()->route('error.api', 'Not Found');
-          $body = $request->body;
-          //save the received body to the $newRecord->body
-          $record->body = $request->body;
-          if(!$record->save()) return redirect()->route('error.api','Failed to save please retry');
-          //get array of sources
-          $files = $this->saveFiles($request->file_list);
-          if ($files === 0) return redirect()->route('error.api', 'File too big, maximum 2mb per File');
-          foreach ($request->delete_list as $file) {
-            FileUp::where('filename', $file['src'])->first()->delete();
+          if(canUpdate($this->controllerName)){
+              if($request->ajax()){
+                $record = $this->filterRecordType($request,true);
+                if($record === 0) return redirect()->route('error.api', 'Not Found');
+                $body = $request->body;
+                //save the received body to the $newRecord->body
+                $record->body = $request->body;
+                if(!$record->save()) return redirect()->route('error.api','Failed to save please retry');
+                //get array of sources
+                $files = $this->saveFiles($request->file_list);
+                if ($files === 0) return redirect()->route('error.api', 'File too big, maximum 2mb per File');
+                foreach ($request->delete_list as $file) {
+                  FileUp::where('filename', $file['src'])->first()->delete();
+                }
+                //loop on each source and store in DB to get later
+                foreach ($files as $file) {
+                  if(isset($file['skip'])){
+                    continue;
+                  }
+                  $file_rec = new FileUp;
+                  $file_rec->relate_type = $request->type;
+                  $file_rec->relate_id = $record->id;
+                  $file_rec->filename = $file['src'];
+                  $file_rec->type = $file['type'];
+                  $file_rec->save();
+                }
+                return response()->json([
+                  "record" => $record,
+                  "srcs" =>$record->files
+                ]);
+              }
+          }else{
+              return redirect()->route('error.api', 'Unauthorized Operation!');
           }
-          //loop on each source and store in DB to get later
-          foreach ($files as $file) {
-            if(isset($file['skip'])){
-              continue;
-            }
-            $file_rec = new FileUp;
-            $file_rec->relate_type = $request->type;
-            $file_rec->relate_id = $record->id;
-            $file_rec->filename = $file['src'];
-            $file_rec->type = $file['type'];
-            $file_rec->save();
-          }
-          return response()->json([
-            "record" => $record,
-            "srcs" =>$record->files
-          ]);
-        }
+
       }
       public function delete(Request $request,$id)
       {
-        if($request->ajax()){
-          $post = Post::find($id);
-          if ($post->user_id == Auth::user()->id){
-            if($post->delete()){
-              return 1;
-            }
+          if(canDelete($this->controllerName)){
+              if($request->ajax()){
+                $post = Post::find($id);
+                if ($post->user_id == Auth::user()->id){
+                  if($post->delete()){
+                    return 1;
+                  }
+                }
+                return 0;
+              }
+          }else{
+              return redirect()->route('error.api', 'Unauthorized Operation!');
           }
-          return 0;
-        }
+
 
       }
 }

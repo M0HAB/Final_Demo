@@ -28,7 +28,7 @@
 					</tr>
 				</thead>
 				<tbody>
-					@foreach ($pindexes as $pindex)
+					@foreach ($pindexes as $key => $pindex)
 					<tr>
 						<td>
 							{{$pindex->index}}
@@ -37,32 +37,35 @@
 							{{$pindex->name}}
 						</td>
 						<td>
-							<input class="form-check-input" type="checkbox" name="create{{$pindex->index}}"
-															@if(old('create'.$pindex->index))
-															checked
-															@endif
-															>
+							<div class="custom-control custom-checkbox">
+								<input type="checkbox" class="custom-control-input" id="customCheck1-{{$key}}" name="create{{$pindex->index}}" @if(old('create'.$pindex->index)) checked @endif >
+								<label class="custom-control-label" for="customCheck1-{{$key}}"></label>
+							</div>
+							{{-- <input class="form-check-input" type="checkbox" name="create{{$pindex->index}}"
+								@if(old('create'.$pindex->index)) checked @endif > --}}
 						</td>
 						<td>
-							<input class="form-check-input" type="checkbox" name="read{{$pindex->index}}"
-															@if(old('read'.$pindex->index))
-															checked
-															@endif
-															>
+							<div class="custom-control custom-checkbox">
+								<input type="checkbox" class="custom-control-input" id="customCheck2-{{$key}}" name="read{{$pindex->index}}" @if(old('read'.$pindex->index))checked @endif >
+								<label class="custom-control-label" for="customCheck2-{{$key}}"></label>
+							</div>
+
+							{{-- <input class="form-check-input" type="checkbox" name="read{{$pindex->index}}"
+								@if(old('read'.$pindex->index)) checked @endif > --}}
 						</td>
 						<td>
-							<input class="form-check-input" type="checkbox" name="update{{$pindex->index}}"
-															@if(old('update'.$pindex->index))
-															checked
-															@endif
-															>
+							<div class="custom-control custom-checkbox">
+								<input type="checkbox" class="custom-control-input" id="customCheck3-{{$key}}" name="update{{$pindex->index}}" @if(old('update'.$pindex->index))checked @endif >
+								<label class="custom-control-label" for="customCheck3-{{$key}}"></label>
+							</div>
+							{{-- <input class="form-check-input" type="checkbox" name="update{{$pindex->index}}" @if(old('update'.$pindex->index) checked @endif > --}}
 						</td>
 						<td>
-							<input class="form-check-input" type="checkbox" name="delete{{$pindex->index}}"
-															@if(old('delete'.$pindex->index))
-															checked
-															@endif
-															>
+							<div class="custom-control custom-checkbox">
+								<input type="checkbox" class="custom-control-input" id="customCheck4-{{$key}}" name="delete{{$pindex->index}}" @if(old('delete'.$pindex->index))checked @endif >
+								<label class="custom-control-label" for="customCheck4-{{$key}}"></label>
+							</div>
+							{{-- <input class="form-check-input" type="checkbox" name="delete{{$pindex->index}}" @if(old('delete'.$pindex->index))checked @endif > --}}
 						</td>
 					</tr>
 					@endforeach

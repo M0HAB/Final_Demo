@@ -82,7 +82,7 @@
                         <div class="dropdown-menu" x-placement="bottom-start" style="position: absolute; transform: translate3d(0px, 38px, 0px); top: 0px; left: 0px; will-change: transform;">
                             <a class="dropdown-item" id="user-profile" href="{{ route('user.profile') }}"><i class="fas fa-user space-icon"></i>Profile</a>
                             <a class="dropdown-item" href="{{ route('course.listUserCourses') }}"><i class="fas fa-video space-icon"></i>Courses</a>
-                            <a class="dropdown-item" href="#"><i class="fas fa-cog space-icon"></i>Settings</a>
+                            <a class="dropdown-item" href="{{route('admin.contact.create')}}"><i class="fas fa-cog space-icon"></i>Contact admin</a>
                             <div class="dropdown-divider"></div>
                             <a class="dropdown-item" href="{{ route('user.logout') }}" onclick="event.preventDefault();document.getElementById('logout-form').submit();">
                                 <i class="fas fa-sign-out-alt space-icon"></i>Logout

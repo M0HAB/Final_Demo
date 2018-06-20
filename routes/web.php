@@ -48,6 +48,8 @@ Route::get('/test2', function(){
     //-- User
     Route::get('dashboard', 'UserDashboardController@dashboard')->name('user.dashboard');
     Route::get('profile', 'UserDashboardController@profile')->name('user.profile');
+    Route::get('contactadmin', 'UserDashboardController@contactAdminForm')->name('admin.contact.create');
+    Route::post('contactadmin', 'UserDashboardController@contactAdmin')->name('admin.contact.store');
  });
 
 Route::get('/department', 'DepartmentsController@userIndex')->name('user.department.index');
@@ -277,6 +279,8 @@ Route::group(['prefix' => 'admin'], function () {
       Route::post('logout', 'LoginController@logout')->name('admin.logout');
       Route::get('logout', 'LoginController@logout')->name('admin.logout.web');
       Route::get('profile', 'DashboardController@profile')->name('admin.profile');
+      Route::get('messages', 'DashboardController@readMessages')->name('admin.messages');
+      Route::get('messages/{id}', 'DashboardController@showMessage')->name('admin.messages.show');
       Route::group(['prefix' => 'users'], function ()
       {
           Route::get('/', 'UserController@index')->name('admin.user.index');
@@ -297,7 +301,7 @@ Route::group(['prefix' => 'admin'], function () {
       });
 
   });
-  
+
   Route::resource('department', 'DepartmentsController');
   Route::get('/department/{id}/addspec', 'DepartmentsController@addSpecCreate')->name('department.spec.add');
   Route::post('/department/{id}/addspec', 'DepartmentsController@addSpecStore')->name('department.spec.store');

@@ -19,7 +19,7 @@ Route::get('/error/{error}', function($error){
   }else{
     $returns['message'] = "Some Error Occured";
   }
-  return response()->json($returns);
+  return response()->json($returns,401);
 })->name('error.api');
 
 Route::middleware('auth:admin-api')->group(function () {

@@ -10,7 +10,7 @@ use Session;
 
 class GradesBookController extends Controller
 {
-    private $controllerName = "Quiz";
+    private $controllerName = "Course";
     /**
      * Display a listing of the resource.
      *
@@ -186,7 +186,7 @@ class GradesBookController extends Controller
     public function destroy($id)
     {
         if(canDelete($this->controllerName)){
-            
+
         }else{
 
         }

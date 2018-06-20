@@ -14,7 +14,7 @@ class UpdateFieldsInPermissions extends Migration
     public function up()
     {
         // populate DB with default permissions
-        $names = ['Department', 'Quiz', 'Discussion', 'Course', 'Assignment', 'Grade'];
+        $names = ['noName', 'Quiz', 'Discussion', 'Course', 'Assignment', 'Grade'];
         for ($i=0; $i < 6; $i++) {
             DB::table('pindexes')->where('index', $i+1)->update(['name' => $names[$i]]);
         }
