@@ -6,7 +6,7 @@
         @if (Auth::check())
             <a class="navbar-brand" href="{{ route('user.dashboard') }}"><img width="150px" height="35px"class="mr-1"src="/images/logo4.png"></img></a>
         @else
-            <a class="navbar-brand" href="{{ route('index') }}">E-LMS</a>
+            <a class="navbar-brand" href="{{ route('index') }}"><img width="150px" height="35px"class="mr-1"src="/images/logo4.png"></img></a>
         @endif
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
