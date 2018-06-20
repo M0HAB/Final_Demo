@@ -36,13 +36,13 @@
                         @if(count($msgs) == 0 )
                             <p class="text-left pl-4 py-2" style="font-size: 14px;">No messages found</p>
                         @endif
-                        @foreach ($msgs as $msg)
+                        @foreach ($msgs->sortbyDesc('id') as $msg)
                             <ul class="list-group list-group-scroll">
-                                <a class="rm-deco" href="{{route('admin.messages.show', $msg->user->id)}}">
+                                <a class="rm-deco" href="{{route('admin.messages.show', $msg->id)}}">
                                     <li class="list-group-item list-gitem-custom">
                                         <span class="username-msg">{{$msg->user->fname}}</span>
                                         <span class="msg-time float-right">{{$msg->created_at->diffForHumans()}}</span>
-                                        <span class="lb drop-msg-body"><i class="fas fa-caret-right"></i> {{$msg->subject}}</span>
+                                        <span class="lb drop-msg-body"><i class="fas fa-caret-right"></i>{{$msg->subject}}</span>
                                     </li>
                                 </a>
                             </ul>
