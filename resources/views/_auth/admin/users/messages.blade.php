@@ -20,7 +20,7 @@
         @endif
         @foreach ($messages as $msg)
             <div class="alert alert-light" role="alert">
-                <a href="{{route('admin.messages.show', $msg->user_id)}}" class="font-weight-bold forum-nav">
+                <a href="{{route('admin.messages.show', $msg->id)}}" class="font-weight-bold forum-nav">
                     {{$msg->user->fname." ".$msg->user->lname}}
                 </a>
                 at <strong>{{$msg->created_at}}</strong>
