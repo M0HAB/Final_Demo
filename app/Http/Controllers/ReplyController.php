@@ -13,7 +13,7 @@ class ReplyController extends Controller
     private $controllerName = "Discussion";
     public function __construct()
     {
-        $this->middleware(['auth', 'revalidate', 'checkUserEnrollmentInCourse']);
+        $this->middleware(['auth', 'revalidate', 'checkUserEnrollmentInCourse', 'checkCourseActivation']);
     }
 
     public function setVote(Request $request)

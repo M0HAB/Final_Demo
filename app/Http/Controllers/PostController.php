@@ -14,7 +14,7 @@ class PostController extends Controller
     private $controllerName = "Discussion";
     public function __construct()
     {
-        $this->middleware(['auth', 'revalidate', 'checkUserEnrollmentInCourse']);
+        $this->middleware(['auth', 'revalidate', 'checkUserEnrollmentInCourse', 'checkCourseActivation']);
     }
       private function getImgData($data,$k){
         list(, $data['src']) = explode(',', $data['src']);
