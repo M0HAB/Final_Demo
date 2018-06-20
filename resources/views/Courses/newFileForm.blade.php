@@ -7,7 +7,7 @@
 @section('content')
     <div class="content mt-5 mb-5">
         <div class="container">
-            <div id="response-message-success" class="alert alert-success" style="display: none"></div>
+            <a href="{{ route('course.listUserCourses') }}" class="btn go-back-btn mb-1"><i class="fas fa-arrow-left fa-1x"></i> Back</a>
             <fieldset>
                 <div class="reg-log-form p-3 my-3">
                     <legend><i class="fa fa-plus"></i> Add New File</legend>

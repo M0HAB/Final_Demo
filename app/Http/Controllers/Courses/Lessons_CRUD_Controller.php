@@ -178,14 +178,21 @@ class Lessons_CRUD_Controller extends Controller
                 return response($validator->errors(), 401);
             }
 
+            if(!file_exists(public_path().'/files')){
+                mkdir(public_path().'/files', 0700);
+            }
+
+            if($request->hasFile('lesson_file')){}
+
             $file = $request->file('lesson_file');
-            $fileName = storage_path('app/public/files/' . $file->getClientOriginalName());
-            $destination = storage_path('app/public/files');
-            if($file->move($destination, $fileName)){
+            $filename = $file->getClientOriginalName();
+            $destination = public_path() . '\files';
+            $temp = storage_path('app\public\files') . '\\' . $filename;
+            if($file->move($destination, $temp)){
                 $file = lessonFile::create([
                     'title' => $request->input('title'),
                     'description' => $request->input('description'),
-                    'path' => $fileName,
+                    'path' => $filename,
                     'module_id' => $module->id
                 ]);
                 if($file){

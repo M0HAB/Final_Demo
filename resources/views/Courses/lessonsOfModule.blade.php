@@ -98,7 +98,7 @@
                             <td>
                                 <div class="row">
                                     <div class="col-sm-12">
-                                        <a class="font-weight-bold text-success forum-nav" href="#" download>
+                                        <a class="font-weight-bold text-success forum-nav" href="{{ asset('files/' . $file->path ) }}" download>
                                             <i class="fa fa-download mr-2"></i>
                                             {{ $file->title }}
                                         </a>
