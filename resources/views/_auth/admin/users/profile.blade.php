@@ -89,36 +89,18 @@
                               </tr>
                           </thead>
                           <tbody>
-                              @if($user->isStudent())
-                                  @foreach($user->studyCourses as $course)
-
-                                  <tr>
-                                      <td>
-                                          <p class="font-weight-bold text-success">{{ucfirst($course->title)}}</p>
-                                          <small>
-                                              <p>Insrtuctor: <span class="font-weight-bold">{{$course->instructor->fname.' '.$course->instructor->lname}}</span></p>
-                                          </small>
-                                      </td>
-                                      <td><span>{{$course->code}}</span></td>
-                                      <td><span>{{$course->commitment}}</span></td>
-                                  </tr>
-                                  @endforeach
-                              @else
-                                  @foreach($user->courses as $course)
-
-                                  <tr>
-                                      <td>
-                                          <p class="font-weight-bold text-success">{{ucfirst($course->title)}}</p>
-                                          <small>
-                                              <p>Insrtuctor: <span class="font-weight-bold">{{$course->instructor->fname.' '.$course->instructor->lname}}</span></p>
-                                          </small>
-                                      </td>
-                                      <td><span>{{$course->code}}</span></td>
-                                      <td><span>{{$course->commitment}}</span></td>
-                                  </tr>
-                                  @endforeach
-                              @endif
-
+                              @foreach($user->courses as $course)
+                              <tr>
+                                  <td>
+                                      <p class="font-weight-bold text-success">{{ucfirst($course->title)}} @if(!$course->is_active) <span class="badge badge-danger">Not-Active</span> @endif</p>
+                                      <small>
+                                          <p>Insrtuctor: <span class="font-weight-bold">{{$course->instructor->fname.' '.$course->instructor->lname}}</span></p>
+                                      </small>
+                                  </td>
+                                  <td><span>{{$course->code}}</span></td>
+                                  <td><span>{{$course->commitment}}</span></td>
+                              </tr>
+                              @endforeach
                           </tbody>
                       </table>
                   </div>

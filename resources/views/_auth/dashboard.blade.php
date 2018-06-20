@@ -14,15 +14,7 @@
 						<span class="bbp-breadcrumb-current">{{ getEndPoint() }}</span>
 					</p>
 				</div>
-				@php
-					$authUser = Auth::user();
-					if($authUser->isStudent()){
-						$courses = $authUser->studyCourses;
-					}else{
-						$courses = $authUser->courses;
-					}
-				@endphp
-				@if(count($courses) == 0)
+				@if(count(Auth::user()->courses) == 0)
 					<div class="alert alert-info alert-dismissible fade show w-100" role="alert">
 						You are not in any course!
 					  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -40,7 +32,7 @@
 							</tr>
 						</thead>
 						<tbody>
-							@foreach($courses as $course)
+							@foreach(Auth::user()->courses as $course)
 							<tr>
 								<td>
 									<a href="{{route('discussion.show', $course->discussion->id)}}" class="font-weight-bold forum-nav">{{$course->title}}</a>
@@ -80,7 +72,7 @@
 				@php
 					$recents = false;
 					$first = true;
-					foreach($courses as $k => $course){
+					foreach(Auth::user()->courses as $course){
 						if(count($course->discussion->posts)>0){
 							if($first){
 								$first = false;
@@ -96,7 +88,7 @@
 				@endphp
 				@if($recents)
 					@foreach($recents as $recent)
-						<a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
+						<a href="{{route('discussion.show', $recent->discussion->id)}}" class="list-group-item list-group-item-action flex-column align-items-start">
 							<div class="d-flex w-100 justify-content-between">
 								<h5 class="mb-2">{{$recent->title}}</h5>
 								<small class="text-muted txt-lbl">{{$recent->created_at->diffForHumans()}}</small>

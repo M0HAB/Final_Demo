@@ -199,7 +199,7 @@ class PermissionRoleController extends Controller
 
     public function viewUserPermission(Request $request)
     {
-        $user = User::find($request->id);
+        $user = User::withTrashed()->find($request->id);
         $pindexes = Pindex::all();
         $envelope = $this->getAndCombinePermissions($pindexes, $user);
         if(empty($envelope)){
@@ -211,7 +211,7 @@ class PermissionRoleController extends Controller
 
     public function setUserPermission(Request $request)
     {
-        $user = User::find($request->id);
+        $user = User::withTrashed()->find($request->id);
         if(isset($_POST['revert'])){
             if($user->permission === null){
                 return redirect()->back()->with('warning', 'Permissions are already at default');
