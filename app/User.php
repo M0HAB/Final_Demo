@@ -86,10 +86,9 @@ class User extends Authenticatable
     {
         return $this->hasMany('App\ActionLog', 'subject_id')->where('subject','user');
     }
-    public function actionCreateLog()
+    public function adminUserLog()
     {
-        $id = ('App\ActionLog')::where(['type' => 'user', 'type_id' => $this->id])->first()->id;
-        return ('App\ActionLog')::find($id);
+        return ('App\ActionLog')::where(['type' => 'user', 'type_id' => $this->id]);
     }
 
 

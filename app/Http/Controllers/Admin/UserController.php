@@ -13,6 +13,17 @@ use Session;
 use Validator;
 use App\ActionLog;
 use Auth;
+use App\Course;
+use App\Module;
+use App\Lesson;
+use App\lesson_file;
+use App\Quiz;
+use App\assignment;
+use App\QuizDeliver;//quiz_answer
+use App\assdeliver;//ass_deliver
+use App\Post;
+
+
 class UserController extends Controller
 {
     public function __construct()
@@ -278,7 +289,53 @@ class UserController extends Controller
 
     public function previewAction(Request $request)
     {
-        return $request->type.' '.$request->id;
+        $record = null;
+        $title = null;
+        switch ($request->type) {
+            case 'course':
+                $record = Course::find($request->id);
+                $title = "Course";
+                break;
+            case 'module':
+                $record = Module::find($request->id);
+                $title = "Module";
+                break;
+            case 'lesson':
+                $record = Lesson::find($request->id);
+                $title = "Lesson Video";
+                break;
+            case 'lessonFile':
+                $record = lessonFile::find($request->id);
+                $title = "Lesson File";
+                break;
+            case 'quiz':
+                $record = Quiz::find($request->id);
+                $title = "Quiz";
+                break;
+            case 'assignment':
+                $record = assignment::find($request->id);
+                $title = "Assignment";
+                break;
+            case 'quiz_answer':
+                $record = QuizDeliver::find($request->id);
+                $title = "Answer of Quiz ".$record->quiz->title." with ID: ".$record->quiz->id;
+                break;
+            case 'ass_deliver':
+                $record = assdeliver::find($request->id);
+                $record->user = $record->user_id;
+                unset($record->user_id);
+                $title = "Assignment ".$record->assignment->title." Deliver";
+                break;
+            case 'post':
+                $record = Post::find($request->id);
+                $record->uploads = $record->files()->withTrashed()->get();
+                $title = "Post";
+            default:
+                // code...
+                break;
+
+        }
+        return view('_auth.admin.users.preview')->with('record', $record)->with('title', $title);
     }
 
 }

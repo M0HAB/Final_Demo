@@ -232,18 +232,30 @@
                                       <td>{{$log->subject}}</td>
                                       <td>{{$log->action}}</td>
                                       <td><a href="{{route('admin.user.action', ['type' => $log->type, 'id' => $log->type_id])}}">{{$log->type}}</a></td>
-                                      <td>{{($log->object)?:'Null'}}</td>
+                                      <td>
+                                          @if ($log->object)
+                                            <a href="{{route('admin.user.action', ['type' => $log->object, 'id' => $log->object_id])}}">{{$log->object}}</a>
+                                          @else
+                                          Null
+                                          @endif
+                                      </td>
                                   </tr>
                               @endforeach
-                              <tr>
-                                  @php
-                                    $log = $user->actionCreateLog();
-                                  @endphp
-                                  <td>{{$log->subject}}</td>
-                                  <td>{{$log->action}}</td>
-                                  <td>{{$log->type}}</td>
-                                  <td>{{($log->object)?:'Null'}}</td>
-                              </tr>
+                              @foreach($user->adminUserLog()->get()->sortByDesc('id') as $log)
+                                  <tr>
+                                      <td>{{$log->subject}}</td>
+                                      <td>{{$log->action}}</td>
+                                      <td>{{$log->type}}</td>
+                                      <td>
+                                          @if ($log->object)
+                                            <a href="{{route('admin.user.action', ['type' => $log->object, 'id' => $log->object_id])}}">{{$log->object}}</a>
+                                          @else
+                                          Null
+                                          @endif
+                                      </td>
+                                  </tr>
+                              @endforeach
+
                           </tbody>
                       </table>
                   </div>

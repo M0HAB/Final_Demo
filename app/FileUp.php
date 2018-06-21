@@ -21,7 +21,7 @@ class FileUp extends Model
     static::deleted(function($file) {
       $oldname = $file->filename;
       try {
-       $file->filename = Storage::putFile('deleted', new File(public_path().$file->filename));
+       $file->filename = Storage::putFile('/public/deleted', new File(public_path().$file->filename));
        $file->save();
       } catch (\Exception $e) {
       }

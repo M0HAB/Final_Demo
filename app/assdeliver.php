@@ -22,5 +22,8 @@ class assdeliver extends Model
         return $this->belongsTo('App\User','user_id');
 
     }
+    protected $hidden = [
+        'assignment','created_at', 'updated_at'
+    ];
 
 }
