@@ -204,11 +204,7 @@ Route::resource('Courses/{course}/Modules/{module}/assignments', 'AssignmentsCon
     'edit'=>'assignments.edit',
     'destroy' => 'assignments.destroy',
     'update' => 'assignments.update'
-]]);
-
-Route::get('/assignment/{id}', 'AssignmentsController@deliver')->name('assignment.deliver');
-Route::post('/AssignmentDeliver/', 'AssignmentsController@deliverstore')->name('assignment.deliverstore');
-Route::get('/assignmentDelivered/', 'AssignmentsController@delivered')->name('assignment.delivered');
+], 'middleware' => ['checkUserEnrollmentInCourse', 'checkCourseActivation']]);
 
 
 Route::group(['prefix' => 'messages'], function () {
@@ -218,6 +214,18 @@ Route::group(['prefix' => 'messages'], function () {
   Route::get('/{id}', 'MessagesController@selectMessage')->name('messages.show');
 
 });
+
+Route::group(['middleware' => ['checkUserEnrollmentInCourse', 'checkCourseActivation']], function(){
+
+    Route::get('Courses/{course}/Modules/{module}/assignment/{assignment}/deliver', 'AssignmentsController@deliver')->name('assignment.deliver');
+    Route::post('Courses/{course}/Modules/{module}/AssignmentDeliver/', 'AssignmentsController@deliverstore')->name('assignment.deliverstore');
+    Route::get('Courses/{course}/Modules/{module}/assignmentDelivered/', 'AssignmentsController@delivered')->name('assignment.delivered');
+    Route::get('assginment/{assginment_id}/student/{std_id}/delivered/{assdel_id}', 'AssignmentsController@deliveredEdit')->name('assignmentdelivered.edit');
+    Route::patch('assignmentDelivered/update/{id}', array( "as" => "assdelivered.update", "uses" => "AssignmentsController@deliveredUpdate"));
+
+});
+
+
 Route::get('/error', function(){ return "404"; })->name('error.web');
 
 Route::group(['prefix' => 'discussions'], function () {
@@ -227,13 +235,6 @@ Route::group(['prefix' => 'discussions'], function () {
   Route::get('/{id}/search', 'DiscussionController@searchPosts')->name('discussion.search');
 
 });
-
-Route::get('Courses/{course}/Modules/{module}/assignment/{assignment}/deliver', 'AssignmentsController@deliver')->name('assignment.deliver');
-Route::post('Courses/{course}/Modules/{module}/AssignmentDeliver/', 'AssignmentsController@deliverstore')->name('assignment.deliverstore');
-Route::get('Courses/{course}/Modules/{module}/assignmentDelivered/', 'AssignmentsController@delivered')->name('assignment.delivered');
-
-Route::get('assginment/{assginment_id}/student/{std_id}/delivered/{assdel_id}', 'AssignmentsController@deliveredEdit')->name('assignmentdelivered.edit');
-Route::patch('assignmentDelivered/update/{id}', array( "as" => "assdelivered.update", "uses" => "AssignmentsController@deliveredUpdate"));
 
 
 /**
@@ -289,6 +290,7 @@ Route::group(['prefix' => 'admin'], function () {
           Route::post('/edit', 'UserController@update')->name('admin.user.update');
           Route::get('/create', 'UserController@create')->name('admin.user.create');
           Route::post('/create', 'UserController@store')->name('admin.user.store');
+          Route::get('/show', 'UserController@previewAction')->name('admin.user.action');
       });
       Route::group(['prefix' => 'courses'], function ()
       {

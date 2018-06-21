@@ -21,9 +21,6 @@
                         <a class="nav-link" href="{{ route('contact_us') }}">Contact us</a>
                     </li>
                 @else
-                    <li class="nav-item">
-                        <a class="nav-link" href="#"><i class="fas fa-bell"></i></a>
-                    </li>
                     <li class="nav-item dropdown ml-1">
                         <a class="nav-link" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="msg-dropdown" onclick="toggleArrow('arrow-up')">
                             <i class="fas fa-envelope"></i>

@@ -7,6 +7,7 @@ use App\Reply;
 use App\Vote;
 use App\Post;
 use Auth;
+use App\ActionLog;
 
 class ReplyController extends Controller
 {
@@ -32,6 +33,15 @@ class ReplyController extends Controller
                 'reply_id' => $request->id,
                 'user_id' => Auth::user()->id
               ]);
+              ActionLog::create([
+                  'subject' => 'user',
+                  'subject_id' => Auth::user()->id,
+                  'action' => 'create',
+                  'type' => 'vote',
+                  'type_id' => 0,
+                  'object' => 'reply',
+                  'object_id' => $reply->id
+              ]);
               $btn = true;
               if (Auth::user()->isInstructor()){
                 $approve = true;
@@ -54,6 +64,15 @@ class ReplyController extends Controller
 
             }
             $vote->delete();
+            ActionLog::create([
+                'subject' => 'user',
+                'subject_id' => Auth::user()->id,
+                'action' => 'delete',
+                'type' => 'vote',
+                'type_id' => 0,
+                'object' => 'reply',
+                'object_id' => $reply->id
+            ]);
             $btn = false;
             if (Auth::user()->isInstructor()){
               $approve = true;
@@ -84,6 +103,15 @@ class ReplyController extends Controller
             $reply = Reply::find($request->id);
             if ($reply->user_id == Auth::user()->id){
               $reply->delete();
+              ActionLog::create([
+                  'subject' => 'user',
+                  'subject_id' => Auth::user()->id,
+                  'action' => 'delete',
+                  'type' => 'reply',
+                  'type_id' => $reply->id,
+                  'object' => 'post',
+                  'object_id' => $reply->post_id
+              ]);
               $post = Post::find($reply->post_id);
               return view('_auth.discussions.load_replies')->with('post', $post);
             }

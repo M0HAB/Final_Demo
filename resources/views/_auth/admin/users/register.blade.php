@@ -49,7 +49,7 @@
                   <div class="col-lg-6 col-sm-12">
                       <div class="form-group">
                           <label for="">Department</label>
-                          <select class="form-control {{ $errors->has('department') ? ' is_invalid' : '' }}" id="department" name="department" class="list" value="{{ old('department') }}" required>
+                          <select class="form-control {{ $errors->has('department') ? ' is_invalid' : '' }}" id="department" name="department" class="list" value="{{ old('department') }}">
                           <option value="">Select</option>
                           @foreach ($deps as $dep)
                               <option value="{{ $dep->id }}">{{ $dep->name }}</option>

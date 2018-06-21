@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Specialization;
+use Auth;
+use App\ActionLog;
 
 class SpecializationController extends Controller
 {
@@ -53,6 +55,13 @@ class SpecializationController extends Controller
         $specialization->name = $request->input('specialization');
         // If succesfully updated display success else error
         if ($specialization->save()){
+            ActionLog::create([
+                'subject' => 'admin',
+                'subject_id' => Auth::user()->id,
+                'action' => 'create',
+                'type' => 'specialization',
+                'type_id' => $specialization->id
+            ]);
             return redirect()->back()->with('success', 'Specialization created successfully');
         }else{
             return redirect()->back()->with('error', 'Some error has occured please try resubmitting');
@@ -114,6 +123,13 @@ class SpecializationController extends Controller
         if ($specialization->name != $newname){
             $specialization->name = $newname;
             if ($specialization->save()){
+                ActionLog::create([
+                    'subject' => 'admin',
+                    'subject_id' => Auth::user()->id,
+                    'action' => 'update',
+                    'type' => 'specialization',
+                    'type_id' => $specialization->id
+                ]);
                 return redirect()->back()->with('success', 'Specialization updated successfully');
             }else{
                 return redirect()->back()->with('error', 'Some error has occured please try resubmitting');
@@ -134,9 +150,23 @@ class SpecializationController extends Controller
     {
         $specialization = Specialization::find($id);
         if($request->ajax()){
+            ActionLog::create([
+                'subject' => 'admin',
+                'subject_id' => Auth::user()->id,
+                'action' => 'delete',
+                'type' => 'specialization',
+                'type_id' => $specialization->id
+            ]);
             return ($specialization->delete())? 1:0;
         }else{
             if($specialization->delete()){
+                ActionLog::create([
+                    'subject' => 'admin',
+                    'subject_id' => Auth::user()->id,
+                    'action' => 'delete',
+                    'type' => 'specialization',
+                    'type_id' => $specialization->id
+                ]);
                 return redirect()->back()->with('success', 'Specialization Deleted Successfully');
             }else{
                 return redirect()->back()->with('error', 'Some error has occured please try resubmitting');

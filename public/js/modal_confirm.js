@@ -52,16 +52,12 @@ $('#confirm').on('show.bs.modal', function (event) {
               }
           }else{
               if(button.data('keep') == 2){
-                  button.removeClass('btn-info');
-                  button.addClass('btn-danger');
-                  button.html('<span class="fas fa-trash"></span>');
+                  button.html('<span class="fas fa-trash fa-lg"></span>');
                   button.data('keep', "3");
                   toastr.success("User Restored Successfully");
 
               }else{
-                  button.removeClass('btn-danger');
-                  button.addClass('btn-info');
-                  button.html('<span class="fas fa-undo"></span>');
+                  button.html('<span class="fas fa-undo fa-lg"></span>');
                   button.data('keep', "2");
                   toastr.success("User Deleted Successfully");
               }

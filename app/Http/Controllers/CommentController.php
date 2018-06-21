@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Comment;
 use App\Reply;
 use Auth;
+use App\ActionLog;
 
 class CommentController extends Controller
 {
@@ -24,6 +25,15 @@ class CommentController extends Controller
               $comment->reply_id = $request->id;
               $comment->user_id = Auth::user()->id;
               $comment->save();
+              ActionLog::create([
+                  'subject' => 'user',
+                  'subject_id' => Auth::user()->id,
+                  'action' => 'create',
+                  'type' => 'comment',
+                  'type_id' => $comment->id,
+                  'object' => 'reply',
+                  'object_id' => $comment->reply_id
+              ]);
               $reply = Reply::find($request->id);
               $comments = $reply->comments()->latest()->get();
               return response()->json([
@@ -45,6 +55,15 @@ class CommentController extends Controller
               $comment = Comment::find($request->id);
               $comment->body = $request->body;
               $comment->save();
+              ActionLog::create([
+                  'subject' => 'user',
+                  'subject_id' => Auth::user()->id,
+                  'action' => 'update',
+                  'type' => 'comment',
+                  'type_id' => $comment->id,
+                  'object' => 'reply',
+                  'object_id' => $comment->reply_id
+              ]);
               return response()->json([
                 'body' => $comment->body,
               ]);
@@ -61,6 +80,15 @@ class CommentController extends Controller
               $comment = Comment::find($id);
               if ($comment->user_id == Auth::user()->id){
                 if($comment->delete()){
+                    ActionLog::create([
+                        'subject' => 'user',
+                        'subject_id' => Auth::user()->id,
+                        'action' => 'delete',
+                        'type' => 'comment',
+                        'type_id' => $comment->id,
+                        'object' => 'reply',
+                        'object_id' => $comment->reply_id
+                    ]);
                   return 1;
                 }
               }

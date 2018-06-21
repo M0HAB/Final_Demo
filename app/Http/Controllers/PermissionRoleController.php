@@ -95,6 +95,13 @@ class PermissionRoleController extends Controller
         $role->name = $name;
         $role->permission = $this->encodePermissions($request);
         if ($role->save()){
+            ActionLog::create([
+                'subject' => 'admin',
+                'subject_id' => Auth::user()->id,
+                'action' => 'create',
+                'type' => 'role',
+                'type_id' => $role->id
+            ]);
             return redirect()->back()->with('success', 'Role Created Successfully');
         }else{
             return redirect()->back()->with('error', 'Some error has occured please try resubmitting');
@@ -164,6 +171,13 @@ class PermissionRoleController extends Controller
           return redirect()->back()->with('warning', 'Same Value Resubmittion');
         }
         if ($role->save()){
+            ActionLog::create([
+                'subject' => 'admin',
+                'subject_id' => Auth::user()->id,
+                'action' => 'update',
+                'type' => 'role',
+                'type_id' => $role->id
+            ]);
             return redirect()->back()->with('success', 'Role Updated Successfully');
         }else{
             return redirect()->back()->with('error', 'Some error has occured please try resubmitting');
@@ -182,9 +196,23 @@ class PermissionRoleController extends Controller
         if($id != 1 && $id != 2){
             $role = Role::find($id);
             if($request->ajax()){
+                ActionLog::create([
+                    'subject' => 'admin',
+                    'subject_id' => Auth::user()->id,
+                    'action' => 'delete',
+                    'type' => 'role',
+                    'type_id' => $role->id
+                ]);
               return ($role->delete())? 1:0;
             }else{
               if($role->delete()){
+                  ActionLog::create([
+                      'subject' => 'admin',
+                      'subject_id' => Auth::user()->id,
+                      'action' => 'delete',
+                      'type' => 'role',
+                      'type_id' => $role->id
+                  ]);
                   return redirect()->back()->with('success', 'Role Deleted Successfully');
               }else{
                   return redirect()->back()->with('error', 'Some error has occured please try resubmitting');
@@ -218,11 +246,25 @@ class PermissionRoleController extends Controller
             }
             $user->permission =null;
             $user->save();
+            ActionLog::create([
+                'subject' => 'admin',
+                'subject_id' => Auth::user()->id,
+                'action' => 'reset',
+                'type' => 'user_permission',
+                'type_id' => $user->id
+            ]);
             return redirect()->back()->with('success', 'Permissions Reverted Successfully');
         }else{
             $permission = $this->encodePermissions($request);
             $user->permission = $permission;
             $user->save();
+            ActionLog::create([
+                'subject' => 'admin',
+                'subject_id' => Auth::user()->id,
+                'action' => 'update',
+                'type' => 'user_permission',
+                'type_id' => $user->id
+            ]);
             return redirect()->back()->with('success', 'Permissions Updated Successfully');
 
         }

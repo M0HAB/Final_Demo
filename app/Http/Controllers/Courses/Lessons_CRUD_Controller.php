@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
+use App\ActionLog;
 
 class Lessons_CRUD_Controller extends Controller
 {
@@ -141,6 +142,15 @@ class Lessons_CRUD_Controller extends Controller
                     ]);
 
                     if($lesson){
+						ActionLog::create([
+                            'subject' => 'user',
+                            'subject_id' => Auth::user()->id,
+                            'action' => 'create',
+                            'type' => 'lesson',
+                            'type_id' => $lesson->id,
+                            'object' => 'module',
+                            'object_id' => $module->id
+                        ]);
                         unlink($fullPathToVideo);
                         Session::flash('success', "Video uploaded successfully!");
                         return redirect()->back();
@@ -168,7 +178,7 @@ class Lessons_CRUD_Controller extends Controller
 
     public function uploadFile(Request $request, Course $course, Module $module){
         if(canCreate($this->controllerName)){
-            $validator = Validator::make($request->all(), 
+            $validator = Validator::make($request->all(),
             [
                 'title'           => 'required|max:255',
                 'description'     => 'required|max:255',
@@ -184,24 +194,35 @@ class Lessons_CRUD_Controller extends Controller
                 mkdir(public_path().'/files', 0700);
             }
 
-            if($request->hasFile('lesson_file')){}
+            if($request->hasFile('lesson_file')){
 
-            $file = $request->file('lesson_file');
-            $filename = $file->getClientOriginalName();
-            $destination = public_path() . '\files';
-            $temp = storage_path('app\public\files') . '\\' . $filename;
-            if($file->move($destination, $temp)){
-                $file = lessonFile::create([
-                    'title' => $request->input('title'),
-                    'description' => $request->input('description'),
-                    'path' => $filename,
-                    'module_id' => $module->id
-                ]);
-                if($file){
-                    Session::flash('success', "File uploaded successfully!");
-                    return redirect()->back();
+                $file = $request->file('lesson_file');
+                $filename = $file->getClientOriginalName();
+                $destination = public_path() . '\files';
+                $temp = storage_path('app\public\files') . '\\' . $filename;
+                if($file->move($destination, $temp)){
+                    $file = lessonFile::create([
+                        'title' => $request->input('title'),
+                        'description' => $request->input('description'),
+                        'path' => $filename,
+                        'module_id' => $module->id
+                    ]);
+                    if($file){
+						ActionLog::create([
+							'subject' => 'user',
+							'subject_id' => Auth::user()->id,
+							'action' => 'create',
+							'type' => 'lessonFile',
+							'type_id' => $file->id,
+							'object' => 'module',
+							'object_id' => $module->id
+						]);
+                        Session::flash('success', "File uploaded successfully!");
+                        return redirect()->back();
+                    }
                 }
             }
+
         }else{
             Session::flash('error', "Unauthorized Operation!");
         }
