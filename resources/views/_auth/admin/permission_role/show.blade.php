@@ -30,21 +30,17 @@
   							<a href={{ route('prole.show',$x->id)}}>View Permissions for this role</a>
   						</td>
                         <td>
-  							<a href="{{ route('prole.edit',$x->id)}}">
-  								<button class="btn btn-success" href="{{ route('prole.edit',$x->id)}}">
-  									<span class="far fa-edit"></span>
-  								</button>
-  							</a>
+  							<a class="btn btn-link text-primary p-0" href="{{ route('prole.edit',$x->id)}}" title="Edit"><span class="fas fa-edit fa-lg"></span></a>
   						</td>
                         @if($x->id == 1 || $x->id == 2)
   						<td>
-							<button class="btn btn-danger" disabled>
-									<span class="far fa-trash-alt fa-lg"></span>
+							<button class="btn btn-link text-primary p-0" disabled>
+									<span class="fas fa-trash fa-lg"></span>
 							</button>
   						</td>
                         @else
   						<td>
-							<button class="btn btn-danger" type="submit" data-toggle="modal" data-target="#confirm" data-id="{{$x->id}}" data-type="prole">
+							<button class="btn btn-link text-primary p-0" type="submit" data-toggle="modal" data-target="#confirm" title="Delete" data-id="{{$x->id}}" data-type="prole">
 									<span class="far fa-trash-alt fa-lg"></span>
 							</button>
   						</td>

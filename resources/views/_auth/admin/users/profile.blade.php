@@ -10,14 +10,14 @@
           <div class="col-lg-12 col-sm-12 mb-4">
               <h3 class="f-rw">
                   {{$user->fname.' '.$user->lname}}
-                  <a href="{{route('admin.user.edit', ['id'=>$user->id])}}"><button class="btn btn-success" title="Edit"><i class="fas fa-edit"></i></button></a>
+                  <a  class="btn btn-link text-primary p-0" href="{{route('admin.user.edit', ['id'=>$user->id])}}"><i class="fas fa-edit fa-lg"></i></a>
                   @if(!$user->trashed())
-                      <button class="btn btn-danger" type="submit" data-toggle="modal" data-target="#confirm" data-id="{{$user->id}}" data-type="user" data-keep="3" title="Delete">
-                              <i class="fas fa-trash"></i>
+                      <button class="btn btn-link text-primary p-0" type="submit" data-toggle="modal" data-target="#confirm" data-id="{{$user->id}}" data-type="user" data-keep="3" title="Delete">
+                              <i class="fas fa-trash fa-lg"></i>
                       </button>
                   @else
-                      <button class="btn btn-info" type="submit" data-toggle="modal" data-target="#confirm" data-id="{{$user->id}}" data-type="user" data-keep="2" title="UnDelete">
-                              <i class="fas fa-undo"></i>
+                      <button class="btn btn-link text-primary p-0" type="submit" data-toggle="modal" data-target="#confirm" data-id="{{$user->id}}" data-type="user" data-keep="2" title="UnDelete">
+                              <i class="fas fa-undo fa-lg"></i>
                       </button>
                   @endif
               </h3>
@@ -157,7 +157,7 @@
                       </table>
                   </div>
                   <div class="tab-pane" id="roll-permissions">
-                      @if($user->permission == null)
+                      @if($user->permission === null)
                            <p class="text-center mt-4 text-muted">Default Permissions for <strong><a href="{{route('prole.show', $user->role->id)}}">{{$user->role->name}}</a> | <a href="{{route('prole.user.view', ['id'=>$user->id])}}">Edit here <i class="fas fa-edit"></i></a></strong></p>
                       @else
                        <table class="table">

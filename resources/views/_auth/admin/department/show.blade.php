@@ -30,8 +30,8 @@
 						<td>{{count($dep->courses)}}</td>
 						<td>{{count($dep->getStudents)}}</td>
 	                    <td>
-							<a href="{{ route('department.edit',$dep->id)}}"><button class="btn btn-success mb-1"><i class="fas fa-edit" title="Edit Department"></i></button></a>
-							<button class="btn btn-danger mb-1" type="submit" data-toggle="modal" data-target="#confirm" data-id="{{$dep->id}}" data-type="department">
+							<a class="btn btn-link text-primary p-0" href="{{ route('department.edit',$dep->id)}}"><i class="fas fa-edit fa-lg" title="Edit Department"></i></a>
+							<button class="btn btn-link text-primary p-0" type="submit" data-toggle="modal" data-target="#confirm" data-id="{{$dep->id}}" data-type="department">
 									<span class="fas fa-trash fa-lg "></span>
 							</button>
 	                    </td>

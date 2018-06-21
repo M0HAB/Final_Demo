@@ -25,8 +25,8 @@
                             <td><a href="{{route('specialization.show', $specialization->id)}}">{{ucfirst($specialization->name)}}</a></td>
                             <td>{{count($specialization->courses->where('course_department', $department->id))}}</td>
                             <td>
-                                <button class="btn btn-danger" type="submit" data-toggle="modal" data-target="#confirm" data-id="{{$specialization->id}}" data-depid="{{$department->id}}" data-type="depspec">
-                                        <span class="far fa-trash-alt fa-lg "></span>
+                                <button class="btn btn-link text-primary p-0" type="submit" title="Delete" data-toggle="modal" data-target="#confirm" data-id="{{$specialization->id}}" data-depid="{{$department->id}}" data-type="depspec">
+                                        <span class="fas fa-trash fa-lg "></span>
                                 </button>
                             </td>
                         </tr>
