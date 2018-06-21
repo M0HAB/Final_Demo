@@ -118,7 +118,7 @@ class studentGradesController extends Controller
                     'practical_fullmark' => $request->input('practicalfullmark')
                 ]
             ]);
-            $grades=grade::where('user_id', '=' ,$student_id)->first();
+            $grades=grade::where('user_id', '=' ,$student->id)->first();
             ActionLog::create([
                 'subject' => 'user',
                 'subject_id' => Auth::user()->id,
@@ -126,7 +126,7 @@ class studentGradesController extends Controller
                 'type' => 'grades',
                 'type_id' => $grades->id,
                 'object' => 'course',
-                'object_id' => $course_id
+                'object_id' => $course->id
             ]);
             return redirect()->back()->with('success', 'Grades Successfully Submitted');
 
@@ -249,7 +249,7 @@ class studentGradesController extends Controller
                     'type' => 'grades',
                     'type_id' => $grades->id,
                     'object' => 'course',
-                    'object_id' => $course_id
+                    'object_id' => $course->id
                 ]);
                 return redirect()->back()->with('success', 'Grades updated successfully');
             }else{
