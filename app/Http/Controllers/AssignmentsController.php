@@ -27,6 +27,8 @@ class AssignmentsController extends Controller
     }
     public function index(Course $course, Module $module)
     {
+
+
         if(canRead($this->controllerName)){
             $assignments = $module->assignments()->get();
             if(Auth::User()->checkIfUserTeachCourse($course->id) or Auth::User()->checkIfUserEnrolled($course->id)){
@@ -137,7 +139,18 @@ class AssignmentsController extends Controller
      */
     public function show(Course $course, Module $module, assignment $assigmment)
     {
+        $student_id=Auth::user()->id;
         if(canRead($this->controllerName)){
+            $assdelivered = DB::table('assdelivers')
+                ->leftjoin('assignments', 'assignments.id', '=', 'assdelivers.ass_id')
+                ->leftjoin('users', 'users.id', '=', 'assdelivers.user_id')
+                ->select('assdelivers.*', 'assignments.id as ass_id','assignments.title', 'assignments.module_id', 'assignments.deadline','assignments.full_mark', 'users.fname')
+                ->where('assignments.module_id', '=', $module->id)
+                ->where('assdelivers.user_id', '=', $student_id)
+                //->where('assdelivers.user_id', '=', $ass)
+                ->get();
+
+            return view('_auth.assignments.studentAssGrades',compact('course','module','assdelivered'));
 
         }else{
 
@@ -368,7 +381,7 @@ class AssignmentsController extends Controller
                     ->select('assdelivers.*', 'assignments.id as ass_id','assignments.title', 'assignments.module_id', 'assignments.deadline','assignments.full_mark', 'users.fname')
                     ->where('assignments.module_id', '=', $module->id)
                     ->get();
-                //dd($course->title);
+
 
                 return view('_auth.assignments.showdelivered',compact('course','module','assdelivered'));
 

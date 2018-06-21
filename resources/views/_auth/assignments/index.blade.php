@@ -28,6 +28,11 @@
                             <a href="{{ route('assignments.create', ['course_id' => $course->id, 'module_id' => $module->id]) }}" class="btn btn-info" role="button">Create</a>
                             <a href="{{ route('assignment.delivered', ['course_id' => $course->id, 'module_id' => $module->id]) }}" class="btn btn-success" role="button">Delivered </a>
                         </div>
+                        @elseif(!Auth::user()->isInstructor())
+
+                        <div class="float-right" style="position:relative;top:10px">
+                        <a href="{{ route('assignments.show', ['course_id' => $course->id, 'module_id' => $module->id,'student_id' => Auth::user()->id]) }}" class="btn btn-success" role="button">My delivered assginments </a>
+                        </div>
                     @endif
                 </div>
             </div>

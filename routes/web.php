@@ -199,7 +199,8 @@ Route::resource('Courses/{course}/Modules/{module}/assignments', 'AssignmentsCon
     'store'=>'assignments.store',
     'edit'=>'assignments.edit',
     'destroy' => 'assignments.destroy',
-    'update' => 'assignments.update'
+    'update' => 'assignments.update',
+    'show'   =>'assignments.show'
 ], 'middleware' => ['checkUserEnrollmentInCourse', 'checkCourseActivation']]);
 
 

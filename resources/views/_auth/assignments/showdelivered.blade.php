@@ -96,8 +96,9 @@
                     @endforeach
                 </tbody>
             </table>
-        <div>
+        </div>
     @else
         <p class="text-left"><i class="fa fa-info-circle mr-2"></i>The module has no assignment delivered yet</p>
+
     @endif
 @stop

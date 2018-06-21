@@ -271,11 +271,7 @@
                                     </td>
                                 </tr>
                             @elseif(Auth::User()->isStudent())
-                                <tr>
-                                    <td>
-                                        <a href="{{ route('assignment.delivered', ['course_id' => $course->id, 'module_id' => $module->id]) }}" class="ml-1 text-primary"><i class="fas fa-folder mr-1"></i>My Assignment Directory</a>
-                                    </td>
-                                </tr>
+
                                 <tr>
                                     <td>
                                         <a href="{{route('discussion.show', ['id' => $course->discussion->id, 'module_order' => $module->module_order])}}" class="ml-1"><i class="fas fa-question mr-1"></i>Discussion Forum</a>
