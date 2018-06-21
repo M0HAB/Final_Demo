@@ -184,24 +184,26 @@ class Lessons_CRUD_Controller extends Controller
                 mkdir(public_path().'/files', 0700);
             }
 
-            if($request->hasFile('lesson_file')){}
+            if($request->hasFile('lesson_file')){
 
-            $file = $request->file('lesson_file');
-            $filename = $file->getClientOriginalName();
-            $destination = public_path() . '\files';
-            $temp = storage_path('app\public\files') . '\\' . $filename;
-            if($file->move($destination, $temp)){
-                $file = lessonFile::create([
-                    'title' => $request->input('title'),
-                    'description' => $request->input('description'),
-                    'path' => $filename,
-                    'module_id' => $module->id
-                ]);
-                if($file){
-                    Session::flash('success', "File uploaded successfully!");
-                    return redirect()->back();
+                $file = $request->file('lesson_file');
+                $filename = $file->getClientOriginalName();
+                $destination = public_path() . '\files';
+                $temp = storage_path('app\public\files') . '\\' . $filename;
+                if($file->move($destination, $temp)){
+                    $file = lessonFile::create([
+                        'title' => $request->input('title'),
+                        'description' => $request->input('description'),
+                        'path' => $filename,
+                        'module_id' => $module->id
+                    ]);
+                    if($file){
+                        Session::flash('success', "File uploaded successfully!");
+                        return redirect()->back();
+                    }
                 }
             }
+
         }else{
             Session::flash('error', "Unauthorized Operation!");
         }
