@@ -90,7 +90,7 @@
                                 <p> {{$delivered->comment ? $delivered->comment : "No Comment "}} </p>
                             </td>
                             <td>
-                                <button  class="btn btn-group-sm btn-link"><a href="{{route('assignmentdelivered.edit', ['assginment_id'=>$delivered->ass_id,'std_id'=>$delivered->user_id,'assdel_id'=>$delivered->id])}}"><i class="far fa-edit fa-lg text-primary"></i> </a> </button>
+                                <button  class="btn btn-group-sm btn-link"><a href="{{route('assignmentdelivered.edit', ['course'=>$course->id, 'module'=>$module->id ,'assignment'=>$delivered->ass_id,'stdudent'=>$delivered->user_id,'assdel'=>$delivered->id])}}"><i class="far fa-edit fa-lg text-primary"></i> </a> </button>
                             </td>
                         </tr>
                     @endforeach

@@ -216,8 +216,8 @@ Route::group(['middleware' => ['checkUserEnrollmentInCourse', 'checkCourseActiva
     Route::get('Courses/{course}/Modules/{module}/assignment/{assignment}/deliver', 'AssignmentsController@deliver')->name('assignment.deliver');
     Route::post('Courses/{course}/Modules/{module}/AssignmentDeliver/', 'AssignmentsController@deliverstore')->name('assignment.deliverstore');
     Route::get('Courses/{course}/Modules/{module}/assignmentDelivered/', 'AssignmentsController@delivered')->name('assignment.delivered');
-    Route::get('assginment/{assginment_id}/student/{std_id}/delivered/{assdel_id}', 'AssignmentsController@deliveredEdit')->name('assignmentdelivered.edit');
-    Route::patch('assignmentDelivered/update/{id}', array( "as" => "assdelivered.update", "uses" => "AssignmentsController@deliveredUpdate"));
+    Route::get('Courses/{course}/Modules/{module}/assignments/{assignment}/student/{student}/delivered/{assdel}', 'AssignmentsController@deliveredEdit')->name('assignmentdelivered.edit');
+    Route::patch('Courses/{course}/Modules/{module}/assignmentDelivered/update/{assdeliver}', array( "as" => "assdelivered.update", "uses" => "AssignmentsController@deliveredUpdate"));
 
 });
 
