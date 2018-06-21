@@ -73,7 +73,7 @@
                             </td>
     
                             <td>
-                                <a href="{{route('course.gradeBook.edit', ['gradesBook_id' => $gradesBook->id,'course_id' => $course->id])}}" class="btn btn-link py-0"><i class="far fa-edit fa-lg text-dark"></i> </a>
+                                <a href="{{route('course.gradeBook.edit', ['course' => $course->id, 'gradesBook_id' => $gradesBook->id])}}" class="btn btn-link py-0"><i class="far fa-edit fa-lg text-dark"></i> </a>
                             </td>
     
                         </tr>

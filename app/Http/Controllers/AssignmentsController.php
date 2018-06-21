@@ -265,7 +265,7 @@ class AssignmentsController extends Controller
                         'subject_id' => Auth::user()->id,
                         'action' => 'delete',
                         'type' => 'assignment',
-                        'type_id' => $assigmment->id,
+                        'type_id' => $assignment->id,
                         'object' => 'module',
                         'object_id' => $module->id
                     ]);
