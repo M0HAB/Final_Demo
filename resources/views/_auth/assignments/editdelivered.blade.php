@@ -20,7 +20,7 @@
             @include('_partials.errors')
             <h6><strong class="mr-1">Student Name:</strong> <span class="text-success">{{$delivered->student->fname}}</span> </h6>
             <h6><strong class="mr-1">Assginment:</strong> <span class="text-success">{{$delivered->assignment->title}}</span> </h6>
-            <h6><strong class="mr-1">Grade:</strong> <span class="text-success">{{$delivered->grade ? $delivered->grade : "Ø"}}/{{$delivered->assignment->full_mark}}</span> </h6>
+            <h6><strong class="mr-1">Grade:</strong> <span class="text-success">{{$delivered->grade ? $delivered->grade : "-"}}/{{$delivered->assignment->full_mark}}</span> </h6>
 
             <form class="mt-5" action="{{ route('assdelivered.update',['course'=>$course->id, 'module'=>$module->id, 'assignment'=>$delivered->id]) }}" method="POST" role="form" autocomplete="off">
                 {{ csrf_field() }}

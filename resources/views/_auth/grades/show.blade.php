@@ -40,7 +40,7 @@
                         <table class="table">
                             <thead class="bg-light">
                             <tr>
-                                <th>Assginments</th>
+                                <th>Assignments</th>
                                 <th>Grade</th>
                                 <th>Feedback</th>
                             </tr>

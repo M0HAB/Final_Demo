@@ -84,7 +84,7 @@
                                 @endif
                             </td>
                             <td>
-                                <p> {{$delivered->grade ? $delivered->grade : "Ø"}} / {{$delivered->full_mark}} </p>
+                                <p> {{$delivered->grade ? $delivered->grade : "-"}} / {{$delivered->full_mark}} </p>
                             </td>
                             <td>
                                 <p> {{$delivered->comment ? $delivered->comment : "No Comment "}} </p>

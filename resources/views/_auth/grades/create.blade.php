@@ -20,6 +20,7 @@
             <form action="{{ route('course.studentGrades.store',['student_id' => $student_id,'course_id' => $course_id])}}" method="POST" role="form" autocomplete="off">
                 {{ csrf_field() }}
 
+
                 <div class="form-group">
                     <label for="midtermgrade">Midterm grade:</label>
                     <input type="number" class="form-control" id="midtermgrade"
