@@ -99,7 +99,7 @@ best-solution
               @foreach($reply->files as $file)
               <div class="card float-left ml-2 mb-1" style="width: 5rem;background: none;" id="div-1">
                   @if($file->type == "image")
-                  <a href="{{$file->filename}}" data-lightbox="{{$reply->id}}">
+                  <a href="{{$file->filename}}" data-lightbox="reply_{{$reply->id}}">
                     <img class="card-img-top" width="70px" height="70px" src="{{$file->filename}}" title="{{(explode("/",$file->filename)[2])}}">
                   </a>
                   @else

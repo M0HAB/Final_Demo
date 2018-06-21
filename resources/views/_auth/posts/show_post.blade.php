@@ -93,7 +93,7 @@
                       @foreach($post->files as $file)
                       <div class="card float-left ml-2 mb-1" style="width: 5rem;" id="div-1">
                           @if($file->type == "image")
-                          <a href="{{$file->filename}}" data-lightbox="{{$post->id}}">
+                          <a href="{{$file->filename}}" data-lightbox="post_{{$post->id}}">
                             <img class="card-img-top" width="70px" height="70px" src="{{$file->filename}}" title="{{(explode("/",$file->filename)[2])}}">
                           </a>
                           @else

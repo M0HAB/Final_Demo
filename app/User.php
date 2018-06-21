@@ -90,13 +90,20 @@ class User extends Authenticatable
 	     return $this->belongsTo('App\Role', 'role_id');
     }
 
-    public function studyCourses()
-    {
-        return $this->belongsToMany('App\Course', 'course_user', 'user_id', 'course_id')->withTimestamps();
-    }
     public function courses()
     {
-        return $this->hasMany('App\Course', 'instructor_id');
+        if(Auth::guard('admin')->check()){
+            if($this->isStudent()){
+                return $this->belongsToMany('App\Course', 'course_user', 'user_id', 'course_id')->withTimestamps();
+            }else{
+                return $this->hasMany('App\Course', 'instructor_id');
+            }
+        }
+        if($this->isStudent()){
+            return $this->belongsToMany('App\Course', 'course_user', 'user_id', 'course_id')->where('is_active', 1)->withTimestamps();
+        }else{
+            return $this->hasMany('App\Course', 'instructor_id');
+        }
     }
 
     //Function to get messages between this user & friend ($friend_id)

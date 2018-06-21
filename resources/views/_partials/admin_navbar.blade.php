@@ -4,9 +4,9 @@
     <div class="container">
 
         @if (Auth::guard('admin')->check())
-            <a class="navbar-brand" href="{{ route('user.dashboard') }}">E-LMS</a>
+            <a class="navbar-brand" href="{{ route('user.dashboard') }}"><img width="150px" height="35px" class="mr-1" src="/images/logo4.png"></a>
         @else
-            <a class="navbar-brand" href="{{ route('index') }}">E-LMS</a>
+            <a class="navbar-brand" href="{{ route('index') }}"><img width="150px" height="35px" class="mr-1" src="/images/logo4.png"></a>
         @endif
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -21,9 +21,6 @@
                         <a class="nav-link" href="{{ route('contact_us') }}">Contact us</a>
                     </li>
                 @else
-                    <li class="nav-item">
-                        <a class="nav-link" href="#"><i class="fas fa-bell"></i></a>
-                    </li>
                     <li class="nav-item dropdown ml-1">
                         <a class="nav-link" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="msg-dropdown" onclick="toggleArrow('arrow-up')">
                             <i class="fas fa-envelope"></i>
@@ -36,13 +33,13 @@
                         @if(count($msgs) == 0 )
                             <p class="text-left pl-4 py-2" style="font-size: 14px;">No messages found</p>
                         @endif
-                        @foreach ($msgs as $msg)
+                        @foreach ($msgs->sortbyDesc('id') as $msg)
                             <ul class="list-group list-group-scroll">
-                                <a class="rm-deco" href="{{route('admin.messages.show', $msg->user->id)}}">
+                                <a class="rm-deco" href="{{route('admin.messages.show', $msg->id)}}">
                                     <li class="list-group-item list-gitem-custom">
                                         <span class="username-msg">{{$msg->user->fname}}</span>
                                         <span class="msg-time float-right">{{$msg->created_at->diffForHumans()}}</span>
-                                        <span class="lb drop-msg-body"><i class="fas fa-caret-right"></i> {{$msg->subject}}</span>
+                                        <span class="lb drop-msg-body"><i class="fas fa-caret-right"></i>{{$msg->subject}}</span>
                                     </li>
                                 </a>
                             </ul>

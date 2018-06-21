@@ -78,7 +78,7 @@ class Modules_CRUD_Controller extends Controller{
                     'title'      => 'required|string|max:255|unique:modules',
                     'commitment' => 'required|min:1|integer',
                     'module_order' => 'required|min:1|integer',
-                    'introduction' => 'required|max:250',
+                    'introduction' => 'required|max:400',
 
                 ]);
                 if (!($validator->passes())) {
@@ -133,7 +133,7 @@ class Modules_CRUD_Controller extends Controller{
                     'title'           => 'required|string|max:255|unique:modules,title,'.$module->id,
                     'commitment' => 'required|min:1|integer',
                     'module_order' => 'required|min:1|integer',
-                    'introduction' => 'required|max:250'
+                    'introduction' => 'required|max:400'
                 ]);
                 if (!($validator->passes())) {
                     return response($validator->errors(), 401);

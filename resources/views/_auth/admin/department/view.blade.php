@@ -10,8 +10,8 @@
   	<div class="card-body">
 		@include('_partials.errors')
         <h3 class="f-rw"><strong>{{$department->name}}</strong> Department
-            <a href="{{ route('department.edit',$department->id)}}" title="Edit Department"><button class="btn btn-success"><i class="fas fa-edit"></i></button></a>
-            <a href="{{ route('department.spec.add',$department->id)}}" title="Add Specialization"><button class="btn btn-primary"><i class="fas fa-plus"></i></button></a>
+            <a class="btn btn-link text-primary p-0" href="{{ route('department.edit',$department->id)}}" title="Edit Department"><i class="fas fa-edit fa-lg"></i></a>
+            <a class="btn btn-link text-primary p-0" href="{{ route('department.spec.add',$department->id)}}" title="Add Specialization"><i class="fas fa-plus"></i></a>
         </h3>
         <table class="table">
             <tbody>

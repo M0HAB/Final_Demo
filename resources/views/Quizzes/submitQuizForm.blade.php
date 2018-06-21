@@ -6,10 +6,10 @@
 
 @section('styles')
     <style>
-        body{
+        /*body{
             background-color: #fafbfc;
             height: auto;
-        }
+        }*/
         /* Start by setting display:none to make this hidden.
    Then we position it in relation to the viewport window
    with position:fixed. Width, height, top and left speak
@@ -47,57 +47,69 @@
 @section('content')
     <div class="row">
         <div class="col-sm-12 mb-3">
-            <div class="jumbotron text-center border mt-3" style="box-shadow: 5px 5px 10px gray;background: url('{{ asset('course_images/courseBackground.png') }}');background-size: 100%">
-                <h3 class="text-muted font-weight-bold mb-3">{{ $module->title }}</h3>
-                <h1 class="text-primary font-weight-bold mb-3 d-inline" style="letter-spacing: 2px">{{ $quiz->title }}</h1>
+                <h1 class="text-primary f-rw mb-3 d-inline mb-3" style="letter-spacing: 2px">{{ $quiz->title }}</h1>
                 @if(Auth::User()->isInstructor())
                     <span id="quiz-status" class="p-1 rounded text-white  {{ $quiz->is_active ? 'badge badge-success': 'badge badge-danger' }}" >{{ $quiz->is_active ? 'Activated quiz': 'Deactivated quiz' }}</span>
                 @endif
-                <hr>
-                <div class="row">
-                    <div class="col-sm-4">
-                        <p class="border p-2 bg-white"><span class="text-muted font-weight-bold">Due:</span><span class="badge badge-danger p-1 ml-1">{{date('d-m-Y', strtotime($quiz->deadline))}}</span></p>
-                    </div>
-                    <div class="col-sm-4">
-                        <p class="border p-2 bg-white"><span class="text-muted font-weight-bold">Total questions:</span><span class="badge badge-success ml-1">{{count($questions)}}</span></p>
-                    </div>
 
-                    <div class="col-sm-4">
-                        <p class="border p-2 bg-white"><span class="text-muted  font-weight-bold">Total grade:</span><span class="badge badge-success ml-1">{{$quiz->total_grade}}</span></p>
-                    </div>
+                <div class="mt-2">
+                    <p class="mb-1 bg-white"><span><strong>Due: </strong><span class="text-success"><strong>{{date('d-m-Y', strtotime($quiz->deadline))}}</strong></span></p>
+
+                    <p class="mb-1 bg-white"><span><strong>Total questions: </strong></span><strong class="text-success mr-1">{{count($questions)}}</strong></p>
+    
+                    <p class="mb-1 bg-white"><span><strong>Total grade: </strong></span><span class="text-success"><strong>{{$quiz->total_grade}}</strong></span></p>
                 </div>
                 @if(Auth::User()->isInstructor())
-                    <form id="submit-quiz-activation">
-                        @if(!$quiz->is_active)
-                            <input type="hidden" name="is_active" value='1'>
-                            <p id="submit-status">
-                                <button type="submit" id="submit-quiz-status"  class="btn btn-primary mt-3">Activate the quiz</button>
-                            </p>
-                        @else
-                            <input type="hidden" name="is_active" value='0'>
-                            <p id="submit-status">
-                                <button type="submit" id="submit-quiz-status"  class="btn btn-primary mt-3">Deactivate the quiz</button>
-                            </p>
-                        @endif
-                    </form>
-                @endif
-            </div>
+                <form id="submit-quiz-activation">
+                    @if(!$quiz->is_active)
+                        <input type="hidden" name="is_active" value='1'>
+                        <p id="submit-status">
+                            <button type="submit" id="submit-quiz-status"  class="btn btn-primary mt-3">Activate the quiz</button>
+                        </p>
+                    @else
+                        <input type="hidden" name="is_active" value='0'>
+                        <p id="submit-status">
+                            <button type="submit" id="submit-quiz-status"  class="btn btn-primary mt-3">Deactivate the quiz</button>
+                        </p>
+                    @endif
+                </form>
+            @endif
         </div>
     </div>
-    <br>
-    <div class="border rounded bg-white p-4">
+    <div class="border rounded bg-white mt-2 p-4">
        <form action="{{ route('quiz.submitQuizAnswer', ['course' => $course->id, 'module' => $module->id, 'quiz' => $quiz->id]) }}" method="post" enctype="multipart/form-data">
            {{ csrf_field() }}
            @for($i=0; $i < count($questions); $i++)
                <div class="row">
                    <div class="col-sm-12  font-weight-bold"><span class="badge badge-primary mr-1">{{$i+1}}</span>{{ $questions[$i]->question }}<span class="ml-2 badge badge-success p-1">{{$questions[$i]->question_points}} {{ $questions[$i]->question_points > 1? 'Points': 'point'}}</span></div>
-                   <div class="col-sm-12 m-3 border-left border-success   font-weight-bold">
-                       <input type="radio" required="true" name="choices[{{ $i  }}]" value="1"> {{ $questions[$i]->first_choice }}<br>
+
+                   <div class="col-sm-12 m-3 border-success   font-weight-bold">
+
+                        <div class="custom-control custom-radio">
+                            <input type="radio" id="customRadio-1" name="choices[{{ $i  }}]" value="1" class="custom-control-input">
+                            <label class="custom-control-label" for="customRadio-1">{{ $questions[$i]->first_choice }}</label>
+                        </div>
+                        <div class="custom-control custom-radio">
+                            <input type="radio" id="customRadio-2" name="choices[{{ $i  }}]" value="2" class="custom-control-input">
+                            <label class="custom-control-label" for="customRadio-2">{{ $questions[$i]->second_choice }}</label>
+                        </div>
+                        <div class="custom-control custom-radio">
+                            <input type="radio" id="customRadio-3" name="choices[{{ $i  }}]" value="3" class="custom-control-input">
+                            <label class="custom-control-label" for="customRadio-3">{{ $questions[$i]->third_choice }}</label>
+                        </div>
+                        <div class="custom-control custom-radio">
+                            <input type="radio" id="customRadio-4" name="choices[{{ $i  }}]" value="3" class="custom-control-input">
+                            <label class="custom-control-label" for="customRadio-4">{{ $questions[$i]->fourth_choice }}</label>
+                        </div>
+                        <input type="hidden" name="correct_choices[{{ $i  }}]" value="{{ $questions[$i]->correct_choice }}">
+                        <input type="hidden" name="question_points[{{ $i  }}]" value="{{ $questions[$i]->question_points }}">
+
+                       {{-- <input type="radio" required="true" name="choices[{{ $i  }}]" value="1"> {{ $questions[$i]->first_choice }}<br>
                        <input type="radio" required="true" name="choices[{{ $i  }}]" value="2"> {{ $questions[$i]->second_choice }}<br>
                        <input type="radio" required="true" name="choices[{{ $i  }}]" value="3"> {{ $questions[$i]->third_choice }}<br>
                        <input type="radio" required="true" name="choices[{{ $i  }}]" value="4"> {{ $questions[$i]->fourth_choice }}<br>
                        <input type="hidden" name="correct_choices[{{ $i  }}]" value="{{ $questions[$i]->correct_choice }}">
-                       <input type="hidden" name="question_points[{{ $i  }}]" value="{{ $questions[$i]->question_points }}">
+                       <input type="hidden" name="question_points[{{ $i  }}]" value="{{ $questions[$i]->question_points }}"> --}}
                    </div>
                </div>
                <br>

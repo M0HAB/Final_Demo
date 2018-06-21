@@ -63,13 +63,21 @@ class DepartmentsController extends Controller
     {
         //TODO :: add More Validation Rules
         // Validate Form submitted data
-        $this->validate($request, [
-            'department' => 'required',
-            'instructor' => [
-                'required',
-                Rule::notIn(['null'])
-            ],
-        ]);
+        if(User::getInstructors()->exists()){
+            $this->validate($request, [
+                'department' => 'required',
+                'instructor' => [
+                    'required',
+                    Rule::notIn(['null'])
+                ],
+            ]);
+        }else{
+            $this->validate($request, [
+                'department' => 'required',
+                'instructor' => 'null'
+            ]);
+        }
+
         // Create new Department
         $department = new Department;
         $department->name = $request->input('department');
@@ -94,7 +102,11 @@ class DepartmentsController extends Controller
             // Append count of Students to department variable
             $department['student_count'] = $student_count;
             // Append name of Deapartment Head to department variable
-            $department['head_name'] = $user->fname . ' ' . $user->lname;
+            if($user){
+                $department['head_name'] = $user->fname . ' ' . $user->lname;
+            }else{
+                $department['head_name'] = 'No Instructor';
+            }
             // Return View with the data
             return view('_auth.admin.department.view')->with('department', $department);
         }else{
