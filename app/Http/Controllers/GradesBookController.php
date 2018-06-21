@@ -22,11 +22,11 @@ class GradesBookController extends Controller
         $this->middleware(['auth', 'revalidate']);
     }
 
-    public function index($course_id)
+    public function index(Course $course)
     {
         if(canRead($this->controllerName)){
-            $course  = Course::find($course_id);
-            $gradesBooks= gradeBook::where('course_id',$course_id)->get();
+            $course_id = $course->id;
+            $gradesBooks= gradeBook::where('course_id',$course->id)->get();
             //$practical=$gradesBooks->practical_weight
             //$totalweights=  $gradesBooks->assignments_weight + $gradesBooks->quizzes_weight + $gradesBooks->midterm_weight + $gradesBooks->finalexam_weight + $gradesBooks->practical_weight;
 
@@ -46,12 +46,10 @@ class GradesBookController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create($course_id)
+    public function create(Course $course)
     {
         if(canCreate($this->controllerName)){
-            $course = Course::find($course_id);
-
-
+            $course = Course::find($course->id);
 
             if (Auth::user()->isInstructor()){
                 return view('_auth.gradesBook.create', compact( 'gradebook','course'));
@@ -70,15 +68,14 @@ class GradesBookController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request,$course_id)
+    public function store(Request $request,Course $course)
     {
         if(canCreate($this->controllerName)){
             if ($request->assw == null || $request->quizw == null || $request->midw == null || $request->finalw == null) {
                 Session::flash('error', 'Please be sure you fill out the required fields.');
                 return redirect()->back()->withInput();
             } else {
-                $course = Course::find($course_id);
-                if (gradeBook::where('course_id', '=', $course_id)->exists()){
+                if (gradeBook::where('course_id', '=', $course->id)->exists()){
                     return redirect()->back()->with('error', 'Grade book already exist ');
                 }
                 else{
@@ -87,7 +84,7 @@ class GradesBookController extends Controller
                     $gradebook ->quizzes_weight = $request->input('quizw') /100;
                     $gradebook ->midterm_weight = $request->input('midw') /100;
                     $gradebook ->finalexam_weight = $request->input('finalw') /100;
-                    $gradebook ->course_id= $course_id;
+                    $gradebook ->course_id= $course->id;
 
                     if (!empty($request->input('practw'))) {
                         $gradebook ->practical_weight = $request->input('practw') /100;
@@ -128,11 +125,12 @@ class GradesBookController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($course_id,$gradesBook_id)
+    public function edit(Course $course,gradeBook $gradebook)
     {
         if(canUpdate($this->controllerName)){
-            $gradebook=gradeBook::find($gradesBook_id)  ;
-            //dd($gradesBook_id);
+
+            $course_id = $course->id;
+            //dd($gradebook);
             if (Auth::user()->isInstructor()){
                 return view('_auth.gradesBook.edit', compact( 'gradebook','course_id'));
             }else{
@@ -151,11 +149,10 @@ class GradesBookController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $course_id,$gradebook_id)
+    public function update(Request $request, Course $course,gradeBook $gradebook)
     {
         if(canUpdate($this->controllerName)){
-            //dd($gradebook_id);
-            $gradebook = gradeBook::findOrFail($gradebook_id);
+            //dd($gradebook);
 
             $gradebook ->assignments_weight = $request->input('assw') / 100;
             $gradebook ->quizzes_weight = $request->input('quizw') /100;

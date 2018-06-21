@@ -25,7 +25,7 @@ class studentGradesController extends Controller
         $this->middleware(['auth', 'revalidate']);
     }
 
-    public function index($course_id)
+    public function index(Course $course)
     {
         if(canRead($this->controllerName)){
             if (Auth::user()->isInstructor()){
@@ -35,7 +35,7 @@ class studentGradesController extends Controller
                     ->leftjoin('grades', 'grades.user_id', '=', 'users.id')
                     ->leftjoin('grade_books', 'grade_books.course_id', '=', 'course_user.course_id')
                     ->select('users.fname','users.lname','users.email','users.id as std_id','grades.*','grade_books.*','grades.id as gradeid')
-                    ->where('course_user.course_id', '=', $course_id)
+                    ->where('course_user.course_id', '=', $course->id)
                     ->get();
 
                $assgrades = DB::table('assdelivers')
@@ -43,17 +43,19 @@ class studentGradesController extends Controller
                     ->leftjoin('modules', 'assignments.module_id', '=', 'modules.id')
                     ->leftjoin('courses', 'modules.course_id', '=', 'courses.id')
                     ->select('assdelivers.*' , 'assignments.full_mark')
-                    ->where('courses.id', '=', $course_id)
+                    ->where('courses.id', '=', $course->id)
                     ->get();
                 $quizgrades = DB::table('quiz_user')
                     ->leftjoin('quizzes', 'quiz_user.quiz_id', '=', 'quizzes.id')
                     ->leftjoin('modules', 'quizzes.module_id', '=', 'modules.id')
                     ->leftjoin('courses', 'modules.course_id', '=', 'courses.id')
                     ->select('quiz_user.*' , 'quizzes.total_grade')
-                    ->where('courses.id', '=', $course_id)
+                    ->where('courses.id', '=', $course->id)
                     ->get();
-                $gradesbook=gradeBook::where('course_id', '=' ,$course_id)->first();
-                $course=Course::where('id', '=' ,$course_id)->first();
+
+                $gradesbook=gradeBook::where('course_id', '=' ,$course->id)->first();
+
+                $course_id = $course->id;
 
                 //dd($course);
 
@@ -75,11 +77,12 @@ class studentGradesController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create($course_id,$student_id)
+    public function create(Course $course, User $student)
     {
         if(canCreate($this->controllerName)){
-            $student=user::where('id', '=', $student_id)->first();
-            //dd($student);
+            $course_id = $course->id;
+            $student_id = $student->id;
+
             if (Auth::user()->isInstructor()){
 
                 return view('_auth.grades.create',compact('course_id','student_id','student'));
@@ -98,14 +101,14 @@ class studentGradesController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request,$course_id,$student_id)
+    public function store(Request $request, Course $course, User $student)
     {
         //d($student_id);
         if(canCreate($this->controllerName)){
             \DB::table('grades')->insert([
                 [
-                    'course_id'          => $course_id,
-                    'user_id'            => $student_id,
+                    'course_id'          => $course->id,
+                    'user_id'            => $student->id,
                     'finalgrade'         => $request->input('finalexam'),
                     'midterm'            => $request->input('midtermgrade'),
                     'midterm_fullmark'   => $request->input('midtermfullmark'),
@@ -129,7 +132,7 @@ class studentGradesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($course_id,$student_id)
+    public function show(Course $course, User $student)
     {
 
         if(canRead($this->controllerName)){
@@ -144,9 +147,9 @@ class studentGradesController extends Controller
                 ->select('users.fname','users.lname','users.email','users.id as std_id','grades.*','grade_books.*',
                     'courses.title','assignments.title as asstitle','assignments.full_mark as assfullmark' ,
                     'assdelivers.grade as assgrade','assdelivers.comment','assdelivers.grade as assgrade')
-                ->where('course_user.user_id', '=', $student_id)
-                ->where('course_user.course_id', '=', $course_id)
-                ->where('assdelivers.user_id', '=', $student_id)
+                ->where('course_user.user_id', '=', $student->id)
+                ->where('course_user.course_id', '=', $course->id)
+                ->where('assdelivers.user_id', '=', $student->id)
                 ->get();
 
             $assgrades = DB::table('assdelivers')
@@ -154,7 +157,7 @@ class studentGradesController extends Controller
                 ->leftjoin('modules', 'assignments.module_id', '=', 'modules.id')
                 ->leftjoin('courses', 'modules.course_id', '=', 'courses.id')
                 ->select('assdelivers.*' , 'assignments.full_mark')
-                ->where('courses.id', '=', $course_id)
+                ->where('courses.id', '=', $course->id)
                 ->get();
 
             $quizgrades = DB::table('quiz_user')
@@ -162,13 +165,13 @@ class studentGradesController extends Controller
                 ->leftjoin('modules', 'quizzes.module_id', '=', 'modules.id')
                 ->leftjoin('courses', 'modules.course_id', '=', 'courses.id')
                 ->select('quiz_user.*' , 'quizzes.total_grade','quizzes.title as quiztitle','modules.title as modtitle')
-                ->where('courses.id', '=', $course_id)
+                ->where('courses.id', '=', $course->id)
                 ->get();
 
-            $grades=grade::where('course_id', '=' ,$course_id)->first();
+            $grades=grade::where('course_id', '=' ,$course->id)->first();
 
-
-
+            $student_id = $student->id;
+            $course_id = $course->id;
 
             return view('_auth.grades.show',compact('student','student_id','assgrades','quizgrades','grades','course_id'));
         }else{
@@ -184,11 +187,11 @@ class studentGradesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($course_id,$student_id)
+    public function edit(Course $course, User $student)
     {
         if(canUpdate($this->controllerName)){
-            $grades=grade::where('user_id', '=' ,$student_id)->first();
-            $student=user::where('id', '=', $student_id)->first();
+            $grades=grade::where('user_id', '=' ,$student->id)->first();
+
             //dd($student);
             if (Auth::user()->isInstructor()){
 
@@ -210,10 +213,9 @@ class studentGradesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $course_id,$grade_id)
+    public function update(Request $request, Course $course, grade $grades)
     {
         if(canUpdate($this->controllerName)){
-            $grades = grade::findOrFail($grade_id);
             $grades ->midterm = $request->input('midtermgrade') ;
             $grades ->midterm_fullmark = $request->input('midtermfullmark') ;
             $grades ->finalgrade = $request->input('finalexam') ;

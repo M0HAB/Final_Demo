@@ -156,36 +156,32 @@ Route::get('/specialization/{id}/departments', 'SpecializationController@userGet
              'as' => 'course.updateCourseActivation'
          ]);
 
-     });
-
          //grades book
 
-     Route::resource('{course_id}/gradesBook', 'GradesBookController',['names'=>[
+         Route::resource('{course}/gradesBook', 'GradesBookController',['names'=>[
 
-         'index'=>'course.gradeBook.index',
-         'create'=>'course.gradeBook.create',
-         'store'=>'course.gradeBook.store',
-         'edit'=>'course.gradeBook.edit',
-         'update'=>'course.gradeBook.update'
-     ]]);
+             'index'=>'course.gradeBook.index',
+             'create'=>'course.gradeBook.create',
+             'store'=>'course.gradeBook.store',
+             'edit'=>'course.gradeBook.edit',
+             'update'=>'course.gradeBook.update'
+         ]]);
 
-     //student grades
+         //student grades
 
-     Route::resource('{course_id}/studentGrades', 'studentGradesController',['names'=>[
+         Route::resource('{course}/studentGrades', 'studentGradesController',['names'=>[
 
-         'index'=>'course.studentGrades.index',
-         'edit'=>'course.studentGrades.edit',
-         'update'=>'course.studentGrades.update',
-         'show' =>'course.studentGrades.show',
-     ]]);
+             'index'=>'course.studentGrades.index',
+             'edit'=>'course.studentGrades.edit',
+             'update'=>'course.studentGrades.update',
+             'show' =>'course.studentGrades.show',
+         ]]);
 
-     Route::get('/{course_id}/studentGrades/student/{student_id}', 'studentGradesController@create')->name('course.studentGrades.create');
-     Route::post('/{course_id}/studentGrades/student/{student_id}', 'studentGradesController@store')->name('course.studentGrades.store');
-
-
+         Route::get('/{course}/studentGrades/student/{student}', 'studentGradesController@create')->name('course.studentGrades.create');
+         Route::post('/{course}/studentGrades/student/{student}', 'studentGradesController@store')->name('course.studentGrades.store');
 
 
-
+     });
 
  });
 
