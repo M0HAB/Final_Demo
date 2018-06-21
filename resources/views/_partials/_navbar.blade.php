@@ -3,9 +3,11 @@
         {{-- <button type="button"  class="menu-btn mb-1">
             <i class="fas fa-align-left"></i>
         </button> --}}
-        <a href="javascript:void(0)" id="sidebarCollapse" class="mb-1">
+    @if (Auth::user())
+        <a href="javascript:void(0)" id="sidebarCollapse" class="sidebar-btn mb-1">
             <i class="fas fa-bars text-light" style="font-size:18px;"></i>
         </a>
+    @endif
     <div class="container">
 
         @if (Auth::check())
