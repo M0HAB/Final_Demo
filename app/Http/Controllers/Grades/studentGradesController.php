@@ -10,6 +10,7 @@ use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use App\ActionLog;
 
 class studentGradesController extends Controller
 {
@@ -116,6 +117,16 @@ class studentGradesController extends Controller
                     'practical'          => $request->input('practicalgrade'),
                     'practical_fullmark' => $request->input('practicalfullmark')
                 ]
+            ]);
+            $grades=grade::where('user_id', '=' ,$student_id)->first();
+            ActionLog::create([
+                'subject' => 'user',
+                'subject_id' => Auth::user()->id,
+                'action' => 'create',
+                'type' => 'grades',
+                'type_id' => $grades->id,
+                'object' => 'course',
+                'object_id' => $course_id
             ]);
             return redirect()->back()->with('success', 'Grades Successfully Submitted');
 
@@ -231,6 +242,15 @@ class studentGradesController extends Controller
 
 
             if ($grades->save()){
+                ActionLog::create([
+                    'subject' => 'user',
+                    'subject_id' => Auth::user()->id,
+                    'action' => 'update',
+                    'type' => 'grades',
+                    'type_id' => $grades->id,
+                    'object' => 'course',
+                    'object_id' => $course_id
+                ]);
                 return redirect()->back()->with('success', 'Grades updated successfully');
             }else{
                 return redirect()->back()->with('error', 'An Error Occurred ');
@@ -253,7 +273,7 @@ class studentGradesController extends Controller
         if(canDelete($this->controllerName)){
 
         }else{
-            
+
         }
     }
 }

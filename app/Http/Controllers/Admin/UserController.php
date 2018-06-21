@@ -11,6 +11,8 @@ use App\Http\Controllers\PermissionRoleController;
 use App\Pindex;
 use Session;
 use Validator;
+use App\ActionLog;
+use Auth;
 class UserController extends Controller
 {
     public function __construct()
@@ -100,13 +102,34 @@ class UserController extends Controller
     {
         $user = User::withTrashed()->find($id);
         if($user->trashed()){
+            ActionLog::create([
+                'subject' => 'admin',
+                'subject_id' => Auth::user()->id,
+                'action' => 'restore',
+                'type' => 'user',
+                'type_id' => $id,
+            ]);
             return ($user->restore())? 1:0;
         }
         if($request->ajax()){
+            ActionLog::create([
+                'subject' => 'admin',
+                'subject_id' => Auth::user()->id,
+                'action' => 'delete',
+                'type' => 'user',
+                'type_id' => $id,
+            ]);
           return ($user->delete())? 1:0;
         }else{
           if($user->delete()){
-              return redirect()->back()->with('success', 'Role Deleted Successfully');
+              ActionLog::create([
+                  'subject' => 'admin',
+                  'subject_id' => Auth::user()->id,
+                  'action' => 'delete',
+                  'type' => 'user',
+                  'type_id' => $id,
+              ]);
+              return redirect()->back()->with('success', 'User Deleted Successfully');
           }else{
               return redirect()->back()->with('error', 'Some error has occured please try resubmitting');
           }
@@ -169,7 +192,14 @@ class UserController extends Controller
             // Generate unique api token
             $request['api_token'] = str_random(50) . time();
             // Create user instance
-            User::create($request->all());
+            $user = User::create($request->all());
+            ActionLog::create([
+                'subject' => 'admin',
+                'subject_id' => Auth::user()->id,
+                'action' => 'create',
+                'type' => 'user',
+                'type_id' => $user->id
+            ]);
             // After creating new user return json response with success. message
             return response()->json(['success' => 'User Created Successfully']);
         }
@@ -244,6 +274,11 @@ class UserController extends Controller
             return redirect()->route('error.api', 'Not Found');
         }
 
+    }
+
+    public function previewAction(Request $request)
+    {
+        return $request->type.' '.$request->id;
     }
 
 }

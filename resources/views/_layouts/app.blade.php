@@ -11,11 +11,13 @@
     @else
         @include('_partials._navbar')
     @endif
+    @include('_partials._sidebar')
     <div class="container my-5">
         <div class="content" id="content">
             @yield('content')
         </div> {{--  End: Content  --}}
     </div>
+    
     <a href="#top" id="btn-scroll" class="btn-scroll-custom"><i class="fas fa-arrow-up"></i></a>
 
 
@@ -48,6 +50,13 @@
         $(function () {
             $('[data-toggle="tooltip"]').tooltip()
         })
+    </script>
+    <script>
+        $(document).ready(function () {
+            $('#sidebarCollapse').on('click', function () {
+                $('#sidebar').toggleClass('active');
+            });
+        });
     </script>
 </body>
 </html>

@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\DB;
 use App\User;
 use Illuminate\Validation\Rule;
 use Illuminate\Http\Request;
+use App\ActionLog;
 
 class AssignmentsController extends Controller
 {
@@ -105,6 +106,15 @@ class AssignmentsController extends Controller
 
 
                 if ($assignment->save()){
+                    ActionLog::create([
+                        'subject' => 'user',
+                        'subject_id' => Auth::user()->id,
+                        'action' => 'create',
+                        'type' => 'assignment',
+                        'type_id' => $assignment->id,
+                        'object' => 'module',
+                        'object_id' => $module->id
+                    ]);
                     return redirect('Courses/'. $course->id .'/Modules/'. $module->id .'/assignments')->with('success', 'Assignment created successfully');
                 }else{
                     return redirect()->back()->with('error', 'Some error has occured please try resubmitting');
@@ -199,6 +209,15 @@ class AssignmentsController extends Controller
                 }
 
                 if ($assignment->save()){
+                    ActionLog::create([
+                        'subject' => 'user',
+                        'subject_id' => Auth::user()->id,
+                        'action' => 'update',
+                        'type' => 'assignment',
+                        'type_id' => $assigmment->id,
+                        'object' => 'quiz',
+                        'object_id' => $module->id
+                    ]);
                     return redirect()->back()->with('success', 'Assignment updated successfully')->withInput();
                 }
                 else{
@@ -228,6 +247,15 @@ class AssignmentsController extends Controller
             if (Auth::user()->isInstructor()){
 
                 if ($assignment->delete()){
+                    ActionLog::create([
+                        'subject' => 'user',
+                        'subject_id' => Auth::user()->id,
+                        'action' => 'delete',
+                        'type' => 'assignment',
+                        'type_id' => $assigmment->id,
+                        'object' => 'module',
+                        'object_id' => $module->id
+                    ]);
                     return redirect()->back()->with('success', 'Assignment Deleted successfully');
                 }else{
                     return redirect()->back()->with('error', 'Some error has occured please try resubmitting');
@@ -306,6 +334,15 @@ class AssignmentsController extends Controller
 
                  // If successfully updated display success else error
                  if ($deliver->save()){
+                     ActionLog::create([
+                         'subject' => 'user',
+                         'subject_id' => Auth::user()->id,
+                         'action' => 'create',
+                         'type' => 'ass_deliver',
+                         'type_id' => $deliver->id,
+                         'object' => 'assignment',
+                         'object_id' => $deliver->ass_id
+                     ]);
                      return redirect('Courses/' . $course->id .'/Modules/' . $module->id . '/assignments')->with('success', 'Assignment Submitted successfully');
                  }else{
                      return redirect()->back()->with('error', 'Some error has occured please try resubmitting');
@@ -373,6 +410,15 @@ class AssignmentsController extends Controller
             $delivered->comment = $request->input('comment');
             $delivered->grade   = $request->input('grade');
             if ($delivered->save()) {
+                ActionLog::create([
+                    'subject' => 'user',
+                    'subject_id' => Auth::user()->id,
+                    'action' => 'update',
+                    'type' => 'ass_deliver',
+                    'type_id' => $delivered->id,
+                    'object' => 'quiz',
+                    'object_id' => $delivered->ass_id
+                ]);
                 return redirect()->back()->with('success', 'Delivered Assignment updated successfully');
             }
             else{

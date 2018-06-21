@@ -7,6 +7,7 @@ use App\gradeBook;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Session;
+use App\ActionLog;
 
 class GradesBookController extends Controller
 {
@@ -92,6 +93,15 @@ class GradesBookController extends Controller
 
 
                     if ($gradebook->save()){
+                        ActionLog::create([
+                            'subject' => 'user',
+                            'subject_id' => Auth::user()->id,
+                            'action' => 'create',
+                            'type' => 'gradebook',
+                            'type_id' => $gradebook->id,
+                            'object' => 'course',
+                            'object_id' => $course_id
+                        ]);
                         return redirect()->back()->with('success', 'Grade Book created successfully');
                     }else{
                         return redirect()->back()->with('error', 'An Error Occurred ');
@@ -164,6 +174,15 @@ class GradesBookController extends Controller
 
 
             if ($gradebook->save()){
+                ActionLog::create([
+                    'subject' => 'user',
+                    'subject_id' => Auth::user()->id,
+                    'action' => 'update',
+                    'type' => 'gradebook',
+                    'type_id' => $gradebook->id,
+                    'object' => 'course',
+                    'object_id' => $course_id
+                ]);
                 return redirect()->back()->with('success', 'Grade Book updated successfully');
             }else{
                 return redirect()->back()->with('error', 'An Error Occurred ');

@@ -1,6 +1,11 @@
 <!-- Navbar -->
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-
+        {{-- <button type="button"  class="menu-btn mb-1">
+            <i class="fas fa-align-left"></i>
+        </button> --}}
+        <a href="javascript:void(0)" id="sidebarCollapse" class="mb-1">
+            <i class="fas fa-bars text-light" style="font-size:18px;"></i>
+        </a>
     <div class="container">
 
         @if (Auth::check())
