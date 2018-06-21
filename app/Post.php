@@ -14,8 +14,8 @@ class Post extends Model
   protected $fillable = [
       'discussion_id', 'user_id', 'module_id', 'title', 'body'
   ];
+  protected $hidden = ['files','created_at','updated_at','deleted_at','user'];
   protected $dates = ['deleted_at'];
-  protected $hidden = ['files','created_at','updated_at','deleted_at'];
   //override original delete method to also delete childs
   protected static function boot()
   {

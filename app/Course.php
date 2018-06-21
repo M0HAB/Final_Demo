@@ -13,6 +13,8 @@ class Course extends Model
       'course_specialization',  'commitment', 'course_department',
       'how_to_pass','instructor_id'
     ];
+    protected $hidden = ['instructor', 'created_at', 'updated_at'];
+
     public function modules()
     {
         return $this->hasMany('App\Module', 'course_id');

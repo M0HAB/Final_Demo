@@ -23,7 +23,7 @@ class assdeliver extends Model
 
     }
     protected $hidden = [
-        'assignment','created_at', 'updated_at'
+        'assignment','created_at', 'updated_at','student'
     ];
 
 }

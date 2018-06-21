@@ -12,4 +12,5 @@ class ActionLog extends Model
     protected $fillable = [
         'subject', 'subject_id', 'action', 'type', 'type_id', 'object', 'object_id'
     ];
+    protected $dates =['created_at'];
 }

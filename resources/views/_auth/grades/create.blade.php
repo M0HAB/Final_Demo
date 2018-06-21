@@ -3,7 +3,7 @@
 
 
 @section('content')
-    <a href="{{ route('course.listUserCourses') }}" class="btn go-back-btn mb-4"><i class="fas fa-arrow-left fa-1x"></i> Back</a> 
+    <a href="{{ route('course.listUserCourses') }}" class="btn go-back-btn mb-4"><i class="fas fa-arrow-left fa-1x"></i> Back</a>
 
     <!-- Start: Content -->
 
@@ -17,7 +17,7 @@
             @include('_partials.errors')
 
 
-            <form action="{{ route('course.studentGrades.store',['student_id' => $student_id,'course_id' => $course_id])}}" method="POST" role="form" autocomplete="off">
+            <form action="{{ route('course.studentGrades.store',['course_id' => $course_id,'student_id' => $student_id])}}" method="POST" role="form" autocomplete="off">
                 {{ csrf_field() }}
 
 

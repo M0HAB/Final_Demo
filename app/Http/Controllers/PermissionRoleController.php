@@ -9,6 +9,7 @@ use App\Role;
 use Session;
 use App\User;
 use App\Pindex;
+use App\ActionLog;
 
 class PermissionRoleController extends Controller
 {
@@ -154,20 +155,26 @@ class PermissionRoleController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $rules =  [
-            'name' => 'sometimes|required|max:100|unique:roles,name,'.$id
-        ];
-        $messages =  [
-            'name.required' => 'Role name is required',
-            'name.unique' => 'Role name must be unique.',
-            'name.max' => 'Role name is 100 chars max'
-        ];
-        $this->validate($request, $rules, $messages);
-        $name = ucfirst(strtolower($request->input('name')));
         $role = Role::find($id);
-        $role->name = $name;
+        if($id != 1 || $id != 2){
+            $rules =  [
+                'name' => 'sometimes|required|max:100|unique:roles,name,'.$id
+            ];
+            $messages =  [
+                'name.required' => 'Role name is required',
+                'name.unique' => 'Role name must be unique.',
+                'name.max' => 'Role name is 100 chars max'
+            ];
+            $this->validate($request, $rules, $messages);
+            $name = ucfirst(strtolower($request->input('name')));
+            $role->name = $name;
+            $same = ($role->name == Role::find($id)->name && $role->permission == Role::find($id)->permission );
+
+        }else{
+            $same = ($role->permission == Role::find($id)->permission );
+        }
         $role->permission = $this->encodePermissions($request);
-        if($role->name == Role::find($id)->name && $role->permission == Role::find($id)->permission ){
+        if($same){
           return redirect()->back()->with('warning', 'Same Value Resubmittion');
         }
         if ($role->save()){

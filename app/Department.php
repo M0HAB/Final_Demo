@@ -15,6 +15,7 @@ class Department extends Model
         'name', 'Dep_Head_ID',
     ];
     protected $dates = ['deleted_at'];
+    protected $hidden = ['created_at', 'updated_at', 'deleted_at'];
 
     public function users(){
         return $this->hasMany('App\User', 'dep_id');

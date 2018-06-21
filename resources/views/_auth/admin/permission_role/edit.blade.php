@@ -13,7 +13,13 @@
 			<div class="form-group">
 		<label for="name">Role Name:</label>
 		<input type="text" class="form-control" id="name"
-			placeholder="Enter Role Name" name="name" value="{{ old('name', '') }}" required>
+			placeholder="Enter Role Name" name="name" value="{{ old('name', '') }}"
+			@if($role->id == 1 || $role->id == 2)
+			disabled>
+			@else
+			required>
+			@endif
+
 	</div>
 	<div class="row">
 			<table class="table">

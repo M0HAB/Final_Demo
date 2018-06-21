@@ -16,13 +16,16 @@ use Auth;
 use App\Course;
 use App\Module;
 use App\Lesson;
-use App\lesson_file;
+use App\lessonFile;
 use App\Quiz;
 use App\assignment;
 use App\QuizDeliver;//quiz_answer
 use App\assdeliver;//ass_deliver
 use App\Post;
-
+use App\Comment;
+use App\Reply;
+use App\Vote;
+use App\Specialization;
 
 class UserController extends Controller
 {
@@ -291,50 +294,99 @@ class UserController extends Controller
     {
         $record = null;
         $title = null;
+        //TODO::Add role,gradebook
         switch ($request->type) {
+            case 'department':
+                $record = Department::find($request->id);
+                if(!$record)break;
+                $record->department_head = User::find($record->Dep_Head_ID);
+                $record->department_head = $record->Dep_Head_ID.' ['.$record->department_head->fname.' '.$record->department_head->lname.']';
+                unset($record->Dep_Head_ID);
+                $title = "Department";
+                break;
+            case 'specialization':
+                $record = Specialization::find($request->id);
+                if(!$record)break;
+                $title = "Specialization";
+                break;
             case 'course':
                 $record = Course::find($request->id);
+                if(!$record)break;
+                $record->instructor_data = $record->instructor_id.' ['.$record->instructor->fname.' '.$record->instructor->lname.']';
+                unset($record->instructor_id);
                 $title = "Course";
                 break;
             case 'module':
                 $record = Module::find($request->id);
+                if(!$record)break;
                 $title = "Module";
                 break;
             case 'lesson':
                 $record = Lesson::find($request->id);
+                if(!$record)break;
                 $title = "Lesson Video";
                 break;
             case 'lessonFile':
                 $record = lessonFile::find($request->id);
+                if(!$record)break;
+                $record->file = '/files/'.$record->path;
+                unset($record->path);
                 $title = "Lesson File";
                 break;
             case 'quiz':
                 $record = Quiz::find($request->id);
+                if(!$record)break;
+                $record->is_active = ($record->is_active)? 'True':'False';
                 $title = "Quiz";
                 break;
             case 'assignment':
                 $record = assignment::find($request->id);
+                if(!$record)break;
+                $record->file = '/uploads/assignments/'.$record->file;
                 $title = "Assignment";
                 break;
             case 'quiz_answer':
                 $record = QuizDeliver::find($request->id);
+                if(!$record)break;
                 $title = "Answer of Quiz ".$record->quiz->title." with ID: ".$record->quiz->id;
                 break;
             case 'ass_deliver':
                 $record = assdeliver::find($request->id);
-                $record->user = $record->user_id;
+                if(!$record)break;
+                $record->user = $record->user_id.' ['.$record->student->fname.' '.$record->student->lname.']';
+                $record->file = '/uploads/assignments/delivered/'.$record->file;
                 unset($record->user_id);
                 $title = "Assignment ".$record->assignment->title." Deliver";
                 break;
             case 'post':
                 $record = Post::find($request->id);
+                if(!$record)break;
+                $record->user_data = $record->user_id.' ['.$record->user->fname.' '.$record->user->lname.']';
+                unset($record->user_id);
                 $record->uploads = $record->files()->withTrashed()->get();
                 $title = "Post";
+                break;
+            case 'reply':
+                $record = Reply::find($request->id);
+                if(!$record)break;
+                $record->user_data = $record->user_id.' ['.$record->user->fname.' '.$record->user->lname.']';
+                unset($record->user_id);
+                $record->uploads = $record->files()->withTrashed()->get();
+                $title = "Reply";
+                break;
+            case 'comment':
+                $record = Comment::find($request->id);
+                if(!$record)break;
+                $record->user_data = $record->user_id.' ['.$record->user->fname.' '.$record->user->lname.']';
+                unset($record->user_id);
+                $title = "Comment";
+                break;
             default:
-                // code...
+                return "Unkown Type BRO";
                 break;
 
         }
+        if(!$record) return redirect()->route('error.web');
         return view('_auth.admin.users.preview')->with('record', $record)->with('title', $title);
     }
 

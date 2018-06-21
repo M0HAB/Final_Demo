@@ -88,7 +88,7 @@
 				@endphp
 				@if($recents)
 					@foreach($recents as $recent)
-						<a href="{{route('discussion.show', $recent->discussion->id)}}" class="list-group-item list-group-item-action flex-column align-items-start">
+						<a href="{{route('discussion.show', ['id'=>$recent->discussion->id, 'module_order'=>$recent->module->module_order, 'post'=>$recent->id])}}" class="list-group-item list-group-item-action flex-column align-items-start">
 							<div class="d-flex w-100 justify-content-between">
 								<h5 class="mb-2">{{$recent->title}}</h5>
 								<small class="text-muted txt-lbl">{{$recent->created_at->diffForHumans()}}</small>

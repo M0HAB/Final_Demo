@@ -15,7 +15,7 @@ class Reply extends Model
       'post_id', 'user_id', 'approved', 'body'
   ];
   protected $hidden = [
-      'votes', 'comments'
+      'votes', 'comments', 'files','created_at','updated_at','deleted_at','user'
   ];
   protected $dates = ['deleted_at'];
   protected static function boot()
@@ -27,6 +27,7 @@ class Reply extends Model
        }
     });
   }
+
   public function files()
   {
     return $this->hasMany('App\fileUp', 'relate_id')->where('relate_type', 'reply');

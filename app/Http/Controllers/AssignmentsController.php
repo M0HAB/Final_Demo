@@ -227,8 +227,8 @@ class AssignmentsController extends Controller
                         'subject_id' => Auth::user()->id,
                         'action' => 'update',
                         'type' => 'assignment',
-                        'type_id' => $assigmment->id,
-                        'object' => 'quiz',
+                        'type_id' => $assignment->id,
+                        'object' => 'module',
                         'object_id' => $module->id
                     ]);
                     return redirect()->back()->with('success', 'Assignment updated successfully')->withInput();
@@ -429,7 +429,7 @@ class AssignmentsController extends Controller
                     'action' => 'update',
                     'type' => 'ass_deliver',
                     'type_id' => $delivered->id,
-                    'object' => 'quiz',
+                    'object' => 'assignment',
                     'object_id' => $delivered->ass_id
                 ]);
                 return redirect()->back()->with('success', 'Delivered Assignment updated successfully');

@@ -16,6 +16,7 @@ class Specialization extends Model
         'name',
     ];
     protected $dates = ['deleted_at'];
+    protected $hidden = ['created_at', 'updated_at', 'deleted_at'];
 
     public function departments()
     {

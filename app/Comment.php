@@ -12,6 +12,7 @@ class Comment extends Model
   protected $fillable = [
       'reply_id', 'user_id', 'body'
   ];
+  protected $hidden = ['created_at','updated_at','deleted_at','user'];
 
   public function reply()
   {

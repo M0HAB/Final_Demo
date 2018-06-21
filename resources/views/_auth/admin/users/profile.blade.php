@@ -224,6 +224,7 @@
                                   <th>Action</th>
                                   <th>Type</th>
                                   <th>Object</th>
+                                  <th>Time</th>
                               </tr>
                           </thead>
                           <tbody>
@@ -231,7 +232,11 @@
                                   <tr>
                                       <td>{{$log->subject}}</td>
                                       <td>{{$log->action}}</td>
-                                      <td><a href="{{route('admin.user.action', ['type' => $log->type, 'id' => $log->type_id])}}">{{$log->type}}</a></td>
+                                      @if($log->type_id === 0)
+                                        <td>{{$log->type}}</td>
+                                      @else
+                                        <td><a href="{{route('admin.user.action', ['type' => $log->type, 'id' => $log->type_id])}}">{{$log->type}}</a></td>
+                                      @endif
                                       <td>
                                           @if ($log->object)
                                             <a href="{{route('admin.user.action', ['type' => $log->object, 'id' => $log->object_id])}}">{{$log->object}}</a>
@@ -239,6 +244,8 @@
                                           Null
                                           @endif
                                       </td>
+                                      <td>{{$log->created_at->diffforhumans()}}</td>
+
                                   </tr>
                               @endforeach
                               @foreach($user->adminUserLog()->get()->sortByDesc('id') as $log)
@@ -253,6 +260,8 @@
                                           Null
                                           @endif
                                       </td>
+                                      <td>{{$log->created_at->diffforhumans()}}</td>
+
                                   </tr>
                               @endforeach
 

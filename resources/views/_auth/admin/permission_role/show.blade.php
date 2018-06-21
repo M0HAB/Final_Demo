@@ -41,7 +41,7 @@
                         @else
   						<td>
 							<button class="btn btn-link text-primary p-0" type="submit" data-toggle="modal" data-target="#confirm" title="Delete" data-id="{{$x->id}}" data-type="prole">
-									<span class="far fa-trash-alt fa-lg"></span>
+									<span class="fas fa-trash fa-lg"></span>
 							</button>
   						</td>
                         @endif

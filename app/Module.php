@@ -9,6 +9,7 @@ class Module extends Model
     protected $fillable = [
         'title', 'commitment', 'module_order', 'introduction', 'course_id'
     ];
+    protected $hidden = ['created_at', 'updated_at'];
 
     public function assignments()
     {
