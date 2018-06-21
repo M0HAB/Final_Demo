@@ -26,6 +26,8 @@ use App\Comment;
 use App\Reply;
 use App\Vote;
 use App\Specialization;
+use App\gradebook;
+use App\grade;
 
 class UserController extends Controller
 {
@@ -294,7 +296,7 @@ class UserController extends Controller
     {
         $record = null;
         $title = null;
-        //TODO::Add role,gradebook
+        //TODO::Add role,gradebook,grades
         switch ($request->type) {
             case 'department':
                 $record = Department::find($request->id);
@@ -380,6 +382,24 @@ class UserController extends Controller
                 $record->user_data = $record->user_id.' ['.$record->user->fname.' '.$record->user->lname.']';
                 unset($record->user_id);
                 $title = "Comment";
+                break;
+            case 'gradebook':
+                $record = gradeBook::find($request->id);
+                if(!$record)break;
+                $title = "Grade Book";
+                break;
+            case 'grades':
+                $record = grade::find($request->id);
+                if(!$record)break;
+                $user = User::find($record->user_id);
+                $record->user_data = $record->user_id.' ['.$user->fname.' '.$user->lname.']';
+                unset($record->user_id);
+                $title = "Grades";
+                break;
+            case 'role':
+                $record = Role::find($request->id);
+                if(!$record)break;
+                $title = "Role";
                 break;
             default:
                 return "Unkown Type BRO";

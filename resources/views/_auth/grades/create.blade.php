@@ -12,11 +12,8 @@
         <div class="col-lg-12 col-sm-12">
             <h6><strong>Student name:</strong> <span class="text-success">{{$student->fname. ' ' . $student->lname}}</span> </h6>
             <h6><strong>Student email:</strong> <span class="text-success">{{$student->email}}</span></h6>
-
             <br>
             @include('_partials.errors')
-
-
             <form action="{{ route('course.studentGrades.store',['course_id' => $course_id,'student_id' => $student_id])}}" method="POST" role="form" autocomplete="off">
                 {{ csrf_field() }}
 
