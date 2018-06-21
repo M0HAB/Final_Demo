@@ -19,7 +19,7 @@
 @font-face {font-family: 'raleway';src: url(../fonts/Raleway-BlackItalic.ttf);font-style: italic;font-weight: 900;}
 /* END: Raleway */
 /*----------- Main Customization -----------*/
-html, body { background-color: #FFF;min-height: 100%;margin: 0;padding: 0}
+html, body { background-color: #FFF;min-height: 100%;margin: 0;padding: 0;}
 p { margin: 0px;padding: 0px; }
 textarea {resize: none}
 @media all and (max-width: 991px) {#add-reply-btn {width: 100%;margin-top: 10px} .on-small{display: block;width: 100%}}
