@@ -278,7 +278,7 @@
                                 </tr>
                                 <tr>
                                     <td>
-                                        <a href="#" class="ml-1"><i class="fas fa-question mr-1"></i>Discussion Forum</a>
+                                        <a href="{{route('discussion.show', ['id' => $course->discussion->id, 'module_order' => $module->module_order])}}" class="ml-1"><i class="fas fa-question mr-1"></i>Discussion Forum</a>
                                     </td>
                                 </tr>
                             @endif
