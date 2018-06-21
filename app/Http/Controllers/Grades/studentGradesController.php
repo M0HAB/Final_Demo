@@ -126,7 +126,7 @@ class studentGradesController extends Controller
                 'type' => 'grades',
                 'type_id' => $grades->id,
                 'object' => 'course',
-                'object_id' => $course_id
+                'object_id' => $course->id
             ]);
             return redirect()->back()->with('success', 'Grades Successfully Submitted');
 
@@ -249,7 +249,7 @@ class studentGradesController extends Controller
                     'type' => 'grades',
                     'type_id' => $grades->id,
                     'object' => 'course',
-                    'object_id' => $course_id
+                    'object_id' => $course->id
                 ]);
                 return redirect()->back()->with('success', 'Grades updated successfully');
             }else{

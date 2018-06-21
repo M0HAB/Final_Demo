@@ -100,7 +100,7 @@ class GradesBookController extends Controller
                             'type' => 'gradebook',
                             'type_id' => $gradebook->id,
                             'object' => 'course',
-                            'object_id' => $course_id
+                            'object_id' => $course->id
                         ]);
                         return redirect()->back()->with('success', 'Grade Book created successfully');
                     }else{
@@ -181,7 +181,7 @@ class GradesBookController extends Controller
                     'type' => 'gradebook',
                     'type_id' => $gradebook->id,
                     'object' => 'course',
-                    'object_id' => $course_id
+                    'object_id' => $course->id
                 ]);
                 return redirect()->back()->with('success', 'Grade Book updated successfully');
             }else{
