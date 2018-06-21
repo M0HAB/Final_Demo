@@ -52,19 +52,19 @@
                                 {{$gradesBook->course->title ? $gradesBook->course->title : "course has no title"}}
                             </td>
                             <td>
-                                {{$gradesBook->assignments_weight ? $gradesBook->assignments_weight * 100 : 'Ø'}}%
+                                {{$gradesBook->assignments_weight ? $gradesBook->assignments_weight * 100 : '-'}}%
                             </td>
                             <td>
-                                {{$gradesBook->quizzes_weight ? $gradesBook->quizzes_weight * 100 : 'Ø'}}%
+                                {{$gradesBook->quizzes_weight ? $gradesBook->quizzes_weight * 100 : '-'}}%
                             </td>
                             <td>
-                                {{$gradesBook->midterm_weight ? $gradesBook->midterm_weight * 100 : 'Ø'}}%
+                                {{$gradesBook->midterm_weight ? $gradesBook->midterm_weight * 100 : '-'}}%
                             </td>
                             <td>
-                                {{$gradesBook->finalexam_weight ? $gradesBook->finalexam_weight * 100 : 'Ø'}}%
+                                {{$gradesBook->finalexam_weight ? $gradesBook->finalexam_weight * 100 : '-'}}%
                             </td>
                             <td>
-                                {{$gradesBook->practical_weight ? $gradesBook->practical_weight * 100 : 'Ø'}}%
+                                {{$gradesBook->practical_weight ? $gradesBook->practical_weight * 100 : '-'}}%
                             </td>
     
                             <td>

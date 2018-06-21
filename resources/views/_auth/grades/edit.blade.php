@@ -4,9 +4,7 @@
 
 @section('content')
 
-    <div class="reg-log-form p-3 my-3">
-        <a href="{{ URL::previous() }}"><i class="fas fa-arrow-alt-circle-left"></i> Back</a>
-    </div>
+
     <!-- Start: Content -->
         <h1 class="f-rw">Edit Student Grades</h1>
         <div class="row">
