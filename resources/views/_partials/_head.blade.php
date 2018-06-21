@@ -13,6 +13,10 @@
     @yield('stylesheets')
     <link rel="stylesheet" href="{{ asset('css/_app.css') }}">
     <link rel="stylesheet" href="{{ asset('css/lightbox.min.css') }}">
+    <!-- Sidebar-menu -->
+    <link rel="stylesheet" href="{{ asset('css/sidebar.css') }}">
     <!-- Custom CSS -->
-	<link rel="stylesheet" href="{{ asset('css/style.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/style.css') }}">
+    
+    
 </head>
