@@ -54,7 +54,6 @@ class User extends Authenticatable
         return $this->attributes['lname'] = ucfirst($value);
     }
 
-
     public function isAdmin()
     {
         if (!$this->role == 'admin')
@@ -81,6 +80,18 @@ class User extends Authenticatable
       $role_id = ('App\Role')::where('name', 'instructor')->first()->id;
       return User::where('role_id', $role_id);
     }
+
+
+    public function actionlog()
+    {
+        return $this->hasMany('App\ActionLog', 'subject_id')->where('subject','user');
+    }
+    public function actionCreateLog()
+    {
+        $id = ('App\ActionLog')::where(['type' => 'user', 'type_id' => $this->id])->first()->id;
+        return ('App\ActionLog')::find($id);
+    }
+
 
   	public function department(){
   		return $this->belongsTo('App\Department', 'dep_id');

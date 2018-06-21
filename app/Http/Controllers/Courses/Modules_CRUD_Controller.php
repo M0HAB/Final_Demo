@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
+use App\ActionLog;
 
 class Modules_CRUD_Controller extends Controller{
 
@@ -94,6 +95,15 @@ class Modules_CRUD_Controller extends Controller{
                 ]);
 
                 if($module){
+                    ActionLog::create([
+                        'subject' => 'user',
+                        'subject_id' => Auth::user()->id,
+                        'action' => 'create',
+                        'type' => 'module',
+                        'type_id' => $module->id,
+                        'object' => 'course',
+                        'object_id' => $course->id
+                    ]);
                     return response()->json([
                         'success' => 'module created successfully!',
                     ]);
@@ -148,6 +158,15 @@ class Modules_CRUD_Controller extends Controller{
                 ]);
 
                 if($myModule){
+                    ActionLog::create([
+                        'subject' => 'user',
+                        'subject_id' => Auth::user()->id,
+                        'action' => 'update',
+                        'type' => 'module',
+                        'type_id' => $module->id,
+                        'object' => 'course',
+                        'object_id' => $course->id
+                    ]);
                     $module = Module::find($module->id);
                     return response()->json([
                         'success' => 'module updated successfully!',

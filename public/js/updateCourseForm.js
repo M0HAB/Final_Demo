@@ -61,7 +61,7 @@ $('#submit-update-course').submit(function(event){
         success: function(response){
             $('.error-msg').remove(); // To clear the old error messages before submit new course
             $('#form-course-title-child').remove();
-            $('#form-course-title-parent').append('<Span id="form-course-title-child">' + response.data.title + '</span>');
+            $('#form-course-title-parent').append('<Span id="form-course-title-child">' + response.course.title + '</span>');
         },
         error: function(response){
             if(response.responseText === "Unauthorized"){

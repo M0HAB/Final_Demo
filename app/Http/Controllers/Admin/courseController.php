@@ -1,7 +1,8 @@
 <?php
 
 namespace App\Http\Controllers\Admin;
-
+use Auth;
+use App\ActionLog;
 use App\Course;
 use App\CourseStudentAssign;
 use App\Http\Controllers\Controller;
@@ -44,6 +45,15 @@ class courseController extends Controller{
               );
               $assign = CourseStudentAssign::insert($data);
               if($assign){
+                  ActionLog::create([
+                      'subject' => 'admin',
+                      'subject_id' => Auth::user()->id,
+                      'action' => 'assign',
+                      'type' => 'user',
+                      'type_id' => $data['user_id'],
+                      'object' => 'course',
+                      'object_id'=> $data['course_id']
+                  ]);
                   $insertedUsers++;
               }
           }
@@ -71,6 +81,15 @@ class courseController extends Controller{
     public function unAssignStudent(Course $course, CourseStudentAssign $assign){
 
         if($assign->delete()){
+            ActionLog::create([
+                'subject' => 'admin',
+                'subject_id' => Auth::user()->id,
+                'action' => 'un_assign',
+                'type' => 'user',
+                'type_id' => $assign->user_id,
+                'object' => 'course',
+                'object_id'=> $assign->course_id
+            ]);
             return redirect()->back()->with('success', 'Student Un-assigned successfully');
         }else{
             return redirect()->back()->with('error', 'something went wrong!!Try again');

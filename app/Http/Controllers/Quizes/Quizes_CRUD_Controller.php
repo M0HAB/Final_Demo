@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
+use App\ActionLog;
 
 class Quizes_CRUD_Controller extends Controller{
     private $controllerName = "Quiz";
@@ -55,6 +56,15 @@ class Quizes_CRUD_Controller extends Controller{
             ]);
 
             if($quizDeliver){
+                ActionLog::create([
+                    'subject' => 'user',
+                    'subject_id' => Auth::user()->id,
+                    'action' => 'deliver',
+                    'type' => 'quiz_answer',
+                    'type_id' => $quizDeliver->id,
+                    'object' => 'quiz',
+                    'object_id' => $quiz->id
+                ]);
                 return redirect()->back()->with('success', 'Your answers has been submitted successfully');
             }
         }else{
@@ -113,6 +123,15 @@ class Quizes_CRUD_Controller extends Controller{
             ]);
             $inserted_questions = 0;
             if($quiz){
+                ActionLog::create([
+                    'subject' => 'user',
+                    'subject_id' => Auth::user()->id,
+                    'action' => 'create',
+                    'type' => 'quiz',
+                    'type_id' => $quiz->id,
+                    'object' => 'module',
+                    'object_id' => $module->id
+                ]);
                 foreach($request->questions as $key => $val){
                     $data = array(
                         'question' => $val,
@@ -154,6 +173,15 @@ class Quizes_CRUD_Controller extends Controller{
                 ]);
 
                 if($myQuiz){
+                    ActionLog::create([
+                        'subject' => 'user',
+                        'subject_id' => Auth::user()->id,
+                        'action' => 'update',
+                        'type' => 'quiz',
+                        'type_id' => $myQuiz->id,
+                        'object' => 'module',
+                        'object_id' => $myQuiz->module_id
+                    ]);
                     $quiz = Quiz::find($quiz->id);
                     return response()->json([
                         'success' => $quiz->is_active?' quiz activated successfully!':'quiz deactivated successfully!',

@@ -12,6 +12,7 @@ use Illuminate\Validation\Rule;
 use App\Department;
 use App\Specialization;
 use App\Discussion;
+use App\ActionLog;
 
 class Courses_CRUD_Controller extends Controller{
 
@@ -132,6 +133,15 @@ class Courses_CRUD_Controller extends Controller{
                 Discussion::create([
                     'course_id' => $course->id
                 ]);
+                ActionLog::create([
+                    'subject' => 'user',
+                    'subject_id' => Auth::user()->id,
+                    'action' => 'create',
+                    'type' => 'course',
+                    'type_id' => $course->id,
+                    'object' => 'department',
+                    'object_id' => $course->course_department
+                ]);
                 ///
                 if($course){
                     return response()->json([
@@ -213,6 +223,15 @@ class Courses_CRUD_Controller extends Controller{
                         'instructor_id'      => Auth::User()->id,
                 ]);
                 if($myCourse){
+                    ActionLog::create([
+                        'subject' => 'user',
+                        'subject_id' => Auth::user()->id,
+                        'action' => 'update',
+                        'type' => 'course',
+                        'type_id' => $course->id,
+                        'object' => 'department',
+                        'object_id' => $course->course_department
+                    ]);
                     $course = Course::find($course->id);
                     return response()->json([
                         'success' => 'course updated successfully!',
@@ -239,6 +258,15 @@ class Courses_CRUD_Controller extends Controller{
                 ]);
 
                 if($myCourse){
+                    ActionLog::create([
+                        'subject' => 'user',
+                        'subject_id' => Auth::user()->id,
+                        'action' => 'activate',
+                        'type' => 'course',
+                        'type_id' => $course->id,
+                        'object' => 'department',
+                        'object_id' => $course->course_department
+                    ]);
                     $course = Course::find($course->id);
                     return response()->json([
                         'success' => $course->is_active?'course activated successfully!':'course deactivated successfully!',

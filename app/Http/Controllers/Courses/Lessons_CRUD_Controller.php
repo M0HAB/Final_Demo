@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
+use App\ActionLog;
 
 class Lessons_CRUD_Controller extends Controller
 {
@@ -141,6 +142,15 @@ class Lessons_CRUD_Controller extends Controller
                     ]);
 
                     if($lesson){
+						ActionLog::create([
+                            'subject' => 'user',
+                            'subject_id' => Auth::user()->id,
+                            'action' => 'create',
+                            'type' => 'lesson',
+                            'type_id' => $lesson->id,
+                            'object' => 'course',
+                            'object_id' => $course->id
+                        ]);
                         unlink($fullPathToVideo);
                         Session::flash('success', "Video uploaded successfully!");
                         return redirect()->back();
@@ -198,6 +208,15 @@ class Lessons_CRUD_Controller extends Controller
                         'module_id' => $module->id
                     ]);
                     if($file){
+						ActionLog::create([
+							'subject' => 'user',
+							'subject_id' => Auth::user()->id,
+							'action' => 'create',
+							'type' => 'lessonFile',
+							'type_id' => $file->id,
+							'object' => 'course',
+							'object_id' => $course->id
+						]);
                         Session::flash('success', "File uploaded successfully!");
                         return redirect()->back();
                     }

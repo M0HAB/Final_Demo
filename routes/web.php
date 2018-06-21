@@ -290,6 +290,7 @@ Route::group(['prefix' => 'admin'], function () {
           Route::post('/edit', 'UserController@update')->name('admin.user.update');
           Route::get('/create', 'UserController@create')->name('admin.user.create');
           Route::post('/create', 'UserController@store')->name('admin.user.store');
+          Route::get('/show', 'UserController@previewAction')->name('admin.user.action');
       });
       Route::group(['prefix' => 'courses'], function ()
       {

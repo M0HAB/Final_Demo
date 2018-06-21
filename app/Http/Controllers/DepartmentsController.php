@@ -10,6 +10,7 @@ use App\User;
 use App\Role;
 use App\Specialization;
 use DB;
+use App\ActionLog;
 
 class DepartmentsController extends Controller
 {
@@ -84,6 +85,13 @@ class DepartmentsController extends Controller
         $department->Dep_Head_ID = $request->input('instructor');
         // If succesfully updated display success else error
         if ($department->save()){
+            ActionLog::create([
+                'subject' => 'admin',
+                'subject_id' => Auth::user()->id,
+                'action' => 'create',
+                'type' => 'department',
+                'type_id' => $department->id,
+            ]);
             return redirect()->back()->with('success', 'Department created successfully');
         }else{
             return redirect()->back()->with('error', 'Some error has occured please try resubmitting');
@@ -186,6 +194,13 @@ class DepartmentsController extends Controller
             $department->name = $newname;
             $department->Dep_Head_ID = $newHead;
             if ($department->save()){
+                ActionLog::create([
+                    'subject' => 'admin',
+                    'subject_id' => Auth::user()->id,
+                    'action' => 'update',
+                    'type' => 'department',
+                    'type_id' => $department->id
+                ]);
                 return redirect()->back()->with('success', 'Department updated successfully');
             }else{
                 return redirect()->back()->with('error', 'Some error has occured please try resubmitting');
@@ -209,6 +224,13 @@ class DepartmentsController extends Controller
             return ($department->delete())? 1:0;
         }else{
             if($department->delete()){
+                ActionLog::create([
+                    'subject' => 'admin',
+                    'subject_id' => Auth::user()->id,
+                    'action' => 'delete',
+                    'type' => 'department',
+                    'type_id' => $department->id
+                ]);
                 return redirect()->back()->with('success', 'Department Deleted Successfully');
             }else{
                 return redirect()->back()->with('error', 'Some error has occured please try resubmitting');
@@ -284,6 +306,15 @@ class DepartmentsController extends Controller
             ]);
             $spec = Specialization::find($request->specialization);
             if ($department->specializations()->save($spec)){
+                ActionLog::create([
+                    'subject' => 'admin',
+                    'subject_id' => Auth::user()->id,
+                    'action' => 'create',
+                    'type' => 'department_specialization',
+                    'type_id' => $spec->id,
+                    'object' => 'department',
+                    'object_id' => $department->id
+                ]);
                 return redirect()->back()->with('success', 'Department updated successfully');
             }else{
                 return redirect()->back()->with('error', 'Some error has occured please try resubmitting');
@@ -299,9 +330,27 @@ class DepartmentsController extends Controller
         $department = Department::find($request->dep_id);
         if($department){
             if($request->ajax()){
+                ActionLog::create([
+                    'subject' => 'admin',
+                    'subject_id' => Auth::user()->id,
+                    'action' => 'delete',
+                    'type' => 'department_specialization',
+                    'type_id' => $id,
+                    'object' => 'department',
+                    'object_id' => $department->id
+                ]);
                 return ($department->specializations()->detach($id))? 1:0;
             }else{
                 if($department->specializations()->detach($id)){
+                    ActionLog::create([
+                        'subject' => 'admin',
+                        'subject_id' => Auth::user()->id,
+                        'action' => 'delete',
+                        'type' => 'department_specialization',
+                        'type_id' => $id,
+                        'object' => 'department',
+                        'object_id' => $department->id
+                    ]);
                     return redirect()->back()->with('success', 'Department updated Successfully');
                 }else{
                     return redirect()->back()->with('error', 'Some error has occured please try resubmitting');

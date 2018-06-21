@@ -8,6 +8,7 @@ use App\Reply;
 use Auth;
 use URL;
 use App\FileUp;
+use App\ActionLog;
 
 class PostController extends Controller
 {
@@ -81,6 +82,17 @@ class PostController extends Controller
                 $newRecord->user_id = Auth::user()->id;
                 //if new record failed to save return 404;
                 if(!$newRecord->save()) return redirect()->route('error.api', 'Failed to save Try Resubmitting');
+                $object = ($request->type == 'post')? 'discussion': 'post';
+                $object_id = ($request->type == 'post')? $request->discussion_id : $request->post_id;
+                ActionLog::create([
+                    'subject' => 'user',
+                    'subject_id' => Auth::user()->id,
+                    'action' => 'create',
+                    'type' => strtolower($request->type),
+                    'type_id' => $newRecord->id,
+                    'object' => $object,
+                    'object_id' => $object_id
+                ]);
                 //get array of sources
                 $files = $this->saveFiles($request->file_list);
                 if ($files === 0) return redirect()->route('error.api', 'File too big, maximum 2mb per File');
@@ -120,6 +132,17 @@ class PostController extends Controller
                 //save the received body to the $newRecord->body
                 $record->body = $request->body;
                 if(!$record->save()) return redirect()->route('error.api','Failed to save please retry');
+                $object = ($request->type == 'post')? 'discussion': 'post';
+                $object_id = ($request->type == 'post')? $record->discussion_id : $record->post_id;
+                ActionLog::create([
+                    'subject' => 'user',
+                    'subject_id' => Auth::user()->id,
+                    'action' => 'update',
+                    'type' => strtolower($request->type),
+                    'type_id' => $record->id,
+                    'object' => $object,
+                    'object_id' => $object_id
+                ]);
                 //get array of sources
                 $files = $this->saveFiles($request->file_list);
                 if ($files === 0) return redirect()->route('error.api', 'File too big, maximum 2mb per File');
@@ -155,6 +178,15 @@ class PostController extends Controller
                 $post = Post::find($id);
                 if ($post->user_id == Auth::user()->id){
                   if($post->delete()){
+                      ActionLog::create([
+                          'subject' => 'user',
+                          'subject_id' => Auth::user()->id,
+                          'action' => 'delete',
+                          'type' => 'post',
+                          'type_id' => $post->id,
+                          'object' => 'discussion',
+                          'object_id' => $post->discussion->id
+                      ]);
                     return 1;
                   }
                 }
