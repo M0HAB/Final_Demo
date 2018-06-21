@@ -256,12 +256,12 @@ class Courses_CRUD_Controller extends Controller{
                 $myCourse = Course::where('id', $course->id)->update([
                     'is_active' => $request->is_active,
                 ]);
-
+                $action = ($request->is_active)? 'activate' : 'deactivate';
                 if($myCourse){
                     ActionLog::create([
                         'subject' => 'user',
                         'subject_id' => Auth::user()->id,
-                        'action' => 'activate',
+                        'action' => $action,
                         'type' => 'course',
                         'type_id' => $course->id,
                         'object' => 'department',

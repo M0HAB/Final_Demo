@@ -148,8 +148,8 @@ class Lessons_CRUD_Controller extends Controller
                             'action' => 'create',
                             'type' => 'lesson',
                             'type_id' => $lesson->id,
-                            'object' => 'course',
-                            'object_id' => $course->id
+                            'object' => 'module',
+                            'object_id' => $module->id
                         ]);
                         unlink($fullPathToVideo);
                         Session::flash('success', "Video uploaded successfully!");
@@ -178,7 +178,7 @@ class Lessons_CRUD_Controller extends Controller
 
     public function uploadFile(Request $request, Course $course, Module $module){
         if(canCreate($this->controllerName)){
-            $validator = Validator::make($request->all(), 
+            $validator = Validator::make($request->all(),
             [
                 'title'           => 'required|max:255',
                 'description'     => 'required|max:255',
@@ -214,8 +214,8 @@ class Lessons_CRUD_Controller extends Controller
 							'action' => 'create',
 							'type' => 'lessonFile',
 							'type_id' => $file->id,
-							'object' => 'course',
-							'object_id' => $course->id
+							'object' => 'module',
+							'object_id' => $module->id
 						]);
                         Session::flash('success', "File uploaded successfully!");
                         return redirect()->back();

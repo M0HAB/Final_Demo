@@ -227,7 +227,7 @@
                               </tr>
                           </thead>
                           <tbody>
-                              @foreach($user->actionlog as $log)
+                              @foreach($user->actionlog->sortByDesc('id') as $log)
                                   <tr>
                                       <td>{{$log->subject}}</td>
                                       <td>{{$log->action}}</td>

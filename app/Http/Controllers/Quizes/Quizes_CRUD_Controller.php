@@ -171,16 +171,15 @@ class Quizes_CRUD_Controller extends Controller{
                 $myQuiz = Quiz::where('id', $quiz->id)->update([
                     'is_active' => $request->is_active,
                 ]);
-
                 if($myQuiz){
                     ActionLog::create([
                         'subject' => 'user',
                         'subject_id' => Auth::user()->id,
                         'action' => 'update',
                         'type' => 'quiz',
-                        'type_id' => $myQuiz->id,
+                        'type_id' => $quiz->id,
                         'object' => 'module',
-                        'object_id' => $myQuiz->module_id
+                        'object_id' => $quiz->module_id
                     ]);
                     $quiz = Quiz::find($quiz->id);
                     return response()->json([
