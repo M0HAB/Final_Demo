@@ -135,12 +135,13 @@ class GradesBookController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(Course $course,gradeBook $gradebook)
+    public function edit(Course $course, $gradebook_id)
     {
         if(canUpdate($this->controllerName)){
 
             $course_id = $course->id;
-            //dd($gradebook);
+            $gradebook = gradeBook::find($gradebook_id);
+
             if (Auth::user()->isInstructor()){
                 return view('_auth.gradesBook.edit', compact( 'gradebook','course_id'));
             }else{
@@ -159,10 +160,10 @@ class GradesBookController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Course $course,gradeBook $gradebook)
+    public function update(Request $request, Course $course, $gradebook_id)
     {
         if(canUpdate($this->controllerName)){
-            //dd($gradebook);
+            $gradebook = gradeBook::find($gradebook_id);
 
             $gradebook ->assignments_weight = $request->input('assw') / 100;
             $gradebook ->quizzes_weight = $request->input('quizw') /100;

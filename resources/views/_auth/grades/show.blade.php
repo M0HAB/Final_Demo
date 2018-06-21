@@ -50,15 +50,15 @@
                                 <tr>
                                     <td>
                                         {{$stdass->asstitle}}
-    
+
                                     </td>
                                     <td>
                                         {{$stdass->assgrade .'/'. $stdass->assfullmark}}
-    
+
                                     </td>
                                     <td>
                                         {{$stdass->comment ? $stdass->comment : "no feedback"}}
-    
+
                                     </td>
                                 </tr>
                                 @endforeach
@@ -75,7 +75,7 @@
                                 <th>Module</th>
                                 <th>Quiz</th>
                                 <th>Grade</th>
-    
+
                             </tr>
                             </thead>
                             <tbody>
@@ -83,15 +83,15 @@
                                 <tr>
                                     <td>
                                         {{$quizgrade->modtitle}}
-    
+
                                     </td>
                                     <td>
                                         {{$quizgrade->quiztitle }}
-    
+
                                     </td>
                                     <td>
                                         {{$quizgrade->grade }} / {{$quizgrade->total_grade}}
-    
+
                                     </td>
                                 </tr>
                             @endforeach
@@ -112,19 +112,19 @@
                             <tbody>
                                 <tr>
                                     <td>
-    
+
                                         {{$student[0]->midterm . '/'. $student[0]->midterm_fullmark}}
-    
+
                                     </td>
                                     <td>
-    
+
                                         {{$student[0]->practical ? $student[0]->practical. '/'. $student[0]->practical_fullmark : "no practical"}}
-    
+
                                     </td>
                                     <td>
-    
+
                                         {{$student[0]->finalgrade .'/'. $student[0]->final_fullmark}}
-    
+
                                     </td>
                                 </tr>
                             </tbody>
@@ -149,34 +149,34 @@
                                     <tr>
                                         <td>
                                             @if($assgrades->where('user_id', $student_id)->sum('grade') && $assgrades->where('user_id', $student_id)->sum('full_mark'))
-    
+
                                                 {{ $assignment= number_format(
                                                        ($assgrades->where('user_id', $student_id)->sum('grade')
                                                       / $assgrades->where('user_id', $student_id)->sum('full_mark') )
                                                        * $assw
                                                      , 2)
                                                 }}%
-    
+
                                             @else
                                                 {{$assignment=0}}
                                             @endif
-    
+
                                         </td>
-    
+
                                         <td>
                                             @if($quizgrades->where('user_id', $student_id)->sum('grade') && $quizgrades->where('user_id', $student_id)->sum('total_grade') )
-    
+
                                                 {{ $quiz= number_format(
                                                        ($quizgrades->where('user_id', $student_id)->sum('grade')
                                                       / $quizgrades->where('user_id', $student_id)->sum('total_grade') )
                                                        * $qw
                                                      , 2)
                                                 }}%
-    
+
                                             @else
                                                 {{$quiz=0}}
                                             @endif
-    
+
                                         </td>
                                         <td>
                                             @if($student[0]->midterm && $student[0]->midterm_fullmark)
@@ -185,17 +185,17 @@
                                                 {{$midterm=0}}
                                             @endif
                                         </td>
-    
+
                                         <td>
                                             @if($student[0]->practical && $student[0]->practical_fullmark)
                                                 {{number_format($practical=$student[0]->practical ? ($student[0]->practical/$student[0]->practical_fullmark)*$pw :0 , 2)}}%
                                             @else
-    
+
                                                 {{$practical=0}}
                                             @endif
                                         </td>
-    
-    
+
+
                                         <td>
                                             @if($student[0]->final_fullmark && $student[0]->final_fullmark)
                                                 {{number_format($finalexam=$student[0]->finalgrade ? ($student[0]->finalgrade/$student[0]->final_fullmark)*$fw :0 , 2)}}%
@@ -203,16 +203,16 @@
                                                 {{$finalexam=0}}
                                             @endif
                                         </td>
-    
+
                                         <td class="text-success">
-    
+
                                             {{number_format($avg=$finalexam+$quiz+$practical+$midterm+$assignment , 2)}}%
-    
-    
+
+
                                         </td>
-    
+
                                         <td class="text-success">
-    
+
                                             @if ($avg >= 90)
                                                 {{$lettergrade = "A"}}
                                             @elseif ($avg >= 80 && $avg <= 89)

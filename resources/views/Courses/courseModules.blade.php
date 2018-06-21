@@ -85,7 +85,7 @@
             
                                         @elseif (Auth::user()->isStudent())
                                             <p>
-                                                <a href="{{route('course.studentGrades.show', ['student_id' => Auth::user()->id,'course_id' =>$course->id])}}" class="ml-1"><i class="fas fa-graduation-cap mr-1"></i>My grades</a>
+                                                <a href="{{route('course.studentGrades.show', ['course' =>$course->id, 'student_id' => Auth::user()->id])}}" class="ml-1"><i class="fas fa-graduation-cap mr-1"></i>My grades</a>
                                             </p>
                                         @endif
                                         @if(count($modules)>0 && $courseModal->discussion)
