@@ -21,6 +21,7 @@
 	                            <a href="{{ route('specialization.show',$spec->id)}}" class="font-weight-bold forum-nav">{{$spec->name}}</a>
 	                        </td>
                             <td>
+                                <a class="btn btn-link text-primary p-0" href="{{ route('specialization.edit',$spec->id)}}"><i class="fas fa-edit fa-lg" title="Edit Specialization"></i></a>
 								<button class="btn btn-link text-primary p-0" type="submit" data-toggle="modal" data-target="#confirm" data-id="{{$spec->id}}" data-type="specialization">
 										<span class="fas fa-trash fa-lg "></span>
 								</button>
