@@ -300,7 +300,7 @@ class UserController extends Controller
         //TODO::Add role,gradebook,grades
         switch ($request->type) {
             case 'department':
-                $record = Department::find($request->id);
+                $record = Department::withTrashed()->find($request->id);
                 if(!$record)break;
                 $record->department_head = User::find($record->Dep_Head_ID);
                 $record->department_head = $record->Dep_Head_ID.' ['.$record->department_head->fname.' '.$record->department_head->lname.']';
@@ -308,7 +308,7 @@ class UserController extends Controller
                 $title = "Department";
                 break;
             case 'specialization':
-                $record = Specialization::find($request->id);
+                $record = Specialization::withTrashed()->find($request->id);
                 if(!$record)break;
                 $title = "Specialization";
                 break;
@@ -362,7 +362,7 @@ class UserController extends Controller
                 $title = "Assignment ".$record->assignment->title." Deliver";
                 break;
             case 'post':
-                $record = Post::find($request->id);
+                $record = Post::withTrashed()->find($request->id);
                 if(!$record)break;
                 $record->user_data = $record->user_id.' ['.$record->user->fname.' '.$record->user->lname.']';
                 unset($record->user_id);
@@ -370,7 +370,7 @@ class UserController extends Controller
                 $title = "Post";
                 break;
             case 'reply':
-                $record = Reply::find($request->id);
+                $record = Reply::withTrashed()->find($request->id);
                 if(!$record)break;
                 $record->user_data = $record->user_id.' ['.$record->user->fname.' '.$record->user->lname.']';
                 unset($record->user_id);
@@ -398,7 +398,7 @@ class UserController extends Controller
                 $title = "Grades";
                 break;
             case 'role':
-                $record = Role::find($request->id);
+                $record = Role::withTrashed()->find($request->id);
                 if(!$record)break;
                 $title = "Role";
                 break;
