@@ -2,13 +2,13 @@
 <div id="sidebar" class="active">
     <ul class="list-unstyled components">
         <li>
-            <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle"><i class="fas fa-users mr-2" style="font-size: 18px"></i> {{ Auth::user()->fname . ' ' . Auth::user()->lname}}</a>
+            <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="true" class="dropdown-toggle"><i class="fas fa-users mr-2" style="font-size: 18px"></i> {{ Auth::user()->fname . ' ' . Auth::user()->lname}}</a>
             <ul class="collapse list-unstyled show" id="homeSubmenu">
                 <li>
                         <a href="{{ route('user.profile') }}"><i class="fas fa-user space-icon mr-2"></i> Profile</a>
                 </li>
                 <li>
-                    <a href="#courses" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle"><i class="fas fa-cubes mr-2"></i> Courses</a>
+                    <a href="#courses" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle"><i class="fas fa-cubes mr-2" style="font-size: 18px"></i> My Courses</a>
                     <ul class="collapse list-unstyled" id="courses">
                         @if (Auth::user()->isInstructor())
                             <li><a href="{{ route('course.getNewCourseForm') }}"><i class="fas fa-plus mr-2"></i> Create New Course</a></li>
