@@ -37,8 +37,8 @@ Route::get('/test2', function(){
  Route::group(['prefix' => 'user'], function () {
     //-- Authentications
     Route::namespace('_Auth')->group(function() {
-        Route::get('create', 'RegisterController@showRegisterForm')->name('user.regform');
-        Route::post('create', 'RegisterController@register')->name('user.create');
+        // Route::get('create', 'RegisterController@showRegisterForm')->name('user.regform');
+        // Route::post('create', 'RegisterController@register')->name('user.create');
         Route::get('forgot-password', 'ForgotPasswordController@showForgotForm')->name('user.forgot.password');
         Route::post('forgot-password', 'ForgotPasswordController@checkEmail')->name('user.checkreset.email');
         Route::PUT('forgot-password/{id}', 'ResetPasswordController@resetPassword')->name('user.reset.password');
