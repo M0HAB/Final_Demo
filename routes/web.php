@@ -223,7 +223,7 @@ Route::group(['middleware' => ['checkUserEnrollmentInCourse', 'checkCourseActiva
 });
 
 
-Route::get('/error', function(){ return "404"; })->name('error.web');
+Route::get('/error', function(){ return view('errors.404'); })->name('error.web');
 
 Route::group(['prefix' => 'discussions'], function () {
   // 

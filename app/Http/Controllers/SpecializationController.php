@@ -48,7 +48,7 @@ class SpecializationController extends Controller
         //TODO :: add More Validation Rules
         // Validate Form submitted data
         $this->validate($request, [
-            'specialization' => 'required|alpha_num',
+            'specialization' => 'required|regex:/^[a-zA-Z0-9\s]+$/',
         ]);
         // Create new Specialization
         $specialization = new Specialization;
@@ -115,7 +115,7 @@ class SpecializationController extends Controller
     {
         //TODO :: add More Validation Rules
         $this->validate($request, [
-            'specialization' => 'required|alpha_num',
+            'specialization' => 'required|regex:/^[a-zA-Z0-9\s]+$/',
         ]);
         // Update Specialization
         $specialization = Specialization::find($id);
