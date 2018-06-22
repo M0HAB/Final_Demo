@@ -289,6 +289,8 @@ Route::group(['prefix' => 'admin'], function () {
           Route::post('/create', 'UserController@store')->name('admin.user.store');
           Route::get('/show', 'UserController@previewAction')->name('admin.user.action');
       });
+      Route::get('/create', 'UserController@createAdmin')->name('admin.create');
+      Route::post('/create', 'UserController@adminStore')->name('admin.store');
       Route::group(['prefix' => 'courses'], function ()
       {
           Route::get('/', 'courseController@index')->name('admin.course.index');

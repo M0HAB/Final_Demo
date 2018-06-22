@@ -36,9 +36,6 @@
                                     <li>
                                         <a href="{{ route('course.studentGrades.index', ['id' => $course->id]) }}"><i class="fas fa-edit  mx-2"></i> Students Grades</a>
                                     </li>
-                                    <li>
-                                        <a href="{{ route('course.listUserCourses') }}"><i class="fas fa-list  mx-2"></i> Courses Catalog</a>
-                                    </li>
                                 @elseif (Auth::user()->isStudent())
                                     <li>
                                         <a href="{{route('course.studentGrades.show', ['course' =>$course->id, 'student_id' => Auth::user()->id])}}"><i class="fas fa-graduation-cap  mx-2"></i> My grades</a>

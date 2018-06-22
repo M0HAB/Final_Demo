@@ -36,25 +36,35 @@
 
     <div class="row">
         @foreach($courses as $course)
-            <div class="col-lg-6">
-                <div class="card dark-border mb-3">
-                    <div class="card-body">
-                        <h4 class="card-title f-rw mb-3">{{ $course->title }}</h4>
-                        <p class="card-text text-muted mb-1">{{ $course->description }}</p>
-                        <span class="badge text-white text-uppercase mb-4 {{ $course->is_active ? 'badge-success': 'bg-danger' }}">{{ $course->is_active ? 'Active': 'Not Active' }}</span>
-                        <div class="row">
-                            <div class="col-lg-6">
-                                <a href="{{ route('course.viewCourseModules', ['id' => $course->id]) }}" class="btn btn-outline-primary ">View Course</a>
-                            </div>
-                            @if(Auth::User()->isInstructor() && canUpdate('Course'))
-                                <div class="col-lg-6">
-                                    <a class="btn btn-outline-primary float-right" href="{{ route('course.getUpdateCourseForm', ['id' => $course->id]) }}">Update Course</a>
-                                </div>
+            @php
+                $end_date = \Carbon\Carbon::parse($course->end_date);
+            @endphp
+            @if(Auth::user()->isInstructor() || !$end_date->isPast())
+                <div class="col-lg-6">
+                    <div class="card dark-border mb-3">
+                        <div class="card-body">
+                            <h4 class="card-title f-rw mb-3">{{ $course->title }}</h4>
+                            <p class="card-text text-muted mb-1">{{ $course->description }}</p>
+                            <span class="badge text-white text-uppercase mb-4 {{ $course->is_active ? 'badge-success': 'bg-danger' }}">{{ $course->is_active ? 'Active': 'Not Active' }}</span>
+
+                            @if($end_date->isPast())
+                                <span class="badge text-white text-uppercase mb-4 badge-secondary">END</span>
                             @endif
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <a href="{{ route('course.viewCourseModules', ['id' => $course->id]) }}" class="btn btn-outline-primary ">View Course</a>
+                                </div>
+                                @if(Auth::User()->isInstructor() && canUpdate('Course'))
+                                    <div class="col-lg-6">
+                                        <a class="btn btn-outline-primary float-right" href="{{ route('course.getUpdateCourseForm', ['id' => $course->id]) }}">Update Course</a>
+                                    </div>
+                                @endif
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
+            @endif
+
         @endforeach
     </div>
 @endsection
