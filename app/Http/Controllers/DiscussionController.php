@@ -13,12 +13,12 @@ class DiscussionController extends Controller
     {
         $this->middleware(['auth', 'revalidate', 'checkUserEnrollmentInCourse', 'checkCourseActivation']);
     }
-    public function index()
-    {
-      // return view('_auth.department.show')->with('departments', $departments);
-      // return view('_auth.discussions.index');
-     // return "yo";
-    }
+    // public function index()
+    // {
+    //   // return view('_auth.department.show')->with('departments', $departments);
+    //   // return view('_auth.discussions.index');
+    //  // return "yo";
+    // }
     public function show($id)
     {
         if(canRead($this->controllerName)){

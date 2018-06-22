@@ -226,8 +226,8 @@ Route::group(['middleware' => ['checkUserEnrollmentInCourse', 'checkCourseActiva
 Route::get('/error', function(){ return "404"; })->name('error.web');
 
 Route::group(['prefix' => 'discussions'], function () {
-
-  Route::get('/', 'DiscussionController@index')->name('discussion.index');
+  // 
+  // Route::get('/', 'DiscussionController@index')->name('discussion.index');
   Route::get('/{id}', 'DiscussionController@show')->name('discussion.show');
   Route::get('/{id}/search', 'DiscussionController@searchPosts')->name('discussion.search');
 
