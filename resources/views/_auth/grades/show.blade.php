@@ -35,6 +35,7 @@
 
             <div class="row">
                 @if (!empty($student) &&!empty($assgrades)  &&!empty($quizgrades))
+                    @if($assigmentdelv)
                     <div class="col-lg-12 my-4">
                         <h5 class="f-rw-bold text-muted mb-3 ml-1"><i class="fas fa-asterisk fa-xs"></i> Assginments grades</h5>
                         <table class="table">
@@ -46,14 +47,14 @@
                             </tr>
                             </thead>
                             <tbody>
-                            @foreach ($student as $stdass)
+                            @foreach ($assigmentdelv as $stdass)
                                 <tr>
                                     <td>
-                                        {{$stdass->asstitle}}
+                                        {{$stdass->assignment->title}}
 
                                     </td>
                                     <td>
-                                        {{$stdass->assgrade .'/'. $stdass->assfullmark}}
+                                        {{$stdass->grade ? $stdass->grade .'/'. $stdass->assignment->full_mark : "not set yet"}}
 
                                     </td>
                                     <td>
@@ -65,6 +66,8 @@
                             </tbody>
                         </table>
                     </div>
+
+                    @endif
 
 
                     <div class="col-lg-12">
@@ -82,15 +85,15 @@
                             @foreach ($quizgrades as $quizgrade)
                                 <tr>
                                     <td>
-                                        {{$quizgrade->modtitle}}
+                                        {{$quizgrade->modtitle ? $quizgrade->modtitle :"no module"}}
 
                                     </td>
                                     <td>
-                                        {{$quizgrade->quiztitle }}
+                                        {{$quizgrade->quiztitle ? $quizgrade->quiztitle :"no title"}}
 
                                     </td>
                                     <td>
-                                        {{$quizgrade->grade }} / {{$quizgrade->total_grade}}
+                                        {{$quizgrade->grade ? $quizgrade->grade : "not set yet"}} / {{$quizgrade->total_grade ? $quizgrade->total_grade : "-"}}
 
                                     </td>
                                 </tr>
@@ -113,7 +116,7 @@
                                 <tr>
                                     <td>
 
-                                        {{$student[0]->midterm . '/'. $student[0]->midterm_fullmark}}
+                                        {{$student[0]->midterm ? $student[0]->midterm . '/'. $student[0]->midterm_fullmark : "not set yet"}}
 
                                     </td>
                                     <td>
@@ -123,7 +126,7 @@
                                     </td>
                                     <td>
 
-                                        {{$student[0]->finalgrade .'/'. $student[0]->final_fullmark}}
+                                        {{$student[0]->finalgrade ? $student[0]->finalgrade .'/'. $student[0]->final_fullmark : "not set yet"}}
 
                                     </td>
                                 </tr>

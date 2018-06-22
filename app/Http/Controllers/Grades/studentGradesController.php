@@ -166,7 +166,7 @@ class studentGradesController extends Controller
                     'assdelivers.grade as assgrade','assdelivers.comment','assdelivers.grade as assgrade')
                 ->where('course_user.user_id', '=', $student->id)
                 ->where('course_user.course_id', '=', $course->id)
-                ->where('assdelivers.user_id', '=', $student->id)
+               // ->where('assdelivers.user_id', '=', $student->id)
                 ->get();
 
 
@@ -189,9 +189,14 @@ class studentGradesController extends Controller
                 ->get();
 
             $grades=grade::where('course_id', '=' ,$course->id)->first();
+            $assigmentdelv=assdeliver::where('user_id', '=', $id )->get();
+
+            //dd($assigmentdelv);
 
 
-            return view('_auth.grades.show',compact('student','student_id','assgrades','quizgrades','grades','course_id'));
+
+
+            return view('_auth.grades.show',compact('student','student_id','assgrades','quizgrades','grades','course_id','assigmentdelv'));
         }else{
             return redirect()->route('user.dashboard')->with('error', 'Unauthorized Access');
         }
