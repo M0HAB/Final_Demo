@@ -18,34 +18,30 @@
                             <a href="#{{ $course->id }}" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle"><i class="fas fa-minus mr-2"></i> {{ $course->title }}</a>
                             <ul class="collapse list-unstyled" id="{{ $course->id }}">
                                 <li>
-                                    <a href="{{ route('course.viewCourseModules', ['id' => $course->id]) }}" class="ml-1"><i class="fas fa-eye mr-2"></i> View</a>
+                                    <a href="{{ route('course.viewCourseModules', ['id' => $course->id]) }}" class=""><i class="fas fa-eye mx-2"></i> View</a>
                                 </li>
                                 <li>
-                                    <a href="{{ route('discussion.show', $course->discussion->id) }}" class="ml-1"><i class="fas fa-graduation-cap mr-2"></i> Discussion forum</a>
+                                    <a href="{{ route('discussion.show', $course->discussion->id) }}"><i class="fas fa-graduation-cap  mx-2"></i> Discussion forum</a>
                                 </li>
                                 @if (Auth::user()->isInstructor())
                                     <li>
-                                        <a href="{{ route('course.getUpdateCourseForm', ['id' => $course->id]) }}" class="pl-4"><i class="fas fa-edit mr-2"></i> Update Course Info.</a>
+                                        <a href="{{ route('course.getUpdateCourseForm', ['id' => $course->id]) }}" class="pl-4"><i class="fas fa-edit  mx-2"></i> Update Course Info.</a>
                                     </li>
                                     <li>
-                                        <a href="{{ route('course.getNewModuleForm', ['id' => $course->id]) }}" class="pl-4"><i class="fas fa-edit mr-2"></i> Add New Module</a>
+                                        <a href="{{ route('course.getNewModuleForm', ['id' => $course->id]) }}" class="pl-4"><i class="fas fa-edit  mx-2"></i> Add New Module</a>
                                     </li>
                                     <li>
-                                        <a href="{{ route('course.gradeBook.index', ['id' => $course->id]) }}" class="pl-4"><i class="fas fa-edit mr-2"></i> Grades Book Settings</a>
+                                        <a href="{{ route('course.gradeBook.index', ['id' => $course->id]) }}" class="pl-4"><i class="fas fa-edit  mx-2"></i> Grades Book Settings</a>
                                     </li>
                                     <li>
-                                        <a href="{{ route('course.studentGrades.index', ['id' => $course->id]) }}"><i class="fas fa-edit mr-2"></i> Students Grades</a>
+                                        <a href="{{ route('course.studentGrades.index', ['id' => $course->id]) }}"><i class="fas fa-edit  mx-2"></i> Students Grades</a>
                                     </li>
                                     <li>
-                                        <a href="{{ route('course.listUserCourses') }}"><i class="fas fa-list mr-2"></i> Courses Catalog</a>
+                                        <a href="{{ route('course.listUserCourses') }}"><i class="fas fa-list  mx-2"></i> Courses Catalog</a>
                                     </li>
                                 @elseif (Auth::user()->isStudent())
                                     <li>
-<<<<<<< HEAD
-                                        <a href="{{route('course.studentGrades.show', ['course' =>$course->id, 'student_id' => Auth::user()->id])}}"><i class="fas fa-graduation-cap mr-2"></i>My grades</a>
-=======
-                                        <a href="{{route('course.studentGrades.show', ['course' =>$course->id, 'student_id' => Auth::user()->id])}}" class="ml-1"><i class="fas fa-graduation-cap mr-2"></i> My grades</a>
->>>>>>> 5e4d0ba1d5fb89ee55ddee66cf88eed19d4f3e76
+                                        <a href="{{route('course.studentGrades.show', ['course' =>$course->id, 'student_id' => Auth::user()->id])}}"><i class="fas fa-graduation-cap  mx-2"></i> My grades</a>
                                     </li>
                                 @endif
                             </ul>
