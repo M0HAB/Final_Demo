@@ -16,7 +16,7 @@
 
 @section('content')
     <!-- Start: Content -->
-        
+
     {{--  <div class="text-right">
         <a class="btn btn-success" href="{{ route('course.getNewCourseForm') }}" ><i class="fa fa-plus"></i> <strong>Add New Course</strong></a>
     </div>  --}}
@@ -25,15 +25,15 @@
         <div class="col-lg-4">
             <h6 class="text-uppercase text-primary text-muted mb-2" style="position:relative;top:10px;">current enrollments</h6>
         </div>
-        @if(Auth::User()->isInstructor())
+        @if(Auth::User()->isInstructor() && canCreate('Course'))
             <div class="offset-lg-6 col-lg-2">
                 <a class="btn btn-success" href="{{ route('course.getNewCourseForm') }}"><i class="fa fa-plus"></i> <strong>Add New Course</strong></a>
             </div>
-        @endif                   
-    </div>  
+        @endif
+    </div>
 
     <hr class="mb-5">
-    
+
     <div class="row">
         @foreach($courses as $course)
             <div class="col-lg-6">
@@ -46,7 +46,7 @@
                             <div class="col-lg-6">
                                 <a href="{{ route('course.viewCourseModules', ['id' => $course->id]) }}" class="btn btn-outline-primary ">View Course</a>
                             </div>
-                            @if(Auth::User()->isInstructor())
+                            @if(Auth::User()->isInstructor() && canUpdate('Course'))
                                 <div class="col-lg-6">
                                     <a class="btn btn-outline-primary float-right" href="{{ route('course.getUpdateCourseForm', ['id' => $course->id]) }}">Update Course</a>
                                 </div>

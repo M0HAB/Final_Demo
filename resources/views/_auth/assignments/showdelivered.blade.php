@@ -18,9 +18,9 @@
         </div>
     </div>
     {{-- End Breadcrumbs--}}
-        
+
     <!-- Start: Content -->
-    
+
     <br>
     @if (count($assdelivered)>0)
         <div class="row justify-content-center">
@@ -89,9 +89,11 @@
                             <td>
                                 <p> {{$delivered->comment ? $delivered->comment : "No Comment "}} </p>
                             </td>
-                            <td>
-                                <button  class="btn btn-group-sm btn-link"><a href="{{route('assignmentdelivered.edit', ['course'=>$course->id, 'module'=>$module->id ,'assignment'=>$delivered->ass_id,'stdudent'=>$delivered->user_id,'assdel'=>$delivered->id])}}"><i class="far fa-edit fa-lg text-primary"></i> </a> </button>
-                            </td>
+                            @if(canUpdate('Assignment'))
+                                <td>
+                                    <button  class="btn btn-group-sm btn-link"><a href="{{route('assignmentdelivered.edit', ['course'=>$course->id, 'module'=>$module->id ,'assignment'=>$delivered->ass_id,'stdudent'=>$delivered->user_id,'assdel'=>$delivered->id])}}"><i class="far fa-edit fa-lg text-primary"></i> </a> </button>
+                                </td>
+                            @endif
                         </tr>
                     @endforeach
                 </tbody>

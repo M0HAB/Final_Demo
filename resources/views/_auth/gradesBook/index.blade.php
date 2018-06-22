@@ -39,7 +39,9 @@
                         <th>Final Exam weight</th>
                         <th>Practical weight</th>
                         <th>Total</th>
-                        <th>Actions</th>
+                        @if(canUpdate('Grade'))
+                            <th>Actions</th>
+                        @endif
                     </tr>
                     </thead>
                     <tbody>
@@ -66,16 +68,17 @@
                             <td>
                                 {{$gradesBook->practical_weight ? $gradesBook->practical_weight * 100 : '-'}}%
                             </td>
-    
+
                             <td>
                                 {{($gradesBook->assignments_weight + $gradesBook->quizzes_weight + $gradesBook->midterm_weight + $gradesBook->finalexam_weight + $gradesBook->practical_weight) * 100}}%
-    
+
                             </td>
-    
-                            <td>
-                                <a href="{{route('course.gradeBook.edit', ['course' => $course->id, 'gradesBook_id' => $gradesBook->id])}}" class="btn btn-link py-0"><i class="far fa-edit fa-lg text-dark"></i> </a>
-                            </td>
-    
+                            @if(canUpdate('Grade'))
+                                <td>
+                                    <a href="{{route('course.gradeBook.edit', ['course' => $course->id, 'gradesBook_id' => $gradesBook->id])}}" class="btn btn-link py-0"><i class="far fa-edit fa-lg text-dark"></i> </a>
+                                </td>
+                            @endif
+
                         </tr>
                     @endforeach
                     @else
@@ -85,17 +88,14 @@
                     </tbody>
                 </table>
                 <script>
-    
+
                     function ConfirmDelete(){
                         return confirm('Are you sure you ? THIS CANNOT BE UNDONE');
                     }
-    
+
                 </script>
             @endif
             </div>
         </div>
     </div>
 @stop
-
-
-

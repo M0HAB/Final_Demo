@@ -25,11 +25,12 @@
                 <div class="col-lg-8">
                     @if (Auth::user()->isInstructor())
                         <div class="float-right" style="position:relative;top:10px">
-                            <a href="{{ route('assignments.create', ['course_id' => $course->id, 'module_id' => $module->id]) }}" class="btn btn-info" role="button">Create</a>
+                            @if(canCreate('Assignment'))
+                                <a href="{{ route('assignments.create', ['course_id' => $course->id, 'module_id' => $module->id]) }}" class="btn btn-info" role="button">Create</a>
+                            @endif
                             <a href="{{ route('assignment.delivered', ['course_id' => $course->id, 'module_id' => $module->id]) }}" class="btn btn-success" role="button">Delivered </a>
                         </div>
-                        @elseif(!Auth::user()->isInstructor())
-
+                    @elseif(!Auth::user()->isInstructor())
                         <div class="float-right" style="position:relative;top:10px">
                         <a href="{{ route('assignments.show', ['course_id' => $course->id, 'module_id' => $module->id,'student_id' => Auth::user()->id]) }}" class="btn btn-success" role="button">My delivered assginments </a>
                         </div>
@@ -51,13 +52,13 @@
                         <th>Deadline</th>
                         <th>Full Mark</th>
                         <th colspan="2">Actions</th>
-    
+
                     </tr>
                     </thead>
                     <tbody>
                     @foreach ($assignments as $ass)
                         <tr>
-    
+
                             <td>
                                 {{$ass->title}}
                             </td>
@@ -83,21 +84,23 @@
                             <td>
                                 {{$ass->full_mark}}
                             </td>
-    
+
                             @if (Auth::user()->isInstructor())
                                 <td>
                                     {{--  <button  class="btn btn-group-sm btn-link pl-0"><a href="{{route('assignments.edit', ['course_id' => $course->id, 'module_id' => $module->id, 'ass_id' => $ass->id])}}"><i class="far fa-edit fa-lg fam-mod"></i> </a> </button>  --}}
-
-                                    <a href="{{route('assignments.edit', ['course_id' => $course->id, 'module_id' => $module->id, 'ass_id' => $ass->id])}}" class="btn btn-link pl-0"><i class="far fa-edit fa-lg text-primary"></i> </a>
-    
-                                    <form class="d-inline-block" action="{{ route('assignments.destroy', ['course_id' => $course->id, 'module_id' => $module->id, 'ass_id' => $ass->id])}}" method="POST">
-                                        {{ csrf_field() }}
-                                        <input type="hidden" name="_method" value="DELETE">
-                                        <a href="" class="btn btn-link pl-0" onclick="ConfirmDelete();"><span class="far fa-trash-alt fa-lg text-primary"></span></a>
-                                        {{--  <button class="btn btn-primary pl-0" type="submit" onclick="return ConfirmDelete()">
-                                            <span class="far fa-trash-alt fa-lg fam-mod"></span>
-                                        </button>  --}}
-                                    </form>
+                                    @if(canUpdate('Assignment'))
+                                        <a href="{{route('assignments.edit', ['course_id' => $course->id, 'module_id' => $module->id, 'ass_id' => $ass->id])}}" class="btn btn-link pl-0"><i class="far fa-edit fa-lg text-primary"></i> </a>
+                                    @endif
+                                    @if(canDelete('Assignment'))
+                                        <form class="d-inline-block" action="{{ route('assignments.destroy', ['course_id' => $course->id, 'module_id' => $module->id, 'ass_id' => $ass->id])}}" method="POST">
+                                            {{ csrf_field() }}
+                                            <input type="hidden" name="_method" value="DELETE">
+                                            <a href="" class="btn btn-link pl-0" onclick="ConfirmDelete();"><span class="far fa-trash-alt fa-lg text-primary"></span></a>
+                                            {{--  <button class="btn btn-primary pl-0" type="submit" onclick="return ConfirmDelete()">
+                                                <span class="far fa-trash-alt fa-lg fam-mod"></span>
+                                            </button>  --}}
+                                        </form>
+                                    @endif
                                 </td>
                             @elseif(!Auth::user()->isInstructor())
                                 <td>
@@ -115,11 +118,11 @@
                     </tbody>
                 </table>
                 <script>
-    
+
                     function ConfirmDelete(){
                         return confirm('Are you sure you ? THIS CANNOT BE UNDONE');
                     }
-    
+
                 </script>
             @endif
         </div>

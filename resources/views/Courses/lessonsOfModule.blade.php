@@ -119,115 +119,119 @@
             <!--------------------------------------------------------------------->
 
             <!--------------------------------------------------------------------->
-            <div class="col-sm-12">
-                <table class="table table-hover mt-5" style="box-shadow: 5px 5px 10px gray">
-                    <thead class="bg-primary" style="color: #02b3e4">
-            <div class="col-lg-12">
-                <table class="table mt-5" style="border: 1px solid #DEE2E6">
-                    <thead class="bg-light">
-                    <tr>
-                        <th class="f-rw-bold">ASSESSMENTS</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    @forelse($assignments as $assignment)
+            @if(canRead('Assignment'))
+                <div class="col-sm-12">
+                    <table class="table table-hover mt-5" style="box-shadow: 5px 5px 10px gray">
+                        <thead class="bg-primary" style="color: #02b3e4">
+                <div class="col-lg-12">
+                    <table class="table mt-5" style="border: 1px solid #DEE2E6">
+                        <thead class="bg-light">
                         <tr>
-                            <td>
-                                <div class="row">
-                                    <div class="col-lg-12">
-                                        @if(is_null($assignment->file))
-                                            No File Attached
-                                        @else
-                                            <a class="font-weight-bold text-success forum-nav" href="{{ asset("uploads\assignments") }}\{{$assignment->file}}" download="{{$assignment->file}}">
-                                                <i class="fa fa-download mr-2"></i>
-                                                {{ $assignment->title }}
-                                            </a>
+                            <th class="f-rw-bold">ASSESSMENTS</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        @forelse($assignments as $assignment)
+                            <tr>
+                                <td>
+                                    <div class="row">
+                                        <div class="col-lg-12">
+                                            @if(is_null($assignment->file))
+                                                No File Attached
+                                            @else
+                                                <a class="font-weight-bold text-success forum-nav" href="{{ asset("uploads\assignments") }}\{{$assignment->file}}" download="{{$assignment->file}}">
+                                                    <i class="fa fa-download mr-2"></i>
+                                                    {{ $assignment->title }}
+                                                </a>
+                                            @endif
+                                        </div>
+                                        <div class="col-sm-7">
+                                            <p class="ml-4"><span class="text-muted font-weight-bold">Due:</span><span class="text-danger ml-1">{{date('d-m-Y', strtotime($assignment->deadline))}}</span></p>
+                                        </div>
+                                        @if(Auth::User()->isStudent() && canCreate('Assignment'))
+                                            <div class="col-sm-5">
+                                                @if(!Auth::User()->checkIfStudentDeliveredAss($assignment))
+                                                    <a href="{{ route('assignment.deliver', ['course_id' => $course->id, 'module_id' => $module->id, 'id' => $assignment->id]) }}" class="text-info"><i class="far fa-envelope-open mr-1"></i>Deliver</a>
+                                                @else
+                                                    <span class="text-success"><i class="fas fa-check mr-1"></i>Delivered</span>
+                                                @endif
+                                            </div>
                                         @endif
                                     </div>
-                                    <div class="col-sm-7">
-                                        <p class="ml-4"><span class="text-muted font-weight-bold">Due:</span><span class="text-danger ml-1">{{date('d-m-Y', strtotime($assignment->deadline))}}</span></p>
-                                    </div>
-                                    @if(Auth::User()->isStudent())
-                                        <div class="col-sm-5">
-                                            @if(!Auth::User()->checkIfStudentDeliveredAss($assignment))
-                                                <a href="{{ route('assignment.deliver', ['course_id' => $course->id, 'module_id' => $module->id, 'id' => $assignment->id]) }}" class="text-info"><i class="far fa-envelope-open mr-1"></i>Deliver</a>
-                                            @else
-                                                <span class="text-success"><i class="fas fa-check mr-1"></i>Delivered</span>
-                                            @endif
-                                        </div>
-                                    @endif
-                                </div>
-                            </td>
-                        </tr>
-                    @empty
+                                </td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td>
+                                    <span>The module has no assignments</span>
+                                </td>
+                            </tr>
+                        @endforelse
                         <tr>
                             <td>
-                                <span>The module has no assignments</span>
+                                <a href="{{ route('assignments.index', ['course_id' => $course->id, 'module_id' => $module->id]) }}" class="text-primary font-weight-bold">Show More Details & Actions<i class="fa fa-angle-right ml-1"></i></a>
                             </td>
                         </tr>
-                    @endforelse
-                    <tr>
-                        <td>
-                            <a href="{{ route('assignments.index', ['course_id' => $course->id, 'module_id' => $module->id]) }}" class="text-primary font-weight-bold">Show More Details & Actions<i class="fa fa-angle-right ml-1"></i></a>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
-            </div>
+                        </tbody>
+                    </table>
+                </div>
+            @endif
             <!--------------------------------------------------------------------->
-            <div class="col-lg-12">
-                <table class="table table-hover mt-5" style="border: 1px solid #DEE2E6">
-                    <thead class="bg-primary f-rw-bold bg-light">
-                    <tr>
-                        <th class="f-rw-bold text-uppercase">Quizzes</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    @forelse($quizzes as $quiz)
+            @if(canRead('Quiz'))
+                <div class="col-lg-12">
+                    <table class="table table-hover mt-5" style="border: 1px solid #DEE2E6">
+                        <thead class="bg-primary f-rw-bold bg-light">
                         <tr>
-                            <td>
-                                <div class="row">
-                                    <div class="col-sm-12">
-                                        <span class="font-weight-bold text-success forum-nav">
-                                            <i class="fas fa-question-circle mr-1"></i>
-                                            {{ $quiz->title }}
-                                            @if(Auth::User()->isInstructor())
-                                                <span id="quiz-status" class="p-1 rounded text-white  {{ $quiz->is_active ? 'badge badge-success': 'badge badge-danger' }}" >{{ $quiz->is_active ? 'Activated quiz': 'Deactivated quiz' }}</span>
-                                            @endif
+                            <th class="f-rw-bold text-uppercase">Quizzes</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                            @forelse($quizzes as $quiz)
+                                <tr>
+                                    <td>
+                                        <div class="row">
+                                            <div class="col-sm-12">
+                                                <span class="font-weight-bold text-success forum-nav">
+                                                    <i class="fas fa-question-circle mr-1"></i>
+                                                    {{ $quiz->title }}
+                                                    @if(Auth::User()->isInstructor())
+                                                        <span id="quiz-status" class="p-1 rounded text-white  {{ $quiz->is_active ? 'badge badge-success': 'badge badge-danger' }}" >{{ $quiz->is_active ? 'Activated quiz': 'Deactivated quiz' }}</span>
+                                                    @endif
 
-                                        </span>
-                                    </div>
-                                </div>
-                                <div class="row mt-2">
-                                    <div class="col-lg-7">
-                                        <p class="ml-4"><span class="text-muted font-weight-bold">Due:</span><span class="text-danger ml-1">{{date('d-m-Y', strtotime($quiz->deadline))}}</span></p>
-                                    </div>
-                                    @if(Auth::User()->isStudent())
-                                        <div class="col-sm-5">
-                                            @if(!Auth::User()->checkIfStudentSubmittedQuiz($quiz))
-                                                <a href="{{ route('quiz.getSubmitQuizForm', ['course_id' => $course->id, 'module_id' => $module->id, 'quiz_id' => $quiz->id]) }}" class="text-info"><i class="far fa-file mr-1"></i>Start quiz</a>
-                                            @else
-                                                <span class="text-success"><i class="fas fa-check mr-1"></i>Submitted</span>
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div class="row mt-2">
+                                            <div class="col-lg-7">
+                                                <p class="ml-4"><span class="text-muted font-weight-bold">Due:</span><span class="text-danger ml-1">{{date('d-m-Y', strtotime($quiz->deadline))}}</span></p>
+                                            </div>
+                                            @if(Auth::User()->isStudent() && canCreate('Quiz'))
+                                                <div class="col-sm-5">
+                                                    @if(!Auth::User()->checkIfStudentSubmittedQuiz($quiz))
+                                                        <a href="{{ route('quiz.getSubmitQuizForm', ['course_id' => $course->id, 'module_id' => $module->id, 'quiz_id' => $quiz->id]) }}" class="text-info"><i class="far fa-file mr-1"></i>Start quiz</a>
+                                                    @else
+                                                        <span class="text-success"><i class="fas fa-check mr-1"></i>Submitted</span>
+                                                    @endif
+                                                </div>
+                                            @elseif(Auth::User()->isInstructor())
+                                                <div class="col-sm-5">
+                                                    <a href="{{ route('quiz.getSubmitQuizForm', ['course_id' => $course->id, 'module_id' => $module->id, 'quiz_id' => $quiz->id]) }}" class="text-info"><i class="fas fa-eye mr-1"></i>preview</a>
+                                                </div>
                                             @endif
                                         </div>
-                                    @elseif(Auth::User()->isInstructor())
-                                        <div class="col-sm-5">
-                                            <a href="{{ route('quiz.getSubmitQuizForm', ['course_id' => $course->id, 'module_id' => $module->id, 'quiz_id' => $quiz->id]) }}" class="text-info"><i class="fas fa-eye mr-1"></i>preview</a>
-                                        </div>
-                                    @endif
-                                </div>
-                            </td>
-                        </tr>
-                    @empty
-                        <tr>
-                            <td>
-                                <span>The module has no Quizzes</span>
-                            </td>
-                        </tr>
-                    @endforelse
-                    </tbody>
-                </table>
-            </div>
+                                    </td>
+                                </tr>
+                            @empty
+                                <tr>
+                                    <td>
+                                        <span>The module has no Quizzes</span>
+                                    </td>
+                                </tr>
+                            @endforelse
+                        </tbody>
+                    </table>
+                </div>
+            @endif
             <!--------------------------------------------------------------------->
             <div class="col-lg-12">
                 <table class="table table-hover mt-5 " style="border: 1px solid #DEE2E6">
@@ -238,45 +242,55 @@
                         </thead>
                         <tbody>
                             @if(Auth::User()->isInstructor())
-                                <tr>
-                                    <td>
-                                        <a href="{{ route('course.addNewVideo', ['course_id' => $course->id, 'module_id' => $module->id]) }}" class="ml-1 text-primary"><i class="fas fa-plus mr-1"></i>Add New Video</a>
-                                    </td>
-                                </tr>
+                                @if(canCreate('Course'))
+                                    <tr>
+                                        <td>
+                                            <a href="{{ route('course.addNewVideo', ['course_id' => $course->id, 'module_id' => $module->id]) }}" class="ml-1 text-primary"><i class="fas fa-plus mr-1"></i>Add New Video</a>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <a href="{{ route('course.addNewFile', ['course_id' => $course->id, 'module_id' => $module->id]) }}" class="ml-1 text-primary"><i class="fas fa-plus mr-1"></i>Add New File</a>
+                                        </td>
+                                    </tr>
+                                @endif
+                                @if(canCreate('Quiz'))
+                                    <tr>
+                                        <td>
+                                            <a href="{{ route('quiz.getNewQuizForm', ['course_id' => $course->id, 'module_id' => $module->id]) }}" class="ml-1 text-primary"><i class="fas fa-plus mr-1"></i>Add New Quiz</a>
+                                        </td>
+                                    </tr>
+                                @endif
 
-                                <tr>
-                                    <td>
-                                        <a href="{{ route('course.addNewFile', ['course_id' => $course->id, 'module_id' => $module->id]) }}" class="ml-1 text-primary"><i class="fas fa-plus mr-1"></i>Add New File</a>
-                                    </td>
-                                </tr>
-
-                                <tr>
-                                    <td>
-                                        <a href="{{ route('quiz.getNewQuizForm', ['course_id' => $course->id, 'module_id' => $module->id]) }}" class="ml-1 text-primary"><i class="fas fa-plus mr-1"></i>Add New Quiz</a>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <a href="{{ route('assignments.create', ['course_id' => $course->id, 'module_id' => $module->id]) }}" class="ml-1 text-primary"><i class="fas fa-plus mr-1"></i>Add New Assignment</a>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <a href="{{ route('course.getUpdateModuleForm', ['course_id' => $course->id, 'module_id' => $module->id]) }}" class="ml-1 text-primary"><i class="fas fa-edit mr-1"></i>Update The Module</a>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <a href="{{ route('assignment.delivered', ['course_id' => $course->id, 'module_id' => $module->id]) }}" class="ml-1 text-primary"><i class="fas fa-eye mr-1"></i>Student Assignments</a>
-                                    </td>
-                                </tr>
+                                @if(canCreate('Assignment'))
+                                    <tr>
+                                        <td>
+                                            <a href="{{ route('assignments.create', ['course_id' => $course->id, 'module_id' => $module->id]) }}" class="ml-1 text-primary"><i class="fas fa-plus mr-1"></i>Add New Assignment</a>
+                                        </td>
+                                    </tr>
+                                @endif
+                                @if(canUpdate('Course'))
+                                    <tr>
+                                        <td>
+                                            <a href="{{ route('course.getUpdateModuleForm', ['course_id' => $course->id, 'module_id' => $module->id]) }}" class="ml-1 text-primary"><i class="fas fa-edit mr-1"></i>Update The Module</a>
+                                        </td>
+                                    </tr>
+                                @endif
+                                @if(canRead('Assignments'))
+                                    <tr>
+                                        <td>
+                                            <a href="{{ route('assignment.delivered', ['course_id' => $course->id, 'module_id' => $module->id]) }}" class="ml-1 text-primary"><i class="fas fa-eye mr-1"></i>Student Assignments</a>
+                                        </td>
+                                    </tr>
+                                @endif
                             @elseif(Auth::User()->isStudent())
-
-                                <tr>
-                                    <td>
-                                        <a href="{{route('discussion.show', ['id' => $course->discussion->id, 'module_order' => $module->module_order])}}" class="ml-1"><i class="fas fa-question mr-1"></i>Discussion Forum</a>
-                                    </td>
-                                </tr>
+                                @if(canRead('Discussion'))
+                                    <tr>
+                                        <td>
+                                            <a href="{{route('discussion.show', ['id' => $course->discussion->id, 'module_order' => $module->module_order])}}" class="ml-1"><i class="fas fa-question mr-1"></i>Discussion Forum</a>
+                                        </td>
+                                    </tr>
+                                @endif
                             @endif
                         </tbody>
                 </table>

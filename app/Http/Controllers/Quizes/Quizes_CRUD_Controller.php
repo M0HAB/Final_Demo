@@ -165,7 +165,7 @@ class Quizes_CRUD_Controller extends Controller{
     |----------------------------
      */
     public function updateQuizActivation(Request $request, Quiz $quiz){
-        if(canUpdate($this->controllerName)){
+        if(canDelete($this->controllerName)){
             if(\Illuminate\Support\Facades\Request::ajax()){
 
                 $myQuiz = Quiz::where('id', $quiz->id)->update([

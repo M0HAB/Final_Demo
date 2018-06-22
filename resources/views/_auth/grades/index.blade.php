@@ -116,18 +116,22 @@
                                     </td>
                                     <td>
                                         <a href="{{route('course.studentGrades.show', ['course_id' => $student->course_id, 'student_id' => $student->std_id])}}" class="mr-1"><i class="fas fa-eye fa-1x text-primary"></i></a>
-    
+
                                         @if($student->gradeid)
-                                            <a href="{{route('course.studentGrades.edit', ['course_id' => $student->course_id, 'student_id' => $student->std_id])}}"><i class="far fa-edit fa-1x text-primary"></i></a>
+                                            @if(canUpdate('Grade'))
+                                                <a href="{{route('course.studentGrades.edit', ['course_id' => $student->course_id, 'student_id' => $student->std_id])}}"><i class="far fa-edit fa-1x text-primary"></i></a>
+                                            @endif
                                         @else
-                                            <a href="{{route('course.studentGrades.create', ['course_id' => $student->course_id, 'student_id' => $student->std_id])}}"><i class="fas fa-plus fa-1x text-primary"></i></a>
+                                            @if(canCreate('Grade'))
+                                                <a href="{{route('course.studentGrades.create', ['course_id' => $student->course_id, 'student_id' => $student->std_id])}}"><i class="fas fa-plus fa-1x text-primary"></i></a>
+                                            @endif
                                         @endif
                                     </td>
                                 </tr>
                             @endforeach
                         </tbody>
                     </table>
-                    
+
                 </div>
             </div>
         @endif

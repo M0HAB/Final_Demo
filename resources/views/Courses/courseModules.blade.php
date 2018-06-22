@@ -52,43 +52,51 @@
                                     <div class="card-header f-rw-bold bg-smookie text-uppercase">Course Activities</div>
                                     <div class="card-block mb-2 p-3">
                                         @if (Auth::user()->isInstructor())
-                                            <p class="my-1">
-                                                <a href="{{ route('course.getUpdateCourseForm', ['id' => $course->id]) }}" class=" text-capitalize text-primary"><i class="fa fa-edit mr-1"></i> update course information</a>
-                                            </p>
-                                            <p class="mb-1">
-                                                <a href="{{ route('course.getNewModuleForm', ['id' => $course->id]) }}" class="mt-2 text-capitalize text-primary"><i class="fa fa-plus mr-2"></i> add new module</a>
-                                            </p>
-            
-                                            <form id="submit-course-activation">
-                                                @if(!$course->is_active)
-                                                    <input type="hidden" name="is_active" value='1'>
-                                                    <p id="submit-status ">
-                                                        <i id="icon-course-status" class="fas fa-toggle-off"></i><button id="submit-course-status" class="text-primary" style="border: none;background-color: transparent;cursor: pointer">Activate The Course</button>
-                                                    </p>
-                                                @else
-                                                    <input type="hidden" name="is_active" value='0'>
-                                                    <p id="submit-status">
-                                                        <i id="icon-course-status" class="fas fa-toggle-on text-success"></i><button  class="text-primary" style="border: none;background-color: transparent;cursor: pointer">Deactivate The Course</button>
-                                                    </p>
-                                                @endif
-                                            </form>
+                                            @if(canUpdate('Course'))
+                                                <p class="my-1">
+                                                    <a href="{{ route('course.getUpdateCourseForm', ['id' => $course->id]) }}" class=" text-capitalize text-primary"><i class="fa fa-edit mr-1"></i> update course information</a>
+                                                </p>
+                                            @endif
+                                            @if(canCreate('Course'))
+                                                <p class="mb-1">
+                                                    <a href="{{ route('course.getNewModuleForm', ['id' => $course->id]) }}" class="mt-2 text-capitalize text-primary"><i class="fa fa-plus mr-2"></i> add new module</a>
+                                                </p>
+                                            @endif
+                                            @if(canDelete('Course'))
+                                                <form id="submit-course-activation">
+                                                    @if(!$course->is_active)
+                                                        <input type="hidden" name="is_active" value='1'>
+                                                        <p id="submit-status ">
+                                                            <i id="icon-course-status" class="fas fa-toggle-off"></i><button id="submit-course-status" class="text-primary" style="border: none;background-color: transparent;cursor: pointer">Activate The Course</button>
+                                                        </p>
+                                                    @else
+                                                        <input type="hidden" name="is_active" value='0'>
+                                                        <p id="submit-status">
+                                                            <i id="icon-course-status" class="fas fa-toggle-on text-success"></i><button  class="text-primary" style="border: none;background-color: transparent;cursor: pointer">Deactivate The Course</button>
+                                                        </p>
+                                                    @endif
+                                                </form>
+                                            @endif
                                             <div id="response-message-success" class="alert alert-success mt-2" style="display: none"></div>
                                             <div id="response-message-danger" class="alert alert-danger mt-2" style="display: none"></div>
-                                            <hr>
-                                            <p class="mb-1">
-                                                <a href="{{ route('course.gradeBook.index', ['id' => $course->id]) }}" class="text-primary"><i class="fas fa-cogs mr-2"></i>Grades book settings</a>
-                                            </p>
-            
-                                            <p>
-                                                <a href="{{ route('course.studentGrades.index', ['id' => $course->id]) }}" class="text-primary"><i class="fas fa-graduation-cap mr-2"></i>Students grades</a>
-                                            </p>
-            
+                                            @if(canCreate('Course')||canUpdate('Course')||canDelete('Course'))<hr>@endif
+                                            @if(canRead('Grade'))
+                                                <p class="mb-1">
+                                                    <a href="{{ route('course.gradeBook.index', ['id' => $course->id]) }}" class="text-primary"><i class="fas fa-cogs mr-2"></i>Grades book settings</a>
+                                                </p>
+
+                                                <p>
+                                                    <a href="{{ route('course.studentGrades.index', ['id' => $course->id]) }}" class="text-primary"><i class="fas fa-graduation-cap mr-2"></i>Students grades</a>
+                                                </p>
+                                            @endif
                                         @elseif (Auth::user()->isStudent())
-                                            <p>
-                                                <a href="{{route('course.studentGrades.show', ['course' =>$course->id, 'student_id' => Auth::user()->id])}}" class="ml-1"><i class="fas fa-graduation-cap mr-1"></i>My grades</a>
-                                            </p>
+                                            @if(canRead('Grade'))
+                                                <p>
+                                                    <a href="{{route('course.studentGrades.show', ['course' =>$course->id, 'student_id' => Auth::user()->id])}}" class="ml-1"><i class="fas fa-graduation-cap mr-1"></i>My grades</a>
+                                                </p>
+                                            @endif
                                         @endif
-                                        @if(count($modules)>0 && $courseModal->discussion)
+                                        @if(count($modules)>0 && $courseModal->discussion && canRead('Discussion'))
                                         <p>
                                             <a href="{{ route('discussion.show', $courseModal->discussion->id) }}" class="text-primary"><i class="fas fa-graduation-cap mr-2"></i>Course Discussion forum</a>
                                         </p>

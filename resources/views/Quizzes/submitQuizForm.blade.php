@@ -56,10 +56,10 @@
                     <p class="mb-1 bg-white"><span><strong>Due: </strong><span class="text-success"><strong>{{date('d-m-Y', strtotime($quiz->deadline))}}</strong></span></p>
 
                     <p class="mb-1 bg-white"><span><strong>Total questions: </strong></span><strong class="text-success mr-1">{{count($questions)}}</strong></p>
-    
+
                     <p class="mb-1 bg-white"><span><strong>Total grade: </strong></span><span class="text-success"><strong>{{$quiz->total_grade}}</strong></span></p>
                 </div>
-                @if(Auth::User()->isInstructor())
+                @if(Auth::User()->isInstructor() && canDelete('Quiz'))
                 <form id="submit-quiz-activation">
                     @if(!$quiz->is_active)
                         <input type="hidden" name="is_active" value='1'>
