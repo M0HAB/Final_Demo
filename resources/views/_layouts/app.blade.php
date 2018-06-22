@@ -53,16 +53,20 @@
     </script>
     <script>
         $(document).ready(function () {
-            var $menu = $('#sidebar');
+            var menu = $('#sidebar');
+            var menuBtn = $('#sidebarCollapse');
             $('html').mouseup(function (e) {
-                if (!$menu.is(e.target) && $menu.has(e.target).length === 0)
+                if (!menu.is(e.target) && menu.has(e.target).length === 0 && !menuBtn.is(e.target) && menuBtn.has(e.target).length === 0)
                 {
                     $('#sidebar').addClass('active');
                 }
             });
-            $('#sidebarCollapse').on('click', function () {
+
+            $('#sidebarCollapse').on('click', function (e) {      
                 $('#sidebar').toggleClass('active');
             });
+            
+
         });
     </script>
 </body>
