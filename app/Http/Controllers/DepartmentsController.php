@@ -74,7 +74,7 @@ class DepartmentsController extends Controller
                 return redirect()->back()->with('error', 'All instructors are taken must create an instructor first');
             }
             $this->validate($request, [
-                'department' => 'required|alpha_num',
+                'department' => 'required|regex:/^[a-zA-Z0-9\s]+$/',
                 'instructor' => [
                     'required',
                     Rule::notIn(['null'],
@@ -83,7 +83,7 @@ class DepartmentsController extends Controller
             ]);
         }else{
             $this->validate($request, [
-                'department' => 'required|alpha_num',
+                'department' => 'required|regex:/^[a-zA-Z0-9\s]+$/',
                 'instructor' => 'null'
             ]);
         }
@@ -189,7 +189,7 @@ class DepartmentsController extends Controller
     {
         //TODO :: add More Validation Rules
         $this->validate($request, [
-            'department' => 'required|alpha_num',
+            'department' => 'required|regex:/^[a-zA-Z0-9\s]+$/',
             'instructor' => [
                 'required',
                 Rule::notIn(['null'],
