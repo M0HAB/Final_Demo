@@ -53,10 +53,16 @@
     </script>
     <script>
         $(document).ready(function () {
-           $('#sidebarCollapse').on('click', function () {
+            var $menu = $('#sidebar');
+            $('html').mouseup(function (e) {
+                if (!$menu.is(e.target) && $menu.has(e.target).length === 0)
+                {
+                    $('#sidebar').addClass('active');
+                }
+            });
+            $('#sidebarCollapse').on('click', function () {
                 $('#sidebar').toggleClass('active');
             });
-
         });
     </script>
 </body>
