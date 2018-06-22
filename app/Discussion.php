@@ -16,6 +16,7 @@ class Discussion extends Model
       'course_id'
   ];
   protected $dates = ['deleted_at'];
+  protected $hidden = ['created_at', 'updated_at', 'deleted_at'];
   public function posts()
   {
     return $this->hasMany('App\Post', 'discussion_id');

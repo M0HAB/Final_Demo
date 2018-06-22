@@ -1,5 +1,5 @@
 @include('_partials._head')
-    
+
 <!-- yield additional css styles inside <style> tag(If Required) -->
 @yield('styles')
 
@@ -10,14 +10,14 @@
         @include('_partials.admin_navbar')
     @else
         @include('_partials._navbar')
+        @include('_partials._sidebar')
     @endif
-    @include('_partials._sidebar')
     <div class="container my-5">
         <div class="content" id="content">
             @yield('content')
         </div> {{--  End: Content  --}}
     </div>
-    
+
     <a href="#top" id="btn-scroll" class="btn-scroll-custom"><i class="fas fa-arrow-up"></i></a>
 
 
@@ -62,10 +62,10 @@
                 }
             });
 
-            $('#sidebarCollapse').on('click', function (e) {      
+            $('#sidebarCollapse').on('click', function (e) {
                 $('#sidebar').toggleClass('active');
             });
-            
+
 
         });
     </script>

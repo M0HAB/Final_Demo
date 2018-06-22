@@ -28,6 +28,7 @@ use App\Vote;
 use App\Specialization;
 use App\gradebook;
 use App\grade;
+use App\Discussion;
 
 class UserController extends Controller
 {
@@ -400,6 +401,11 @@ class UserController extends Controller
                 $record = Role::find($request->id);
                 if(!$record)break;
                 $title = "Role";
+                break;
+            case 'discussion':
+                $record = Discussion::find($request->id);
+                if(!$record)break;
+                $title = "Discussion";
                 break;
             default:
                 return "Unkown Type BRO";
