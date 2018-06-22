@@ -156,7 +156,7 @@ class PermissionRoleController extends Controller
     public function update(Request $request, $id)
     {
         $role = Role::find($id);
-        if($id != 1 || $id != 2){
+        if($id != 1 && $id != 2){
             $rules =  [
                 'name' => 'sometimes|required|max:100|unique:roles,name,'.$id
             ];
@@ -166,14 +166,15 @@ class PermissionRoleController extends Controller
                 'name.max' => 'Role name is 100 chars max'
             ];
             $this->validate($request, $rules, $messages);
+            $role->permission = $this->encodePermissions($request);
             $name = ucfirst(strtolower($request->input('name')));
             $role->name = $name;
             $same = ($role->name == Role::find($id)->name && $role->permission == Role::find($id)->permission );
 
         }else{
+            $role->permission = $this->encodePermissions($request);
             $same = ($role->permission == Role::find($id)->permission );
         }
-        $role->permission = $this->encodePermissions($request);
         if($same){
           return redirect()->back()->with('warning', 'Same Value Resubmittion');
         }

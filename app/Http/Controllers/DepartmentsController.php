@@ -50,7 +50,8 @@ class DepartmentsController extends Controller
     public function create()
     {
         // Return the create view with Users from DB to use in ComboBox
-        $users = User::getInstructors()->get();
+        $taken_users = Department::all()->pluck('Dep_Head_ID')->toArray();
+        $users = User::getInstructors()->whereNotIn('id', $taken_users)->get();
         return view('_auth.admin.department.create')->with('users', $users);
     }
 
@@ -64,17 +65,25 @@ class DepartmentsController extends Controller
     {
         //TODO :: add More Validation Rules
         // Validate Form submitted data
+
+        //if there are instructors validate else consider null a choice
         if(User::getInstructors()->exists()){
+            $taken_users = Department::all()->pluck('Dep_Head_ID')->toArray();
+            $users = User::getInstructors()->whereNotIn('id', $taken_users)->get();
+            if(count($users) === 0){
+                return redirect()->back()->with('error', 'All instructors are taken must create an instructor first');
+            }
             $this->validate($request, [
-                'department' => 'required',
+                'department' => 'required|alpha_num|unique:departments,name',
                 'instructor' => [
                     'required',
-                    Rule::notIn(['null'])
+                    Rule::notIn(['null'],
+                    'unique:departments')
                 ],
             ]);
         }else{
             $this->validate($request, [
-                'department' => 'required',
+                'department' => 'required|alpha_num|unique:departments,name',
                 'instructor' => 'null'
             ]);
         }
@@ -180,10 +189,11 @@ class DepartmentsController extends Controller
     {
         //TODO :: add More Validation Rules
         $this->validate($request, [
-            'department' => 'required',
+            'department' => 'required|alpha_num|unique:departments,name,'.$id,
             'instructor' => [
                 'required',
-                Rule::notIn(['null'])
+                Rule::notIn(['null'],
+                'unique:departments,Dep_Head_ID,'.$id)
             ],
         ]);
         // Update Department

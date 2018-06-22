@@ -1,5 +1,6 @@
 
 $('select#type').on('change', function () {
+    query();
     if($(this).val() != 2){
         $('#levelGrp').hide();
     }else{
@@ -21,31 +22,30 @@ function doneTyping () {
     let value = $('#search').val();
     if(value != oldQuery){
         oldQuery=value;
-        let params = {
-            api_token: api_token,
-            name: $('#search').val(),
-            type: $('select#type').val(),
-            dep: $('select#dep').val()
-        }
-        if($('select#type').val() == 2){
-            params['level'] = $('select#level').val();
-        }
-        axios.get('/api/search',
-        {
-          headers: {
-            'X-Requested-With': 'XMLHttpRequest'
-          },
-          params
-        })
-        .then( (response) => {
-            $('#users_body').html(response.data.body);
-        })
-        .catch(function (error) {
-            console.log(error);
-        });
+        query();
     }
 }
-$('#search').keyup(function (key) {
-
-
-});
+function query() {
+    let params = {
+        api_token: api_token,
+        name: $('#search').val(),
+        type: $('select#type').val(),
+        dep: $('select#dep').val()
+    }
+    if($('select#type').val() == 2){
+        params['level'] = $('select#level').val();
+    }
+    axios.get('/api/search',
+    {
+      headers: {
+        'X-Requested-With': 'XMLHttpRequest'
+      },
+      params
+    })
+    .then( (response) => {
+        $('#users_body').html(response.data.body);
+    })
+    .catch(function (error) {
+        console.log(error);
+    });
+}
