@@ -99,7 +99,7 @@
                                         @endif
                                     </td>
                                     <td class="text-success">
-                                        {{number_format($avg=$finalexam+$quiz+$practical+$midterm+$assignment , 2)}}%
+                                        {{number_format($avg=($finalexam+$quiz+$practical+$midterm+$assignment) /($student->finalexam_weight + $student->practical_weight + $student->midterm_weight +$student->quizzes_weight +$student->assignments_weight)   , 2)}}%
                                     </td>
                                     <td class="text-success">
                                         @if ($avg >= 90)
