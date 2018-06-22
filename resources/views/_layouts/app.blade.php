@@ -10,7 +10,9 @@
         @include('_partials.admin_navbar')
     @else
         @include('_partials._navbar')
-        @include('_partials._sidebar')
+        @if(Auth::check())
+            @include('_partials._sidebar')
+        @endif
     @endif
     <div class="container my-5">
         <div class="content" id="content">
