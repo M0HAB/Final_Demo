@@ -1,16 +1,18 @@
 <!-- Sidebar  -->
 <div id="sidebar" class="active">
     <ul class="list-unstyled components">
-        <li class="">
-            <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle"><i class="fas fa-users mr-2" style="font-size: 18px"></i> User</a>
-            <ul class="collapse list-unstyled" id="homeSubmenu">
+        <li>
+            <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle"><i class="fas fa-users mr-2" style="font-size: 18px"></i> {{ Auth::user()->fname . ' ' . Auth::user()->lname}}</a>
+            <ul class="collapse list-unstyled show" id="homeSubmenu">
                 <li>
-                    <a href="#">Profile</a>
+                        <a href="{{ route('user.profile') }}"><i class="fas fa-user space-icon mr-2"></i> Profile</a>
                 </li>
                 <li>
-                    <a href="#courses" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Courses</a>
+                    <a href="#courses" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle"><i class="fas fa-cubes mr-2"></i> Courses</a>
                     <ul class="collapse list-unstyled" id="courses">
-                        <li><a href="{{ route('course.getNewCourseForm') }}"><i class="fas fa-plus mr-2"></i> Create New Course</a></li>
+                        @if (Auth::user()->isInstructor())
+                            <li><a href="{{ route('course.getNewCourseForm') }}"><i class="fas fa-plus mr-2"></i> Create New Course</a></li>
+                        @endif
                         @foreach (Auth::user()->courses()->get() as $key => $course)
                         <li>
                             <a href="#{{ $course->id }}" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle"><i class="fas fa-minus mr-2"></i> {{ $course->title }}</a>
@@ -36,7 +38,7 @@
                                     </li>
                                 @elseif (Auth::user()->isStudent())
                                     <li>
-                                        <a href="{{route('course.studentGrades.show', ['course' =>$course->id, 'student_id' => Auth::user()->id])}}" class="ml-1"><i class="fas fa-graduation-cap mr-"></i>My grades</a>
+                                        <a href="{{route('course.studentGrades.show', ['course' =>$course->id, 'student_id' => Auth::user()->id])}}"><i class="fas fa-graduation-cap mr-2"></i>My grades</a>
                                     </li>
                                 @endif
                             </ul>
