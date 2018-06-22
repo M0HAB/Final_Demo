@@ -108,9 +108,9 @@
                                             {{$lettergrade = "B"}}
                                         @elseif ($avg >= 70 && $avg <= 79)
                                             {{$lettergrade = "C"}}
-                                        @elseif ($avg >= 60 && $avg <= 69)
+                                        @elseif ($avg >= 51 && $avg <= 69)
                                             {{$lettergrade = "D"}}
-                                        @elseif ($avg <= 59)
+                                        @elseif ($avg <= 50)
                                             {{$lettergrade = "F"}}
                                         @endif
                                     </td>
