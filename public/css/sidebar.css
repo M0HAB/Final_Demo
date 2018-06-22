@@ -21,6 +21,7 @@
     top: 85px;
     border-top-right-radius: 5px;
     border-right: 1px solid rgba(15, 15, 15, 0.9);
+    overflow: scroll;
 }
 
 #sidebar a,
@@ -55,6 +56,7 @@
     font-size: 1.1em;
     display: block;
     border-bottom: 1px solid rgb(20, 37, 58);
+    font-weight: 500;
 }
 
 #sidebar ul li a:hover {
@@ -84,6 +86,7 @@
     font-size: 0.9em !important;
     padding-left: 30px !important;
     background: rgb(52, 73, 94);
+    font-weight: 500;
 }
 
 
