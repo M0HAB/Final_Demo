@@ -6,7 +6,7 @@
 <div class="card">
   	<div class="card-body">
         <h3 class="f-rw"><strong>{{$specialization->name}}</strong> Specialization
-            <a href="{{ route('specialization.edit',$specialization->id)}}" title="Edit Specialization"><button class="btn btn-success"><i class="fas fa-edit"></i></button></a>
+            <a class="btn btn-link text-primary p-0" href="{{ route('specialization.edit',$specialization->id)}}" title="Edit Specialization"><i class="fas fa-edit fa-lg"></i></a>
         </h3>
         <table class="table">
             <tbody>

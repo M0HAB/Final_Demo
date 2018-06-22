@@ -48,7 +48,7 @@ class SpecializationController extends Controller
         //TODO :: add More Validation Rules
         // Validate Form submitted data
         $this->validate($request, [
-            'specialization' => 'required',
+            'specialization' => 'required|unique:specializations,name|alpha_num',
         ]);
         // Create new Specialization
         $specialization = new Specialization;
@@ -115,7 +115,7 @@ class SpecializationController extends Controller
     {
         //TODO :: add More Validation Rules
         $this->validate($request, [
-            'specialization' => 'required',
+            'specialization' => 'required|alpha_num|unique:specializations,name,'.$id,
         ]);
         // Update Specialization
         $specialization = Specialization::find($id);

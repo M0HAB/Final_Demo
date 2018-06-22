@@ -27,9 +27,9 @@
                     </select>
                 </div>
             @else
-                No Instructors Available
+                <p>No Instructors Available</p>
             @endif
-            <button type="submit" name="submit" class="btn btn-primary">Submit</button>
+            <button type="submit" name="submit" class="btn btn-primary mt-2">Submit</button>
         </form>
   	</div>
 </div>
