@@ -74,7 +74,7 @@ class DepartmentsController extends Controller
                 return redirect()->back()->with('error', 'All instructors are taken must create an instructor first');
             }
             $this->validate($request, [
-                'department' => 'required|alpha_num|unique:departments,name',
+                'department' => 'required|alpha_num',
                 'instructor' => [
                     'required',
                     Rule::notIn(['null'],
@@ -83,7 +83,7 @@ class DepartmentsController extends Controller
             ]);
         }else{
             $this->validate($request, [
-                'department' => 'required|alpha_num|unique:departments,name',
+                'department' => 'required|alpha_num',
                 'instructor' => 'null'
             ]);
         }
@@ -189,7 +189,7 @@ class DepartmentsController extends Controller
     {
         //TODO :: add More Validation Rules
         $this->validate($request, [
-            'department' => 'required|alpha_num|unique:departments,name,'.$id,
+            'department' => 'required|alpha_num',
             'instructor' => [
                 'required',
                 Rule::notIn(['null'],

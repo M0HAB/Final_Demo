@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\User;
+use App\Admin;
 use App\Role;
 use App\Department;
 use App\Http\Controllers\PermissionRoleController;
@@ -36,6 +37,7 @@ class UserController extends Controller
     {
         $this->middleware(['auth:admin', 'revalidate'], ['except' => ['getUsers', 'destroy']]);
     }
+
     public function index()
     {
         $users = User::getStudents()->withTrashed()->orderBy('level')->orderBy('dep_id')->orderBy('fname')->get();
@@ -43,6 +45,7 @@ class UserController extends Controller
         $roles = Role::all();
         return view('_auth.admin.users.index')->with('users', $users)->with('departments', $departments)->with('roles', $roles);
     }
+
     public function getUsers(Request $request)
     {
         if($request->name == ""){
@@ -97,6 +100,7 @@ class UserController extends Controller
         //incase of non ajax call
         return 1;
     }
+
     public function profile(Request $request)
     {
         $id = $request->id;
@@ -115,6 +119,7 @@ class UserController extends Controller
             return "404";
         }
     }
+
     public function destroy(Request $request, $id)
     {
         $user = User::withTrashed()->find($id);
@@ -158,6 +163,11 @@ class UserController extends Controller
         $deps = Department::all();
         $roles = Role::all();
         return view('_auth.admin.users.register')->withDeps($deps)->withRoles($roles);
+    }
+
+    public function createAdmin()
+    {
+        return view('_auth.admin.create');
     }
 
     public function store(Request $request)
@@ -223,6 +233,56 @@ class UserController extends Controller
         // If incoming request not valid then return a json response with error bags
         return response()->json(['error' => $validator->errors()->all()]);
     }
+
+    public function adminStore(Request $request)
+    {
+        /**
+         * Override laravel default validation messages
+         * Not the best way to customize validation rules and messages, not clear and reusable.
+         * Refactoring..Later
+        */
+        $rules =  [
+            'fname' => 'required|min:3|max:100',
+            'lname' => 'required|min:3|max:100',
+            'email' => 'required|string|email|max:100|unique:users|confirmed',
+            'password' => 'required|confirmed|min:6|max:255',
+        ];
+
+        $messages =  [
+            'fname.required' => 'First name is required',
+            'fname.min' => 'First name must be at least 3 characters.',
+            'lname.required' => 'Last name is required',
+            'lname.min' => 'Last name must be at least 3 characters.',
+            'email.required' => 'Email is required',
+            'password.required' => 'Password is required',
+        ];
+
+        // Apply validation rules on incoming request
+        $validator = Validator::make($request->all(), $rules, $messages);
+
+        // If incoming request is valid
+        if ($validator->passes())
+        {
+            // Hash requested password
+            $request['password'] = bcrypt($request->password);
+            // Generate unique api token
+            $request['api_token'] = str_random(50) . time();
+            // Create user instance
+            $admin = Admin::create($request->all());
+            ActionLog::create([
+                'subject' => 'admin',
+                'subject_id' => Auth::user()->id,
+                'action' => 'create',
+                'type' => 'admin',
+                'type_id' => $admin->id
+            ]);
+            // After creating new user return json response with success. message
+            return response()->json(['success' => 'Admin Created Successfully']);
+        }
+        // If incoming request not valid then return a json response with error bags
+        return response()->json(['error' => $validator->errors()->all()]);
+    }
+
 
     public function edit(Request $request)
     {

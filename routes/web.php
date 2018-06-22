@@ -37,8 +37,8 @@ Route::get('/test2', function(){
  Route::group(['prefix' => 'user'], function () {
     //-- Authentications
     Route::namespace('_Auth')->group(function() {
-        Route::get('create', 'RegisterController@showRegisterForm')->name('user.regform');
-        Route::post('create', 'RegisterController@register')->name('user.create');
+        // Route::get('create', 'RegisterController@showRegisterForm')->name('user.regform');
+        // Route::post('create', 'RegisterController@register')->name('user.create');
         Route::get('forgot-password', 'ForgotPasswordController@showForgotForm')->name('user.forgot.password');
         Route::post('forgot-password', 'ForgotPasswordController@checkEmail')->name('user.checkreset.email');
         Route::PUT('forgot-password/{id}', 'ResetPasswordController@resetPassword')->name('user.reset.password');
@@ -226,8 +226,8 @@ Route::group(['middleware' => ['checkUserEnrollmentInCourse', 'checkCourseActiva
 Route::get('/error', function(){ return view('errors.404'); })->name('error.web');
 
 Route::group(['prefix' => 'discussions'], function () {
-
-  Route::get('/', 'DiscussionController@index')->name('discussion.index');
+  // 
+  // Route::get('/', 'DiscussionController@index')->name('discussion.index');
   Route::get('/{id}', 'DiscussionController@show')->name('discussion.show');
   Route::get('/{id}/search', 'DiscussionController@searchPosts')->name('discussion.search');
 
@@ -289,6 +289,8 @@ Route::group(['prefix' => 'admin'], function () {
           Route::post('/create', 'UserController@store')->name('admin.user.store');
           Route::get('/show', 'UserController@previewAction')->name('admin.user.action');
       });
+      Route::get('/create', 'UserController@createAdmin')->name('admin.create');
+      Route::post('/create', 'UserController@adminStore')->name('admin.store');
       Route::group(['prefix' => 'courses'], function ()
       {
           Route::get('/', 'courseController@index')->name('admin.course.index');
