@@ -34,40 +34,44 @@
 
 
             <div class="row">
-                @if (!empty($student) &&!empty($assgrades)  &&!empty($quizgrades))
-                    @if($assigmentdelv)
-                    <div class="col-lg-12 my-4">
-                        <h5 class="f-rw-bold text-muted mb-3 ml-1"><i class="fas fa-asterisk fa-xs"></i> Assginments grades</h5>
-                        <table class="table">
-                            <thead class="bg-light">
-                            <tr>
-                                <th>Assignments</th>
-                                <th>Grade</th>
-                                <th>Feedback</th>
-                            </tr>
+                <div class="col-lg-12 my-4">
+                    <h5 class="f-rw-bold text-muted mb-3 ml-1"><i class="fas fa-asterisk fa-xs"></i> Assginments grades</h5>
+                    <table class="table">
+                        <thead class="bg-light">
                             </thead>
-                            <tbody>
-                            @foreach ($assigmentdelv as $stdass)
                                 <tr>
-                                    <td>
-                                        {{$stdass->assignment->title}}
-
-                                    </td>
-                                    <td>
-                                        {{$stdass->grade ? $stdass->grade .'/'. $stdass->assignment->full_mark : "not set yet"}}
-
-                                    </td>
-                                    <td>
-                                        {{$stdass->comment ? $stdass->comment : "no feedback"}}
-
-                                    </td>
+                                    <th>Assignments</th>
+                                    <th>Grade</th>
+                                    <th>Feedback</th>
                                 </tr>
-                                @endforeach
+                            <tbody>
+                            @if (!empty($student) &&!empty($assgrades)  &&!empty($quizgrades))
+                                    @if(count($assigmentdelv) > 0)
+                                        @foreach ($assigmentdelv as $stdass)
+                                            <tr>
+                                                <td>
+                                                    {{$stdass->assignment->title}}
+
+                                                </td>
+                                                <td>
+                                                    {{$stdass->grade ? $stdass->grade .'/'. $stdass->assignment->full_mark : "Not set yet"}}
+
+                                                </td>
+                                                <td>
+                                                    {{$stdass->comment ? $stdass->comment : "No feedback"}}
+
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                    @else
+                                        <tr>
+                                            <td colspan="3" class="text-center">No assignment was delivered yet!</td>
+                                        </tr>
+                                    @endif                                    
                             </tbody>
                         </table>
                     </div>
 
-                    @endif
 
 
                     <div class="col-lg-12">
