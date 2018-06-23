@@ -137,10 +137,37 @@ class AssignmentsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Course $course, Module $module, assignment $assigmment)
+    public function show(Course $course, Module $module)
     {
+
         $student_id=Auth::user()->id;
         if(canRead($this->controllerName)){
+            //dd($module);
+            $assdelivered = DB::table('assdelivers')
+                ->leftjoin('assignments', 'assignments.id', '=', 'assdelivers.ass_id')
+                ->leftjoin('users', 'users.id', '=', 'assdelivers.user_id')
+                ->select('assdelivers.*', 'assignments.id as ass_id','assignments.title', 'assignments.module_id', 'assignments.deadline','assignments.full_mark', 'users.fname')
+                ->where('assignments.module_id', '=', $module->id)
+                ->where('assdelivers.user_id', '=', $student_id)
+                ->get();
+
+
+
+            return view('_auth.assignments.studentAssGrades',compact('course','module','assdelivered'));
+
+        }else{
+
+
+        }
+    }
+
+    public function assgrade(Course $course, Module $module)
+    {
+
+
+        $student_id=Auth::user()->id;
+        if(canRead($this->controllerName)){
+            //dd($module);
             $assdelivered = DB::table('assdelivers')
                 ->leftjoin('assignments', 'assignments.id', '=', 'assdelivers.ass_id')
                 ->leftjoin('users', 'users.id', '=', 'assdelivers.user_id')
@@ -150,12 +177,17 @@ class AssignmentsController extends Controller
                 //->where('assdelivers.user_id', '=', $ass)
                 ->get();
 
+
+
             return view('_auth.assignments.studentAssGrades',compact('course','module','assdelivered'));
 
         }else{
 
+
         }
     }
+
+
 
     /**
      * Show the form for editing the specified resource.

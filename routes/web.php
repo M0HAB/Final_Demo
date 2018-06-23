@@ -204,6 +204,8 @@ Route::resource('Courses/{course}/Modules/{module}/assignments', 'AssignmentsCon
 ], 'middleware' => ['checkUserEnrollmentInCourse', 'checkCourseActivation']]);
 
 
+
+
 Route::group(['prefix' => 'messages'], function () {
 
   Route::get('/', 'MessagesController@index')->name('messages.index');

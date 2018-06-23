@@ -12,7 +12,7 @@
                 <li class="breadcrumb-item text-success"><a href="/Courses/{{$course->id}}">{{ $course->title }}</a></li>
                 <li class="breadcrumb-item text-success">Module</li>
                 <li class="breadcrumb-item text-success"><a href="/Courses/{{$course->id. "/Modules/" .$module->id}}">{{ $module->title }}</a></li>
-                <li class="breadcrumb-item active"><a href="/Courses/{{$course->id. "/Modules/" .$module->id. "/assignments"}}">Assignments</a></li>
+                <li class="breadcrumb-item active"><a href="/Courses/{{$course->id. "/Modules/" .$module->id. "/assignments?myassginments"}}">Assignments</a></li>
 
             </ol>
         </div>
@@ -32,7 +32,7 @@
                         </div>
                     @elseif(!Auth::user()->isInstructor())
                         <div class="float-right" style="position:relative;top:10px">
-                        <a href="{{ route('assignments.show', ['course_id' => $course->id, 'module_id' => $module->id,'student_id' => Auth::user()->id]) }}" class="btn btn-success" role="button">My delivered assginments </a>
+                        <a href="{{ route('assignments.show', ['course_id' => $course->id, 'module_id' => $module->id,1]) }}" class="btn btn-success" role="button">My delivered assginments </a>
                         </div>
                     @endif
                 </div>
