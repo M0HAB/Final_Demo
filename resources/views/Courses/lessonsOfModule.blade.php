@@ -60,13 +60,13 @@
         </div>
         {{-- End Breadcrumbs--}}
 
-    <div class="row">
-        <div class="col-lg-12">
-            <div class="jumbotron bg-white text-left p-3 mb-5">
-                <h4 class="text-muted text-uppercase">module</h4>
-                <h2 class="f-rw" style="letter-spacing: 2px">{{ $module->title }}</h2>
-                <p>{{ $module->introduction }}</p>
-                <a href="#" class="btn btn-primary mt-3">View Module Info.</a>
+       <div class="row">
+            <div class="col-lg-12">
+                <div class="jumbotron bg-white text-left p-3 mb-5">
+                    <h4 class="text-muted text-uppercase">module</h4>
+                    <h2 class="f-rw" style="letter-spacing: 2px">{{ $module->title }}</h2>
+                    <p>{{ $module->introduction }}</p>
+                    {{--  <a href="#" class="btn btn-primary mt-3">View Module Info.</a> --}}
             </div>
         </div>
     </div>

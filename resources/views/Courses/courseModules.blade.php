@@ -17,11 +17,11 @@
                                 <img class="mb-2" src="{{ asset('profile pictures/avatar1.png') }}" alt="Avatar" style="border-radius: 50%;width: 80px;height: 80px;">
                             @endif
                         </div>
-                        <div class="col-lg-10">
+                      <div class="col-lg-10">
                             <h3 class="d-inline-block f-rw">{{ $course->title }}</h3>
                             <h6 class="d-block">Dr/ {{ $course->fname }} {{ $course->lname }}</h6>
-                            <a href="#" class="btn btn-outline-primary mt-1">View Course Info.</a>
-                        </div>
+                          {{---   <a href="#" class="btn btn-outline-primary mt-1">View Course Info.</a> --}}
+                       </div>
                     </div>
                 </div>
                 {{--  Modules Section  --}}
