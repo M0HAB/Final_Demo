@@ -100,7 +100,7 @@
                                         @elseif (Auth::user()->isStudent())
                                             @if(canRead('Grade'))
                                                 <p>
-                                                    <a href="{{route('course.studentGrades.show', ['course' =>$course->id, 'student_id' => Auth::user()->id])}}" class="ml-1"><i class="fas fa-graduation-cap mr-1"></i>My grades</a>
+                                                    <a href="{{route('course.studentGrades.show', ['course' =>$course->id, 'student_id' => Auth::user()->id])}}" class="text-primary"><i class="fas fa-graduation-cap mr-1"></i>My grades</a>
                                                 </p>
                                             @endif
                                         @endif
