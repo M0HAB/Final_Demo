@@ -27,7 +27,7 @@ class Modules_CRUD_Controller extends Controller{
     |-------------------------------
      */
 
-    public function viewCourseModules(Course $course){
+    public function viewCourseModules(Course $course, User $user){
         if(canRead($this->controllerName)){
             $course = DB::table('courses')
                 ->leftjoin('users', 'users.id', '=', 'courses.instructor_id')
@@ -42,7 +42,8 @@ class Modules_CRUD_Controller extends Controller{
                 ->orderBy('module_order')
                 ->get();
             $courseModal = Course::find($course->id);
-            return view('courses.courseModules', compact('course', 'modules'))->with('courseModal', $courseModal);
+            $instructor = $user->find($course->instructor_id);
+            return view('courses.courseModules', compact('course', 'modules'))->with('courseModal', $courseModal)->with('instructor', $instructor);
 
         }else{
             return redirect()->route('user.dashboard')->with('error', 'Unauthorized Access');
