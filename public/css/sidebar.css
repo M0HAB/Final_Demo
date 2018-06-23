@@ -11,8 +11,8 @@
 
 #sidebar {
     position: fixed;
-    min-width: 280px;
-    max-width: 280px;
+    min-width: 300px;
+    max-width: 300px;
     background: #2C3E50;
     color: #fff;
     transition: all 0.2s;
@@ -21,7 +21,7 @@
     top: 85px;
     border-top-right-radius: 5px;
     border-right: 1px solid rgba(15, 15, 15, 0.9);
-    overflow: scroll;
+    overflow-y: auto;
 }
 
 #sidebar a,
@@ -33,7 +33,7 @@
 }
 
 #sidebar.active {
-    margin-left: -280px;
+    margin-left: -300px;
 }
 
 #sidebar .sidebar-header {

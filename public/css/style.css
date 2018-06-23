@@ -64,7 +64,7 @@ textarea {resize: none}
 .table-hover tbody tr:hover td .forum-p { color: #DEE2E6 !important}
 .list-group-item .txt-lbl { font-weight: 600;color: #7B8A9A }
 .list-group-item .recent-p-mod { font-size: 14px; }
-.list-group-item:hover { background-color: #2C3E50;color: #DEE2E6;transition: 0.0s }
+.list-group-item:hover { background-color: #ECF0F1;color: #2C3E50;transition: 0.0s }
 .list-group-item:hover .txt-lbl { color:#18BC9C !important; }
 .nav-tabs {border: none;}
 .nav-tabs .nav-link {font-weight: 600}

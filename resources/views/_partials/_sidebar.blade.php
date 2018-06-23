@@ -2,7 +2,7 @@
 <div id="sidebar" class="active">
     <ul class="list-unstyled components">
         <li>
-            <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="true" class="dropdown-toggle"><i class="fas fa-users mr-2" style="font-size: 18px"></i> {{ Auth::user()->fname . ' ' . Auth::user()->lname}}</a>
+            <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="true" class="dropdown-toggle"><i class="fas fa-user mr-2" style="font-size: 16px"></i> {{ Auth::user()->fname . ' ' . Auth::user()->lname}}</a>
             <ul class="collapse list-unstyled show" id="homeSubmenu">
                 <li>
                         <a href="{{ route('user.profile') }}"><i class="fas fa-user space-icon mr-2"></i> Profile</a>
@@ -16,7 +16,7 @@
                         @foreach (Auth::user()->courses()->get() as $key => $course)
                             @if(canRead('Course'))
                                 <li>
-                                    <a href="#{{ $course->id }}" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle"><i class="fas fa-minus mr-2"></i> {{ $course->title }}</a>
+                                    <a href="#{{ $course->id }}" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle"><i class="fas fa-cube mr-2"></i> {{ $course->title }}</a>
                                     <ul class="collapse list-unstyled" id="{{ $course->id }}">
                                         <li>
                                             <a href="{{ route('course.viewCourseModules', ['id' => $course->id]) }}" class=""><i class="fas fa-eye mx-2"></i> View</a>
