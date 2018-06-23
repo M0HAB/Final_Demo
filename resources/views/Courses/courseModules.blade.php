@@ -11,7 +11,11 @@
                 <div class="col-lg-12 mb-4">
                     <div class="row mt-3">
                         <div class="col-lg-2">
-                            <img class="mb-2" src="{{ asset('profile pictures/avatar2.png') }}" alt="Avatar" style="border-radius: 50%;width: 80px;height: 80px;">
+                            @if (Auth::user()->gender != 1)
+                                <img class="mb-2" src="{{ asset('profile pictures/avatar2.png') }}" alt="Avatar" style="border-radius: 50%;width: 80px;height: 80px;">
+                            @else
+                                <img class="mb-2" src="{{ asset('profile pictures/avatar1.png') }}" alt="Avatar" style="border-radius: 50%;width: 80px;height: 80px;">
+                            @endif
                         </div>
                         <div class="col-lg-10">
                             <h3 class="d-inline-block f-rw">{{ $course->title }}</h3>
