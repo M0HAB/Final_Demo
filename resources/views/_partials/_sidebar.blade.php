@@ -8,8 +8,8 @@
                         <a href="{{ route('user.profile') }}"><i class="fas fa-user space-icon mr-2"></i> Profile</a>
                 </li>
                 <li>
-                    <a href="#courses" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle"><i class="fas fa-cubes mr-2" style="font-size: 18px"></i> My Courses</a>
-                    <ul class="collapse list-unstyled" id="courses">
+                    <a href="#courses" data-toggle="collapse" aria-expanded="true" class="dropdown-toggle"><i class="fas fa-cubes mr-2" style="font-size: 18px"></i> My Courses</a>
+                    <ul class="collapse list-unstyled show" id="courses">
                         @if (Auth::user()->isInstructor() && canCreate('Course'))
                             <li><a href="{{ route('course.getNewCourseForm') }}"><i class="fas fa-plus mr-2"></i> Create New Course</a></li>
                         @endif
@@ -19,11 +19,11 @@
                                     <a href="#{{ $course->id }}" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle"><i class="fas fa-cube mr-2"></i> {{ $course->title }}</a>
                                     <ul class="collapse list-unstyled" id="{{ $course->id }}">
                                         <li>
-                                            <a href="{{ route('course.viewCourseModules', ['id' => $course->id]) }}" class=""><i class="fas fa-eye mx-2"></i> View</a>
+                                            <a href="{{ route('course.viewCourseModules', ['id' => $course->id]) }}" class=""><i class="fas fa-eye mx-2"></i> View Module</a>
                                         </li>
                                         @if(canRead('Discussion'))
                                             <li>
-                                                <a href="{{ route('discussion.show', $course->discussion->id) }}"><i class="fas fa-graduation-cap  mx-2"></i> Discussion forum</a>
+                                                <a href="{{ route('discussion.show', $course->discussion->id) }}"><i class="fas fa-graduation-cap  mx-2"></i> Discussion Forum</a>
                                             </li>
                                         @endif
                                         @if (Auth::user()->isInstructor())

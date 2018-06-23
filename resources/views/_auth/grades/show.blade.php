@@ -141,15 +141,15 @@
                             <h5 class="f-rw-bold text-muted mb-3 ml-1"><i class="fas fa-asterisk fa-xs"></i> Total</h5>
                             <table class="table">
                                 <thead class="bg-light">
-                                <tr>
-                                    <th>Assignment Grade  <br> {{$assw=$student[0]->assignments_weight *100}}%</th>
-                                    <th>Quizzes Grade <br> {{$qw=$student[0]->quizzes_weight *100}}%</th>
-                                    <th>Midterm Grade <br> {{$mw=$student[0]->midterm_weight *100}}%</th>
-                                    <th>Practical Grade <br> {{$pw=$student[0]->practical_weight *100}}%</th>
-                                    <th>Final Exam Grade <br> {{$fw=$student[0]->finalexam_weight *100}}%</th>
-                                    <th>Total Grade <br> {{$assw + $qw +$mw+$pw+$fw}}%</th>
-                                    <th>Letter Grade</th>
-                                </tr>
+                                    <tr>
+                                        <th>Assignment Grade  <br> {{$assw=$student[0]->assignments_weight *100}}%</th>
+                                        <th>Quizzes Grade <br> {{$qw=$student[0]->quizzes_weight *100}}%</th>
+                                        <th>Midterm Grade <br> {{$mw=$student[0]->midterm_weight *100}}%</th>
+                                        <th>Practical Grade <br> {{$pw=$student[0]->practical_weight *100}}%</th>
+                                        <th>Final Exam Grade <br> {{$fw=$student[0]->finalexam_weight *100}}%</th>
+                                        <th>Total Grade <br> {{$assw + $qw +$mw+$pw+$fw}}%</th>
+                                        <th>Letter Grade</th>
+                                    </tr>
                                 </thead>
                                 <tbody>
                                     <tr>
