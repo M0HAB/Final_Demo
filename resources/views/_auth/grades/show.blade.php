@@ -38,7 +38,6 @@
                     <h5 class="f-rw-bold text-muted mb-3 ml-1"><i class="fas fa-asterisk fa-xs"></i> Assginments grades</h5>
                     <table class="table">
                         <thead class="bg-light">
-                            </thead>
                                 <tr>
                                     <th>Assignments</th>
                                     <th>Grade</th>
