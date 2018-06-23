@@ -3,7 +3,6 @@
 
 
 @section('content')
-    <a href="{{ route('course.listUserCourses') }}" class="btn go-back-btn mb-4"><i class="fas fa-arrow-left fa-1x"></i> Back</a> 
     <!-- Start: Content -->
 
     <div class="row">

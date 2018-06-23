@@ -3,12 +3,9 @@
 
 
 @section('content')
-    {{--  <div class="reg-log-form p-3 my-3">
-        <a href="{{ URL::previous() }}"><i class="fas fa-arrow-alt-circle-left"></i> Back</a>
-    </div>  --}}
+
     <div class="row">
         <div class="col-lg-12">
-            <a href="{{ route('course.listUserCourses') }}" class="btn go-back-btn mb-4"><i class="fas fa-arrow-left fa-1x"></i> Back</a> 
         </div>
         <div class="col-lg-12">
             <h1 class="f-rw mb-4">Edit Delivered Assginment</h1>

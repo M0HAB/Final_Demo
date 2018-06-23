@@ -2,10 +2,6 @@
 @section('title', 'Assignments')
 @section('content')
 
-    <a href="{{ route('course.listUserCourses') }}" class="btn go-back-btn mb-1"><i class="fas fa-arrow-left fa-1x"></i> Back</a> 
-    {{--  <div class="reg-log-form p-3 my-3">
-        <a href="{{ URL::previous() }}"><i class="fas fa-arrow-alt-circle-left"></i> Back</a>
-    </div>  --}}
     <!-- Start: Content -->
     <div class="row">
         <div class="col-lg-12">

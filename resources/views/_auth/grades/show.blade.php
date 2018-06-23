@@ -85,6 +85,7 @@
                             </tr>
                             </thead>
                             <tbody>
+                            @if(count($quizgrades) > 0)
                             @foreach ($quizgrades as $quizgrade)
                                 <tr>
                                     <td>
@@ -101,6 +102,11 @@
                                     </td>
                                 </tr>
                             @endforeach
+                            @else
+                                <tr>
+                                    <td colspan="3" class="text-center">No quizes was delivered yet!</td>
+                                </tr>
+                            @endif
                             </tbody>
                         </table>
                     </div>
