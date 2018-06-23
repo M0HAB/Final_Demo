@@ -38,7 +38,11 @@
                                     </div>
                                 @endfor
                             </div>
-                         @endif
+                        @else
+                            <div class="card-body">
+                                <p class="text-center text-muted"><strong>No modules are found</strong>, Please create new module from <a href="{{ route('course.getNewModuleForm', ['id' => $course->id]) }}">Here</a></p>
+                            </div>
+                        @endif
                     </div>
                 </div> <!--End: Modules-->
             </div>
