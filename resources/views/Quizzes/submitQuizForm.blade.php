@@ -86,20 +86,20 @@
                    <div class="col-sm-12 m-3 border-success   font-weight-bold">
 
                         <div class="custom-control custom-radio">
-                            <input type="radio" id="customRadio-1" name="choices[{{ $i  }}]" value="1" class="custom-control-input">
-                            <label class="custom-control-label" for="customRadio-1">{{ $questions[$i]->first_choice }}</label>
+                            <input type="radio" id="customRadio-1-[{{$i}}]" name="choices[{{ $i  }}]" value="1" class="custom-control-input">
+                            <label class="custom-control-label" for="customRadio-1-[{{$i}}]">{{ $questions[$i]->first_choice }}</label>
                         </div>
                         <div class="custom-control custom-radio">
-                            <input type="radio" id="customRadio-2" name="choices[{{ $i  }}]" value="2" class="custom-control-input">
-                            <label class="custom-control-label" for="customRadio-2">{{ $questions[$i]->second_choice }}</label>
+                            <input type="radio" id="customRadio-2-[{{$i}}]" name="choices[{{ $i  }}]" value="2" class="custom-control-input">
+                            <label class="custom-control-label" for="customRadio-2-[{{$i}}]">{{ $questions[$i]->second_choice }}</label>
                         </div>
                         <div class="custom-control custom-radio">
-                            <input type="radio" id="customRadio-3" name="choices[{{ $i  }}]" value="3" class="custom-control-input">
-                            <label class="custom-control-label" for="customRadio-3">{{ $questions[$i]->third_choice }}</label>
+                            <input type="radio" id="customRadio-3-[{{$i}}]" name="choices[{{ $i  }}]" value="3" class="custom-control-input">
+                            <label class="custom-control-label" for="customRadio-3-[{{$i}}]">{{ $questions[$i]->third_choice }}</label>
                         </div>
                         <div class="custom-control custom-radio">
-                            <input type="radio" id="customRadio-4" name="choices[{{ $i  }}]" value="3" class="custom-control-input">
-                            <label class="custom-control-label" for="customRadio-4">{{ $questions[$i]->fourth_choice }}</label>
+                            <input type="radio" id="customRadio-4-[{{$i}}]" name="choices[{{ $i  }}]" value="4" class="custom-control-input">
+                            <label class="custom-control-label" for="customRadio-4-[{{$i}}]">{{ $questions[$i]->fourth_choice }}</label>
                         </div>
                         <input type="hidden" name="correct_choices[{{ $i  }}]" value="{{ $questions[$i]->correct_choice }}">
                         <input type="hidden" name="question_points[{{ $i  }}]" value="{{ $questions[$i]->question_points }}">
