@@ -43,7 +43,6 @@
 
 @section('content')
     <div class=" mt-5 text-left" style="font-size: large">
-        <a href="{{ route('course.listUserCourses') }}" class="btn go-back-btn mb-1"><i class="fas fa-arrow-left fa-1x"></i> Back</a> 
     </div>
     <div id="response-message-success" class="alert alert-success" style="display: none"></div>
     <fieldset>

@@ -43,7 +43,6 @@
 
 @section('content')
     <div id="response-message-success" class="alert alert-success" style="display: none"></div>
-    <a href="{{ route('course.listUserCourses') }}" class="btn go-back-btn mb-1"><i class="fas fa-arrow-left fa-1x"></i> Back</a> 
     <fieldset>
         <div class="reg-log-form p-3 my-3">
             <legend><i class="fa fa-edit"></i> Update <span id="form-course-title-parent"><span id="form-course-title-child">{{ $course->title }}</span></span> Course</legend>

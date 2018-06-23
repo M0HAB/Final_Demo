@@ -16,7 +16,7 @@ class checkCourseActivation
     public function formulateForDiscussions($request)
     {
         $id=0;
-        if($request->ajax()){
+        if($request->ajax() && !Route::is('discussion.search.api')){
             if(Route::is('discussion.record.*')){
                 if($request->id){
                     if($request->type == 'post'){

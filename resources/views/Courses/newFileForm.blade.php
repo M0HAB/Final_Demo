@@ -5,7 +5,6 @@
 @endsection
 
 @section('content')
-    <a href="{{ route('course.listUserCourses') }}" class="btn go-back-btn mb-2"><i class="fas fa-arrow-left fa-1x"></i> Back</a> 
     <div id="response-message-success" class="alert alert-success" style="display: none"></div>
     <div class="row">
         <div class="col-lg-12">

@@ -48,6 +48,6 @@ Route::middleware('auth:api')->group(function () {
   Route::delete('/reply/{id}/delete', 'ReplyController@delete')->name('discussion.reply.delete');
 
   Route::get('/{id}/replies', 'PostController@loadReplies');
-  Route::get('/{id}/search', 'DiscussionController@searchPosts');
+  Route::get('/{id}/search', 'DiscussionController@searchPosts')->name('discussion.search.api');
 
 });
